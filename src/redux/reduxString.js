@@ -1,0 +1,8 @@
+const reduxString = {
+  AUTH_REQUEST: 'AUTH_REQUEST',
+  AUTH_FAILED: 'AUTH_FAILED',
+  AUTH_SUCCESS: 'AUTH_SUCCESS',
+  AUTH_LOGOUT: 'AUTH_LOGOUT',
+  AUTH_SIGNIN: 'AUTH_SIGNIN',
+};
+export default reduxString;

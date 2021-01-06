@@ -1,22 +1,22 @@
-import React, {useEffect} from 'react'
-import {
-  View,
-  Text
-} from 'react-native'
-import {useSelector} from 'react-redux'
-import SplashScreen from 'react-native-splash-screen'
-const Auth = ({navigation}) =>{
-  const dummy_action = useSelector(state=> state.dummy_reducer)
-  useEffect(()=>{
-    SplashScreen.hide()
-    navigation.replace("Login")
-  },[navigation])
-  return(
-    <View>
-      <Text onPress={()=>navigation.replace("Login")}>
-        hello from auth dummy_action:{JSON.stringify(dummy_action)}
-      </Text>
+import React, {useEffect} from 'react';
+import {View, ActivityIndicator} from 'react-native';
+import {useSelector} from 'react-redux';
+import SplashScreen from 'react-native-splash-screen';
+import lod from 'lodash';
+const Auth = ({navigation}) => {
+  const checkToken = useSelector((state) => state.auth_reducer);
+  useEffect(() => {
+    SplashScreen.hide();
+    if (lod.isEmpty(checkToken.data)) {
+      navigation.replace('Login');
+    } else {
+      navigation.replace('Home');
+    }
+  }, [checkToken.data, navigation]);
+  return (
+    <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
+      <ActivityIndicator size={'large'} color={'black'} />
     </View>
-  )
-}
-export default Auth
+  );
+};
+export default Auth;
