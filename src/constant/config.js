@@ -13,10 +13,12 @@ const default_header_height = 50
 const border_radius = 5
 const horizontal = 0
 const vertical = 0
+const regular_horizontal_padding = 10
+const regular_vertical_padding = 10
 const height_keyboard = 43
 const reguler_font_size = 14
 
-export{
+export {
   device_height,
   device_width,
   api_link,
@@ -26,7 +28,9 @@ export{
   horizontal,
   vertical,
   height_keyboard,
-  reguler_font_size
+  reguler_font_size,
+  regular_horizontal_padding,
+  regular_vertical_padding
 }
 
 
