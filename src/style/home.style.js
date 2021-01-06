@@ -1,15 +1,10 @@
 import {
-  border_radius,
   device_width,
-  height_keyboard,
-  reguler_font_size,
   regular_horizontal_padding,
-  regular_vertical_padding
 } from '../constant/config';
 import {
   colors
 } from '../constant/color';
-
 
 export default {
   headerContainer: {
@@ -50,5 +45,45 @@ export default {
     width: device_width,
     height: 100,
     backgroundColor: colors.background_overlay
-  }
+  },
+  paginationDot: {
+    width: 10,
+    height: 10,
+    borderRadius: 5,
+    marginHorizontal: 8,
+    backgroundColor: 'black',
+  },
+  cellItem: {
+    borderRadius: 5,
+    margin: 0,
+    padding: 0,
+  },
+  imageCellItem: {
+    width: 300,
+    height: 300,
+    marginVertical: 20
+  },
+  container: {
+    flex: 1,
+  },
+  bgImage: {
+    flex: 1,
+    marginHorizontal: -20,
+  },
+  section: {
+    flex: 2,
+    paddingHorizontal: 20,
+  },
+  cardSection: {
+    flex: 1,
+    top: -80,
+    margin: 10
+  },
+  tradeMark: {
+    paddingVertical: 2,
+    width: '100%',
+    alignItems: 'center',
+    borderTopWidth: 0.3,
+    borderTopColor: 'gray',
+  },
 }

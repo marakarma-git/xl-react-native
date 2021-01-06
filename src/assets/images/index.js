@@ -17,6 +17,9 @@ import iconGrids from './drawer/grids.png';
 import iconComponents from './drawer/components.png';
 import iconLogout from './drawer/logout.png';
 
+// Banner Assets
+import framerBanner from './banners/farmer-banner.png'
+
 export {
   logoCompany,
   xlBusolInverted,
@@ -30,5 +33,6 @@ export {
   iconHome,
   iconGrids,
   iconComponents,
-  iconLogout
+  iconLogout,
+  framerBanner
 }
