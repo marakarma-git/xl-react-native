@@ -10,9 +10,11 @@ const {
 const api_link = ""
 const is_ios = Platform.OS === 'ios'
 const default_header_height = 50
-const border_radius = 0
+const border_radius = 5
 const horizontal = 0
 const vertical = 0
+const height_keyboard = 43
+const reguler_font_size = 14
 
 export{
   device_height,
@@ -22,7 +24,9 @@ export{
   default_header_height,
   border_radius,
   horizontal,
-  vertical
+  vertical,
+  height_keyboard,
+  reguler_font_size
 }
 
 

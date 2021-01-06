@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {useEffect} from 'react'
 import {
   View,
   Text
@@ -6,6 +6,9 @@ import {
 import {useSelector} from 'react-redux'
 const Auth = ({navigation}) =>{
   const dummy_action = useSelector(state=> state.dummy_reducer)
+  useEffect(()=>{
+    navigation.replace("Login")
+  },[navigation])
   return(
     <View>
       <Text onPress={()=>navigation.replace("Login")}>
