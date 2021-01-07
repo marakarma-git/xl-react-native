@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { View, Image, Text } from 'react-native';
 import {
   DrawerContentScrollView,
@@ -11,6 +11,8 @@ import {
   iconGrids,
   iconLogout
 } from '../../assets/images/index';
+import { useSelector, useDispatch } from 'react-redux';
+import { authLogout } from '../../redux/action/auth_action';
 import styles from '../../style/drawer.style';
 
 
@@ -30,6 +32,9 @@ const drawerData = [
 ];
 
 const CustomDrawerContent = (props) => {
+  const dispatch = useDispatch();
+  const userData = useSelector(state => state.auth_reducer.data);
+
   return (
     <DrawerContentScrollView {...props} style={{ padding: 0 }}>
       <View style={styles.avatarContainer}>
@@ -38,7 +43,7 @@ const CustomDrawerContent = (props) => {
           source={iconUser}
         />
         <View style={{ paddingLeft: 15 }}>
-          <Text style={styles.userName}>Gerry Geraldy</Text>
+          <Text style={styles.userName}>Gerry Geraldy { JSON.stringify(userData) }</Text>
           <Text style={{ color: '#4BC1FD' }}>gerryg@xl.co.id</Text>
         </View>
       </View>
@@ -66,7 +71,7 @@ const CustomDrawerContent = (props) => {
             <Text style={styles.menuTitle}>Logout</Text>
           </View>
         )}
-        onPress={() => props.navigation.navigate('Login')}
+        onPress={() => dispatch(authLogout())}
       />
     </DrawerContentScrollView>
   );
