@@ -1,4 +1,5 @@
 import Axios from 'axios';
+import Api from '../../constant/connection';
 import subDomain from '../../constant/requestSubPath';
 import reduxString from '../reduxString';
 
@@ -8,6 +9,7 @@ const authRequest = () => {
   };
 };
 const authFailed = (error) => {
+  console.log(error, " <<<  ")
   return {
     type: reduxString.AUTH_FAILED,
     payload: error,
@@ -25,25 +27,33 @@ const authLogout = () => {
   };
 };
 const authLogin = (username, password) => {
-  return function (dispatch) {
+  const formData = new FormData();
+
+  formData.append("grant_type", "password");
+  formData.append("username", username);
+  formData.append("password", password);
+
+  return async (dispatch) => {
     dispatch(authRequest());
-    Axios.post(
-      `${'http://172.30.251.160/api'}${subDomain.fetchLogin}`,
-      {
-        grant_type: 'password',
-        username: username,
-        password: password,
-      },
-      {
+    try {
+      const { data } = await Api.post("/oauth/login", formData, {
         headers: {
-          headerAuth:
-            'Basic eGwtZGNwLXNlY3VyaXR5OnhsLWRjcC1zZWN1cml0eS1zZWNyZXQ=',
-          'Content-Type': 'multipart/form-data',
-        },
-      },
-    )
-      .then((e) => dispatch(authSuccess(e)))
-      .catch((e) => dispatch(authFailed(e)));
+          "Authorization" : "Basic eGwtZGNwLXNlY3VyaXR5OnhsLWRjcC1zZWN1cml0eS1zZWNyZXQ=",
+          "Content-Type": "multipart/form-data"
+        }
+      });
+      
+      if (data){
+        dispatch(authSuccess(data));
+      }
+
+    } catch (error) {
+      dispatch(authFailed(error))
+    }
   };
 };
-export {authRequest, authFailed, authSuccess, authLogout, authLogin};
+
+export {
+  authLogin,
+  authLogout
+};
