@@ -37,7 +37,8 @@ const Login = ({navigation}) => {
     }
   }, [data, dispatch, error, navigation]);
   useEffect(() => {
-    if (statusCode === 0) {
+    if (!lod.isEmpty(data)) {
+      setLocalLoading(false);
       navigation.replace('Home');
     } else if (errorCheck) {
       dispatch(authLogout());

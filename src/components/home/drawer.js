@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Image, Text } from 'react-native';
+import { View, Image, Text, Alert } from 'react-native';
 import {
   DrawerContentScrollView,
   DrawerItem,
@@ -36,9 +36,24 @@ const CustomDrawerContent = (props) => {
   const userData = useSelector(state => state.auth_reducer.data);
 
   const confirmLogout = () => {
-    if (confirm("Apakah anda yakin ingin logout ?") == true) {
-      dispatch(authLogout());
-    }
+
+    Alert.alert(
+      "Logout", 
+      "Apakah anda yakin ingin logout ?",
+      [
+        {
+          text: "Tidak",
+          onPress: () => console.log("Cancel Pressed"),
+          style: "cancel"
+        },
+        { text: "Yakin", onPress: () => {
+            dispatch(authLogout());
+            props.navigation.replace("Auth")
+          } 
+        }
+      ],
+      { cancelable: false }
+      )
   }
 
   return (
@@ -49,8 +64,8 @@ const CustomDrawerContent = (props) => {
           source={iconUser}
         />
         <View style={{ paddingLeft: 15 }}>
-          <Text style={styles.userName}>{userData.principal.firstName + " " + userData.principal.lastName}</Text>
-          <Text style={{ color: '#4BC1FD' }}>{userData.principal.username}</Text>
+          <Text style={styles.userName}>{userData.principal ? userData.principal.firstName + " " + userData.principal.lastName : ""}</Text>
+          <Text style={{ color: '#4BC1FD' }}>{userData.principal && userData.principal.username}</Text>
         </View>
       </View>
       <View style={styles.divider} />

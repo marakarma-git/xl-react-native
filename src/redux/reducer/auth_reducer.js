@@ -24,7 +24,10 @@ const auth_reducers = (state = initialState, action) => {
         data: action.payload,
       };
     case reduxString.AUTH_LOGOUT:
-      return state;
+      return {
+        ...state,
+        data: {}
+      };
     default:
       return state;
   }

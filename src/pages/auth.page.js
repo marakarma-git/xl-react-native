@@ -23,7 +23,7 @@ const Auth = ({navigation}) => {
     }
   }, [navigation, dispatch, data]);
   useEffect(() => {
-    if (statusCode === 0) {
+    if (!lod.isEmpty(data)) {
       navigation.replace('Home');
     }
     if (error) {
