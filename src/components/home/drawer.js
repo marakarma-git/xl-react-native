@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { View, Image, Text } from 'react-native';
 import {
   DrawerContentScrollView,
@@ -35,6 +35,12 @@ const CustomDrawerContent = (props) => {
   const dispatch = useDispatch();
   const userData = useSelector(state => state.auth_reducer.data);
 
+  const confirmLogout = () => {
+    if (confirm("Apakah anda yakin ingin logout ?") == true) {
+      dispatch(authLogout());
+    }
+  }
+
   return (
     <DrawerContentScrollView {...props} style={{ padding: 0 }}>
       <View style={styles.avatarContainer}>
@@ -43,8 +49,8 @@ const CustomDrawerContent = (props) => {
           source={iconUser}
         />
         <View style={{ paddingLeft: 15 }}>
-          <Text style={styles.userName}>{ userData.principal.firstName + " " + userData.principal.lastName}</Text>
-          <Text style={{ color: '#4BC1FD' }}>{ userData.principal.username }</Text>
+          <Text style={styles.userName}>{userData.principal.firstName + " " + userData.principal.lastName}</Text>
+          <Text style={{ color: '#4BC1FD' }}>{userData.principal.username}</Text>
         </View>
       </View>
       <View style={styles.divider} />
@@ -71,7 +77,7 @@ const CustomDrawerContent = (props) => {
             <Text style={styles.menuTitle}>Logout</Text>
           </View>
         )}
-        onPress={() => dispatch(authLogout())}
+        onPress={confirmLogout}
       />
     </DrawerContentScrollView>
   );
