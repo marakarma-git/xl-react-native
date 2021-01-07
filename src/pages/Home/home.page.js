@@ -2,11 +2,13 @@ import React, {useState} from 'react';
 import {Card, Title} from 'react-native-paper';
 import { View, Text, ScrollView, Image } from 'react-native';
 import Carousel, {Pagination} from 'react-native-snap-carousel';
+import { useSelector } from 'react-redux';
 import style from '../../style/home.style'
 import {framerBanner} from '../../assets/images'
 import { HeaderContainer, OverlayBackground } from '../../components/index';
 
 const LandingPage = ({ navigation }) => {
+  const userData = useSelector(state => state.auth_reducer.data);
   const [activeIndex, setActiveIndex] = useState(0);
   const carouselItems = [
     {
@@ -57,7 +59,7 @@ const LandingPage = ({ navigation }) => {
           <OverlayBackground />
           <Card style={[style.cardSection]}>
             <Card.Content style={{marginBottom: 10}}>
-              <Title>Hi! Gerry Geraldy</Title>
+              <Title>Hi! { userData.principal.firstName + " " + userData.principal.lastName}</Title>
             </Card.Content>
             <View style={{alignItems: 'center', backgroundColor: '#002DBB'}}>
               <Carousel
