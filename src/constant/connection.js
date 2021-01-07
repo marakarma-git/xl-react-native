@@ -6,3 +6,4 @@ const api_link = axios.create({
 });
 
 export default api_link;
+export {headerAuth};

@@ -13,7 +13,7 @@ import RootReducers from './redux/reducer';
 const persistConfig = {
   key: 'root',
   storage: AsyncStorage,
-  whitelist: [''],
+  whitelist: ['auth_reducer'],
 };
 const persistReducers = persistReducer(persistConfig, RootReducers);
 const store = createStore(persistReducers, applyMiddleware(thunk));
