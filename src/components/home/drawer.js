@@ -43,8 +43,8 @@ const CustomDrawerContent = (props) => {
           source={iconUser}
         />
         <View style={{ paddingLeft: 15 }}>
-          <Text style={styles.userName}>Gerry Geraldy { JSON.stringify(userData) }</Text>
-          <Text style={{ color: '#4BC1FD' }}>gerryg@xl.co.id</Text>
+          <Text style={styles.userName}>{ userData.principal.firstName + " " + userData.principal.lastName}</Text>
+          <Text style={{ color: '#4BC1FD' }}>{ userData.principal.username }</Text>
         </View>
       </View>
       <View style={styles.divider} />
