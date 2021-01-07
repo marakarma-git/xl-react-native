@@ -34,12 +34,16 @@ const authLogin = (username, password) => {
   return async (dispatch) => {
     dispatch(authRequest());
     try {
-      const {data} = await Api.post(subDomain.fetchLogin, formData, {
-        headers: {
-          Authorization: headerAuth,
-          'Content-Type': 'multipart/form-data',
+      const {data} = await Api.post(
+        `http://172.30.251.160/api${subDomain.fetchLogin}`,
+        formData,
+        {
+          headers: {
+            Authorization: headerAuth,
+            'Content-Type': 'multipart/form-data',
+          },
         },
-      });
+      );
 
       if (data) {
         dispatch(authSuccess(data));

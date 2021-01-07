@@ -9,6 +9,7 @@ import {HeaderContainer, OverlayBackground} from '../../components/index';
 
 const LandingPage = ({navigation}) => {
   const userData = useSelector((state) => state.auth_reducer.data);
+  const {imageBase64} = useSelector((state) => state.enterprise_reducer);
   const [activeIndex, setActiveIndex] = useState(0);
   const carouselItems = [
     {
@@ -47,20 +48,17 @@ const LandingPage = ({navigation}) => {
       </View>
     );
   };
+  const {principal} = userData || {};
+  const {firstName, lastName} = principal || '';
   return (
     <View>
-      <HeaderContainer navigation={navigation} />
+      <HeaderContainer navigation={navigation} companyLogo={imageBase64} />
       <ScrollView>
         <View style={{height: '100%'}}>
           <OverlayBackground />
           <Card style={[style.cardSection]}>
             <Card.Content style={{marginBottom: 10}}>
-              <Title>
-                Hi!{' '}
-                {userData.principal.firstName +
-                  ' ' +
-                  userData.principal.lastName}
-              </Title>
+              <Title>Hi! {firstName + ' ' + lastName}</Title>
             </Card.Content>
             <View style={{alignItems: 'center', backgroundColor: '#002DBB'}}>
               <Carousel

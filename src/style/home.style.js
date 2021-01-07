@@ -1,10 +1,5 @@
-import {
-  device_width,
-  regular_horizontal_padding,
-} from '../constant/config';
-import {
-  colors
-} from '../constant/color';
+import {device_width, regular_horizontal_padding} from '../constant/config';
+import {colors} from '../constant/color';
 
 export default {
   headerContainer: {
@@ -14,15 +9,15 @@ export default {
     paddingHorizontal: regular_horizontal_padding,
     width: device_width,
     height: 60,
-    backgroundColor: colors.button_color_one
+    backgroundColor: colors.button_color_one,
   },
   headerImage: {
     width: device_width * 0.38,
-    resizeMode: 'contain'
+    resizeMode: 'contain',
   },
   headerButton: {
     width: device_width * 0.1,
-    resizeMode: 'contain'
+    resizeMode: 'contain',
   },
   navbarContainer: {
     flexDirection: 'row',
@@ -31,20 +26,22 @@ export default {
     paddingHorizontal: regular_horizontal_padding * 2,
     width: device_width,
     height: 60,
-    backgroundColor: 'white'
+    backgroundColor: 'white',
   },
   navbarButton: {
     width: device_width * 0.05,
-    resizeMode: 'contain'
+    resizeMode: 'contain',
   },
   navbarCompanyImage: {
     width: device_width * 0.2,
-    resizeMode: 'contain'
+    height: '80%',
+    resizeMode: 'contain',
+    paddingVertical: 4,
   },
   overlayContainer: {
     width: device_width,
     height: 100,
-    backgroundColor: colors.background_overlay
+    backgroundColor: colors.background_overlay,
   },
   paginationDot: {
     width: 10,
@@ -61,7 +58,7 @@ export default {
   imageCellItem: {
     width: 300,
     height: 300,
-    marginVertical: 20
+    marginVertical: 20,
   },
   container: {
     flex: 1,
@@ -77,7 +74,7 @@ export default {
   cardSection: {
     flex: 1,
     top: -80,
-    margin: 10
+    margin: 10,
   },
   tradeMark: {
     paddingVertical: 2,
@@ -86,4 +83,4 @@ export default {
     borderTopWidth: 0.3,
     borderTopColor: 'gray',
   },
-}
+};
