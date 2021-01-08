@@ -1,4 +1,5 @@
-import Api, {headerAuth} from '../../constant/connection';
+import Axios from 'axios';
+import {base_url, headerAuth} from '../../constant/connection';
 import subDomain from '../../constant/requestSubPath';
 import reduxString from '../reduxString';
 
@@ -34,8 +35,8 @@ const authLogin = (username, password) => {
   return async (dispatch) => {
     dispatch(authRequest());
     try {
-      const {data} = await Api.post(
-        `http://172.30.251.160/api${subDomain.fetchLogin}`,
+      const {data} = await Axios.post(
+        `${base_url}${subDomain.fetchLogin}`,
         formData,
         {
           headers: {
