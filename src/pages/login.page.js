@@ -30,25 +30,23 @@ const Login = ({navigation}) => {
       const {principal, access_token} = data || {};
       const {enterpriseId} = principal || {};
       dispatch(callEnterpriseLogo(enterpriseId, access_token));
-    } else if (error) {
-      dispatch(authLogout());
-      setLocalLoading(false);
-      Alert.alert('Something went wrong 1', JSON.stringify(error, null, 2));
     }
-  }, [data, dispatch, error, navigation]);
-  useEffect(() => {
-    if (!lod.isEmpty(data)) {
-      setLocalLoading(false);
+    if (statusCode === 0 && !lod.isEmpty(data)) {
       navigation.replace('Home');
-    } else if (errorCheck) {
+    }
+  }, [data, dispatch, navigation, statusCode]);
+  useEffect(() => {
+    if (error !== '') {
       dispatch(authLogout());
       setLocalLoading(false);
-      Alert.alert(
-        'Something went wrong 2',
-        JSON.stringify(errorCheck, null, 2),
-      );
+      Alert.alert('Warning', JSON.stringify(error, null, 2));
     }
-  }, [dispatch, errorCheck, navigation, statusCode]);
+    if (errorCheck !== '') {
+      dispatch(authLogout());
+      setLocalLoading(false);
+      Alert.alert('Warning', JSON.stringify(errorCheck, null, 2));
+    }
+  }, [error, errorCheck, dispatch]);
   const onSubmit = () => {
     if (username.length > 0 && password.length > 0) {
       dispatch(authLogin(username, password));

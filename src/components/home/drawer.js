@@ -1,20 +1,18 @@
 import React from 'react';
-import { View, Image, Text, Alert } from 'react-native';
-import {
-  DrawerContentScrollView,
-  DrawerItem,
-} from '@react-navigation/drawer';
+import {View, Image, Text, Alert} from 'react-native';
+import {DrawerContentScrollView, DrawerItem} from '@react-navigation/drawer';
+import {StackActions} from '@react-navigation/native';
 import {
   iconUser,
   iconHome,
   iconComponents,
   iconGrids,
-  iconLogout
+  iconLogout,
 } from '../../assets/images/index';
-import { useSelector, useDispatch } from 'react-redux';
-import { authLogout } from '../../redux/action/auth_action';
+import {useSelector, useDispatch} from 'react-redux';
+import {authLogout} from '../../redux/action/auth_action';
 import styles from '../../style/drawer.style';
-
+import {removeEnterPriseLogo} from '../../redux/action/enterprise_action';
 
 const drawerData = [
   {
@@ -33,39 +31,46 @@ const drawerData = [
 
 const CustomDrawerContent = (props) => {
   const dispatch = useDispatch();
-  const userData = useSelector(state => state.auth_reducer.data);
-
+  const userData = useSelector((state) => state.auth_reducer.data);
   const confirmLogout = () => {
-
     Alert.alert(
-      "Logout", 
-      "Apakah anda yakin ingin logout ?",
+      'Logout',
+      'Apakah anda yakin ingin logout ?',
       [
         {
-          text: "Tidak",
-          onPress: () => console.log("Cancel Pressed"),
-          style: "cancel"
+          text: 'Tidak',
+          onPress: () => console.log('Cancel Pressed'),
+          style: 'cancel',
         },
-        { text: "Yakin", onPress: () => {
+        {
+          text: 'Yakin',
+          onPress: () => {
+            dispatch(removeEnterPriseLogo());
             dispatch(authLogout());
-            props.navigation.replace("Auth")
-          } 
-        }
+            props.navigation.reset({
+              index: 0,
+              routes: [{name: 'Auth'}],
+            });
+          },
+        },
       ],
-      { cancelable: false }
-      )
-  }
+      {cancelable: false},
+    );
+  };
 
   return (
-    <DrawerContentScrollView {...props} style={{ padding: 0 }}>
+    <DrawerContentScrollView {...props} style={{padding: 0}}>
       <View style={styles.avatarContainer}>
-        <Image
-          style={styles.avatar}
-          source={iconUser}
-        />
-        <View style={{ paddingLeft: 15 }}>
-          <Text style={styles.userName}>{userData.principal ? userData.principal.firstName + " " + userData.principal.lastName : ""}</Text>
-          <Text style={{ color: '#4BC1FD' }}>{userData.principal && userData.principal.username}</Text>
+        <Image style={styles.avatar} source={iconUser} />
+        <View style={{paddingLeft: 15}}>
+          <Text style={styles.userName}>
+            {userData.principal
+              ? userData.principal.firstName + ' ' + userData.principal.lastName
+              : ''}
+          </Text>
+          <Text style={{color: '#4BC1FD'}}>
+            {userData.principal && userData.principal.username}
+          </Text>
         </View>
       </View>
       <View style={styles.divider} />
@@ -74,7 +79,7 @@ const CustomDrawerContent = (props) => {
           key={`drawer_item-${idx + 1}`}
           label={() => (
             <View style={styles.menuLabelFlex}>
-              <Image style={{ width: 20, height: 20 }} source={item.icon} />
+              <Image style={{width: 20, height: 20}} source={item.icon} />
               <Text style={styles.menuTitle}>{item.name}</Text>
             </View>
           )}
@@ -86,7 +91,7 @@ const CustomDrawerContent = (props) => {
         label={() => (
           <View style={styles.menuLabelFlex}>
             <Image
-              style={{ width: 15, height: 15, marginTop: 3, marginLeft: 6 }}
+              style={{width: 15, height: 15, marginTop: 3, marginLeft: 6}}
               source={iconLogout}
             />
             <Text style={styles.menuTitle}>Logout</Text>
@@ -96,6 +101,6 @@ const CustomDrawerContent = (props) => {
       />
     </DrawerContentScrollView>
   );
-}
+};
 
 export default CustomDrawerContent;

@@ -16,20 +16,21 @@ const Auth = ({navigation}) => {
     if (lod.isEmpty(data)) {
       dispatch(authLogout());
       navigation.replace('Login');
-    } else {
-      dispatch(
-        callEnterpriseLogo(data.principal.enterpriseId, data.access_token),
-      );
     }
-  }, [navigation, dispatch, data]);
-  useEffect(() => {
     if (!lod.isEmpty(data)) {
+      const {principal, access_token} = data || {};
+      const {enterpriseId} = principal || {};
+      dispatch(callEnterpriseLogo(enterpriseId, access_token));
+    }
+    if (statusCode === 0 && !lod.isEmpty(data)) {
       navigation.replace('Home');
     }
+  }, [navigation, dispatch, data, statusCode]);
+  useEffect(() => {
     if (error) {
       Alert.alert('Error', JSON.stringify(error, null, 2));
     }
-  }, [navigation, statusCode, error]);
+  }, [error]);
   return (
     <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
       <ActivityIndicator size={'large'} color={'black'} />

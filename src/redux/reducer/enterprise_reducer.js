@@ -26,6 +26,8 @@ const enterprise_reducer = (state = initialState, action) => {
         imageBase64: `data:image/jpeg;base64,${action.imageBase64}`,
         statusCode: 0,
       };
+    case reduxString.REMOVE_ENTERPRISE_LOGO:
+      return state;
     default:
       return state;
   }

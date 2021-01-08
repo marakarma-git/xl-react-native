@@ -19,6 +19,11 @@ const getEnterpriseLogoSuccess = (data) => {
     imageBase64: data,
   };
 };
+const removeEnterPriseLogo = () => {
+  return {
+    type: reduxString.REMOVE_ENTERPRISE_LOGO,
+  };
+};
 const callEnterpriseLogo = (enterpriseId, token) => {
   return async (dispatch) => {
     dispatch(getEnterpriseLogo());
@@ -43,3 +48,4 @@ const callEnterpriseLogo = (enterpriseId, token) => {
   };
 };
 export default callEnterpriseLogo;
+export {removeEnterPriseLogo};
