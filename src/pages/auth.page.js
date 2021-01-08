@@ -1,16 +1,16 @@
 import React, {useEffect} from 'react';
-import {View, ActivityIndicator, Alert} from 'react-native';
+import {View, ActivityIndicator} from 'react-native';
 import {useSelector, useDispatch} from 'react-redux';
 import SplashScreen from 'react-native-splash-screen';
 import lod from 'lodash';
 import {authLogout} from '../redux/action/auth_action';
-import callEnterpriseLogo from '../redux/action/enterprise_action';
+import callEnterpriseLogo, {
+  removeEnterPriseLogo,
+} from '../redux/action/enterprise_action';
 const Auth = ({navigation}) => {
   const dispatch = useDispatch();
   const {data} = useSelector((state) => state.auth_reducer);
-  const {error, loading, statusCode} = useSelector(
-    (state) => state.enterprise_reducer,
-  );
+  const {error, statusCode} = useSelector((state) => state.enterprise_reducer);
   useEffect(() => {
     SplashScreen.hide();
     if (lod.isEmpty(data)) {
@@ -28,9 +28,10 @@ const Auth = ({navigation}) => {
   }, [navigation, dispatch, data, statusCode]);
   useEffect(() => {
     if (error) {
-      Alert.alert('Error', JSON.stringify(error, null, 2));
+      dispatch(authLogout());
+      dispatch(removeEnterPriseLogo());
     }
-  }, [error]);
+  }, [dispatch, error, navigation]);
   return (
     <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
       <ActivityIndicator size={'large'} color={'black'} />
