@@ -25,6 +25,7 @@ const authLogout = () => {
     type: reduxString.AUTH_LOGOUT,
   };
 };
+
 const authLogin = (username, password) => {
   const formData = new FormData();
 
@@ -55,4 +56,30 @@ const authLogin = (username, password) => {
   };
 };
 
-export {authLogin, authLogout};
+const setTitleVersion = (data) => ({
+  type: reduxString.GET_TITLE_VERSION,
+  payload: data
+});
+
+const getTitleVersionFail = (error) => ({
+  type: reduxString.GET_TITLE_VERSION_FAILED,
+  payload: error
+});
+
+const getTitleVersion = () => {
+  return async (dispatch) => {
+    try {
+      const { data } = await Axios.get(`http://52.237.113.189:18083/usr/getUserAppVersion`, {
+        headers: {
+          Authorization: headerAuth
+        }
+      });
+      console.log(data.results)
+      if(data) dispatch(setTitleVersion(data.result.appsTitle + " " + data.result.version));
+    } catch (error) {
+      dispatch(getTitleVersionFail(error))
+    }
+  }
+}
+
+export {authLogin, authLogout, getTitleVersion};
