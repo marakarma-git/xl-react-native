@@ -74,7 +74,6 @@ const getTitleVersion = () => {
           Authorization: headerAuth
         }
       });
-      console.log(data.results)
       if(data) dispatch(setTitleVersion(data.result.appsTitle + " " + data.result.version));
     } catch (error) {
       dispatch(getTitleVersionFail(error))
