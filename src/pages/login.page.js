@@ -81,6 +81,7 @@ const Login = ({navigation}) => {
               secureTextEntry
               style={styles.textInputContainer}
               onChangeText={(e) => setPassword(e)}
+              onSubmitEditing={() => onSubmit()}
             />
             <Button
               buttonStyle={styles.loginButton}
