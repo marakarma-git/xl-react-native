@@ -1,5 +1,5 @@
-import {device_width, regular_horizontal_padding} from '../constant/config';
-import {colors} from '../constant/color';
+import { device_width, regular_horizontal_padding } from '../constant/config';
+import { colors } from '../constant/color';
 
 export default {
   headerContainer: {
@@ -82,5 +82,18 @@ export default {
     alignItems: 'center',
     borderTopWidth: 0.3,
     borderTopColor: 'gray',
+  },
+  cardContentWrapper: {
+    marginBottom: 10,
+    paddingVertical: 10
+  },
+  cardContentRow: {
+    flex: 1,
+    justifyContent: 'space-around'
+  },
+  itemSeparatorCard: {
+    alignItems: 'center',
+    flex: 1,
+    borderColor: 'gray',
   },
 };
