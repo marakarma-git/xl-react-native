@@ -3,7 +3,7 @@ const initialState = {
   loading: false,
   error: '',
   data: {},
-  titleVersion: null
+  titleVersion: null,
 };
 const auth_reducers = (state = initialState, action) => {
   switch (action.type) {
@@ -27,18 +27,18 @@ const auth_reducers = (state = initialState, action) => {
     case reduxString.AUTH_LOGOUT:
       return {
         ...state,
-        data: {}
+        data: {},
       };
     case reduxString.GET_TITLE_VERSION:
-      return{
+      return {
         ...state,
-        titleVersion: action.payload
-      }  
+        titleVersion: action.payload,
+      };
     case reduxString.GET_TITLE_VERSION_FAILED:
-      return{
+      return {
         ...state,
-        error: action.payload
-      }  
+        error: action.payload,
+      };
     default:
       return state;
   }
