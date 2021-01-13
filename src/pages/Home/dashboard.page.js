@@ -1,16 +1,17 @@
 import React, { useEffect } from 'react';
 import Helper from '../../helpers/helper';
 import { useDispatch, useSelector } from 'react-redux';
-import { View, ScrollView, FlatList, ActivityIndicator } from 'react-native';
+import { View, ScrollView, FlatList, ActivityIndicator, Text } from 'react-native';
 import { Card, Title, Headline } from 'react-native-paper';
-import { HeaderContainer, OverlayBackground } from '../../components/index';
-import { getDashboardSummary } from '../../redux/action/dashboard_action';
+import { HeaderContainer, OverlayBackground, WidgetStore } from '../../components/index';
+import { getDashboardSummary, getWidgetList } from '../../redux/action/dashboard_action';
 
 import style from '../../style/home.style';
 
 const DashboardPage = ({ navigation }) => {
   const dispatch = useDispatch();
   const userData = useSelector(state => state.auth_reducer.data);
+  const widgetList = useSelector(state => state.dashboard_reducer.widgetList);
   const summaryDashboardData = useSelector(state => state.dashboard_reducer.summaryData);
   const loading = useSelector(state => state.dashboard_reducer.loading);
 
@@ -33,6 +34,7 @@ const DashboardPage = ({ navigation }) => {
   useEffect(() => {
     const pageLoad = navigation.addListener('focus', () => {
       dispatch(getDashboardSummary(userData.access_token));
+      dispatch(getWidgetList(userData.access_token));
     });
 
     return pageLoad;
@@ -42,8 +44,8 @@ const DashboardPage = ({ navigation }) => {
     <View>
       <HeaderContainer
         navigation={navigation} />
-      <ScrollView>
-        <View style={{ height: '100%' }}>
+      <ScrollView style={{ marginBottom: 50 }}>
+        <View style={{ height: '100%'}}>
           <OverlayBackground />
           <Card style={[style.cardSection]}>
             <Card.Content style={style.cardContentWrapper}>
@@ -61,14 +63,14 @@ const DashboardPage = ({ navigation }) => {
               }
             </Card.Content>
           </Card>
-          <Card style={style.cardSection}>
-            <Card.Content style={style.cardContentWrapper}>
-            </Card.Content>
-          </Card>
-          <Card style={style.cardSection}>
-            <Card.Content style={style.cardContentWrapper}>
-            </Card.Content>
-          </Card>
+          <View>
+          {
+            widgetList &&
+            <WidgetStore 
+              widgetList={widgetList}
+            />
+          }
+          </View>
         </View>
       </ScrollView>
     </View>

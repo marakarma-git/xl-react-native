@@ -96,4 +96,13 @@ export default {
     flex: 1,
     borderColor: 'gray',
   },
+  containerPie: {
+    marginTop: 15,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  containerBar: {
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
 };

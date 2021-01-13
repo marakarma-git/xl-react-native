@@ -35,8 +35,6 @@ export const getDashboardSummary = (accessToken) => {
             { title: "Total Aggregated Traffic", resultId: 'totalaggregatedtraffic' },
           ];
 
-          console.log(data.result, " << ")
-
           Object.keys(data.result).map((keys) => {
             summaryData.map((sumData, index) => {
               if (keys == sumData.resultId) {
@@ -46,6 +44,8 @@ export const getDashboardSummary = (accessToken) => {
           });
 
           dispatch(setDashboardSummary(summaryData));
+        }else{
+          throw new Error(data);
         }
       }
 
@@ -54,4 +54,32 @@ export const getDashboardSummary = (accessToken) => {
     }
   }
 
+}
+
+const setWidgetList = (data) => ({
+  type: reduxString.SET_WIDGET_LIST,
+  payload: data
+});
+
+export const getWidgetList = (accessToken) => {
+  return async (dispatch) => {
+    try {
+      dispatch(requestDashboardData());
+      const { data } = await Axios.get(`${dashboard_base_url}/getWidgetList`, {
+        headers: {
+          Authorization: "Bearer " + accessToken
+        }
+      });
+
+      if(data){
+        if(data.statusCode == 0){
+          dispatch(setWidgetList(data.result));
+        }else{
+          throw new Error(data);
+        }
+      }
+    } catch (error) {
+      dispatch(setRequestError(error));
+    }
+  }
 }

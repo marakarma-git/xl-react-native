@@ -2,6 +2,7 @@ import reduxString from '../reduxString';
 
 const initialState = {
   summaryData: [],
+  widgetList: [],
   loading: false,
   error: '',
 }
@@ -12,6 +13,12 @@ const dashboard_reducer = (state = initialState, action) => {
         ...state,
         loading: false,
         summaryData: action.payload
+      }
+    case reduxString.SET_WIDGET_LIST:
+      return {
+        ...state,
+        loading: false,
+        widgetList: action.payload
       }
     case reduxString.REQUEST_ERROR:
       return {
