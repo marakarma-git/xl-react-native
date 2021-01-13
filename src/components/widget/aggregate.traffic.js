@@ -45,7 +45,7 @@ const AggregateTrafficComponent = ({item, navigation}) => {
     const parseData = () => (
         <>
             { Object.keys(dataSet[0]).map((key, index) => (
-                <View style={style.aggregateList}>
+                <View key={index} style={style.aggregateList}>
                     <Text style={{ fontSize: 11 }}>{ title[index] }</Text>
                     <Text style={{ fontSize: 11 }}>{ Helper.formatBytes(dataSet[0][key]) }</Text>
                 </View>
