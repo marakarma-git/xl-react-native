@@ -4,7 +4,7 @@ import PieChart from './piechart';
 import BarChart from './barchart';
 import ComingSoon from './comingsoon';
 
-const WidgetStore = ({ widgetList }) => {
+const WidgetStore = ({ widgetList, navigation }) => {
 
     const generateWidget = () => (
         <>
@@ -19,12 +19,14 @@ const WidgetStore = ({ widgetList }) => {
             case 'SIM-Statistics':
                 return(
                     <PieChart
+                        navigation={navigation}
                         item={item}
                     />
                 )
             case 'Top-Traffic':
                 return(
                     <BarChart
+                        navigation={navigation}
                         item={item}
                     />
                 )

@@ -66,7 +66,8 @@ const DashboardPage = ({ navigation }) => {
           <View>
           {
             widgetList &&
-            <WidgetStore 
+            <WidgetStore
+              navigation={navigation} 
               widgetList={widgetList}
             />
           }

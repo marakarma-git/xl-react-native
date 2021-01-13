@@ -8,7 +8,7 @@ import Axios from 'axios';
 import { dashboard_base_url } from '../../constant/connection';
 import style from '../../style/home.style';
 
-const BarChartComponent = ({item}) => {
+const BarChartComponent = ({item, navigation}) => {
     const [dataSet, setDataSet] = useState([]);
     const [error, setError] = useState('');
     const [loading, setLoading] = useState(false);
@@ -42,10 +42,12 @@ const BarChartComponent = ({item}) => {
     }
 
     useEffect(() => {
-        if(userData){
+        const pageLoad = navigation.addListener('focus', () => {
             getWidgetData();
-        }
-    }, [userData]);
+        });
+
+        return pageLoad;
+    }, [navigation]);
 
     return(
         <Card style={style.cardSection}>
