@@ -51,14 +51,15 @@ const BarChartComponent = ({item, navigation}) => {
 
     return(
         <Card style={style.cardSection}>
-            <Card.Content style={style.cardContentWrapper}>
+            <Card.Content style={[style.cardContentWrapper, { flex: 1 }]}>
                 <Title>{item.jsonData.title.text}</Title>
                 { 
                     loading ? 
                     <ActivityIndicator color="#002DBB" size="large" />
                     :
-                    <View style={style.containerBar} pointerEvents="none">
-                        <VictoryChart>
+                    <>
+                        <VictoryChart
+                        domainPadding={{ x: 10 }}>
                         <VictoryAxis
                             label="Subscriptions"
                             dependentAxis
@@ -67,13 +68,14 @@ const BarChartComponent = ({item, navigation}) => {
                         <VictoryAxis crossAxis style={{axis: {stroke: 'none'}}} />
                         <VictoryBar
                             horizontal
+                            width={100}
                             style={{
-                                data: {fill: '#00D3A0', width: 23},
+                                data: {fill: '#00D3A0', width: 10},
                             }}
                             data={dataSet}
                         />
                         </VictoryChart>
-                    </View>
+                    </>
                 }
             </Card.Content>
         </Card>
