@@ -2,6 +2,7 @@ import Axios from 'axios';
 import {base_url, headerAuth} from '../../constant/connection';
 import subDomain from '../../constant/requestSubPath';
 import reduxString from '../reduxString';
+import {removeEnterPriseLogo} from './enterprise_action';
 
 const authRequest = () => {
   return {
@@ -20,9 +21,15 @@ const authSuccess = (data) => {
     payload: data,
   };
 };
-const authLogout = () => {
+const removeAuth = () => {
   return {
     type: reduxString.AUTH_LOGOUT,
+  };
+};
+const authLogout = () => {
+  return async (dispatch) => {
+    dispatch(removeEnterPriseLogo());
+    dispatch(removeAuth());
   };
 };
 
@@ -58,27 +65,34 @@ const authLogin = (username, password) => {
 
 const setTitleVersion = (data) => ({
   type: reduxString.GET_TITLE_VERSION,
-  payload: data
+  payload: data,
 });
 
 const getTitleVersionFail = (error) => ({
   type: reduxString.GET_TITLE_VERSION_FAILED,
-  payload: error
+  payload: error,
 });
 
 const getTitleVersion = () => {
   return async (dispatch) => {
     try {
-      const { data } = await Axios.get(`http://52.237.113.189:18083/usr/getUserAppVersion`, {
-        headers: {
-          Authorization: headerAuth
-        }
-      });
-      if(data) dispatch(setTitleVersion(data.result.appsTitle + " " + data.result.version));
+      const {data} = await Axios.get(
+        'http://52.237.113.189:18083/usr/getUserAppVersion',
+        {
+          headers: {
+            Authorization: headerAuth,
+          },
+        },
+      );
+      if (data) {
+        dispatch(
+          setTitleVersion(data.result.appsTitle + ' ' + data.result.version),
+        );
+      }
     } catch (error) {
-      dispatch(getTitleVersionFail(error))
+      dispatch(getTitleVersionFail(error));
     }
-  }
-}
+  };
+};
 
 export {authLogin, authLogout, getTitleVersion};
