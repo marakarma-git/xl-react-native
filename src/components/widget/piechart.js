@@ -9,7 +9,7 @@ import { dashboard_base_url } from '../../constant/connection';
 import style from '../../style/home.style';
 
 const PieChartComponent = ({item, navigation}) => {
-    const [dataSet, setDataSet] = useState(null);
+    const [dataSet, setDataSet] = useState([]);
     const [error, setError] = useState('');
     const [loading, setLoading] = useState(false);
     const userData = useSelector(state => state.auth_reducer.data);
@@ -42,6 +42,10 @@ const PieChartComponent = ({item, navigation}) => {
     }
 
     useEffect(() => {
+        if(dataSet.length == 0){
+            getWidgetData();
+        }
+
         const pageLoad = navigation.addListener('focus', () => {
             getWidgetData();
         });
