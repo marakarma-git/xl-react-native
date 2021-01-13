@@ -105,4 +105,13 @@ export default {
     justifyContent: 'center',
     alignItems: 'center',
   },
+  aggregateList: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    width: '100%', 
+    borderBottomWidth: 2, 
+    borderBottomColor: '#eee', 
+    paddingVertical: 5,
+    paddingHorizontal: 10
+  }
 };

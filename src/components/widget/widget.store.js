@@ -3,6 +3,7 @@ import { View, Text } from 'react-native';
 import PieChart from './piechart';
 import BarChart from './barchart';
 import ComingSoon from './comingsoon';
+import AggregateTraffic from './aggregate.traffic';
 
 const WidgetStore = ({ widgetList, navigation }) => {
 
@@ -28,6 +29,13 @@ const WidgetStore = ({ widgetList, navigation }) => {
                     <BarChart
                         navigation={navigation}
                         item={item}
+                    />
+                )
+            case 'Aggregated-Traffic':
+                return(
+                    <AggregateTraffic 
+                        item={item}
+                        navigation={navigation}
                     />
                 )
         

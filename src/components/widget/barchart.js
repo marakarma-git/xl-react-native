@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { useSelector } from 'react-redux';
 import { VictoryBar, VictoryAxis, VictoryChart } from 'victory-native';
 import { View, ActivityIndicator } from 'react-native';
@@ -41,7 +41,11 @@ const BarChartComponent = ({item, navigation}) => {
         }
     }
 
-    useEffect(() => {
+    useEffect(() => {  
+        if(dataSet.length == 0){
+            getWidgetData();
+        }
+        
         const pageLoad = navigation.addListener('focus', () => {
             getWidgetData();
         });

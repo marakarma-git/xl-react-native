@@ -1,14 +1,21 @@
 import React, { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
-import { VictoryPie, VictoryTheme, VictoryLabel } from 'victory-native';
-import { View, ActivityIndicator } from 'react-native';
+import { View, ActivityIndicator, Text } from 'react-native';
 import { Card, Title } from 'react-native-paper';
 
 import Axios from 'axios';
+import Helper from '../../helpers/helper';
 import { dashboard_base_url } from '../../constant/connection';
 import style from '../../style/home.style';
 
-const PieChartComponent = ({item, navigation}) => {
+const title = [
+    "From start of month, Total Volume",
+    "Previous 30 Days, Total Volume",
+    "From start of month, Average per subscription",
+    "Previous 30 Days, Average per subscription",
+]
+
+const AggregateTrafficComponent = ({item, navigation}) => {
     const [dataSet, setDataSet] = useState([]);
     const [error, setError] = useState('');
     const [loading, setLoading] = useState(false);
@@ -25,13 +32,7 @@ const PieChartComponent = ({item, navigation}) => {
 
             if(data){
                 if(data.statusCode == 0){
-                    const newDataSet = [];
-
-                    data.result.dataset.map((datas) => {
-                        newDataSet.push({ x: +datas.percentage, y: +datas.percentage, label: `${datas.percentage}% ${datas.status}` });
-                    });
-
-                    setDataSet(newDataSet);
+                    setDataSet(data.result.dataset);
                 }
                 setLoading(false);
             }
@@ -40,6 +41,17 @@ const PieChartComponent = ({item, navigation}) => {
             setError(error);
         }
     }
+
+    const parseData = () => (
+        <>
+            { Object.keys(dataSet[0]).map((key, index) => (
+                <View key={index} style={style.aggregateList}>
+                    <Text style={{ fontSize: 11 }}>{ title[index] }</Text>
+                    <Text style={{ fontSize: 11 }}>{ Helper.formatBytes(dataSet[0][key]) }</Text>
+                </View>
+            )) }
+        </>
+    )
 
     useEffect(() => {
         if(dataSet.length == 0){
@@ -62,18 +74,7 @@ const PieChartComponent = ({item, navigation}) => {
                     <ActivityIndicator color="#002DBB" size="large" />
                     :
                     <View style={style.containerPie} pointerEvents="none">
-                        <VictoryPie
-                            data={dataSet}
-                            responsive={true}
-                            colorScale={["#00BFA6", "red", "yellow", "green"]}
-                            height={230}
-                            theme={VictoryTheme.material}
-                            labelComponent={
-                                <VictoryLabel
-                                    style={{fontSize: '14px', fontWeight: 'bold'}}
-                                />
-                            }
-                        />
+                        { dataSet[0] && parseData() }
                     </View>
                 }
             </Card.Content>
@@ -81,4 +82,4 @@ const PieChartComponent = ({item, navigation}) => {
     )
 }
 
-export default PieChartComponent;
+export default AggregateTrafficComponent;
