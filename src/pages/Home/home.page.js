@@ -85,7 +85,7 @@ const LandingPage = ({navigation}) => {
             {pagination()}
             <View style={style.tradeMark}>
               <Text style={{fontWeight: 'bold'}}>
-                { titleVersion || "" } 
+                { "IoT SIMCare " + titleVersion || "" } 
               </Text>
             </View>
           </Card>
