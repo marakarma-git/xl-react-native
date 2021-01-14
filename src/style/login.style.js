@@ -1,23 +1,21 @@
-import React from 'react-native'
+import React from 'react-native';
 import {
   border_radius,
   device_width,
   height_keyboard,
-  reguler_font_size
+  reguler_font_size,
 } from '../constant/config';
-import {
-  colors
-} from '../constant/color'
+import {colors} from '../constant/color';
 export default {
-  imageContainer:{
+  imageContainer: {
     alignItems: 'center',
-    marginVertical: 20
+    marginVertical: 20,
   },
-  imageSize:{
-    width: device_width * 0.6 ,
-    height: device_width * 0.2
+  imageSize: {
+    width: device_width * 0.6,
+    height: device_width * 0.2,
   },
-  textInputContainer:{
+  textInputContainer: {
     height: height_keyboard,
     fontSize: reguler_font_size,
     borderRadius: border_radius,
@@ -37,5 +35,5 @@ export default {
     marginTop: 20,
     marginLeft: 15,
     marginRight: 15,
-  }
-}
+  },
+};

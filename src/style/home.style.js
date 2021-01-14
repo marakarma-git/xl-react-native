@@ -1,5 +1,5 @@
-import { device_width, regular_horizontal_padding } from '../constant/config';
-import { colors } from '../constant/color';
+import {device_width, regular_horizontal_padding} from '../constant/config';
+import {colors} from '../constant/color';
 
 export default {
   headerContainer: {
@@ -85,11 +85,11 @@ export default {
   },
   cardContentWrapper: {
     marginBottom: 10,
-    paddingVertical: 10
+    paddingVertical: 10,
   },
   cardContentRow: {
     flex: 1,
-    justifyContent: 'space-around'
+    justifyContent: 'space-around',
   },
   itemSeparatorCard: {
     alignItems: 'center',
@@ -108,10 +108,10 @@ export default {
   aggregateList: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    width: '100%', 
-    borderBottomWidth: 2, 
-    borderBottomColor: '#eee', 
+    width: '100%',
+    borderBottomWidth: 2,
+    borderBottomColor: '#eee',
     paddingVertical: 5,
-    paddingHorizontal: 10
-  }
+    paddingHorizontal: 10,
+  },
 };

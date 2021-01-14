@@ -4,12 +4,9 @@ import {
   height_keyboard,
   reguler_font_size,
   regular_horizontal_padding,
-  regular_vertical_padding
+  regular_vertical_padding,
 } from '../constant/config';
-import {
-  colors
-} from '../constant/color';
-
+import {colors} from '../constant/color';
 
 export default {
   menuTitle: {
@@ -43,4 +40,4 @@ export default {
     margin: 20,
     marginBottom: 10,
   },
-}
+};
