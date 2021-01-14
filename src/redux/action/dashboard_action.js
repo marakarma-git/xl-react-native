@@ -29,7 +29,7 @@ export const getDashboardSummary = (accessToken) => {
         },
       );
       if (data) {
-        if (data.statusCode == 0) {
+        if (data.statusCode === 0) {
           const summaryData = [
             {title: 'Total SIM Card', resultId: 'totalsimcard'},
             {title: 'Total Active Session', resultId: 'totalactivesim'},
@@ -42,7 +42,7 @@ export const getDashboardSummary = (accessToken) => {
 
           Object.keys(data.result).map((keys) => {
             summaryData.map((sumData, index) => {
-              if (keys == sumData.resultId) {
+              if (keys === sumData.resultId) {
                 summaryData[index].value = data.result[keys];
               }
             });

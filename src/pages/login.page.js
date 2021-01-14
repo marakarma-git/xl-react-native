@@ -44,7 +44,6 @@ const Login = ({navigation}) => {
     if (errorCheck !== '') {
       dispatch(authLogout());
       setLocalLoading(false);
-      Alert.alert('Warning', JSON.stringify(errorCheck, null, 2));
     }
   }, [error, errorCheck, dispatch]);
   const onSubmit = () => {
