@@ -31,6 +31,8 @@ const sim_reducer = (state = initialState, action) => {
       };
     case reduxString.REMOVE_FILTER_DATA:
       return state;
+    default:
+      return state;
   }
 };
 export default sim_reducer;
