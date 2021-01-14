@@ -1,11 +1,11 @@
 import React from 'react';
-import {View, Text, ScrollView, TextInput} from 'react-native';
+import { View, Text, ScrollView, TextInput } from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import {HeaderContainer, OverlayBackground} from '../../components/index';
-import {Button} from 'react-native-elements';
-import {device_width} from '../../constant/config';
+import { HeaderContainer, OverlayBackground } from '../../components/index';
+import { Button } from 'react-native-elements';
+import { device_width } from '../../constant/config';
 
-const LandingPage = ({navigation}) => {
+const LandingPage = ({ navigation }) => {
   return (
     <View>
       <HeaderContainer navigation={navigation} headerTitle={'Subscription'} />
@@ -26,7 +26,7 @@ const LandingPage = ({navigation}) => {
               alignItems: 'flex-end',
               flex: 1,
             }}>
-            <Text style={{fontWeight: 'bold', fontSize: 16}}>Search</Text>
+            <Text style={{ fontWeight: 'bold', fontSize: 16 }}>Search</Text>
             <Ionicons name={'chevron-back-circle'} color={'black'} size={28} />
           </View>
           <TextInput
@@ -58,8 +58,9 @@ const LandingPage = ({navigation}) => {
               justifyContent: 'space-between',
               flexDirection: 'row',
             }}>
-            {dynamicFilter.map((value) => (
+            {dynamicFilter.map((value, index) => (
               <View
+                key={index}
                 style={{
                   width: device_width * 0.5 - 40,
                   marginBottom: 12,
@@ -87,10 +88,10 @@ const LandingPage = ({navigation}) => {
             }}>
             <Button
               title={'clear'}
-              titleStyle={{paddingHorizontal: 12}}
-              buttonStyle={{marginRight: 12}}
+              titleStyle={{ paddingHorizontal: 12 }}
+              buttonStyle={{ marginRight: 12 }}
             />
-            <Button title={'Find'} titleStyle={{paddingHorizontal: 12}} />
+            <Button title={'Find'} titleStyle={{ paddingHorizontal: 12 }} />
           </View>
         </View>
       </ScrollView>

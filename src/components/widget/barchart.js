@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import { VictoryBar, VictoryAxis, VictoryChart, VictoryLabel } from 'victory-native';
 import { View, ActivityIndicator, Text } from 'react-native';
@@ -29,9 +29,12 @@ const BarChartComponent = ({ item, navigation }) => {
 
                     if (data.result.dataset.length > 0) {
                         const newDataSet = [];
+
                         data.result.dataset.map((datas) => {
                             newDataSet.push({ x: datas.msisdn, y: +datas.datausage });
                         });
+
+                        Helper.sortAscending(newDataSet, 'y');
 
                         setDataSet(newDataSet);
                     } else {
@@ -57,7 +60,7 @@ const BarChartComponent = ({ item, navigation }) => {
                         style={{ axis: { stroke: 'none' } }}
                         tickLabelComponent={
                             <VictoryLabel
-                                angle={325}
+                                angle={305}
                                 verticalAnchor="middle"
                                 textAnchor="end"
                                 style={{ fontSize: 8 }}
@@ -65,6 +68,7 @@ const BarChartComponent = ({ item, navigation }) => {
                         } />
                     <VictoryAxis
                         dependentAxis
+                        style={{ axis: { stroke: 'none' } }}
                         standalone={false}
                         tickFormat={t => Helper.formatBytes(t)}
                         tickLabelComponent={
@@ -74,7 +78,7 @@ const BarChartComponent = ({ item, navigation }) => {
                         }
                     />
                     <VictoryBar
-                        // horizontal
+                        horizontal
                         style={{
                             data: { fill: '#00D3A0', width: 15 },
                         }}
