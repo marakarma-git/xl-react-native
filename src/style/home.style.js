@@ -30,7 +30,8 @@ export default {
   },
   navbarButton: {
     width: device_width * 0.05,
-    resizeMode: 'contain',
+    height: '100%',
+    resizeMode: 'center',
   },
   navbarCompanyImage: {
     width: device_width * 0.2,

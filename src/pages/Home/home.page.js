@@ -6,12 +6,12 @@ import {useSelector, useDispatch} from 'react-redux';
 import style from '../../style/home.style';
 import {framerBanner} from '../../assets/images';
 import {HeaderContainer, OverlayBackground} from '../../components/index';
-import { getTitleVersion } from '../../redux/action/auth_action';
+import {getTitleVersion} from '../../redux/action/auth_action';
 
 const LandingPage = ({navigation}) => {
   const dispatch = useDispatch();
   const userData = useSelector((state) => state.auth_reducer.data);
-  const titleVersion = useSelector(state => state.auth_reducer.titleVersion);
+  const titleVersion = useSelector((state) => state.auth_reducer.titleVersion);
   const {imageBase64} = useSelector((state) => state.enterprise_reducer);
   const [activeIndex, setActiveIndex] = useState(0);
   const carouselItems = [
@@ -56,11 +56,15 @@ const LandingPage = ({navigation}) => {
 
   useEffect(() => {
     dispatch(getTitleVersion());
-  }, [])
+  }, [dispatch]);
 
   return (
     <View>
-      <HeaderContainer navigation={navigation} companyLogo={imageBase64} />
+      <HeaderContainer
+        navigation={navigation}
+        companyLogo={imageBase64}
+        headerTitle={'Home'}
+      />
       <ScrollView>
         <View style={{height: '100%'}}>
           <OverlayBackground />
@@ -85,7 +89,7 @@ const LandingPage = ({navigation}) => {
             {pagination()}
             <View style={style.tradeMark}>
               <Text style={{fontWeight: 'bold'}}>
-                IoT SIMCare { titleVersion || "" } 
+                IoT SIMCare {titleVersion || ''}
               </Text>
             </View>
           </Card>
