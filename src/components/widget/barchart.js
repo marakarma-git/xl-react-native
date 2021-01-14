@@ -9,15 +9,6 @@ import Helper from '../../helpers/helper';
 import { dashboard_base_url } from '../../constant/connection';
 import style from '../../style/home.style';
 
-const dataBar = [
-    { x: 'lizard', y: 1234 },
-    { x: 'snake', y: 2048 },
-    { x: 'crocodile', y: 2600 },
-    { x: 'alligator2', y: 3000 },
-    { x: 'alligator3', y: 4000 },
-    { x: 'alligator4', y: 5000 },
-];
-
 const BarChartComponent = ({ item, navigation }) => {
     const [dataSet, setDataSet] = useState(null);
     const [error, setError] = useState('');
@@ -78,8 +69,6 @@ const BarChartComponent = ({ item, navigation }) => {
                         tickFormat={t => Helper.formatBytes(t)}
                         tickLabelComponent={
                             <VictoryLabel
-                                verticalAnchor="middle"
-                                textAnchor="end"
                                 style={{ fontSize: 10 }}
                             />
                         }
