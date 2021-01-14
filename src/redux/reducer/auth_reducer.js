@@ -23,6 +23,7 @@ const auth_reducers = (state = initialState, action) => {
         ...state,
         loading: false,
         data: action.payload,
+        error: '',
       };
     case reduxString.AUTH_LOGOUT:
       return {
