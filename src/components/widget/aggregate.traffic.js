@@ -15,8 +15,8 @@ const title = [
     "Previous 30 Days, Average per subscription",
 ]
 
-const AggregateTrafficComponent = ({item, navigation}) => {
-    const [dataSet, setDataSet] = useState([]);
+const AggregateTrafficComponent = ({ item, navigation }) => {
+    const [dataSet, setDataSet] = useState(null);
     const [error, setError] = useState('');
     const [loading, setLoading] = useState(false);
     const userData = useSelector(state => state.auth_reducer.data);
@@ -30,8 +30,8 @@ const AggregateTrafficComponent = ({item, navigation}) => {
                 }
             });
 
-            if(data){
-                if(data.statusCode == 0){
+            if (data) {
+                if (data.statusCode == 0) {
                     setDataSet(data.result.dataset);
                 }
                 setLoading(false);
@@ -46,15 +46,15 @@ const AggregateTrafficComponent = ({item, navigation}) => {
         <>
             { Object.keys(dataSet[0]).map((key, index) => (
                 <View key={index} style={style.aggregateList}>
-                    <Text style={{ fontSize: 11 }}>{ title[index] }</Text>
-                    <Text style={{ fontSize: 11 }}>{ Helper.formatBytes(dataSet[0][key]) }</Text>
+                    <Text style={{ fontSize: 11 }}>{title[index]}</Text>
+                    <Text style={{ fontSize: 11 }}>{Helper.formatBytes(dataSet[0][key])}</Text>
                 </View>
-            )) }
+            ))}
         </>
     )
 
     useEffect(() => {
-        if(dataSet.length == 0){
+        if (dataSet == null) {
             getWidgetData();
         }
 
@@ -65,17 +65,17 @@ const AggregateTrafficComponent = ({item, navigation}) => {
         return pageLoad;
     }, [navigation]);
 
-    return(
+    return (
         <Card style={style.cardSection}>
             <Card.Content style={style.cardContentWrapper}>
                 <Title>{item.jsonData.title.text}</Title>
-                { 
-                    loading ? 
-                    <ActivityIndicator color="#002DBB" size="large" />
-                    :
-                    <View style={style.containerPie} pointerEvents="none">
-                        { dataSet[0] && parseData() }
-                    </View>
+                {
+                    loading ?
+                        <ActivityIndicator color="#002DBB" size="large" />
+                        :
+                        <View style={style.containerPie} pointerEvents="none">
+                            {dataSet && parseData()}
+                        </View>
                 }
             </Card.Content>
         </Card>
