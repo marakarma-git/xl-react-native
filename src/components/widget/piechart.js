@@ -46,7 +46,7 @@ const PieChartComponent = ({ item, navigation }) => {
     }
 
     const generateChart = () => (
-        <>
+        <View style={{ position: 'relative', top: -20 }}>
             {
                 dataSet.length > 0
                     ?
@@ -59,7 +59,7 @@ const PieChartComponent = ({ item, navigation }) => {
                             theme={VictoryTheme.material}
                             labelComponent={
                                 <VictoryLabel
-                                    style={{ fontSize: '14px', fontWeight: 'bold' }}
+                                    style={{ fontSize: 12, fontWeight: 'bold' }}
                                 />
                             }
                         />
@@ -67,7 +67,7 @@ const PieChartComponent = ({ item, navigation }) => {
                     :
                     <Text style={{ textAlign: 'center', paddingVertical: 5, color: 'black' }}>{JSON.stringify(error)}</Text>
             }
-        </>
+        </View>
     )
 
     useEffect(() => {

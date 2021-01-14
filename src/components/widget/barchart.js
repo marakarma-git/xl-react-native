@@ -1,10 +1,11 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { useSelector } from 'react-redux';
-import { VictoryBar, VictoryAxis, VictoryChart } from 'victory-native';
+import { VictoryBar, VictoryAxis, VictoryChart, VictoryLabel } from 'victory-native';
 import { View, ActivityIndicator, Text } from 'react-native';
 import { Card, Title } from 'react-native-paper';
 
 import Axios from 'axios';
+import Helper from '../../helpers/helper';
 import { dashboard_base_url } from '../../constant/connection';
 import style from '../../style/home.style';
 
@@ -56,18 +57,35 @@ const BarChartComponent = ({ item, navigation }) => {
     }
 
     const generateChart = () => (
-        <>
+        <View style={{ position: 'relative', top: -20 }}>
             {dataSet.length > 0
                 ?
                 <VictoryChart>
-                    <VictoryAxis crossAxis style={{ axis: { stroke: 'none', fontSize: 10 } }} />
                     <VictoryAxis
-                        label="Subscriptions"
+                        crossAxis
+                        style={{ axis: { stroke: 'none' } }}
+                        tickLabelComponent={
+                            <VictoryLabel
+                                angle={325}
+                                verticalAnchor="middle"
+                                textAnchor="end"
+                                style={{ fontSize: 8 }}
+                            />
+                        } />
+                    <VictoryAxis
                         dependentAxis
-                        tickFormat={() => ''}
+                        standalone={false}
+                        tickFormat={t => Helper.formatBytes(t)}
+                        tickLabelComponent={
+                            <VictoryLabel
+                                verticalAnchor="middle"
+                                textAnchor="end"
+                                style={{ fontSize: 10 }}
+                            />
+                        }
                     />
                     <VictoryBar
-                        horizontal
+                        // horizontal
                         style={{
                             data: { fill: '#00D3A0', width: 15 },
                         }}
@@ -77,7 +95,7 @@ const BarChartComponent = ({ item, navigation }) => {
                 :
                 <Text style={{ textAlign: 'center', paddingVertical: 5, color: 'black' }}>{error}</Text>
             }
-        </>
+        </View>
     )
 
     useEffect(() => {
