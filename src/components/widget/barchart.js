@@ -38,6 +38,7 @@ const BarChartComponent = ({ item, navigation }) => {
 
                         setDataSet(newDataSet);
                     } else {
+                        setDataSet([]);
                         setError("No dataset found...")
                     }
 
@@ -86,7 +87,9 @@ const BarChartComponent = ({ item, navigation }) => {
                     />
                 </VictoryChart>
                 :
-                <Text style={{ textAlign: 'center', paddingVertical: 5, color: 'black' }}>{error}</Text>
+                <View style={{ marginTop: 30 }}>
+                    <Text style={{ textAlign: 'center', color: 'black', fontSize: 14 }}>{error}</Text>
+                </View>
             }
         </View>
     )
