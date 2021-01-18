@@ -33,6 +33,9 @@ const AggregateTrafficComponent = ({ item, navigation }) => {
             if (data) {
                 if (data.statusCode == 0) {
                     setDataSet(data.result.dataset);
+                } else {
+                    setDataSet([]);
+                    setError(data.statusDescription);
                 }
                 setLoading(false);
             }
@@ -44,12 +47,19 @@ const AggregateTrafficComponent = ({ item, navigation }) => {
 
     const parseData = () => (
         <>
-            { Object.keys(dataSet[0]).map((key, index) => (
-                <View key={index} style={style.aggregateList}>
-                    <Text style={{ fontSize: 11 }}>{title[index]}</Text>
-                    <Text style={{ fontSize: 11 }}>{Helper.formatBytes(dataSet[0][key])}</Text>
+            {dataSet.length > 0
+                ?
+                Object.keys(dataSet[0]).map((key, index) => (
+                    <View key={index} style={style.aggregateList}>
+                        <Text style={{ fontSize: 11 }}>{title[index]}</Text>
+                        <Text style={{ fontSize: 11 }}>{Helper.formatBytes(dataSet[0][key])}</Text>
+                    </View>
+                ))
+                :
+                <View style={{ marginTop: 30 }}>
+                    <Text style={{ textAlign: 'center', color: 'black', fontSize: 14 }}>{error}</Text>
                 </View>
-            ))}
+            }
         </>
     )
 
