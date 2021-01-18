@@ -1,6 +1,5 @@
 import {device_width, regular_horizontal_padding} from '../constant/config';
 import {colors} from '../constant/color';
-
 export default {
   headerContainer: {
     flexDirection: 'row',

@@ -1,52 +1,43 @@
-import React from 'react';
-import { View, Text, ScrollView, TextInput } from 'react-native';
+import React, {useState} from 'react';
+import {View, Text, ScrollView, TextInput} from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import { HeaderContainer, OverlayBackground } from '../../components/index';
-import { Button } from 'react-native-elements';
-import { device_width } from '../../constant/config';
+import {HeaderContainer, OverlayBackground} from '../../components/index';
+import {Button} from 'react-native-elements';
+import {device_width} from '../../constant/config';
+import generateLink from '../../helpers/generateLink';
+import lod from 'lodash';
+import DropDownPicker from 'react-native-dropdown-picker';
+import {subscriptionStyle} from '../../style';
+import RNDateTimePicker from '@react-native-community/datetimepicker';
+import {Menu, Divider, Provider} from 'react-native-paper';
+const LandingPage = ({navigation}) => {
+  const [visible, setVisible] = React.useState(false);
 
-const LandingPage = ({ navigation }) => {
+  const openMenu = () => setVisible(true);
+
+  const closeMenu = () => setVisible(false);
+  const [localInput, setLocalInput] = useState(dynamicFilter);
+  const [country, setCountry] = useState('');
+  const onChangeText = (index, value) => {
+    let newArray = lod.cloneDeep(localInput);
+    newArray[index].value = value;
+    setLocalInput(newArray);
+  };
   return (
     <View>
       <HeaderContainer navigation={navigation} headerTitle={'Subscription'} />
       <ScrollView>
         <OverlayBackground />
-        <View
-          style={{
-            top: -80,
-            backgroundColor: 'white',
-            padding: 10,
-            marginHorizontal: 10,
-            paddingBottom: 80,
-          }}>
-          <View
-            style={{
-              flexDirection: 'row',
-              justifyContent: 'space-between',
-              alignItems: 'flex-end',
-              flex: 1,
-            }}>
-            <Text style={{ fontWeight: 'bold', fontSize: 16 }}>Search</Text>
+        <View style={subscriptionStyle.container}>
+          <View style={subscriptionStyle.searchContainer}>
+            <Text style={subscriptionStyle.innerTextContainer}>Search</Text>
             <Ionicons name={'chevron-back-circle'} color={'black'} size={28} />
           </View>
           <TextInput
             placeholder={'Search with IMSI, MSSIDN, ICCID, Detected IMEI'}
-            style={{
-              marginTop: 6,
-              borderWidth: 1,
-              paddingHorizontal: 12,
-              borderColor: 'lightgray',
-            }}
+            style={subscriptionStyle.textInput}
           />
-          <Text
-            style={{
-              fontWeight: 'bold',
-              fontSize: 16,
-              marginTop: 24,
-              marginBottom: 6,
-            }}>
-            Filter
-          </Text>
+          <Text style={subscriptionStyle.textTitle}>Filter</Text>
           <View
             style={{
               borderWidth: 1,
@@ -58,41 +49,153 @@ const LandingPage = ({ navigation }) => {
               justifyContent: 'space-between',
               flexDirection: 'row',
             }}>
-            {dynamicFilter.map((value, index) => (
+            <View
+              style={{
+                width: device_width * 0.5 - 40,
+                marginBottom: 12,
+              }}>
+              <Text numberOfLines={1}>Menu paper</Text>
+              <Provider>
+                <Menu
+                  visible={visible}
+                  onDismiss={closeMenu}
+                  anchor={
+                    <Button
+                      onPress={openMenu}
+                      buttonStyle={{
+                        flex: 1,
+                        backgroundColor: 'tomato',
+                        width: 100,
+                        height: 100,
+                      }}>
+                      Show menu
+                    </Button>
+                  }>
+                  <Menu.Item
+                    style={{backgroundColor: 'green', zIndex: 99}}
+                    onPress={() => {}}
+                    title="Item 1"
+                  />
+                  <Menu.Item onPress={() => {}} title="Item 2" />
+                  <Divider />
+                  <Menu.Item onPress={() => {}} title="Item 3" />
+                </Menu>
+              </Provider>
+            </View>
+
+            <View
+              style={{
+                width: device_width * 0.5 - 40,
+                marginBottom: 12,
+              }}>
+              <Text numberOfLines={1}>Text Input</Text>
               <View
-                key={index}
                 style={{
-                  width: device_width * 0.5 - 40,
-                  marginBottom: 12,
+                  borderWidth: 1,
+                  borderColor: 'lightgray',
+                  marginTop: 4,
                 }}>
-                <Text numberOfLines={1}>{value.title}</Text>
                 <TextInput
                   style={{
                     flex: 1,
-                    marginTop: 6,
                     paddingHorizontal: 12,
-                    paddingVertical: 0,
-                    borderWidth: 1,
-                    borderColor: 'lightgray',
+                    paddingVertical: 6,
                   }}
                 />
               </View>
-            ))}
+            </View>
+            <View
+              style={{
+                width: device_width * 0.5 - 40,
+                marginBottom: 12,
+                zIndex: 100,
+              }}>
+              <Text numberOfLines={1}>Dropdown</Text>
+              <DropDownPicker
+                items={[
+                  {
+                    label: 'UK',
+                    value: 'uk',
+                  },
+                  {
+                    label: 'France',
+                    value: 'france',
+                  },
+                ]}
+                min={0}
+                max={10}
+                multiple={false}
+                containerStyle={{
+                  height: 43,
+                  marginTop: 4,
+                }}
+                labelProps={{style: {color: 'black', flex: 1}}}
+                placeholder={'hello world'}
+                style={{
+                  borderColor: 'lightgray',
+                  zIndex: 100,
+                  borderWidth: 1,
+                  borderBottomEndRadius: 1,
+                  borderBottomLeftRadius: 1,
+                  borderTopLeftRadius: 1,
+                  borderTopRightRadius: 1,
+                }}
+                searchable={true}
+                itemStyle={{
+                  justifyContent: 'flex-start',
+                  zIndex: 100,
+                }}
+                dropDownStyle={{
+                  backgroundColor: 'white',
+                }}
+                onChangeItem={(item) => setCountry(item)}
+                searchablePlaceholder={'Cari sesuatu'}
+              />
+            </View>
+            <View
+              style={{
+                width: device_width * 0.5 - 40,
+                marginBottom: 12,
+              }}>
+              <Text numberOfLines={1}>Datepicker</Text>
+              <View
+                style={{
+                  borderWidth: 1,
+                  borderColor: 'lightgray',
+                  marginTop: 4,
+                }}>
+                <Text
+                  style={{
+                    paddingHorizontal: 12,
+                    paddingVertical: 10,
+                  }}>
+                  hello world
+                </Text>
+              </View>
+            </View>
+            <View
+              style={{
+                width: device_width * 0.5 - 40,
+                marginBottom: 12,
+              }}>
+              <Text numberOfLines={1}>Text Input</Text>
+              <View
+                style={{
+                  borderWidth: 1,
+                  borderColor: 'lightgray',
+                  marginTop: 4,
+                }}>
+                <TextInput
+                  style={{
+                    flex: 1,
+                    paddingHorizontal: 12,
+                    paddingBottom: 2,
+                  }}
+                />
+              </View>
+            </View>
           </View>
-          <View
-            style={{
-              flex: 1,
-              justifyContent: 'flex-end',
-              flexDirection: 'row',
-              marginTop: 12,
-            }}>
-            <Button
-              title={'clear'}
-              titleStyle={{ paddingHorizontal: 12 }}
-              buttonStyle={{ marginRight: 12 }}
-            />
-            <Button title={'Find'} titleStyle={{ paddingHorizontal: 12 }} />
-          </View>
+          <Text>{generateLink}</Text>
         </View>
       </ScrollView>
     </View>
@@ -106,6 +209,7 @@ const dynamicFilter = [
     type: 'TextInput',
     value: '',
     onChange: '',
+    params: '&imsi=',
   },
   {
     title: 'Enterprise',
@@ -113,103 +217,13 @@ const dynamicFilter = [
     value: {},
     data: [],
     loading: false,
-  },
-  {
-    title: 'In Session',
-    type: 'Dropdown',
-    value: {},
-    data: [],
-    loading: false,
-    onChange: '',
+    params: '&enterprise=',
   },
   {
     title: 'Fixed Ip',
     type: 'TextInput',
     value: '',
     onChange: '',
-  },
-  {
-    title: 'MSISDN',
-    type: 'TextInput',
-    value: '',
-    onChange: '',
-  },
-  {
-    title: 'Label',
-    type: 'TextInput',
-    value: '',
-    onChange: '',
-  },
-  {
-    title: 'ICCID',
-    type: 'TextInput',
-    value: '',
-    onChange: '',
-  },
-  {
-    title: 'State',
-    type: 'Dropdown',
-    value: {},
-    data: [],
-    loading: false,
-  },
-  {
-    title: 'Detected IMEI',
-    type: 'TextInput',
-    value: '',
-    onChange: '',
-  },
-  {
-    title: 'APN',
-    type: 'TextInput',
-    value: '',
-    onChange: '',
-  },
-  {
-    title: 'State Lock',
-    type: 'Dropdown',
-    value: {},
-    data: [],
-    loading: false,
-  },
-  {
-    title: 'IMSI',
-    type: 'Monthly Data',
-    onChange: '',
-    value: '',
-    data: [],
-  },
-  {
-    title: 'Subscription Package Name',
-    type: 'Dropdown',
-    data: [],
-    loading: false,
-    value: {},
-  },
-  {
-    title: 'Monthly SMS',
-    type: 'TextInput',
-    value: '',
-    onChange: '',
-  },
-  {
-    title: 'Specification ID',
-    type: 'TextInput',
-    value: '',
-    onChange: '',
-  },
-  {
-    title: 'First Activation Date',
-    type: 'DateTimePicker',
-    data: [],
-    value: {},
-    loading: false,
-  },
-  {
-    title: 'PBR Exit Date',
-    type: 'DateTimePicker',
-    data: [],
-    value: {},
-    loading: false,
+    params: '&fixedIp=',
   },
 ];

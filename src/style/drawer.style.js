@@ -1,13 +1,3 @@
-import {
-  border_radius,
-  device_width,
-  height_keyboard,
-  reguler_font_size,
-  regular_horizontal_padding,
-  regular_vertical_padding,
-} from '../constant/config';
-import {colors} from '../constant/color';
-
 export default {
   menuTitle: {
     marginLeft: 10,

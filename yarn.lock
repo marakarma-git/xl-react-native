@@ -1104,6 +1104,13 @@
     sudo-prompt "^9.0.0"
     wcwidth "^1.0.1"
 
+"@react-native-community/datetimepicker@^3.0.9":
+  version "3.0.9"
+  resolved "https://registry.yarnpkg.com/@react-native-community/datetimepicker/-/datetimepicker-3.0.9.tgz#14e96c0a9049d76165f77ded95251e50c596b910"
+  integrity sha512-8Hel5K2xQNJsGQleUT5fheO60aO0/KhP9nkbDzfGgv3Cdckrf2xWQs0JK3xUhuDoUztpMZS45jqE2WPS7fBdgA==
+  dependencies:
+    invariant "^2.2.4"
+
 "@react-native-community/eslint-config@^1.1.0":
   version "1.1.0"
   resolved "https://registry.yarnpkg.com/@react-native-community/eslint-config/-/eslint-config-1.1.0.tgz#2dacad06dd44d13e778510864473fc6091f080c0"
@@ -5937,6 +5944,13 @@ react-is@^16.12.0, react-is@^16.13.0, react-is@^16.13.1, react-is@^16.7.0, react
   resolved "https://registry.yarnpkg.com/react-is/-/react-is-16.13.1.tgz#789729a4dc36de2999dc156dd6c1d9c18cea56a4"
   integrity sha512-24e6ynE2H+OKt4kqsOvNd8kBpV65zoxbA4BVsEOB3ARVWQki/DHzaUoC5KuON/BiccDaCCTZBuOcfZs70kR8bQ==
 
+react-native-dropdown-picker@^3.7.8:
+  version "3.7.8"
+  resolved "https://registry.yarnpkg.com/react-native-dropdown-picker/-/react-native-dropdown-picker-3.7.8.tgz#fdc79eef1dab4f86b74a565e93ed65406825b0c6"
+  integrity sha512-9WKUgvVK0Pv1ujwp71DikKyjF7ftxQGJLPRizD6LaDcoHxgxtqsnDQcj92PV1iEydwfEDynL7ogy2h/HG0ETbA==
+  dependencies:
+    react-native-vector-icons "^7.0.0"
+
 react-native-elements@^3.1.0:
   version "3.1.0"
   resolved "https://registry.yarnpkg.com/react-native-elements/-/react-native-elements-3.1.0.tgz#ff2d6fd0ed91b1ebdd15598c4da1fcb2d5780c5f"
@@ -6029,7 +6043,7 @@ react-native-svg@^12.1.0:
     css-select "^2.1.0"
     css-tree "^1.0.0-alpha.39"
 
-react-native-vector-icons@^7.1.0:
+react-native-vector-icons@^7.0.0, react-native-vector-icons@^7.1.0:
   version "7.1.0"
   resolved "https://registry.yarnpkg.com/react-native-vector-icons/-/react-native-vector-icons-7.1.0.tgz#145487d617b2a81d395d2cf64e6e065fcab3a454"
   integrity sha512-V2a1zJ4i+kS8O4j183gIwX14St9AxxXabxwYpFBgRhvr2NDXyFcjHDEAgrOYYlt2W57e20aN1tBDU/I+wn9WtQ==
