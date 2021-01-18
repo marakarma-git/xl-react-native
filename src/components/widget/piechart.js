@@ -37,10 +37,15 @@ const PieChartComponent = ({ item, navigation }) => {
                         setDataSet([]);
                         setError('No dataset found...')
                     }
+                } else {
+                    console.log(data, " <<< ");
+                    setDataSet([]);
+                    setError(data.statusDescription);
                 }
                 setLoading(false);
             }
         } catch (error) {
+            setDataSet([]);
             setLoading(false);
             setError(error);
         }

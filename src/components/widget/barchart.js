@@ -26,7 +26,6 @@ const BarChartComponent = ({ item, navigation }) => {
 
             if (data) {
                 if (data.statusCode == 0) {
-
                     if (data.result.dataset.length > 0) {
                         const newDataSet = [];
 
@@ -42,6 +41,9 @@ const BarChartComponent = ({ item, navigation }) => {
                         setError("No dataset found...")
                     }
 
+                } else {
+                    setDataSet([]);
+                    setError(data.statusDescription);
                 }
                 setLoading(false);
             }
