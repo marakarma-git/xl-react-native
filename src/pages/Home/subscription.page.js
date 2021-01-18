@@ -2,14 +2,13 @@ import React, {useState} from 'react';
 import {View, Text, ScrollView, TextInput} from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import {HeaderContainer, OverlayBackground} from '../../components/index';
-import {Button} from 'react-native-elements';
 import {device_width} from '../../constant/config';
 import generateLink from '../../helpers/generateLink';
 import lod from 'lodash';
 import DropDownPicker from 'react-native-dropdown-picker';
 import {subscriptionStyle} from '../../style';
-import RNDateTimePicker from '@react-native-community/datetimepicker';
-import {Menu, Divider, Provider} from 'react-native-paper';
+import {Button} from 'react-native-elements';
+import styles from '../../style/login.style';
 const LandingPage = ({navigation}) => {
   const [visible, setVisible] = React.useState(false);
 
@@ -38,164 +37,130 @@ const LandingPage = ({navigation}) => {
             style={subscriptionStyle.textInput}
           />
           <Text style={subscriptionStyle.textTitle}>Filter</Text>
+          <Text>{generateLink}</Text>
+        </View>
+        <View
+          style={{
+            backgroundColor: 'white',
+            borderWidth: 1,
+            paddingHorizontal: 12,
+            paddingTop: 12,
+            borderColor: 'lightgray',
+            flexGrow: 1,
+            flexWrap: 'wrap',
+            justifyContent: 'space-between',
+            flexDirection: 'row',
+          }}>
           <View
             style={{
-              borderWidth: 1,
-              paddingHorizontal: 12,
-              paddingTop: 12,
-              borderColor: 'lightgray',
-              flexGrow: 1,
-              flexWrap: 'wrap',
-              justifyContent: 'space-between',
-              flexDirection: 'row',
+              width: device_width * 0.5 - 40,
+              marginBottom: 12,
             }}>
+            <Text numberOfLines={1}>Text Input</Text>
             <View
               style={{
-                width: device_width * 0.5 - 40,
-                marginBottom: 12,
+                borderWidth: 1,
+                borderColor: 'lightgray',
+                marginTop: 4,
               }}>
-              <Text numberOfLines={1}>Menu paper</Text>
-              <Provider>
-                <Menu
-                  visible={visible}
-                  onDismiss={closeMenu}
-                  anchor={
-                    <Button
-                      onPress={openMenu}
-                      buttonStyle={{
-                        flex: 1,
-                        backgroundColor: 'tomato',
-                        width: 100,
-                        height: 100,
-                      }}>
-                      Show menu
-                    </Button>
-                  }>
-                  <Menu.Item
-                    style={{backgroundColor: 'green', zIndex: 99}}
-                    onPress={() => {}}
-                    title="Item 1"
-                  />
-                  <Menu.Item onPress={() => {}} title="Item 2" />
-                  <Divider />
-                  <Menu.Item onPress={() => {}} title="Item 3" />
-                </Menu>
-              </Provider>
-            </View>
-
-            <View
-              style={{
-                width: device_width * 0.5 - 40,
-                marginBottom: 12,
-              }}>
-              <Text numberOfLines={1}>Text Input</Text>
-              <View
+              <TextInput
                 style={{
-                  borderWidth: 1,
-                  borderColor: 'lightgray',
-                  marginTop: 4,
-                }}>
-                <TextInput
-                  style={{
-                    flex: 1,
-                    paddingHorizontal: 12,
-                    paddingVertical: 6,
-                  }}
-                />
-              </View>
-            </View>
-            <View
-              style={{
-                width: device_width * 0.5 - 40,
-                marginBottom: 12,
-                zIndex: 100,
-              }}>
-              <Text numberOfLines={1}>Dropdown</Text>
-              <DropDownPicker
-                items={[
-                  {
-                    label: 'UK',
-                    value: 'uk',
-                  },
-                  {
-                    label: 'France',
-                    value: 'france',
-                  },
-                ]}
-                min={0}
-                max={10}
-                multiple={false}
-                containerStyle={{
-                  height: 43,
-                  marginTop: 4,
+                  flex: 1,
+                  paddingHorizontal: 12,
+                  paddingVertical: 6,
                 }}
-                labelProps={{style: {color: 'black', flex: 1}}}
-                placeholder={'hello world'}
-                style={{
-                  borderColor: 'lightgray',
-                  zIndex: 100,
-                  borderWidth: 1,
-                  borderBottomEndRadius: 1,
-                  borderBottomLeftRadius: 1,
-                  borderTopLeftRadius: 1,
-                  borderTopRightRadius: 1,
-                }}
-                searchable={true}
-                itemStyle={{
-                  justifyContent: 'flex-start',
-                  zIndex: 100,
-                }}
-                dropDownStyle={{
-                  backgroundColor: 'white',
-                }}
-                onChangeItem={(item) => setCountry(item)}
-                searchablePlaceholder={'Cari sesuatu'}
               />
             </View>
-            <View
+          </View>
+          <View
+            style={{
+              width: device_width * 0.5 - 40,
+              marginBottom: 12,
+            }}>
+            <Text numberOfLines={1}>Text Input</Text>
+            <DropDownPicker
+              items={[
+                {
+                  label: 'UK',
+                  value: 'uk',
+                },
+                {
+                  label: 'France',
+                  value: 'france',
+                },
+              ]}
+              min={0}
+              max={10}
+              multiple={false}
+              containerStyle={{
+                height: 53,
+                marginTop: 4,
+              }}
+              labelProps={{style: {color: 'black', flex: 1}}}
+              placeholder={'hello world'}
               style={{
                 width: device_width * 0.5 - 40,
                 marginBottom: 12,
-              }}>
-              <Text numberOfLines={1}>Datepicker</Text>
-              <View
-                style={{
-                  borderWidth: 1,
-                  borderColor: 'lightgray',
-                  marginTop: 4,
-                }}>
-                <Text
-                  style={{
-                    paddingHorizontal: 12,
-                    paddingVertical: 10,
-                  }}>
-                  hello world
-                </Text>
-              </View>
-            </View>
+                borderColor: 'lightgray',
+                borderWidth: 1,
+                borderBottomEndRadius: 1,
+                borderBottomLeftRadius: 1,
+                borderTopLeftRadius: 1,
+                borderTopRightRadius: 1,
+              }}
+              searchable={true}
+              itemStyle={{
+                justifyContent: 'flex-start',
+              }}
+              dropDownStyle={{
+                backgroundColor: 'white',
+              }}
+              onChangeItem={(item) => setCountry(item)}
+              searchablePlaceholder={'Cari sesuatu'}
+            />
+          </View>
+          <View
+            style={{
+              width: device_width * 0.5 - 40,
+              marginBottom: 12,
+            }}>
+            <Text numberOfLines={1}>Datepicker</Text>
             <View
               style={{
-                width: device_width * 0.5 - 40,
-                marginBottom: 12,
+                borderWidth: 1,
+                borderColor: 'lightgray',
+                marginTop: 4,
               }}>
-              <Text numberOfLines={1}>Text Input</Text>
-              <View
+              <Text
                 style={{
-                  borderWidth: 1,
-                  borderColor: 'lightgray',
-                  marginTop: 4,
+                  paddingHorizontal: 12,
+                  paddingVertical: 10,
                 }}>
-                <TextInput
-                  style={{
-                    flex: 1,
-                    paddingHorizontal: 12,
-                    paddingBottom: 2,
-                  }}
-                />
-              </View>
+                hello world
+              </Text>
             </View>
           </View>
-          <Text>{generateLink}</Text>
+          <View
+            style={{
+              width: device_width * 0.5 - 40,
+              marginBottom: 12,
+            }}>
+            <Text numberOfLines={1}>Text Input</Text>
+            <View
+              style={{
+                borderWidth: 1,
+                borderColor: 'lightgray',
+                marginTop: 4,
+              }}>
+              <TextInput
+                style={{
+                  flex: 1,
+                  paddingHorizontal: 12,
+                  paddingBottom: 2,
+                }}
+              />
+            </View>
+          </View>
         </View>
       </ScrollView>
     </View>

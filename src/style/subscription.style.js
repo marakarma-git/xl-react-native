@@ -1,10 +1,8 @@
 export default {
   container: {
-    top: -80,
     backgroundColor: 'white',
     padding: 10,
     marginHorizontal: 10,
-    paddingBottom: 80,
   },
   searchContainer: {
     flexDirection: 'row',
