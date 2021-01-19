@@ -7,6 +7,7 @@ const initialState = {
   alreadyRequest: false
 };
 const auth_reducers = (state = initialState, action) => {
+  console.log(action.type, " <<< ")
   switch (action.type) {
     case reduxString.AUTH_REQUEST:
       return {
@@ -32,6 +33,7 @@ const auth_reducers = (state = initialState, action) => {
       return {
         ...state,
         data: {},
+        alreadyRequest: false
       };
     case reduxString.GET_TITLE_VERSION:
       return {
