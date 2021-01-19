@@ -54,10 +54,11 @@ const DashboardPage = ({navigation}) => {
 
   return (
     <View>
-      <HeaderContainer 
-        navigation={navigation} 
+      <HeaderContainer
+        navigation={navigation}
         headerTitle={'Dashboard'}
-        companyLogo={imageBase64} />
+        companyLogo={imageBase64}
+      />
       <ScrollView style={{marginBottom: 50}}>
         <View style={{height: '100%'}}>
           <OverlayBackground />

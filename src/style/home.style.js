@@ -39,6 +39,10 @@ export default {
     paddingVertical: 4,
   },
   overlayContainer: {
+    position: 'absolute',
+    top: 0,
+    right: 0,
+    left: 0,
     width: device_width,
     height: 100,
     backgroundColor: colors.background_overlay,
@@ -73,7 +77,7 @@ export default {
   },
   cardSection: {
     flex: 1,
-    top: -80,
+    marginTop: 30,
     margin: 10,
   },
   tradeMark: {
