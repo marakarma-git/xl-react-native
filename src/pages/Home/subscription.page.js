@@ -7,14 +7,7 @@ import generateLink from '../../helpers/generateLink';
 import lod from 'lodash';
 import DropDownPicker from 'react-native-dropdown-picker';
 import {subscriptionStyle} from '../../style';
-import {Button} from 'react-native-elements';
-import styles from '../../style/login.style';
 const LandingPage = ({navigation}) => {
-  const [visible, setVisible] = React.useState(false);
-
-  const openMenu = () => setVisible(true);
-
-  const closeMenu = () => setVisible(false);
   const [localInput, setLocalInput] = useState(dynamicFilter);
   const [country, setCountry] = useState('');
   const onChangeText = (index, value) => {
