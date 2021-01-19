@@ -96,9 +96,10 @@ const MyAccountPage = (props) => {
               formList={userForm}
               editable={editable}
               inputHandler={inputHandler}/>
-              <TouchableOpacity>
+              {/* Todo Change Password */}
+              {/* <TouchableOpacity>
                 <Text style={styles.linkText}>Change Password</Text>
-              </TouchableOpacity>
+              </TouchableOpacity> */}
               { editable &&
               <TouchableOpacity
                 onPress={() => alert('Todo edit user')}
