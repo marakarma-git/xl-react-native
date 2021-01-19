@@ -65,8 +65,9 @@ const CustomDrawerContent = (props) => {
       <View
          style={styles.avatarContainer}>
           {/* To-do Avatar Icon jika API sudah ada */}
-        <TouchableOpacity style={styles.userImageContainer}>
-          {/* To-do Jadiin Image Pas API udah ada */}
+        <TouchableOpacity
+          onPress={() => props.navigation.navigate('Account')} 
+          style={styles.userImageContainer}>
           <Ionicons name={'md-person'} color={'white'} size={24} /> 
         </TouchableOpacity>  
         <TouchableOpacity 
