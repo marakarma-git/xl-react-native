@@ -30,4 +30,12 @@ export default {
     margin: 20,
     marginBottom: 10,
   },
+  userImageContainer: {
+    width: 30,
+    height: 30,
+    borderRadius: 100,
+    backgroundColor: '#B4B4B4',
+    justifyContent: 'center',
+    alignItems: 'center',
+  }
 };

@@ -1,15 +1,13 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState} from 'react';
 import {Card, Title} from 'react-native-paper';
 import {View, Text, ScrollView, Image} from 'react-native';
 import Carousel, {Pagination} from 'react-native-snap-carousel';
-import {useSelector, useDispatch} from 'react-redux';
+import {useSelector} from 'react-redux';
 import style from '../../style/home.style';
 import {framerBanner} from '../../assets/images';
 import {HeaderContainer, OverlayBackground} from '../../components/index';
-import {getTitleVersion} from '../../redux/action/auth_action';
 
 const LandingPage = ({navigation}) => {
-  const dispatch = useDispatch();
   const userData = useSelector((state) => state.auth_reducer.data);
   const titleVersion = useSelector((state) => state.auth_reducer.titleVersion);
   const {imageBase64} = useSelector((state) => state.enterprise_reducer);
@@ -53,10 +51,6 @@ const LandingPage = ({navigation}) => {
   };
   const {principal} = userData || {};
   const {firstName, lastName} = principal || '';
-
-  useEffect(() => {
-    dispatch(getTitleVersion());
-  }, [dispatch]);
 
   return (
     <View>
