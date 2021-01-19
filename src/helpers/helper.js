@@ -22,6 +22,10 @@ class Helper {
         return '0 B';
       }
 
+      if(bytes < 1){
+        return bytes + "KB"
+      }
+
       const k = 1000;
       const dm = decimals < 0 ? 0 : decimals;
       const sizes = ['B', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB'];
