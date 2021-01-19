@@ -19,6 +19,7 @@ const DashboardPage = ({navigation}) => {
   const dispatch = useDispatch();
   const userData = useSelector((state) => state.auth_reducer.data);
   const widgetList = useSelector((state) => state.dashboard_reducer.widgetList);
+  const {imageBase64} = useSelector((state) => state.enterprise_reducer);
   const summaryDashboardData = useSelector(
     (state) => state.dashboard_reducer.summaryData,
   );
@@ -53,7 +54,10 @@ const DashboardPage = ({navigation}) => {
 
   return (
     <View>
-      <HeaderContainer navigation={navigation} headerTitle={'Dashboard'} />
+      <HeaderContainer 
+        navigation={navigation} 
+        headerTitle={'Dashboard'}
+        companyLogo={imageBase64} />
       <ScrollView style={{marginBottom: 50}}>
         <View style={{height: '100%'}}>
           <OverlayBackground />
