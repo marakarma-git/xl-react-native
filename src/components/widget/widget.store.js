@@ -31,20 +31,16 @@ const WidgetStore = ({ widgetList, navigation }) => {
                         item={item}
                     />
                 )
-            case 'Aggregated-Traffic':
-                return(
-                    <AggregateTraffic 
-                        item={item}
-                        navigation={navigation}
-                    />
-                )
+            // case 'Aggregated-Traffic':
+            //     return(
+            //         <AggregateTraffic 
+            //             item={item}
+            //             navigation={navigation}
+            //         />
+            //     )
         
             default:
-                return(
-                    <ComingSoon
-                        item={item}
-                    />
-                )
+                return
         }
     }
 

@@ -15,8 +15,7 @@ const PieChartComponent = ({ item, navigation }) => {
     const userData = useSelector(state => state.auth_reducer.data);
 
     const params = {
-        "param1": "07000008",
-        "param2": "07000008_SP_05"
+        "param1": userData.customerNo,
     }
 
     const getWidgetData = async () => {
@@ -34,19 +33,29 @@ const PieChartComponent = ({ item, navigation }) => {
             if (data) {
                 if (data.statusCode == 0) {
                     if (data.result.dataset.length > 0) {
+                        let isAllZero = 0;
                         const newDataSet = [];
 
                         data.result.dataset.map((datas) => {
+                            if(datas.percentage == 0){
+                                isAllZero++;
+                            }
+
                             newDataSet.push({ x: +datas.percentage, y: +datas.percentage, label: `${datas.percentage}% ${datas.status}` });
                         });
 
-                        setDataSet(newDataSet);
+                        if(isAllZero === data.result.dataset.length){
+                            setDataSet([]);
+                            setError("All dataset value is 0%");
+                        }else{
+                            setDataSet(newDataSet);
+                        }
+
                     } else {
                         setDataSet([]);
                         setError('No dataset found...')
                     }
                 } else {
-                    console.log(data, " <<< ");
                     setDataSet([]);
                     setError(data.statusDescription);
                 }
@@ -80,7 +89,7 @@ const PieChartComponent = ({ item, navigation }) => {
                     </View>
                     :
                     <View style={{ marginTop: 30 }}>
-                        <Text style={{ textAlign: 'center', color: 'black', fontSize: 14 }}>{error}</Text>
+                        <Text style={{ textAlign: 'center', color: 'black', fontSize: 14, fontWeight: 'bold' }}>{error}</Text>
                     </View>
             }
         </View>
