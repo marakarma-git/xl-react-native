@@ -75,7 +75,8 @@ const MyAccountPage = (props) => {
           <TouchableOpacity style={styles.avatarContainer}>
             {/* To-do Jadiin Image Pas API udah ada */}
             <Ionicons name={'md-person'} color={'white'} size={108} /> 
-            <MaterialCommunityIcons name={'square-edit-outline'} size={38} style={styles.editIcon} />
+            {/* To-do Edit Gambar */}
+            {/* <MaterialCommunityIcons name={'square-edit-outline'} size={38} style={styles.editIcon} /> */}
           </TouchableOpacity>
           { userData.principal &&
             <Card style={styles.accountPlaceholder}>
@@ -86,10 +87,11 @@ const MyAccountPage = (props) => {
           <Card style={styles.basicContainer}>
             <View style={styles.cardTitleWrapper}>
               <Text style={styles.nameText}>Basic Information</Text>
-            <TouchableOpacity
+              {/* To-do Edit User */}
+            {/* <TouchableOpacity
               onPress={() => setEditable(!editable)}>
               <MaterialCommunityIcons name={editable ? 'cancel' : 'square-edit-outline'} size={32} style={styles.editIconCard} />
-            </TouchableOpacity>
+            </TouchableOpacity> */}
             </View>
             <AccountForm
               value={form} 
