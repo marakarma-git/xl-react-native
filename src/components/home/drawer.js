@@ -1,5 +1,6 @@
 import React from 'react';
-import {View, Image, Text, Alert} from 'react-native';
+import Ionicons from 'react-native-vector-icons/Ionicons';
+import {View, Image, Text, Alert, TouchableWithoutFeedback} from 'react-native';
 import {DrawerContentScrollView, DrawerItem} from '@react-navigation/drawer';
 import {StackActions} from '@react-navigation/native';
 import {
@@ -13,6 +14,7 @@ import {useSelector, useDispatch} from 'react-redux';
 import {authLogout} from '../../redux/action/auth_action';
 import styles from '../../style/drawer.style';
 import {removeEnterPriseLogo} from '../../redux/action/enterprise_action';
+import { TouchableOpacity } from 'react-native';
 
 const drawerData = [
   {
@@ -60,18 +62,25 @@ const CustomDrawerContent = (props) => {
 
   return (
     <DrawerContentScrollView {...props} style={{padding: 0}}>
-      <View style={styles.avatarContainer}>
-        <Image style={styles.avatar} source={iconUser} />
-        <View style={{paddingLeft: 15}}>
+      <View
+         style={styles.avatarContainer}>
+          {/* To-do Avatar Icon jika API sudah ada */}
+        <TouchableOpacity style={styles.userImageContainer}>
+          {/* To-do Jadiin Image Pas API udah ada */}
+          <Ionicons name={'md-person'} color={'white'} size={24} /> 
+        </TouchableOpacity>  
+        <TouchableOpacity 
+          onPress={() => props.navigation.navigate('Account')} 
+          style={{paddingLeft: 15}}>
           <Text style={styles.userName}>
             {userData.principal
               ? userData.principal.firstName + ' ' + userData.principal.lastName
               : ''}
           </Text>
           <Text style={{color: '#4BC1FD'}}>
-            {userData.principal && userData.principal.username}
+            {userData.principal.email || "-" }
           </Text>
-        </View>
+        </TouchableOpacity>
       </View>
       <View style={styles.divider} />
       {drawerData.map((item, idx) => (
