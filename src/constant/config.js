@@ -2,7 +2,7 @@ import {Dimensions, Platform} from 'react-native';
 const {width: device_width, height: device_height} = Dimensions.get('window');
 const is_ios = Platform.OS === 'ios';
 const default_header_height = 50;
-const border_radius = 5;
+const border_radius = 7;
 const horizontal = 0;
 const vertical = 0;
 const regular_horizontal_padding = 10;
