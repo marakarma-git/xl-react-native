@@ -79,7 +79,7 @@ const CustomDrawerContent = (props) => {
               : ''}
           </Text>
           <Text style={{color: '#4BC1FD'}}>
-            {userData.principal.email || "-" }
+            {userData.principal && `${userData.principal.email || "-"}` }
           </Text>
         </TouchableOpacity>
       </View>
