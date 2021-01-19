@@ -7,8 +7,7 @@ import {
   TextInput,
   Keyboard,
   TouchableWithoutFeedback,
-  Alert,
-  Text
+  Text,
 } from 'react-native';
 import {Button} from 'react-native-elements';
 import lod from 'lodash';
@@ -24,7 +23,9 @@ const Login = ({navigation}) => {
   const [errorText, setErrorText] = useState(null);
   const dispatch = useDispatch();
   const {data, error} = useSelector((state) => state.auth_reducer);
-  const alreadyRequest = useSelector((state) => state.auth_reducer.alreadyRequest);
+  const alreadyRequest = useSelector(
+    (state) => state.auth_reducer.alreadyRequest,
+  );
   const titleVersion = useSelector((state) => state.auth_reducer.titleVersion);
   const {statusCode, error: errorCheck} = useSelector(
     (state) => state.enterprise_reducer,
@@ -44,10 +45,9 @@ const Login = ({navigation}) => {
       dispatch(authLogout());
       setLocalLoading(false);
 
-      if(alreadyRequest){
-        setErrorText("Invalid username or password");
+      if (alreadyRequest) {
+        setErrorText('Invalid username or password');
       }
-
     }
     if (errorCheck !== '') {
       dispatch(authLogout());
@@ -68,13 +68,15 @@ const Login = ({navigation}) => {
   };
   return (
     <ScrollView style={styles.container}>
-      <KeyboardAvoidingView style={styles.keyboardContainer} behavior={'padding'}>
+      <KeyboardAvoidingView
+        style={styles.keyboardContainer}
+        behavior={'padding'}>
         <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
           <View>
             <View style={styles.imageContainer}>
               <Image style={styles.imageSize} source={busolLogo} />
             </View>
-            <View style={{ justifyContent: 'center', marginVertical: 20 }}>
+            <View style={{justifyContent: 'center', marginVertical: 20}}>
               <Text style={styles.titleText}>IoT Connectivity+</Text>
               {errorText && <Text style={styles.errorText}>{errorText}</Text>}
             </View>
@@ -112,12 +114,12 @@ const Login = ({navigation}) => {
           </View>
         </TouchableWithoutFeedback>
       </KeyboardAvoidingView>
-        <View style={styles.footer}>
-          <Text style={{fontWeight: 'bold'}}>
-            IoT SIMCare {titleVersion || ''}
-          </Text>
+      <View style={styles.footer}>
+        <Text style={{fontWeight: 'bold'}}>
+          IoT SIMCare {titleVersion || ''}
+        </Text>
       </View>
-      </ScrollView>
+    </ScrollView>
   );
 };
 export default Login;

@@ -1,5 +1,10 @@
 import React from 'react';
-import {LandingPage, DashboardPage, SubscriptionPage, MyAccountPage} from './Home/index';
+import {
+  LandingPage,
+  DashboardPage,
+  SubscriptionPage,
+  MyAccountPage,
+} from './Home/index';
 import {CustomDrawerContent} from '../components/index';
 import {createDrawerNavigator} from '@react-navigation/drawer';
 

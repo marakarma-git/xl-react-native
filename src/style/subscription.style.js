@@ -1,29 +1,31 @@
+import {border_radius} from '../constant/config';
+import {colors} from '../constant/color';
+
 export default {
-  container: {
+  localContainer: {
+    elevation: 3,
+    marginHorizontal: 16,
     backgroundColor: 'white',
-    padding: 10,
-    marginHorizontal: 10,
+    paddingVertical: 14,
+    paddingHorizontal: 15,
+    borderRadius: border_radius,
+    marginBottom: 6,
   },
-  searchContainer: {
+  containerTitle: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    alignItems: 'flex-end',
-    flex: 1,
   },
-  innerTextContainer: {
-    fontWeight: 'bold',
-    fontSize: 16,
-  },
-  textInput: {
-    marginTop: 6,
+  containerTextInput: {
     borderWidth: 1,
-    paddingHorizontal: 12,
-    borderColor: 'lightgray',
+    borderColor: colors.gray_0,
+    borderRadius: border_radius,
+    marginVertical: 10,
+    flexDirection: 'row',
+    alignItems: 'center',
   },
-  textTitle: {
-    fontWeight: 'bold',
-    fontSize: 16,
-    marginTop: 24,
-    marginBottom: 6,
+  containerWrap: {
+    flexWrap: 'wrap',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
   },
 };
