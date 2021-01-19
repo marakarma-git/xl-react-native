@@ -7,7 +7,6 @@ const initialState = {
   alreadyRequest: false
 };
 const auth_reducers = (state = initialState, action) => {
-  console.log(action.type, " <<< ")
   switch (action.type) {
     case reduxString.AUTH_REQUEST:
       return {
