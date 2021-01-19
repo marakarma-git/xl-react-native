@@ -26,8 +26,7 @@ const AggregateTrafficComponent = ({ item, navigation }) => {
     const userData = useSelector(state => state.auth_reducer.data);
 
     const params = {
-        "param1": "07000008",
-        "param2": "07000008_SP_05"
+        "param1": userData.customerNo,
     }
 
     const getWidgetData = async () => {
@@ -69,7 +68,7 @@ const AggregateTrafficComponent = ({ item, navigation }) => {
                 ))
                 :
                 <View style={{ marginTop: 30 }}>
-                    <Text style={{ textAlign: 'center', color: 'black', fontSize: 14 }}>{error}</Text>
+                    <Text style={{ textAlign: 'center', color: 'black', fontSize: 14, fontWeight: 'bold' }}>{error}</Text>
                 </View>
             }
         </>
