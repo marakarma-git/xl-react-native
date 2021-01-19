@@ -8,6 +8,7 @@ import {
   Keyboard,
   TouchableWithoutFeedback,
   Alert,
+  Text
 } from 'react-native';
 import {Button} from 'react-native-elements';
 import lod from 'lodash';
@@ -20,8 +21,11 @@ const Login = ({navigation}) => {
   const [localLoading, setLocalLoading] = useState(false);
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
+  const [errorText, setErrorText] = useState(null);
   const dispatch = useDispatch();
   const {data, error} = useSelector((state) => state.auth_reducer);
+  const alreadyRequest = useSelector((state) => state.auth_reducer.alreadyRequest);
+  const titleVersion = useSelector((state) => state.auth_reducer.titleVersion);
   const {statusCode, error: errorCheck} = useSelector(
     (state) => state.enterprise_reducer,
   );
@@ -39,7 +43,11 @@ const Login = ({navigation}) => {
     if (error !== '') {
       dispatch(authLogout());
       setLocalLoading(false);
-      Alert.alert('Warning', JSON.stringify(error, null, 2));
+
+      if(alreadyRequest){
+        setErrorText("Invalid username or password");
+      }
+
     }
     if (errorCheck !== '') {
       dispatch(authLogout());
@@ -52,19 +60,23 @@ const Login = ({navigation}) => {
       setLocalLoading(true);
     } else {
       if (username.length <= 0) {
-        Alert.alert('Username required', 'Please fill your username');
+        setErrorText('Please fill your username');
       } else {
-        Alert.alert('Password required', 'Please fill your password');
+        setErrorText('Please fill your password');
       }
     }
   };
   return (
-    <ScrollView>
-      <KeyboardAvoidingView behavior={'padding'}>
+    <ScrollView style={styles.container}>
+      <KeyboardAvoidingView style={styles.keyboardContainer} behavior={'padding'}>
         <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
           <View>
             <View style={styles.imageContainer}>
               <Image style={styles.imageSize} source={busolLogo} />
+            </View>
+            <View style={{ justifyContent: 'center', marginVertical: 20 }}>
+              <Text style={styles.titleText}>IoT Connectivity+</Text>
+              {errorText && <Text style={styles.errorText}>{errorText}</Text>}
             </View>
             <TextInput
               editable={!localLoading}
@@ -82,6 +94,14 @@ const Login = ({navigation}) => {
               onChangeText={(e) => setPassword(e)}
               onSubmitEditing={() => onSubmit()}
             />
+            {/* Forget Password To-do */}
+            {/* <Text style={styles.normalText}>
+                Forget Password ?&nbsp;
+              <TouchableWithoutFeedback
+                onPress={() => alert("Todo forget password")}>
+                <Text style={styles.linkText}>Click Here</Text>
+              </TouchableWithoutFeedback>
+            </Text> */}
             <Button
               buttonStyle={styles.loginButton}
               onPress={() => onSubmit()}
@@ -92,7 +112,12 @@ const Login = ({navigation}) => {
           </View>
         </TouchableWithoutFeedback>
       </KeyboardAvoidingView>
-    </ScrollView>
+        <View style={styles.footer}>
+          <Text style={{fontWeight: 'bold'}}>
+            IoT SIMCare {titleVersion || ''}
+          </Text>
+      </View>
+      </ScrollView>
   );
 };
 export default Login;

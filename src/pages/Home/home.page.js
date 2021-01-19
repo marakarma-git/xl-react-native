@@ -9,7 +9,6 @@ import {HeaderContainer, OverlayBackground} from '../../components/index';
 import {getTitleVersion} from '../../redux/action/auth_action';
 
 const LandingPage = ({navigation}) => {
-  const dispatch = useDispatch();
   const userData = useSelector((state) => state.auth_reducer.data);
   const titleVersion = useSelector((state) => state.auth_reducer.titleVersion);
   const {imageBase64} = useSelector((state) => state.enterprise_reducer);
@@ -53,10 +52,6 @@ const LandingPage = ({navigation}) => {
   };
   const {principal} = userData || {};
   const {firstName, lastName} = principal || '';
-
-  useEffect(() => {
-    dispatch(getTitleVersion());
-  }, [dispatch]);
 
   return (
     <View>

@@ -4,6 +4,7 @@ const initialState = {
   error: '',
   data: {},
   titleVersion: null,
+  alreadyRequest: false
 };
 const auth_reducers = (state = initialState, action) => {
   switch (action.type) {
@@ -11,6 +12,7 @@ const auth_reducers = (state = initialState, action) => {
       return {
         ...state,
         loading: true,
+        alreadyRequest: true
       };
     case reduxString.AUTH_FAILED:
       return {
@@ -24,6 +26,7 @@ const auth_reducers = (state = initialState, action) => {
         loading: false,
         data: action.payload,
         error: '',
+        alreadyRequest: false,
       };
     case reduxString.AUTH_LOGOUT:
       return {

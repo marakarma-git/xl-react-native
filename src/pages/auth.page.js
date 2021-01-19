@@ -3,7 +3,7 @@ import {View, ActivityIndicator} from 'react-native';
 import {useSelector, useDispatch} from 'react-redux';
 import SplashScreen from 'react-native-splash-screen';
 import lod from 'lodash';
-import {authLogout} from '../redux/action/auth_action';
+import {authLogout, getTitleVersion} from '../redux/action/auth_action';
 import callEnterpriseLogo, {
   removeEnterPriseLogo,
 } from '../redux/action/enterprise_action';
@@ -30,6 +30,7 @@ const Auth = ({navigation}) => {
     if (error) {
       dispatch(authLogout());
       dispatch(removeEnterPriseLogo());
+      dispatch(getTitleVersion())
     }
   }, [dispatch, error, navigation]);
   return (
