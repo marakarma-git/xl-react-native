@@ -7,21 +7,18 @@ import { Card, Title } from 'react-native-paper';
 import Axios from 'axios';
 import { dataset_base_url } from '../../constant/connection';
 import style from '../../style/home.style';
+import Helper from '../../helpers/helper';
 
-const PieChartComponent = ({ item, navigation }) => {
+const PieChartComponent = ({ item, navigation, filterParams = {} }) => {
     const [dataSet, setDataSet] = useState(null);
     const [error, setError] = useState('');
     const [loading, setLoading] = useState(false);
     const userData = useSelector(state => state.auth_reducer.data);
 
-    const params = {
-        "param1": userData.customerNo,
-    }
-
     const getWidgetData = async () => {
         try {
             setLoading(true);
-            const { data } = await Axios.post(`${dataset_base_url}/getDataSet?datasetId=${item.datasetId}`, params,{
+            const { data } = await Axios.post(`${dataset_base_url}/getDataSet?datasetId=${item.datasetId}`, filterParams, {
                 headers: {
                     "Authorization": "Bearer " + userData.access_token,
                     "Content-Type": "application/json",
@@ -37,17 +34,17 @@ const PieChartComponent = ({ item, navigation }) => {
                         const newDataSet = [];
 
                         data.result.dataset.map((datas) => {
-                            if(datas.percentage == 0){
+                            if (datas.percentage == 0) {
                                 isAllZero++;
                             }
 
-                            newDataSet.push({ x: +datas.percentage, y: +datas.percentage, label: `${datas.percentage}% ${datas.status}` });
+                            newDataSet.push({ y: +datas.total, label: `${datas.percentage}% ${datas.status}` });
                         });
 
-                        if(isAllZero === data.result.dataset.length){
+                        if (isAllZero === data.result.dataset.length) {
                             setDataSet([]);
                             setError("All dataset value is 0%");
-                        }else{
+                        } else {
                             setDataSet(newDataSet);
                         }
 
@@ -77,7 +74,12 @@ const PieChartComponent = ({ item, navigation }) => {
                         <VictoryPie
                             data={dataSet}
                             responsive={true}
-                            colorScale={["#00BFA6", "red", "yellow", "green"]}
+                            colorScale={[
+                                "#2ECFD3",
+                                "#124EAB",
+                                "#0064FB",
+                                "#22385A",
+                            ]}
                             height={230}
                             theme={VictoryTheme.material}
                             labelComponent={

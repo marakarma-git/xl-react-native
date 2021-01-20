@@ -9,20 +9,16 @@ import Helper from '../../helpers/helper';
 import { dataset_base_url } from '../../constant/connection';
 import style from '../../style/home.style';
 
-const BarChartComponent = ({ item, navigation }) => {
+const BarChartComponent = ({ item, navigation, filterParams = {} }) => {
     const [dataSet, setDataSet] = useState(null);
     const [error, setError] = useState('');
     const [loading, setLoading] = useState(false);
     const userData = useSelector(state => state.auth_reducer.data);
 
-    const params = {
-        "param1": userData.customerNo,
-    }
-
     const getWidgetData = async () => {
         try {
             setLoading(true);
-            const { data } = await Axios.post(`${dataset_base_url}/getDataSet?datasetId=${item.datasetId}`, params,{
+            const { data } = await Axios.post(`${dataset_base_url}/getDataSet?datasetId=${item.datasetId}`, filterParams, {
                 headers: {
                     "Authorization": "Bearer " + userData.access_token,
                     "Content-Type": "application/json",
@@ -67,15 +63,8 @@ const BarChartComponent = ({ item, navigation }) => {
                 <VictoryChart>
                     <VictoryAxis
                         crossAxis
-                        style={{ axis: { stroke: 'none' } }}
-                        tickLabelComponent={
-                            <VictoryLabel
-                                angle={305}
-                                verticalAnchor="middle"
-                                textAnchor="end"
-                                style={{ fontSize: 8 }}
-                            />
-                        } />
+                        label="Subscriptions"
+                        tickFormat={() => ''} />
                     <VictoryAxis
                         dependentAxis
                         style={{ axis: { stroke: 'none' } }}
@@ -116,7 +105,7 @@ const BarChartComponent = ({ item, navigation }) => {
     }, [navigation]);
 
     return (
-        <Card style={style.cardSection}>
+        <Card style={[style.cardSection]}>
             <Card.Content style={[style.cardContentWrapper, { flex: 1 }]}>
                 <Title>{item.jsonData.title.text}</Title>
                 {

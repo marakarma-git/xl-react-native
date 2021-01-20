@@ -19,22 +19,18 @@ const title = [
   'Previous 30 Days, Average per SMS subscription',
 ];
 
-const AggregateTrafficComponent = ({item, navigation}) => {
+const AggregateTrafficComponent = ({item, navigation, filterParams = {}}) => {
   const [dataSet, setDataSet] = useState(null);
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
   const userData = useSelector((state) => state.auth_reducer.data);
-
-  const params = {
-    param1: userData.customerNo,
-  };
 
   const getWidgetData = async () => {
     try {
       setLoading(true);
       const {data} = await Axios.post(
         `${dataset_base_url}/getDataSet?datasetId=${item.datasetId}`,
-        params,
+        filterParams,
         {
           headers: {
             Authorization: 'Bearer ' + userData.access_token,
@@ -44,8 +40,9 @@ const AggregateTrafficComponent = ({item, navigation}) => {
           },
         },
       );
+
       if (data) {
-        if (data.statusCode == 0) {
+        if (data.statusCode === 0) {
           setDataSet(data.result.dataset);
         } else {
           setDataSet([]);

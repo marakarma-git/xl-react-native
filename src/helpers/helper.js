@@ -22,7 +22,7 @@ class Helper {
         return '0 B';
       }
 
-      if(bytes < 1){
+      if (bytes < 1) {
         return bytes + "KB"
       }
 

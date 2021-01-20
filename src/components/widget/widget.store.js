@@ -10,22 +10,22 @@ const WidgetStore = ({ widgetList, navigation }) => {
     const generateWidget = () => (
         <>
             { widgetList.map((item, index) => (
-                <View key={index}>{ widgetType(item)  }</View>
-            )) }
+                <View key={index}>{widgetType(item)}</View>
+            ))}
         </>
     );
 
     const widgetType = (item) => {
         switch (item.widgetCode) {
             case 'SIM-Statistics':
-                return(
+                return (
                     <PieChart
                         navigation={navigation}
                         item={item}
                     />
                 )
             case 'Top-Traffic':
-                return(
+                return (
                     <BarChart
                         navigation={navigation}
                         item={item}
@@ -38,15 +38,15 @@ const WidgetStore = ({ widgetList, navigation }) => {
             //             navigation={navigation}
             //         />
             //     )
-        
+
             default:
                 return
         }
     }
 
-    return(
+    return (
         <>
-            { generateWidget() }
+            { generateWidget()}
         </>
     );
 }

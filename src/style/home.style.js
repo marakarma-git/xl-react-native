@@ -1,5 +1,5 @@
-import {device_width, regular_horizontal_padding} from '../constant/config';
-import {colors} from '../constant/color';
+import { device_width, regular_horizontal_padding } from '../constant/config';
+import { colors } from '../constant/color';
 export default {
   headerContainer: {
     flexDirection: 'row',
@@ -98,7 +98,7 @@ export default {
   itemSeparatorCard: {
     alignItems: 'center',
     flex: 1,
-    borderColor: 'gray',
+    borderColor: 'white',
   },
   containerPie: {
     marginTop: 15,

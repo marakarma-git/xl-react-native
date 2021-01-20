@@ -1,8 +1,8 @@
-import React, {useEffect} from 'react';
+import React, { useEffect } from 'react';
 import Helper from '../../helpers/helper';
-import {useDispatch, useSelector} from 'react-redux';
-import {ActivityIndicator, FlatList, ScrollView, View} from 'react-native';
-import {Card, Headline, Title} from 'react-native-paper';
+import { useDispatch, useSelector } from 'react-redux';
+import { ActivityIndicator, FlatList, ScrollView, View } from 'react-native';
+import { Card, Headline, Title } from 'react-native-paper';
 import {
   HeaderContainer,
   OverlayBackground,
@@ -15,17 +15,17 @@ import {
 
 import style from '../../style/home.style';
 
-const DashboardPage = ({navigation}) => {
+const DashboardPage = ({ navigation }) => {
   const dispatch = useDispatch();
   const userData = useSelector((state) => state.auth_reducer.data);
   const widgetList = useSelector((state) => state.dashboard_reducer.widgetList);
-  const {imageBase64} = useSelector((state) => state.enterprise_reducer);
+  const { imageBase64 } = useSelector((state) => state.enterprise_reducer);
   const summaryDashboardData = useSelector(
     (state) => state.dashboard_reducer.summaryData,
   );
   const loading = useSelector((state) => state.dashboard_reducer.loading);
 
-  const renderItem = ({item, index}) => {
+  const renderItem = ({ item, index }) => {
     return (
       <View
         style={[
@@ -35,7 +35,7 @@ const DashboardPage = ({navigation}) => {
             borderBottomWidth: index === 0 || index === 1 ? 0.2 : 0,
           },
         ]}>
-        <Title style={{fontSize: 14}}>{item.title}</Title>
+        <Title style={{ fontSize: 14 }}>{item.title}</Title>
         <Headline>
           {item.resultId === 'totalaggregatedtraffic'
             ? Helper.formatBytes(item.value)
@@ -59,27 +59,31 @@ const DashboardPage = ({navigation}) => {
         headerTitle={'Dashboard'}
         companyLogo={imageBase64}
       />
-      <ScrollView style={{marginBottom: 50}}>
-        <View style={{height: '100%'}}>
+      <ScrollView
+        style={{ marginBottom: 130 }}
+        showsVerticalScrollIndicator={false}>
+        <View style={{ height: '100%' }}>
           <OverlayBackground />
           <Card style={[style.cardSection]}>
             <Card.Content style={style.cardContentWrapper}>
               {loading ? (
                 <ActivityIndicator color="#002DBB" size="large" />
               ) : (
-                <FlatList
-                  data={summaryDashboardData}
-                  renderItem={renderItem}
-                  keyExtractor={(item) => item.title}
-                  numColumns={2}
-                  columnWrapperStyle={style.cardContentRow}
-                />
-              )}
+                  <FlatList
+                    data={summaryDashboardData}
+                    renderItem={renderItem}
+                    keyExtractor={(item) => item.title}
+                    numColumns={2}
+                    columnWrapperStyle={style.cardContentRow}
+                  />
+                )}
             </Card.Content>
           </Card>
           <View>
             {widgetList && (
-              <WidgetStore navigation={navigation} widgetList={widgetList} />
+              <WidgetStore
+                navigation={navigation}
+                widgetList={widgetList} />
             )}
           </View>
         </View>
