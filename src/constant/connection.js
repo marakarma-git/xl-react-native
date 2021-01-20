@@ -6,4 +6,4 @@ const base_url = 'http://18.141.55.24/api';
 const dashboard_base_url = 'http://18.141.55.24/api/dcp/dashboard';
 const dataset_base_url = 'http://18.141.55.24:18084/dashboard/v2';
 
-export { headerAuth, base_url, dashboard_base_url, dataset_base_url };
+export {headerAuth, base_url, dashboard_base_url, dataset_base_url};

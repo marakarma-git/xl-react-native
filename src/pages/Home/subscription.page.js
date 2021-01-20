@@ -1,12 +1,14 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import {View, ScrollView, Text, TextInput} from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
+import {useDispatch, useSelector} from 'react-redux';
 import {colors} from '../../constant/color';
 import {HeaderContainer, OverlayBackground} from '../../components/index';
 import InputHybrid from '../../components/InputHybrid';
 import {subscriptionStyle} from '../../style';
-import dayjs from 'dayjs';
+import {Button} from 'react-native-elements';
+import {resetDataFilter} from '../../redux/action/dynamic_array_filter_action';
 const Container = (props) => {
   const {style, children} = props;
   return (
@@ -14,6 +16,13 @@ const Container = (props) => {
   );
 };
 const LandingPage = ({navigation}) => {
+  const dispatch = useDispatch();
+  const {array_filter} = useSelector(
+    (state) => state.dynamic_array_filter_reducer,
+  );
+  useEffect(() => {
+    console.log('useEffectArray: ' + JSON.stringify(array_filter, null, 2));
+  }, [array_filter]);
   return (
     <HeaderContainer navigation={navigation} headerTitle={'Subscription'}>
       <ScrollView>
@@ -42,20 +51,25 @@ const LandingPage = ({navigation}) => {
         </Container>
         <Container>
           <Text style={{marginBottom: 7}}>Filter</Text>
+          <Button
+            title={'reset coba'}
+            onPress={() => dispatch(resetDataFilter(array_filter))}
+          />
           <View style={subscriptionStyle.containerWrap}>
-            {dynamicFilter.map((e) => {
-              const {type, value, label, loading, data, selectedValue} = e;
-              return (
-                <InputHybrid
-                  type={type}
-                  label={label}
-                  value={value}
-                  loading={loading}
-                  data={data}
-                  selectedValue={selectedValue}
-                />
-              );
-            })}
+            {array_filter.length > 0 &&
+              array_filter.map((e) => {
+                const {type, value, label, loading, data, selectedValue} = e;
+                return (
+                  <InputHybrid
+                    type={type}
+                    label={label}
+                    value={value}
+                    loading={loading}
+                    data={data}
+                    selectedValue={selectedValue}
+                  />
+                );
+              })}
           </View>
         </Container>
       </ScrollView>
@@ -64,115 +78,3 @@ const LandingPage = ({navigation}) => {
 };
 
 export default LandingPage;
-const dynamicFilter = [
-  {
-    label: 'IMSI',
-    value: '',
-    type: 'TextInput',
-    params: '&imsi=',
-  },
-  {
-    label: 'In Session',
-    loading: false,
-    value: {},
-    data: [],
-    type: 'DropDown',
-    params: '&inSession=',
-  },
-  {
-    label: 'ICCID',
-    value: '',
-    type: 'TextInput',
-    params: '&iccid=',
-  },
-  {
-    label: 'Detected IMEI',
-    value: '',
-    type: 'TextInput',
-    params: '&imei=',
-  },
-  {
-    label: 'Enterprise',
-    loading: false,
-    value: {},
-    data: [],
-    type: 'DropDown',
-    params: '&enterprise=',
-  },
-  {
-    label: 'Fixed IP',
-    value: '',
-    type: 'TextInput',
-    params: '&fixedIP=',
-  },
-  {
-    label: 'Label',
-    value: '',
-    type: 'TextInput',
-    params: '&label=',
-  },
-  {
-    label: 'State',
-    loading: false,
-    value: {},
-    data: [],
-    type: 'DropDown',
-    params: '&label=',
-  },
-  {
-    label: 'APN',
-    value: '',
-    type: 'TextInput',
-    params: '&apn=',
-  },
-  {
-    label: 'State Lock',
-    loading: false,
-    value: {},
-    data: [],
-    type: 'DropDown',
-    params: '&state=',
-  },
-  {
-    label: 'Subscription Package Name',
-    loading: false,
-    value: {},
-    data: [],
-    type: 'DropDown',
-    params: '&subscriptionPackageName=',
-  },
-  {
-    label: 'Specification ID',
-    value: '',
-    type: 'TextInput',
-    params: '&specificationId=',
-  },
-  {
-    label: 'First Activation Date',
-    value: dayjs(),
-    type: 'DateTimePicker',
-    params: '&firstActivationDate=',
-  },
-  {
-    label: 'PBR exit date',
-    value: dayjs(),
-    type: 'DateTimePicker',
-    params: '&pbrExitDate=',
-  },
-  {
-    label: 'Monthly Data',
-    value: '',
-    type: 'DropDownType2',
-    params: '&monthlyData=',
-    data: [],
-    selectedValue: '',
-  },
-  {
-    label: 'Monthly SMS',
-    value: '',
-    type: 'DropDownType2',
-    params: '&monthlySms=',
-    data: [],
-    selectedValue: '',
-  },
-];
