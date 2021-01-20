@@ -1,6 +1,7 @@
 import dayjs from 'dayjs';
+import lod from 'lodash';
 import reduxString from '../reduxString';
-const updateDataFilter = (data) => {
+const updateDataFilter = (data = []) => {
   return {
     type: reduxString.UPDATE_DATA_FILTER,
     payload: data,
@@ -15,22 +16,26 @@ const resetDataFilter = () => {
         case 'DropDown':
           return {
             ...value,
+            type: 'DropDown',
             value: {},
           };
         case 'DropDownType2':
           return {
             ...value,
+            type: 'DropDownType2',
             value: '',
             selectedValue: {},
           };
         case 'TextInput':
           return {
             ...value,
+            type: 'TextInput',
             value: '',
           };
         case 'DateTimePicker':
           return {
             ...value,
+            type: 'DateTimePicker',
             value: dayjs(),
           };
         default:

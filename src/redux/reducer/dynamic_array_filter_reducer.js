@@ -138,7 +138,7 @@ const dynamic_array_filter_reducer = (state = initialState, action) => {
   switch (action.type) {
     case reduxString.UPDATE_DATA_FILTER:
       return {
-        array_filter: [...action.payload],
+        array_filter: action.payload,
       };
     default:
       return state;
