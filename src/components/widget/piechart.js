@@ -74,7 +74,12 @@ const PieChartComponent = ({ item, navigation, filterParams = {} }) => {
                         <VictoryPie
                             data={dataSet}
                             responsive={true}
-                            colorScale={["#00BFA6", "red", "yellow", "green"]}
+                            colorScale={[
+                                "#2ECFD3",
+                                "#124EAB",
+                                "#0064FB",
+                                "#22385A",
+                            ]}
                             height={230}
                             theme={VictoryTheme.material}
                             labelComponent={
