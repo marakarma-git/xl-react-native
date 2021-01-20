@@ -1,14 +1,13 @@
-import React, {useEffect} from 'react';
+import React from 'react';
 import {View, ScrollView, Text, TextInput} from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
-import {useDispatch, useSelector} from 'react-redux';
+import {useSelector} from 'react-redux';
 import {colors} from '../../constant/color';
-import {HeaderContainer, OverlayBackground} from '../../components/index';
-import InputHybrid from '../../components/InputHybrid';
 import {subscriptionStyle} from '../../style';
-import {Button} from 'react-native-elements';
-import {resetDataFilter} from '../../redux/action/dynamic_array_filter_action';
+import InputHybrid from '../../components/InputHybrid';
+import {HeaderContainer, OverlayBackground} from '../../components/index';
+
 const Container = (props) => {
   const {style, children} = props;
   return (
@@ -16,13 +15,9 @@ const Container = (props) => {
   );
 };
 const LandingPage = ({navigation}) => {
-  const dispatch = useDispatch();
   const {array_filter} = useSelector(
     (state) => state.dynamic_array_filter_reducer,
   );
-  useEffect(() => {
-    console.log('useEffectArray: ' + JSON.stringify(array_filter, null, 2));
-  }, [array_filter]);
   return (
     <HeaderContainer navigation={navigation} headerTitle={'Subscription'}>
       <ScrollView>
@@ -51,10 +46,6 @@ const LandingPage = ({navigation}) => {
         </Container>
         <Container>
           <Text style={{marginBottom: 7}}>Filter</Text>
-          <Button
-            title={'reset coba'}
-            onPress={() => dispatch(resetDataFilter(array_filter))}
-          />
           <View style={subscriptionStyle.containerWrap}>
             {array_filter.length > 0 &&
               array_filter.map((e) => {
