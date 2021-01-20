@@ -1,8 +1,8 @@
 import Axios from 'axios';
-import {base_url, headerAuth} from '../../constant/connection';
+import { base_url, headerAuth } from '../../constant/connection';
 import subDomain from '../../constant/requestSubPath';
 import reduxString from '../reduxString';
-import {removeEnterPriseLogo} from './enterprise_action';
+import { removeEnterPriseLogo } from './enterprise_action';
 
 const authRequest = () => {
   return {
@@ -43,7 +43,7 @@ const authLogin = (username, password) => {
   return async (dispatch) => {
     dispatch(authRequest());
     try {
-      const {data} = await Axios.post(
+      const { data } = await Axios.post(
         `${base_url}${subDomain.fetchLogin}`,
         formData,
         {
@@ -76,8 +76,8 @@ const getTitleVersionFail = (error) => ({
 const getTitleVersion = () => {
   return async (dispatch) => {
     try {
-      const {data} = await Axios.get(
-        'http://52.237.113.189:18083/usr/getUserAppVersion',
+      const { data } = await Axios.get(
+        'http://18.141.55.24:18083/usr/getUserAppVersion',
         {
           headers: {
             Authorization: headerAuth,
@@ -95,4 +95,4 @@ const getTitleVersion = () => {
   };
 };
 
-export {authLogin, authLogout, getTitleVersion};
+export { authLogin, authLogout, getTitleVersion };
