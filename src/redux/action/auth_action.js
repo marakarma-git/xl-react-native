@@ -84,6 +84,9 @@ const getTitleVersion = () => {
           },
         },
       );
+
+      console.log(data, " <<< ini reducer")
+
       if (data) {
         dispatch(
           setTitleVersion(data.result.appsTitle + ' ' + data.result.version),

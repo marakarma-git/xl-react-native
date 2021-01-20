@@ -70,7 +70,7 @@ const PieChartComponent = ({ item, navigation, filterParams = {} }) => {
             {
                 dataSet.length > 0
                     ?
-                    <View style={style.containerPie} pointerEvents="none">
+                    <View style={[style.containerPie]}>
                         <VictoryPie
                             data={dataSet}
                             responsive={true}
