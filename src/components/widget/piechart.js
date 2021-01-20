@@ -3,11 +3,19 @@ import { useSelector } from 'react-redux';
 import { VictoryPie, VictoryTheme, VictoryLabel } from 'victory-native';
 import { View, ActivityIndicator, Text } from 'react-native';
 import { Card, Title } from 'react-native-paper';
+import ChartLegend from './chartlegend';
 
 import Axios from 'axios';
 import { dataset_base_url } from '../../constant/connection';
 import style from '../../style/home.style';
 import Helper from '../../helpers/helper';
+
+const pieChartColor = [
+    "#2ECFD3",
+    "#124EAB",
+    "#0064FB",
+    "#22385A",
+];
 
 const PieChartComponent = ({ item, navigation, filterParams = {} }) => {
     const [dataSet, setDataSet] = useState(null);
@@ -33,12 +41,18 @@ const PieChartComponent = ({ item, navigation, filterParams = {} }) => {
                         let isAllZero = 0;
                         const newDataSet = [];
 
-                        data.result.dataset.map((datas) => {
+                        data.result.dataset.map((datas, index) => {
                             if (datas.percentage == 0) {
                                 isAllZero++;
                             }
 
-                            newDataSet.push({ y: +datas.total, label: `${datas.percentage}% ${datas.status}` });
+                            newDataSet.push({
+                                y: +datas.total,
+                                percentage: +datas.percentage,
+                                status: datas.status,
+                                color: pieChartColor[index],
+                                total: +datas.total
+                            });
                         });
 
                         if (isAllZero === data.result.dataset.length) {
@@ -70,23 +84,23 @@ const PieChartComponent = ({ item, navigation, filterParams = {} }) => {
             {
                 dataSet.length > 0
                     ?
-                    <View style={[style.containerPie]}>
-                        <VictoryPie
-                            data={dataSet}
-                            responsive={true}
-                            colorScale={[
-                                "#2ECFD3",
-                                "#124EAB",
-                                "#0064FB",
-                                "#22385A",
-                            ]}
-                            height={230}
-                            theme={VictoryTheme.material}
-                            labelComponent={
-                                <VictoryLabel
-                                    style={{ fontSize: 12, fontWeight: 'bold' }}
-                                />
-                            }
+                    <View style={{ flexDirection: 'row', flexWrap: 'wrap' }}>
+                        <View style={[style.containerPie, { width: '45%' }]}>
+                            <VictoryPie
+                                data={dataSet}
+                                responsive={true}
+                                colorScale={pieChartColor}
+                                height={230}
+                                theme={VictoryTheme.material}
+                                labelComponent={
+                                    <VictoryLabel
+                                        style={{ fontSize: 12, fontWeight: 'bold', display: 'none' }}
+                                    />
+                                }
+                            />
+                        </View>
+                        <ChartLegend
+                            dataSet={dataSet}
                         />
                     </View>
                     :

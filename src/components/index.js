@@ -8,3 +8,4 @@ export { default as AccountForm } from './home/accountForm';
 
 // Widget Component
 export { default as WidgetStore } from './widget/widget.store';
+export { default as ChartLegend } from './widget/chartlegend';

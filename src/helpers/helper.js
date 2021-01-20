@@ -1,18 +1,7 @@
 class Helper {
   static numberFormat(value, symbol, type = 'number') {
-    if (typeof value === 'object') {
-      return 'Invalid Value';
-    }
-
-    if (type == 'gbFormat') {
-      value = Math.round(+value / 1000000);
-      return (
-        Number(value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, symbol)) +
-        ' GB'
-      );
-    } else {
-      return Number(value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, symbol));
-    }
+    const result = value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, symbol);
+    return result;
   }
 
   static formatBytes(bytes) {

@@ -118,4 +118,17 @@ export default {
     paddingVertical: 5,
     paddingHorizontal: 10,
   },
+  legendContainer: {
+    width: '90%',
+    height: 30,
+    backgroundColor: 'white',
+    marginVertical: 2,
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingHorizontal: 10
+  },
+  legendIcon: {
+    fontSize: 16,
+    paddingRight: 5
+  }
 };
