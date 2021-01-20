@@ -53,43 +53,39 @@ const LandingPage = ({navigation}) => {
   const {firstName, lastName} = principal || '';
 
   return (
-    <View>
-      <HeaderContainer
-        navigation={navigation}
-        companyLogo={imageBase64}
-        headerTitle={'Home'}
-      />
+    <HeaderContainer
+      navigation={navigation}
+      companyLogo={imageBase64}
+      headerTitle={'Home'}>
       <ScrollView>
-        <View style={{height: '100%'}}>
-          <OverlayBackground />
-          <Card style={[style.cardSection]}>
-            <Card.Content style={{marginBottom: 10}}>
-              <Title>Hi! {firstName + ' ' + lastName}</Title>
-            </Card.Content>
-            <View style={{alignItems: 'center', backgroundColor: '#002DBB'}}>
-              <Carousel
-                style={{margin: 0, padding: 0}}
-                layout={'default'}
-                data={carouselItems}
-                sliderWidth={300}
-                itemWidth={500}
-                renderItem={renderItem}
-                onSnapToItem={(index) => setActiveIndex(index)}
-                loop
-                scrollEnabled
-                autoplay
-              />
-            </View>
-            {pagination()}
-            <View style={style.tradeMark}>
-              <Text style={{fontWeight: 'bold'}}>
-                IoT SIMCare {titleVersion || ''}
-              </Text>
-            </View>
-          </Card>
-        </View>
+        <OverlayBackground />
+        <Card style={[style.cardSection]}>
+          <Card.Content style={{marginBottom: 10}}>
+            <Title>Hi! {firstName + ' ' + lastName}</Title>
+          </Card.Content>
+          <View style={{alignItems: 'center', backgroundColor: '#002DBB'}}>
+            <Carousel
+              style={{margin: 0, padding: 0}}
+              layout={'default'}
+              data={carouselItems}
+              sliderWidth={300}
+              itemWidth={500}
+              renderItem={renderItem}
+              onSnapToItem={(index) => setActiveIndex(index)}
+              loop
+              scrollEnabled
+              autoplay
+            />
+          </View>
+          {pagination()}
+          <View style={style.tradeMark}>
+            <Text style={{fontWeight: 'bold'}}>
+              IoT SIMCare {titleVersion || ''}
+            </Text>
+          </View>
+        </Card>
       </ScrollView>
-    </View>
+    </HeaderContainer>
   );
 };
 export default LandingPage;

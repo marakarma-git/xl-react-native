@@ -4,11 +4,13 @@ import auth_reducer from './auth_reducer';
 import enterprise_reducer from './enterprise_reducer';
 import dashboard_reducer from './dashboard_reducer';
 import sim_reducer from './sim_reducer';
+import dynamic_array_filter_reducer from './dynamic_array_filter_reducer';
 const RootReducers = combineReducers({
   dummy_reducer,
   auth_reducer,
   enterprise_reducer,
   dashboard_reducer,
   sim_reducer,
+  dynamic_array_filter_reducer,
 });
 export default RootReducers;
