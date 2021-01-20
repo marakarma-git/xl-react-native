@@ -66,7 +66,8 @@ const ContainerInput = (props) => {
       <Text style={inputHybridStyle.titleInput}>{label}</Text>
       <CustomTouch
         style={inputHybridStyle.innerContainerInput}
-        {...customTouchProps}>
+        {...customTouchProps}
+        disabled={loading || disableText}>
         {children}
         {(disabled || loading) && (
           <View style={inputHybridStyle.disableInput}>

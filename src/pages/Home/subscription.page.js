@@ -1,18 +1,12 @@
 import React from 'react';
-import {
-  View,
-  ScrollView,
-  Text,
-  TextInput,
-  KeyboardAvoidingView,
-  SafeAreaView,
-} from 'react-native';
+import {View, ScrollView, Text, TextInput} from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import {colors} from '../../constant/color';
 import {HeaderContainer, OverlayBackground} from '../../components/index';
 import InputHybrid from '../../components/InputHybrid';
 import {subscriptionStyle} from '../../style';
+import dayjs from 'dayjs';
 const Container = (props) => {
   const {style, children} = props;
   return (
@@ -49,8 +43,18 @@ const LandingPage = ({navigation}) => {
         <Container>
           <Text style={{marginBottom: 7}}>Filter</Text>
           <View style={subscriptionStyle.containerWrap}>
-            {dynamicFilter.map(() => {
-              return <InputHybrid type={'TextInput'} label={'IMSI'} />;
+            {dynamicFilter.map((e) => {
+              const {type, value, label, loading, data, selectedValue} = e;
+              return (
+                <InputHybrid
+                  type={type}
+                  label={label}
+                  value={value}
+                  loading={loading}
+                  data={data}
+                  selectedValue={selectedValue}
+                />
+              );
             })}
           </View>
         </Container>
@@ -145,26 +149,30 @@ const dynamicFilter = [
   },
   {
     label: 'First Activation Date',
-    value: '',
+    value: dayjs(),
     type: 'DateTimePicker',
     params: '&firstActivationDate=',
   },
   {
     label: 'PBR exit date',
-    value: '',
+    value: dayjs(),
     type: 'DateTimePicker',
     params: '&pbrExitDate=',
   },
   {
     label: 'Monthly Data',
     value: '',
-    type: 'TextInput',
+    type: 'DropDownType2',
     params: '&monthlyData=',
+    data: [],
+    selectedValue: '',
   },
   {
     label: 'Monthly SMS',
     value: '',
-    type: 'TextInput',
+    type: 'DropDownType2',
     params: '&monthlySms=',
+    data: [],
+    selectedValue: '',
   },
 ];
