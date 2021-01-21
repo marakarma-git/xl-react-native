@@ -2,11 +2,12 @@ import React from 'react';
 import {View, ScrollView, Text, TextInput} from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
-import {useSelector} from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 import {colors} from '../../constant/color';
 import {subscriptionStyle} from '../../style';
 import InputHybrid from '../../components/InputHybrid';
 import {HeaderContainer, OverlayBackground} from '../../components/index';
+import {setSomethingToFilter} from '../../redux/action/dynamic_array_filter_action';
 
 const Container = (props) => {
   const {style, children} = props;
@@ -15,6 +16,7 @@ const Container = (props) => {
   );
 };
 const LandingPage = ({navigation}) => {
+  const dispatch = useDispatch();
   const {array_filter} = useSelector(
     (state) => state.dynamic_array_filter_reducer,
   );
@@ -49,9 +51,45 @@ const LandingPage = ({navigation}) => {
           <View style={subscriptionStyle.containerWrap}>
             {array_filter.length > 0 &&
               array_filter.map((e) => {
-                const {type, value, label, loading, data, selectedValue} = e;
+                const {
+                  formId,
+                  type,
+                  value,
+                  label,
+                  loading,
+                  data,
+                  selectedValue,
+                  disabled,
+                  errorText,
+                } = e;
                 return (
                   <InputHybrid
+                    onChange2={(e) =>
+                      dispatch(
+                        setSomethingToFilter([
+                          {
+                            formId: formId,
+                            needs: `OnChange${type}`,
+                            value: value,
+                            selectedValue: e,
+                          },
+                        ]),
+                      )
+                    }
+                    onChange={(e) =>
+                      dispatch(
+                        setSomethingToFilter([
+                          {
+                            formId: formId,
+                            needs: `OnChange${type}`,
+                            value: e,
+                            selectedValue: selectedValue,
+                          },
+                        ]),
+                      )
+                    }
+                    errorText={errorText}
+                    disabled={disabled}
                     type={type}
                     label={label}
                     value={value}

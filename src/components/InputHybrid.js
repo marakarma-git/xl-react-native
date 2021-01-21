@@ -47,6 +47,7 @@ InputHybrid.propTypes = {
   data: PropTypes.array,
   selectedValue: PropTypes.string,
   onChange2: PropTypes.func,
+  errorText: PropTypes.string,
 };
 export default InputHybrid;
 
@@ -59,6 +60,7 @@ const ContainerInput = (props) => {
     loading,
     disableText,
     customTouchProps,
+    errorText,
   } = props;
   const CustomTouch = isTouchable ? TouchableOpacity : View;
   return (
@@ -76,6 +78,9 @@ const ContainerInput = (props) => {
           </View>
         )}
       </CustomTouch>
+      <Text style={{fontSize: 10, color: 'red'}} numberOfLines={2}>
+        {errorText && `Error: ${errorText}`}
+      </Text>
     </View>
   );
 };
@@ -101,7 +106,9 @@ const SelectInput = (props) => {
         label={label}
         isTouchable
         customTouchProps={{onPress: () => setVisible(true)}}>
-        <Text style={{paddingVertical: 8, flex: 1}}>Please Select</Text>
+        <Text style={{paddingVertical: 8, flex: 1}}>
+          {value.label || 'Please Select'}
+        </Text>
         <MaterialCommunityIcons
           name={'chevron-down'}
           color={colors.gray}
@@ -112,7 +119,7 @@ const SelectInput = (props) => {
         <ModalPicker
           title={`Select ${label}`}
           data={data}
-          value={value}
+          value={value.value}
           onClose={() => setVisible(false)}
           onChange={(e) => {
             setVisible(false);
@@ -137,7 +144,7 @@ const SelectInputType2 = (props) => {
         <TouchableOpacity
           style={inputHybridStyle.subSelect}
           onPress={() => setVisible(true)}>
-          <Text style={{marginLeft: 9}}>Unit</Text>
+          <Text style={{marginLeft: 9}}>{selectedValue.value || 'Unit'}</Text>
           <MaterialCommunityIcons
             name={'chevron-down'}
             color={colors.gray}
@@ -149,7 +156,7 @@ const SelectInputType2 = (props) => {
         <ModalPicker
           title={`Select ${label}`}
           data={data}
-          value={selectedValue}
+          value={selectedValue.value}
           onClose={() => setVisible(false)}
           onChange={(e) => {
             setVisible(false);
