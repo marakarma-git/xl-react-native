@@ -1,4 +1,5 @@
 import dayjs from 'dayjs';
+import moment from 'moment';
 import randomId from '../../helpers/randomId';
 import reduxString from '../reduxString';
 //default form
@@ -95,7 +96,7 @@ const dynamicFilter = [
   },
   {
     formId: 'subscription-package-name',
-    label: 'Subscription Package name',
+    label: 'Subscription Package Name',
     disabled: false,
     loading: false,
     errorText: '',
@@ -115,14 +116,14 @@ const dynamicFilter = [
   {
     formId: 'first-activation-date-hard-code',
     label: 'First Activation Date',
-    value: dayjs(),
+    value: moment().format('DD-MM-YYYY'),
     type: 'DateTimePicker',
     params: '&firstActivationDate=',
   },
   {
     formId: 'pbr-exit-date-hard-code',
     label: 'PBR exit date',
-    value: dayjs(),
+    value: moment().format('DD-MM-YYYY'),
     type: 'DateTimePicker',
     params: '&pbrExitDate=',
   },

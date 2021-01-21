@@ -9,7 +9,7 @@ import {
   FlatList,
   Modal,
 } from 'react-native';
-import dayjs from 'dayjs';
+import moment from 'moment';
 import PropTypes from 'prop-types';
 import RNDateTimePicker from '@react-native-community/datetimepicker';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
@@ -177,16 +177,16 @@ const DateInput = (props) => {
         isTouchable
         customTouchProps={{onPress: () => setShowDate(true)}}>
         <Text numberOfLines={1} style={{paddingVertical: 8, flex: 1}}>
-          {dayjs(value).format('DD-MM-YYYY')}
+          {value}
         </Text>
         <FontAwesome5 name={'calendar-alt'} color={colors.gray} size={20} />
       </ContainerInput>
       {showDate && (
         <RNDateTimePicker
-          value={value}
+          value={new Date(value)}
           onChange={(e) => {
             setShowDate(false);
-            onChange(e.nativeEvent.timestamp);
+            onChange(moment(e.nativeEvent.timestamp).format('DD-MM-YYYY'));
           }}
           mode={'date'}
           is24Hour={true}

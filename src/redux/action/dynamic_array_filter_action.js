@@ -41,7 +41,10 @@ const setSomethingToFilter = (dataObject = []) => {
         case 'RemoveFilterData':
           newArr[getIndex].data = [];
           return dispatch(updateDataFilter(newArr));
-        case 'OnChangeTextInput' || 'OnChangeDateTimePicker':
+        case 'OnChangeTextInput':
+          newArr[getIndex].value = value;
+          return dispatch(updateDataFilter(newArr));
+        case 'OnChangeDateTimePicker':
           newArr[getIndex].value = value;
           return dispatch(updateDataFilter(newArr));
         case 'OnChangeDropDown':
