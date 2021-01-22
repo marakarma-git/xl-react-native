@@ -1,5 +1,5 @@
 import Axios from 'axios';
-import { base_url, headerAuth } from '../../constant/connection';
+import { base_url, headerAuth, super_base_url } from '../../constant/connection';
 import subDomain from '../../constant/requestSubPath';
 import reduxString from '../reduxString';
 import { removeEnterPriseLogo } from './enterprise_action';
@@ -77,15 +77,13 @@ const getTitleVersion = () => {
   return async (dispatch) => {
     try {
       const { data } = await Axios.get(
-        'http://18.141.55.24:18083/usr/getUserAppVersion',
+        `${super_base_url}:18083/usr/getUserAppVersion`,
         {
           headers: {
             Authorization: headerAuth,
           },
         },
       );
-
-      console.log(data, " <<< ini reducer")
 
       if (data) {
         dispatch(

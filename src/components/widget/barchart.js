@@ -3,10 +3,11 @@ import { useSelector } from 'react-redux';
 import { VictoryBar, VictoryAxis, VictoryChart, VictoryLabel } from 'victory-native';
 import { View, ActivityIndicator, Text } from 'react-native';
 import { Card, Title } from 'react-native-paper';
+import { base_url } from '../../constant/connection';
+import { dashboardHeaderAuth } from '../../constant/headers';
 
 import Axios from 'axios';
 import Helper from '../../helpers/helper';
-import { dataset_base_url } from '../../constant/connection';
 import style from '../../style/home.style';
 
 const BarChartComponent = ({ item, navigation, filterParams = {} }) => {
@@ -18,13 +19,8 @@ const BarChartComponent = ({ item, navigation, filterParams = {} }) => {
     const getWidgetData = async () => {
         try {
             setLoading(true);
-            const { data } = await Axios.post(`${dataset_base_url}/getDataSet?datasetId=${item.datasetId}`, filterParams, {
-                headers: {
-                    "Authorization": "Bearer " + userData.access_token,
-                    "Content-Type": "application/json",
-                    "Accept": "*/*",
-                    "username": "super.admin"
-                }
+            const { data } = await Axios.post(`${base_url}/dcp/dashboard/v2/getDataSet?datasetId=${item.datasetId}`, filterParams, {
+                headers: dashboardHeaderAuth(userData.access_token)
             });
 
             if (data) {

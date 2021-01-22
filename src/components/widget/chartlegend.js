@@ -8,10 +8,12 @@ import styles from '../../style/home.style';
 const ChartLegendComponent = ({ dataSet }) => {
 
   const generateLegend = () => (
-    dataSet.map((data) => (
-      <View style={styles.legendContainer}>
+    dataSet.map((data, index) => (
+      <View key={index} style={styles.legendContainer}>
         <Ionicons name="square" color={data.color} style={styles.legendIcon} />
-        <Text style={{ fontSize: 11, color: data.color }}>{`${data.percentage}% ${data.status} (${Helper.numberFormat(data.total, ",")})`}</Text>
+        <Text style={{ fontSize: 11, color: data.color }}>
+          {`${data.percentage}% ${data.status} (${Helper.numberFormat(data.total, ",")})`}
+        </Text>
       </View>
     ))
   )
