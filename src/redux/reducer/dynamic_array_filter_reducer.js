@@ -1,7 +1,5 @@
-import dayjs from 'dayjs';
-import moment from 'moment';
-import randomId from '../../helpers/randomId';
 import reduxString from '../reduxString';
+import dayjs from 'dayjs';
 //default form
 
 const dynamicFilter = [
@@ -116,14 +114,14 @@ const dynamicFilter = [
   {
     formId: 'first-activation-date-hard-code',
     label: 'First Activation Date',
-    value: moment().format('DD-MM-YYYY'),
+    value: dayjs().toDate(),
     type: 'DateTimePicker',
     params: '&firstActivationDate=',
   },
   {
     formId: 'pbr-exit-date-hard-code',
     label: 'PBR exit date',
-    value: moment().format('DD-MM-YYYY'),
+    value: dayjs().toDate(),
     type: 'DateTimePicker',
     params: '&pbrExitDate=',
   },

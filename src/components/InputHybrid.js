@@ -9,13 +9,14 @@ import {
   FlatList,
   Modal,
 } from 'react-native';
-import moment from 'moment';
+import dayjs from 'dayjs';
 import PropTypes from 'prop-types';
-import RNDateTimePicker from '@react-native-community/datetimepicker';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
+import RNDateTimePicker from '@react-native-community/datetimepicker';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import {inputHybridStyle} from '../style';
 import {colors} from '../constant/color';
-import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+
 const InputHybrid = (props) => {
   const {type} = props;
   switch (type) {
@@ -177,16 +178,16 @@ const DateInput = (props) => {
         isTouchable
         customTouchProps={{onPress: () => setShowDate(true)}}>
         <Text numberOfLines={1} style={{paddingVertical: 8, flex: 1}}>
-          {value}
+          {dayjs(value).format('DD-MM-YYYY')}
         </Text>
         <FontAwesome5 name={'calendar-alt'} color={colors.gray} size={20} />
       </ContainerInput>
       {showDate && (
         <RNDateTimePicker
-          value={new Date(value)}
+          value={value}
           onChange={(e) => {
             setShowDate(false);
-            onChange(moment(e.nativeEvent.timestamp).format('DD-MM-YYYY'));
+            onChange(dayjs(e.nativeEvent.timestamp).toDate());
           }}
           mode={'date'}
           is24Hour={true}
