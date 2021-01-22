@@ -116,14 +116,14 @@ const dynamicFilter = [
   {
     formId: 'first-activation-date-hard-code',
     label: 'First Activation Date',
-    value: moment().format('DD-MM-YYYY'),
+    value: moment().toDate(),
     type: 'DateTimePicker',
     params: '&firstActivationDate=',
   },
   {
     formId: 'pbr-exit-date-hard-code',
     label: 'PBR exit date',
-    value: moment().format('DD-MM-YYYY'),
+    value: moment().toDate(),
     type: 'DateTimePicker',
     params: '&pbrExitDate=',
   },
