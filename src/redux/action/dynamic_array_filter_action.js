@@ -64,7 +64,7 @@ const resetDataFilter = () => {
   return (dispatch, getState) => {
     const {dynamic_array_filter_reducer} = getState();
     const {array_filter} = dynamic_array_filter_reducer;
-    const resetedArray = array_filter.map(({type, ...value}) => {
+    const resetArray = array_filter.map(({type, ...value}) => {
       switch (type) {
         case 'DropDown':
           return {
@@ -95,7 +95,7 @@ const resetDataFilter = () => {
           return null;
       }
     });
-    dispatch(updateDataFilter(resetedArray));
+    dispatch(updateDataFilter(resetArray));
   };
 };
 export {updateDataFilter, resetDataFilter, setSomethingToFilter};
