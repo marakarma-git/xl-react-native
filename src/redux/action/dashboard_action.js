@@ -1,6 +1,6 @@
 import Axios from 'axios';
 import reduxString from '../reduxString';
-import { dashboard_base_url } from '../../constant/connection';
+import { base_url } from '../../constant/connection';
 import Helper from '../../helpers/helper';
 
 const setDashboardSummary = (data) => ({
@@ -22,7 +22,7 @@ export const getDashboardSummary = (accessToken) => {
     try {
       dispatch(requestDashboardData());
       const { data } = await Axios.get(
-        `${dashboard_base_url}/getSummaryDashboard`,
+        `${base_url}/dcp/dashboard/getSummaryDashboard`,
         {
           headers: {
             Authorization: 'Bearer ' + accessToken,
@@ -69,7 +69,7 @@ export const getWidgetList = (accessToken) => {
   return async (dispatch) => {
     try {
       dispatch(requestDashboardData());
-      const { data } = await Axios.get(`${dashboard_base_url}/getWidgetList`, {
+      const { data } = await Axios.get(`${base_url}/dcp/dashboard/getWidgetList`, {
         headers: {
           Authorization: 'Bearer ' + accessToken,
         },

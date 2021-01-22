@@ -1,11 +1,12 @@
-import React, {useState, useEffect} from 'react';
-import {useSelector} from 'react-redux';
-import {View, ActivityIndicator, Text} from 'react-native';
-import {Card, Title} from 'react-native-paper';
+import React, { useState, useEffect } from 'react';
+import { useSelector } from 'react-redux';
+import { View, ActivityIndicator, Text } from 'react-native';
+import { base_url } from '../../constant/connection';
+import { dashboardHeaderAuth } from '../../constant/headers';
+import { Card, Title } from 'react-native-paper';
 
 import Axios from 'axios';
 import Helper from '../../helpers/helper';
-import {dataset_base_url} from '../../constant/connection';
 import style from '../../style/home.style';
 
 const title = [
@@ -19,7 +20,7 @@ const title = [
   'Previous 30 Days, Average per SMS subscription',
 ];
 
-const AggregateTrafficComponent = ({item, navigation, filterParams = {}}) => {
+const AggregateTrafficComponent = ({ item, navigation, filterParams = {} }) => {
   const [dataSet, setDataSet] = useState(null);
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
@@ -28,16 +29,11 @@ const AggregateTrafficComponent = ({item, navigation, filterParams = {}}) => {
   const getWidgetData = async () => {
     try {
       setLoading(true);
-      const {data} = await Axios.post(
-        `${dataset_base_url}/getDataSet?datasetId=${item.datasetId}`,
+      const { data } = await Axios.post(
+        `${base_url}/dcp/dashboard/v2/getDataSet?datasetId=${item.datasetId}`,
         filterParams,
         {
-          headers: {
-            Authorization: 'Bearer ' + userData.access_token,
-            'Content-Type': 'application/json',
-            Accept: '*/*',
-            username: 'super.admin',
-          },
+          headers: dashboardHeaderAuth(userData.customerNo),
         },
       );
 
@@ -61,25 +57,25 @@ const AggregateTrafficComponent = ({item, navigation, filterParams = {}}) => {
       {dataSet.length > 0 ? (
         Object.keys(dataSet[0]).map((key, index) => (
           <View key={index} style={style.aggregateList}>
-            <Text style={{fontSize: 11}}>{title[index]}</Text>
-            <Text style={{fontSize: 11}}>
+            <Text style={{ fontSize: 11 }}>{title[index]}</Text>
+            <Text style={{ fontSize: 11 }}>
               {Helper.formatBytes(dataSet[0][key])}
             </Text>
           </View>
         ))
       ) : (
-        <View style={{marginTop: 30}}>
-          <Text
-            style={{
-              textAlign: 'center',
-              color: 'black',
-              fontSize: 14,
-              fontWeight: 'bold',
-            }}>
-            {error}
-          </Text>
-        </View>
-      )}
+          <View style={{ marginTop: 30 }}>
+            <Text
+              style={{
+                textAlign: 'center',
+                color: 'black',
+                fontSize: 14,
+                fontWeight: 'bold',
+              }}>
+              {error}
+            </Text>
+          </View>
+        )}
     </>
   );
 
@@ -102,10 +98,10 @@ const AggregateTrafficComponent = ({item, navigation, filterParams = {}}) => {
         {loading ? (
           <ActivityIndicator color="#002DBB" size="large" />
         ) : (
-          <View style={style.containerPie} pointerEvents="none">
-            {dataSet && parseData()}
-          </View>
-        )}
+            <View style={style.containerPie} pointerEvents="none">
+              {dataSet && parseData()}
+            </View>
+          )}
       </Card.Content>
     </Card>
   );
