@@ -177,13 +177,13 @@ const DateInput = (props) => {
         isTouchable
         customTouchProps={{onPress: () => setShowDate(true)}}>
         <Text numberOfLines={1} style={{paddingVertical: 8, flex: 1}}>
-          {value}
+          {value.label}
         </Text>
         <FontAwesome5 name={'calendar-alt'} color={colors.gray} size={20} />
       </ContainerInput>
       {showDate && (
         <RNDateTimePicker
-          value={new Date(value)}
+          value={moment().toDate()}
           onChange={(e) => {
             setShowDate(false);
             onChange(moment(e.nativeEvent.timestamp).format('DD-MM-YYYY'));
@@ -193,6 +193,9 @@ const DateInput = (props) => {
           display="default"
         />
       )}
+      <Text>
+        {JSON.stringify(moment().toDate())}
+      </Text>
     </React.Fragment>
   );
 };
