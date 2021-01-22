@@ -17,11 +17,11 @@ const Auth = ({ navigation }) => {
       dispatch(authLogout());
       navigation.replace('Login');
     }
+    dispatch(getTitleVersion())
     if (!lod.isEmpty(data)) {
       const { principal, access_token } = data || {};
       const { enterpriseId } = principal || {};
       dispatch(callEnterpriseLogo(enterpriseId, access_token));
-      dispatch(getTitleVersion())
     }
     if (statusCode === 0 && !lod.isEmpty(data)) {
       navigation.replace('Home');
