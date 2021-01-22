@@ -74,16 +74,19 @@ const getTitleVersionFail = (error) => ({
 });
 
 const getTitleVersion = () => {
+  console.log("Kepanggil title verdsion")
   return async (dispatch) => {
     try {
       const { data } = await Axios.get(
-        `${super_base_url}:18083/usr/getUserAppVersion`,
+        `${base_url}/user/usr/getUserAppVersion`,
         {
           headers: {
             Authorization: headerAuth,
           },
         },
       );
+
+      console.log(data, " <<< title version nih")
 
       if (data) {
         dispatch(
