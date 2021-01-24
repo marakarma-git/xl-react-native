@@ -37,15 +37,15 @@ const CustomDrawerContent = (props) => {
   const confirmLogout = () => {
     Alert.alert(
       'Logout',
-      'Apakah anda yakin ingin logout ?',
+      'Are you sure you want to logout ?',
       [
         {
-          text: 'Tidak',
+          text: 'No',
           onPress: () => console.log('Cancel Pressed'),
           style: 'cancel',
         },
         {
-          text: 'Yakin',
+          text: 'Yes',
           onPress: () => {
             dispatch(removeEnterPriseLogo());
             dispatch(authLogout());
