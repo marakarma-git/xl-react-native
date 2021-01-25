@@ -111,9 +111,10 @@ const MyAccountPage = (props) => {
               inputHandler={inputHandler}
             />
             {/* Todo Change Password */}
-            {/* <TouchableOpacity>
+            <TouchableOpacity
+              onPress={() => props.navigation.navigate("Change Password")}>
                 <Text style={styles.linkText}>Change Password</Text>
-              </TouchableOpacity> */}
+              </TouchableOpacity>
             {editable && (
               <TouchableOpacity
                 onPress={() => alert('Todo edit user')}

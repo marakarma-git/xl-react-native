@@ -4,6 +4,7 @@ import {
   DashboardPage,
   SubscriptionPage,
   MyAccountPage,
+  ChangePasswordPage
 } from './Home/index';
 import {CustomDrawerContent} from '../components/index';
 import {createDrawerNavigator} from '@react-navigation/drawer';
@@ -20,6 +21,7 @@ const Home = () => {
       <Drawer.Screen name="Dashboard" component={DashboardPage} />
       <Drawer.Screen name="Subscription" component={SubscriptionPage} />
       <Drawer.Screen name="Account" component={MyAccountPage} />
+      <Drawer.Screen name="Change Password" component={ChangePasswordPage} />
     </Drawer.Navigator>
   );
 };

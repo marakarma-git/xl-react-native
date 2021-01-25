@@ -130,5 +130,10 @@ export default {
   legendIcon: {
     fontSize: 16,
     paddingRight: 5
+  },
+  largeText: {
+    fontSize: 18,
+    color: 'white',
+    fontWeight: 'bold'
   }
 };
