@@ -105,4 +105,55 @@ export default {
     justifyContent: 'center',
     alignItems: 'center',
   },
+  passwordRulesContainer: {
+    width: '90%',
+    alignItems: 'flex-start',
+    marginBottom: 20
+  },
+  buttonGroupContainer: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    width: '90%',
+    height: 50,
+    marginVertical: 20
+  },
+  passwordInputWrapper: {
+    width: '100%',
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    height: device_height * 0.05,
+    borderWidth: 1,
+    borderColor: '#A8A8A8',
+    backgroundColor: 'white',
+    borderRadius: 5,
+    marginVertical: 10,
+    color: '#707070',
+    justifyContent: 'space-between'
+  },
+  passwordInput: {
+    width: '80%',
+    height: '100%',
+    paddingLeft: 10,
+  },
+  buttonShowHide: {
+    width: 50,
+    height: '100%',
+    justifyContent: 'center',
+    alignItems: 'center'
+  },
+  buttonGroup: {
+    width: 165,
+    height: 40,
+    borderRadius: 5,
+    backgroundColor: 'red',
+    justifyContent: 'center',
+    alignItems: 'center'
+  },
+  buttonText: {
+    fontSize: 16,
+    fontWeight: 'bold',
+    color: 'white'
+  }
 };

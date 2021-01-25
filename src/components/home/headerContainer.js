@@ -5,7 +5,9 @@ const homePageContainer = ({navigation, ...props}) => {
   const {companyLogo, headerTitle, children} = props || null;
   return (
     <>
-      <Header />
+      <Header 
+        notifications={true}
+      />
       <Navbar
         navigation={navigation}
         companyLogo={companyLogo}

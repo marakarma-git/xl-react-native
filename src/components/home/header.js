@@ -9,13 +9,15 @@ const HeaderComponent = (props) => {
   return (
     <View style={[homeStyle.headerContainer, props.customStyle]}>
       <Image source={xlBusol} style={homeStyle.headerImage} />
-      <TouchableOpacity onPress={() => Alert.alert('Notification')}>
+      {props.notifications 
+      && <TouchableOpacity onPress={() => Alert.alert('Notification')}>
         <MaterialCommunityIcons
           name={'bell-ring'}
           color={colors.yellow_bell}
           size={30}
         />
       </TouchableOpacity>
+      }
     </View>
   );
 };
