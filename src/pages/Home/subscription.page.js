@@ -1,5 +1,11 @@
 import React, {useEffect} from 'react';
-import {View, ScrollView, Text, TextInput} from 'react-native';
+import {
+  View,
+  ScrollView,
+  Text,
+  TextInput,
+  TouchableOpacity,
+} from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import {useDispatch, useSelector} from 'react-redux';
@@ -12,6 +18,7 @@ import {getStateLock} from '../../redux/action/get_state_lock_action';
 import {getEnterpriseCorp} from '../../redux/action/get_enterprise_corp_action';
 import {getStateCorp} from '../../redux/action/get_state_action';
 import {getEnterprisePackageName} from '../../redux/action/get_enterprise_package_name_action';
+import {border_radius} from '../../constant/config';
 const Container = (props) => {
   const {style, children} = props;
   return (
@@ -23,10 +30,6 @@ const LandingPage = ({navigation}) => {
   const {array_filter} = useSelector(
     (state) => state.dynamic_array_filter_reducer,
   );
-  const {
-    data_enterprise_package_name,
-    loading_enterprise_package_name,
-  } = useSelector((state) => state.get_enterprise_package_name_reducer);
   useEffect(() => {
     dispatch(getStateCorp());
     dispatch(getEnterpriseCorp());
@@ -34,7 +37,7 @@ const LandingPage = ({navigation}) => {
   }, [dispatch]);
   return (
     <HeaderContainer navigation={navigation} headerTitle={'Subscription'}>
-      <ScrollView>
+      <ScrollView style={{backgroundColor: 'white'}}>
         <OverlayBackground />
         <Container style={{marginTop: 28}}>
           <View style={subscriptionStyle.containerTitle}>
@@ -58,7 +61,7 @@ const LandingPage = ({navigation}) => {
             />
           </View>
         </Container>
-        <Container>
+        <Container style={{marginTop: 12}}>
           <Text style={{marginBottom: 7}}>Filter</Text>
           <View style={subscriptionStyle.containerWrap}>
             {array_filter.length > 0 &&
@@ -126,6 +129,30 @@ const LandingPage = ({navigation}) => {
               })}
           </View>
         </Container>
+        <View style={subscriptionStyle.buttonContainer}>
+          {['Clear', 'Find'].map((value) => {
+            return (
+              <TouchableOpacity
+                style={[
+                  {
+                    backgroundColor:
+                      value === 'Clear'
+                        ? colors.gray_400
+                        : colors.button_color_one,
+                  },
+                  subscriptionStyle.buttonStyle,
+                ]}>
+                <Text
+                  style={{
+                    color: value === 'Clear' ? 'black' : 'white',
+                    fontWeight: 'bold',
+                  }}>
+                  {value}
+                </Text>
+              </TouchableOpacity>
+            );
+          })}
+        </View>
       </ScrollView>
     </HeaderContainer>
   );

@@ -28,4 +28,20 @@ export default {
     flexDirection: 'row',
     justifyContent: 'space-between',
   },
+  buttonContainer: {
+    flex: 1,
+    justifyContent: 'flex-end',
+    flexDirection: 'row',
+    marginTop: 10,
+    marginBottom: 40,
+    marginRight: 15,
+  },
+  buttonStyle: {
+    paddingVertical: 10,
+    paddingHorizontal: 30,
+    marginLeft: 15,
+    marginVertical: 5,
+    elevation: 3,
+    borderRadius: border_radius,
+  },
 };
