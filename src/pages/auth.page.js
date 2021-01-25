@@ -1,16 +1,16 @@
-import React, {useEffect} from 'react';
-import {View, ActivityIndicator} from 'react-native';
-import {useSelector, useDispatch} from 'react-redux';
+import React, { useEffect } from 'react';
+import { View, ActivityIndicator } from 'react-native';
+import { useSelector, useDispatch } from 'react-redux';
 import SplashScreen from 'react-native-splash-screen';
 import lod from 'lodash';
-import {authLogout, getTitleVersion} from '../redux/action/auth_action';
+import { authLogout, getTitleVersion } from '../redux/action/auth_action';
 import callEnterpriseLogo, {
   removeEnterPriseLogo,
 } from '../redux/action/enterprise_action';
-const Auth = ({navigation}) => {
+const Auth = ({ navigation }) => {
   const dispatch = useDispatch();
-  const {data} = useSelector((state) => state.auth_reducer);
-  const {error, statusCode} = useSelector((state) => state.enterprise_reducer);
+  const { data } = useSelector((state) => state.auth_reducer);
+  const { error, statusCode } = useSelector((state) => state.enterprise_reducer);
   useEffect(() => {
     SplashScreen.hide();
     if (lod.isEmpty(data)) {
@@ -19,12 +19,18 @@ const Auth = ({navigation}) => {
     }
     dispatch(getTitleVersion());
     if (!lod.isEmpty(data)) {
-      const {principal, access_token} = data || {};
-      const {enterpriseId} = principal || {};
+      const { principal, access_token } = data || {};
+      const { enterpriseId } = principal || {};
       dispatch(callEnterpriseLogo(enterpriseId, access_token));
     }
     if (statusCode === 0 && !lod.isEmpty(data)) {
-      navigation.replace('Home');
+      if (data.principal.mustChangePass) {
+        dispatch(authLogout());
+        navigation.replace('Login');
+      }
+      else {
+        navigation.replace('Home')
+      };
     }
   }, [navigation, dispatch, data, statusCode]);
   useEffect(() => {
@@ -34,7 +40,7 @@ const Auth = ({navigation}) => {
     }
   }, [dispatch, error, navigation]);
   return (
-    <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
+    <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
       <ActivityIndicator size={'large'} color={'black'} />
     </View>
   );

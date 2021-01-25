@@ -6,7 +6,7 @@ import {
   height_keyboard,
   reguler_font_size,
 } from '../constant/config';
-import {colors} from '../constant/color';
+import { colors } from '../constant/color';
 export default {
   container: {
     backgroundColor: 'white'
@@ -51,6 +51,7 @@ export default {
     color: 'red',
     textAlign: 'center',
     paddingTop: 10,
+    paddingHorizontal: 20
   },
   normalText: {
     fontSize: 12,

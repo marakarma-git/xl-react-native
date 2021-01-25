@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   View,
   ScrollView,
@@ -9,35 +9,36 @@ import {
   TouchableWithoutFeedback,
   Text,
 } from 'react-native';
-import {Button} from 'react-native-elements';
+import { Button } from 'react-native-elements';
 import lod from 'lodash';
 import styles from '../style/login.style';
-import {useDispatch, useSelector} from 'react-redux';
-import {authLogin, authLogout} from '../redux/action/auth_action';
+import { useDispatch, useSelector } from 'react-redux';
+import { authLogin, authLogout } from '../redux/action/auth_action';
 import callEnterpriseLogo from '../redux/action/enterprise_action';
 const busolLogo = require('../assets/images/logo/xl-busol-inverted.png');
-const Login = ({navigation}) => {
+const Login = ({ navigation }) => {
   const [localLoading, setLocalLoading] = useState(false);
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [errorText, setErrorText] = useState(null);
   const dispatch = useDispatch();
-  const {data, error} = useSelector((state) => state.auth_reducer);
+  const { data, error } = useSelector((state) => state.auth_reducer);
   const alreadyRequest = useSelector(
     (state) => state.auth_reducer.alreadyRequest,
   );
   const titleVersion = useSelector((state) => state.auth_reducer.titleVersion);
-  const {statusCode, error: errorCheck} = useSelector(
+  const { statusCode, error: errorCheck } = useSelector(
     (state) => state.enterprise_reducer,
   );
   useEffect(() => {
     if (!lod.isEmpty(data)) {
-      const {principal, access_token} = data || {};
-      const {enterpriseId} = principal || {};
+      const { principal, access_token } = data || {};
+      const { enterpriseId } = principal || {};
       dispatch(callEnterpriseLogo(enterpriseId, access_token));
     }
     if (statusCode === 0 && !lod.isEmpty(data)) {
-      navigation.replace('Home');
+      if (data.principal.mustChangePass) navigation.replace("Change Password");
+      else navigation.replace('Home');
     }
   }, [data, dispatch, navigation, statusCode]);
   useEffect(() => {
@@ -46,7 +47,7 @@ const Login = ({navigation}) => {
       setLocalLoading(false);
 
       if (alreadyRequest) {
-        setErrorText('Invalid username or password');
+        errorHandler(error);
       }
     }
     if (errorCheck !== '') {
@@ -66,6 +67,13 @@ const Login = ({navigation}) => {
       }
     }
   };
+
+  const errorHandler = (error) => {
+    if (error.error === 'invalid_grant') setErrorText('The username or password is incorrect')
+    if (error.error === 'unauthorized') setErrorText(`Sorry for security reasons, after 3 more failed login\nattempts you'll have to wait ${error.error_description.split(': ')[1]} before trying again`)
+    if (error.error_description === 'User is disabled') setErrorText(`Your account hasn't been verified. Please verify your\naccount on the email to enable you to log in`)
+  }
+
   return (
     <ScrollView style={styles.container}>
       <KeyboardAvoidingView
@@ -76,7 +84,7 @@ const Login = ({navigation}) => {
             <View style={styles.imageContainer}>
               <Image style={styles.imageSize} source={busolLogo} />
             </View>
-            <View style={{justifyContent: 'center', marginVertical: 20}}>
+            <View style={{ justifyContent: 'center', marginVertical: 20 }}>
               <Text style={styles.titleText}>IoT Connectivity+</Text>
               {errorText && <Text style={styles.errorText}>{errorText}</Text>}
             </View>
@@ -115,7 +123,7 @@ const Login = ({navigation}) => {
         </TouchableWithoutFeedback>
       </KeyboardAvoidingView>
       <View style={styles.footer}>
-        <Text style={{fontWeight: 'bold'}}>
+        <Text style={{ fontWeight: 'bold' }}>
           IoT SIMCare {titleVersion || ''}
         </Text>
       </View>
