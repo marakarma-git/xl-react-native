@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import {View, ScrollView, Text, TextInput} from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
@@ -8,7 +8,10 @@ import {subscriptionStyle} from '../../style';
 import InputHybrid from '../../components/InputHybrid';
 import {HeaderContainer, OverlayBackground} from '../../components/index';
 import {setSomethingToFilter} from '../../redux/action/dynamic_array_filter_action';
-
+import {getStateLock} from '../../redux/action/get_state_lock_action';
+import {getEnterpriseCorp} from '../../redux/action/get_enterprise_corp_action';
+import {getStateCorp} from '../../redux/action/get_state_action';
+import {getEnterprisePackageName} from '../../redux/action/get_enterprise_package_name_action';
 const Container = (props) => {
   const {style, children} = props;
   return (
@@ -20,6 +23,15 @@ const LandingPage = ({navigation}) => {
   const {array_filter} = useSelector(
     (state) => state.dynamic_array_filter_reducer,
   );
+  const {
+    data_enterprise_package_name,
+    loading_enterprise_package_name,
+  } = useSelector((state) => state.get_enterprise_package_name_reducer);
+  useEffect(() => {
+    dispatch(getStateCorp());
+    dispatch(getEnterpriseCorp());
+    dispatch(getStateLock());
+  }, [dispatch]);
   return (
     <HeaderContainer navigation={navigation} headerTitle={'Subscription'}>
       <ScrollView>
@@ -76,7 +88,20 @@ const LandingPage = ({navigation}) => {
                         ]),
                       )
                     }
-                    onChange={(e) =>
+                    onChange={(e) => {
+                      if (formId === 'enterprise-hard-code') {
+                        dispatch(getEnterprisePackageName(e.value));
+                        dispatch(
+                          setSomethingToFilter([
+                            {
+                              formId: formId,
+                              needs: `OnChange${type}`,
+                              value: e,
+                              selectedValue: selectedValue,
+                            },
+                          ]),
+                        );
+                      }
                       dispatch(
                         setSomethingToFilter([
                           {
@@ -86,8 +111,8 @@ const LandingPage = ({navigation}) => {
                             selectedValue: selectedValue,
                           },
                         ]),
-                      )
-                    }
+                      );
+                    }}
                     errorText={errorText}
                     disabled={disabled}
                     type={type}

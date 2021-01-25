@@ -1,10 +1,8 @@
 import React from 'react';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import {View, Image, Text, Alert, TouchableWithoutFeedback} from 'react-native';
+import {View, Image, Text, Alert} from 'react-native';
 import {DrawerContentScrollView, DrawerItem} from '@react-navigation/drawer';
-import {StackActions} from '@react-navigation/native';
 import {
-  iconUser,
   iconHome,
   iconComponents,
   iconGrids,
@@ -14,7 +12,7 @@ import {useSelector, useDispatch} from 'react-redux';
 import {authLogout} from '../../redux/action/auth_action';
 import styles from '../../style/drawer.style';
 import {removeEnterPriseLogo} from '../../redux/action/enterprise_action';
-import { TouchableOpacity } from 'react-native';
+import {TouchableOpacity} from 'react-native';
 
 const drawerData = [
   {
@@ -62,16 +60,15 @@ const CustomDrawerContent = (props) => {
 
   return (
     <DrawerContentScrollView {...props} style={{padding: 0}}>
-      <View
-         style={styles.avatarContainer}>
-          {/* To-do Avatar Icon jika API sudah ada */}
+      <View style={styles.avatarContainer}>
+        {/* To-do Avatar Icon jika API sudah ada */}
         <TouchableOpacity
-          onPress={() => props.navigation.navigate('Account')} 
+          onPress={() => props.navigation.navigate('Account')}
           style={styles.userImageContainer}>
-          <Ionicons name={'md-person'} color={'white'} size={24} /> 
-        </TouchableOpacity>  
-        <TouchableOpacity 
-          onPress={() => props.navigation.navigate('Account')} 
+          <Ionicons name={'md-person'} color={'white'} size={24} />
+        </TouchableOpacity>
+        <TouchableOpacity
+          onPress={() => props.navigation.navigate('Account')}
           style={{paddingLeft: 15}}>
           <Text style={styles.userName}>
             {userData.principal
@@ -79,7 +76,7 @@ const CustomDrawerContent = (props) => {
               : ''}
           </Text>
           <Text style={{color: '#4BC1FD'}}>
-            {userData.principal && `${userData.principal.email || "-"}` }
+            {userData.principal && `${userData.principal.email || '-'}`}
           </Text>
         </TouchableOpacity>
       </View>

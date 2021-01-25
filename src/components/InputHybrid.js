@@ -123,8 +123,8 @@ const SelectInput = (props) => {
           value={value.value}
           onClose={() => setVisible(false)}
           onChange={(e) => {
-            setVisible(false);
             onChange(e);
+            setVisible(false);
           }}
         />
       )}
@@ -160,8 +160,8 @@ const SelectInputType2 = (props) => {
           value={selectedValue.value}
           onClose={() => setVisible(false)}
           onChange={(e) => {
-            setVisible(false);
             onChange2(e);
+            setVisible(false);
           }}
         />
       )}
@@ -209,7 +209,7 @@ const ModalPicker = (props) => {
   useEffect(() => {
     if (data.length > 0) {
       const results = data.filter((item) =>
-        item.label.toLowerCase().includes(searchText),
+        item.label.toLowerCase().includes(searchText.toLowerCase()),
       );
       setSearchResult(results);
     }
@@ -242,7 +242,9 @@ const ModalPicker = (props) => {
             const {label} = item;
             return (
               <TouchableOpacity
-                onPress={() => onChange(item)}
+                onPress={() => {
+                  onChange(item);
+                }}
                 style={[
                   {
                     backgroundColor:
@@ -251,7 +253,7 @@ const ModalPicker = (props) => {
                   inputHybridStyle.modalItem,
                 ]}>
                 <Text style={{flex: 1}}>{label}</Text>
-                {label === value && (
+                {(label === value || item.value === value) && (
                   <MaterialCommunityIcons
                     name={'check-bold'}
                     color={colors.green_check}

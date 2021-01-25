@@ -53,7 +53,7 @@ const Login = ({navigation}) => {
       dispatch(authLogout());
       setLocalLoading(false);
     }
-  }, [error, errorCheck, dispatch]);
+  }, [error, errorCheck, dispatch, alreadyRequest]);
   const onSubmit = () => {
     if (username.length > 0 && password.length > 0) {
       dispatch(authLogin(username, password));

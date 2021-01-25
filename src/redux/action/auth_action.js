@@ -1,8 +1,8 @@
 import Axios from 'axios';
-import { base_url, headerAuth, super_base_url } from '../../constant/connection';
+import {base_url, headerAuth} from '../../constant/connection';
 import subDomain from '../../constant/requestSubPath';
 import reduxString from '../reduxString';
-import { removeEnterPriseLogo } from './enterprise_action';
+import {removeEnterPriseLogo} from './enterprise_action';
 
 const authRequest = () => {
   return {
@@ -43,7 +43,7 @@ const authLogin = (username, password) => {
   return async (dispatch) => {
     dispatch(authRequest());
     try {
-      const { data } = await Axios.post(
+      const {data} = await Axios.post(
         `${base_url}${subDomain.fetchLogin}`,
         formData,
         {
@@ -74,19 +74,16 @@ const getTitleVersionFail = (error) => ({
 });
 
 const getTitleVersion = () => {
-  console.log("Kepanggil title verdsion")
+  console.log('Kepanggil title verdsion');
   return async (dispatch) => {
     try {
-      const { data } = await Axios.get(
-        `${base_url}/user/usr/getUserAppVersion`,
-        {
-          headers: {
-            Authorization: headerAuth,
-          },
+      const {data} = await Axios.get(`${base_url}/user/usr/getUserAppVersion`, {
+        headers: {
+          Authorization: headerAuth,
         },
-      );
+      });
 
-      console.log(data, " <<< title version nih")
+      console.log(data, ' <<< title version nih');
 
       if (data) {
         dispatch(
@@ -99,4 +96,4 @@ const getTitleVersion = () => {
   };
 };
 
-export { authLogin, authLogout, getTitleVersion };
+export {authLogin, authLogout, getTitleVersion};

@@ -1,29 +1,30 @@
 import reduxString from '../reduxString';
 import dayjs from 'dayjs';
 //default form
-
+// {
+//   formId: 'in-session-hard-code',
+//     label: 'In Session',
+//   disabled: true,
+//   loading: false,
+//   errorText: '',
+//   value: {},
+//   data: [],
+//     type: 'DropDown',
+//   params: '&inSession=',
+// },
 const dynamicFilter = [
   {
     formId: 'imsi-hard-code',
     label: 'IMSI',
+    disabled: false,
     value: '',
     type: 'TextInput',
     params: '&imsi=',
   },
   {
-    formId: 'in-session-hard-code',
-    label: 'In Session',
-    disabled: false,
-    loading: false,
-    errorText: '',
-    value: {},
-    data: [],
-    type: 'DropDown',
-    params: '&inSession=',
-  },
-  {
     formId: 'iccid-hard-code',
     label: 'ICCID',
+    disabled: false,
     value: '',
     type: 'TextInput',
     params: '&iccid=',
@@ -31,6 +32,7 @@ const dynamicFilter = [
   {
     formId: 'detected-imei-hard-code',
     label: 'Detected IMEI',
+    disabled: false,
     value: '',
     type: 'TextInput',
     params: '&imei=',
@@ -50,6 +52,7 @@ const dynamicFilter = [
   {
     formId: 'fixed-ip-hard-code',
     label: 'Fixed IP',
+    disabled: false,
     value: '',
     type: 'TextInput',
     params: '&fixedIP=',
@@ -57,6 +60,7 @@ const dynamicFilter = [
   {
     formId: 'label-hard-code',
     label: 'Label',
+    disabled: false,
     value: '',
     type: 'TextInput',
     params: '&label=',
@@ -67,7 +71,6 @@ const dynamicFilter = [
     disabled: false,
     loading: false,
     errorText: '',
-    error: '',
     value: {},
     data: [],
     type: 'DropDown',
@@ -76,6 +79,7 @@ const dynamicFilter = [
   {
     formId: 'apn-hard-code',
     label: 'APN',
+    disabled: false,
     value: '',
     type: 'TextInput',
     params: '&apn=',
@@ -86,19 +90,17 @@ const dynamicFilter = [
     disabled: false,
     loading: false,
     errorText: '',
-    error: '',
     value: {},
     data: [],
     type: 'DropDown',
     params: '&state=',
   },
   {
-    formId: 'subscription-package-name',
+    formId: 'subscription-package-name-hard-code',
     label: 'Subscription Package Name',
-    disabled: false,
+    disabled: true,
     loading: false,
     errorText: '',
-    error: '',
     value: {},
     data: [],
     type: 'DropDown',
@@ -107,6 +109,7 @@ const dynamicFilter = [
   {
     formId: 'specification-id-hard-code',
     label: 'Specification ID',
+    disabled: false,
     value: '',
     type: 'TextInput',
     params: '&specificationId=',
@@ -114,6 +117,7 @@ const dynamicFilter = [
   {
     formId: 'first-activation-date-hard-code',
     label: 'First Activation Date',
+    disabled: false,
     value: dayjs().toDate(),
     type: 'DateTimePicker',
     params: '&firstActivationDate=',
@@ -121,6 +125,7 @@ const dynamicFilter = [
   {
     formId: 'pbr-exit-date-hard-code',
     label: 'PBR exit date',
+    disabled: false,
     value: dayjs().toDate(),
     type: 'DateTimePicker',
     params: '&pbrExitDate=',
@@ -128,20 +133,53 @@ const dynamicFilter = [
   {
     formId: 'monthly-data-hard-code',
     label: 'Monthly Data',
+    disabled: false,
     value: '',
     type: 'DropDownType2',
     params: '&monthlyData=',
-    data: [],
+    data: [
+      {
+        value: 'KB',
+        label: 'KB',
+      },
+      {
+        value: 'MB',
+        label: 'MB',
+      },
+      {
+        value: 'GB',
+        label: 'GB',
+      },
+      {
+        value: 'TB',
+        label: 'TB',
+      },
+      {
+        value: 'KiB',
+        label: 'KiB',
+      },
+      {
+        value: 'MIB',
+        label: 'MIB',
+      },
+      {
+        value: 'GIB',
+        label: 'GIB',
+      },
+      {
+        value: 'TIB',
+        label: 'TIB',
+      },
+    ],
     selectedValue: {},
   },
   {
     formId: 'monthly-sms-hard-code',
     label: 'Monthly SMS',
+    disabled: false,
     value: '',
     type: 'TextInput',
     params: '&monthlySms=',
-    data: [],
-    selectedValue: {},
   },
 ];
 const initialState = {

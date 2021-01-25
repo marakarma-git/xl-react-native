@@ -12,8 +12,10 @@ const setSomethingToFilter = (dataObject = []) => {
   // {
   //   formId: "" -> is_required,
   //   needs: please refer to switch case in down bellow -> is_required,
-  //   errorText: just for sending array
+  //   value: just for sending selectedValue only
   //   data: for array purpose only, -> is not require for loading
+  //   errorText: for error only
+  //   selectedValue: for selectedValue dropDown type 2
   // }
   return (dispatch, getState) => {
     const {dynamic_array_filter_reducer} = getState();
@@ -29,6 +31,16 @@ const setSomethingToFilter = (dataObject = []) => {
         case 'FilterLoadingFalse':
           newArr[getIndex].loading = false;
           return dispatch(updateDataFilter(newArr));
+        case 'DisabledInput':
+          newArr[getIndex].disabled = true;
+          return dispatch(updateDataFilter(newArr));
+        case 'ResetSubscriptionPackageName':
+          newArr[getIndex].disabled = true;
+          newArr[getIndex].loading = false;
+          newArr[getIndex].errorText = '';
+          newArr[getIndex].value = {};
+          newArr[getIndex].data = [];
+          return dispatch(updateDataFilter(newArr));
         case 'SetFilterErrorText':
           newArr[getIndex].errorText = errorText;
           return dispatch(updateDataFilter(newArr));
@@ -37,6 +49,8 @@ const setSomethingToFilter = (dataObject = []) => {
           return dispatch(updateDataFilter(newArr));
         case 'AddFilterData':
           newArr[getIndex].data = data;
+          newArr[getIndex].loading = false;
+          newArr[getIndex].disabled = false;
           return dispatch(updateDataFilter(newArr));
         case 'RemoveFilterData':
           newArr[getIndex].data = [];

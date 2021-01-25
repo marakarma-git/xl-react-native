@@ -1,6 +1,6 @@
 import Axios from 'axios';
 import reduxString from '../reduxString';
-import { base_url } from '../../constant/connection';
+import {base_url} from '../../constant/connection';
 import Helper from '../../helpers/helper';
 
 const setDashboardSummary = (data) => ({
@@ -21,7 +21,7 @@ export const getDashboardSummary = (accessToken) => {
   return async (dispatch) => {
     try {
       dispatch(requestDashboardData());
-      const { data } = await Axios.get(
+      const {data} = await Axios.get(
         `${base_url}/dcp/dashboard/getSummaryDashboard`,
         {
           headers: {
@@ -32,9 +32,9 @@ export const getDashboardSummary = (accessToken) => {
       if (data) {
         if (data.statusCode === 0) {
           const summaryData = [
-            { title: 'Total SIM Card', resultId: 'totalsimcard' },
-            { title: 'Total Active Session', resultId: 'totalactivesim' },
-            { title: 'Total Active SIM Card', resultId: 'totalactivesession' },
+            {title: 'Total SIM Card', resultId: 'totalsimcard'},
+            {title: 'Total Active Session', resultId: 'totalactivesim'},
+            {title: 'Total Active SIM Card', resultId: 'totalactivesession'},
             {
               title: 'Total Aggregated Traffic',
               resultId: 'totalaggregatedtraffic',
@@ -69,16 +69,18 @@ export const getWidgetList = (accessToken) => {
   return async (dispatch) => {
     try {
       dispatch(requestDashboardData());
-      const { data } = await Axios.get(`${base_url}/dcp/dashboard/getWidgetList`, {
-        headers: {
-          Authorization: 'Bearer ' + accessToken,
+      const {data} = await Axios.get(
+        `${base_url}/dcp/dashboard/getWidgetList`,
+        {
+          headers: {
+            Authorization: 'Bearer ' + accessToken,
+          },
         },
-      });
+      );
 
       if (data) {
         if (data.statusCode === 0) {
           dispatch(setWidgetList(data.result.reverse()));
-
         } else {
           throw new Error(data);
         }
