@@ -77,7 +77,7 @@ const PasswordInput = ({ submitHandler, requestLoading, navigation }) => {
             <View key={index} style={styles.formGroup}>
                 <Text style={styles.label}>
                     {forms.label}
-                    {forms.required && <Text style={{ color: 'red' }}>*</Text>}
+                    {forms.required && <Text style={{ color: 'red' }}> *</Text>}
                 </Text>
                 <View style={styles.passwordInputWrapper}>
                     <TextInput
@@ -130,16 +130,11 @@ const PasswordInput = ({ submitHandler, requestLoading, navigation }) => {
     }
 
     useEffect(() => {
-
-        console.log(navigation, " <<<< ")
-
         if (form.confirmPassword.length > 0) {
             matchConfirmPassword();
         }
         checkFormComplete();
-
         return;
-
     }, [form]);
 
     return (
