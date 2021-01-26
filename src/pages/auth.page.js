@@ -14,7 +14,7 @@ const Auth = ({navigation}) => {
   useEffect(() => {
     SplashScreen.hide();
     if (lod.isEmpty(data)) {
-      dispatch(authLogout(navigation));
+      dispatch(authLogout());
       navigation.replace('Login');
     }
     dispatch(getTitleVersion());
@@ -25,7 +25,7 @@ const Auth = ({navigation}) => {
     }
     if (statusCode === 0 && !lod.isEmpty(data)) {
       if (data.principal.mustChangePass) {
-        dispatch(authLogout(navigation));
+        dispatch(authLogout());
         navigation.replace('Login');
       } else {
         navigation.replace('Home');
@@ -34,10 +34,10 @@ const Auth = ({navigation}) => {
   }, [navigation, dispatch, data, statusCode]);
   useEffect(() => {
     if (error) {
-      dispatch(authLogout(navigation));
+      dispatch(authLogout());
       dispatch(removeEnterPriseLogo());
     }
-  }, [dispatch, error, navigation]);
+  }, [dispatch, error]);
   return (
     <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
       <ActivityIndicator size={'large'} color={'black'} />
