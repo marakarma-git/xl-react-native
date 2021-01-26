@@ -47,6 +47,7 @@ const Login = ({ navigation }) => {
       setLocalLoading(false);
 
       if (alreadyRequest) {
+        console.log(error, " <<< ")
         errorHandler(error);
       }
     }
