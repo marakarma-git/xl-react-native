@@ -2,6 +2,7 @@ import reduxString from '../reduxString';
 import axios from 'axios';
 import {base_url} from '../../constant/connection';
 import {setSomethingToFilter} from './dynamic_array_filter_action';
+import {authLogout} from './auth_action';
 
 const getStateLoading = () => {
   return {
@@ -26,7 +27,7 @@ const getStateReset = () => {
   };
 };
 
-const getStateCorp = () => {
+const getStateCorp = (navigation) => {
   return async (dispatch, getState) => {
     dispatch(getStateLoading());
     dispatch(
@@ -46,6 +47,9 @@ const getStateCorp = () => {
         },
       })
       .then(({data}) => {
+        if (data.error === 'invalid_token') {
+          dispatch(authLogout(navigation));
+        }
         if (data.statusCode === 0) {
           dispatch(getStateSuccess(data.result));
           dispatch(
@@ -60,8 +64,6 @@ const getStateCorp = () => {
               },
             ]),
           );
-        } else if (data.error === 'invalid_token') {
-          alert('token is invalid');
         } else {
           dispatch(getStateFailed(JSON.stringify(data)));
           dispatch(

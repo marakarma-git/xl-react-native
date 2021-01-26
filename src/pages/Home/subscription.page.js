@@ -18,7 +18,7 @@ import {getStateLock} from '../../redux/action/get_state_lock_action';
 import {getEnterpriseCorp} from '../../redux/action/get_enterprise_corp_action';
 import {getStateCorp} from '../../redux/action/get_state_action';
 import {getEnterprisePackageName} from '../../redux/action/get_enterprise_package_name_action';
-import {border_radius} from '../../constant/config';
+
 const Container = (props) => {
   const {style, children} = props;
   return (
@@ -31,10 +31,10 @@ const LandingPage = ({navigation}) => {
     (state) => state.dynamic_array_filter_reducer,
   );
   useEffect(() => {
-    dispatch(getStateCorp());
-    dispatch(getEnterpriseCorp());
-    dispatch(getStateLock());
-  }, [dispatch]);
+    dispatch(getStateCorp(navigation));
+    dispatch(getEnterpriseCorp(navigation));
+    dispatch(getStateLock(navigation));
+  }, [navigation, dispatch]);
   return (
     <HeaderContainer navigation={navigation} headerTitle={'Subscription'}>
       <ScrollView style={{backgroundColor: 'white'}}>
