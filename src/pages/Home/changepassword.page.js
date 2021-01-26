@@ -36,7 +36,7 @@ const ChangePasswordPage = ({navigation}) => {
       }
     } catch (error) {
       setRequestLoading(false);
-      ToastAndroid.show('Terdapat Kesalahan Jaringan', ToastAndroid.LONG);
+      ToastAndroid.show(JSON.stringify(error), ToastAndroid.LONG);
     }
   };
 
