@@ -20,6 +20,7 @@ const dynamicFilter = [
     value: '',
     type: 'TextInput',
     params: '&imsi=',
+    hard_code: true,
   },
   {
     formId: 'iccid-hard-code',
@@ -28,6 +29,7 @@ const dynamicFilter = [
     value: '',
     type: 'TextInput',
     params: '&iccid=',
+    hard_code: true,
   },
   {
     formId: 'detected-imei-hard-code',
@@ -36,6 +38,7 @@ const dynamicFilter = [
     value: '',
     type: 'TextInput',
     params: '&imei=',
+    hard_code: true,
   },
   {
     formId: 'enterprise-hard-code',
@@ -48,6 +51,7 @@ const dynamicFilter = [
     data: [],
     type: 'DropDown',
     params: '&enterprise=',
+    hard_code: true,
   },
   {
     formId: 'fixed-ip-hard-code',
@@ -56,6 +60,7 @@ const dynamicFilter = [
     value: '',
     type: 'TextInput',
     params: '&fixedIP=',
+    hard_code: true,
   },
   {
     formId: 'label-hard-code',
@@ -64,6 +69,7 @@ const dynamicFilter = [
     value: '',
     type: 'TextInput',
     params: '&label=',
+    hard_code: true,
   },
   {
     formId: 'state-hard-code',
@@ -75,6 +81,7 @@ const dynamicFilter = [
     data: [],
     type: 'DropDown',
     params: '&label=',
+    hard_code: true,
   },
   {
     formId: 'apn-hard-code',
@@ -83,6 +90,7 @@ const dynamicFilter = [
     value: '',
     type: 'TextInput',
     params: '&apn=',
+    hard_code: true,
   },
   {
     formId: 'state-lock-hard-code',
@@ -94,6 +102,7 @@ const dynamicFilter = [
     data: [],
     type: 'DropDown',
     params: '&state=',
+    hard_code: true,
   },
   {
     formId: 'subscription-package-name-hard-code',
@@ -105,6 +114,7 @@ const dynamicFilter = [
     data: [],
     type: 'DropDown',
     params: '&subscriptionPackageName=',
+    hard_code: true,
   },
   {
     formId: 'specification-id-hard-code',
@@ -113,6 +123,7 @@ const dynamicFilter = [
     value: '',
     type: 'TextInput',
     params: '&specificationId=',
+    hard_code: true,
   },
   {
     formId: 'first-activation-date-hard-code',
@@ -121,6 +132,7 @@ const dynamicFilter = [
     value: dayjs().toDate(),
     type: 'DateTimePicker',
     params: '&firstActivationDate=',
+    hard_code: true,
   },
   {
     formId: 'pbr-exit-date-hard-code',
@@ -129,6 +141,7 @@ const dynamicFilter = [
     value: dayjs().toDate(),
     type: 'DateTimePicker',
     params: '&pbrExitDate=',
+    hard_code: true,
   },
   {
     formId: 'monthly-data-hard-code',
@@ -172,6 +185,7 @@ const dynamicFilter = [
       },
     ],
     selectedValue: {},
+    hard_code: true,
   },
   {
     formId: 'monthly-sms-hard-code',
@@ -180,16 +194,40 @@ const dynamicFilter = [
     value: '',
     type: 'TextInput',
     params: '&monthlySms=',
+    hard_code: true,
   },
 ];
 const initialState = {
+  searchText: '',
+  generatedParams: '',
   array_filter: dynamicFilter,
 };
 const dynamic_array_filter_reducer = (state = initialState, action) => {
   switch (action.type) {
     case reduxString.UPDATE_DATA_FILTER:
       return {
+        ...state,
         array_filter: action.payload,
+      };
+    case reduxString.UPDATE_DATA_SEARCH_TEXT:
+      return {
+        ...state,
+        searchText: action.searchText,
+      };
+    case reduxString.RESET_DATA_SEARCH_TEXT:
+      return {
+        ...state,
+        searchText: '',
+      };
+    case reduxString.UPDATE_GENERATED_PARAMS:
+      return {
+        ...state,
+        generatedParams: action.generatedParams,
+      };
+    case reduxString.RESET_GENERATED_PARAMS:
+      return {
+        ...state,
+        generatedParams: '',
       };
     default:
       return state;

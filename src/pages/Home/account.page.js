@@ -52,7 +52,7 @@ const MyAccountPage = (props) => {
           text: 'Yes',
           onPress: () => {
             dispatch(removeEnterPriseLogo());
-            dispatch(authLogout());
+            dispatch(authLogout(props.navigation));
             props.navigation.reset({
               index: 0,
               routes: [{name: 'Auth'}],
@@ -112,9 +112,9 @@ const MyAccountPage = (props) => {
             />
             {/* Todo Change Password */}
             <TouchableOpacity
-              onPress={() => props.navigation.navigate("Change Password")}>
-                <Text style={styles.linkText}>Change Password</Text>
-              </TouchableOpacity>
+              onPress={() => props.navigation.navigate('Change Password')}>
+              <Text style={styles.linkText}>Change Password</Text>
+            </TouchableOpacity>
             {editable && (
               <TouchableOpacity
                 onPress={() => alert('Todo edit user')}

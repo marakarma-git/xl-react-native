@@ -2,6 +2,7 @@ import reduxString from '../reduxString';
 import {setSomethingToFilter} from './dynamic_array_filter_action';
 import axios from 'axios';
 import {base_url} from '../../constant/connection';
+import {authLogout} from './auth_action';
 
 const getEnterprisePackageNameLoading = () => {
   return {
@@ -25,7 +26,7 @@ const getEnterprisePackageNameReset = () => {
     type: reduxString.GET_ENTERPRISE_PACKAGE_NAME_RESET,
   };
 };
-const getEnterprisePackageName = (enterpriseName) => {
+const getEnterprisePackageName = (enterpriseName, navigation) => {
   return async (dispatch, getState) => {
     dispatch(getEnterprisePackageNameLoading());
     dispatch(
@@ -52,6 +53,9 @@ const getEnterprisePackageName = (enterpriseName) => {
         },
       )
       .then(({data}) => {
+        if (data.error === 'invalid_token') {
+          dispatch(authLogout(navigation));
+        }
         if (data.statusCode === 0) {
           dispatch(getEnterprisePackageNameSuccess(data.result));
           dispatch(
@@ -66,7 +70,6 @@ const getEnterprisePackageName = (enterpriseName) => {
               },
             ]),
           );
-        } else if (data.error === 'invalid_token') {
         } else {
           dispatch(getEnterprisePackageNameFailed(JSON.stringify(data)));
           dispatch(
@@ -78,14 +81,13 @@ const getEnterprisePackageName = (enterpriseName) => {
               {
                 formId: 'subscription-package-name-hard-code',
                 needs: 'SetFilterErrorText',
-                errorText: 'failed to load list',
+                errorText: 'else failed to load list',
               },
             ]),
           );
         }
       })
       .catch((e) => {
-        alert(JSON.stringify(e));
         dispatch(getEnterprisePackageNameFailed(e));
         dispatch(
           setSomethingToFilter([
@@ -96,7 +98,7 @@ const getEnterprisePackageName = (enterpriseName) => {
             {
               formId: 'subscription-package-name-hard-code',
               needs: 'SetFilterErrorText',
-              errorText: 'failed to load list',
+              errorText: 'catch failed to load list',
             },
           ]),
         );

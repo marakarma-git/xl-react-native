@@ -2,6 +2,7 @@ import reduxString from '../reduxString';
 import axios from 'axios';
 import {base_url} from '../../constant/connection';
 import {setSomethingToFilter} from './dynamic_array_filter_action';
+import {authLogout} from './auth_action';
 
 const getStateLockLoading = () => {
   return {
@@ -25,7 +26,7 @@ const getStateLockReset = () => {
     type: reduxString.GET_STATE_LOCK_RESET,
   };
 };
-const getStateLock = () => {
+const getStateLock = (navigation) => {
   return async (dispatch, getState) => {
     dispatch(getStateLockLoading());
     dispatch(
@@ -45,6 +46,9 @@ const getStateLock = () => {
         },
       })
       .then(({data}) => {
+        if (data.error === 'invalid_token') {
+          dispatch(authLogout(navigation));
+        }
         if (data.statusCode === 0) {
           dispatch(getStateLockSuccess(data.result));
           dispatch(
@@ -59,8 +63,6 @@ const getStateLock = () => {
               },
             ]),
           );
-        } else if (data.error === 'invalid_token') {
-          alert('token is invalid');
         } else {
           dispatch(getStateLockFailed(JSON.stringify(data)));
           dispatch(

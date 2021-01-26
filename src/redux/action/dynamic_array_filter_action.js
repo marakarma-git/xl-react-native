@@ -7,6 +7,28 @@ const updateDataFilter = (data = []) => {
     payload: data,
   };
 };
+const updateDataSearchText = (searchText = '') => {
+  return {
+    type: reduxString.UPDATE_DATA_SEARCH_TEXT,
+    searchText: searchText,
+  };
+};
+const resetDataSearchText = () => {
+  return {
+    type: reduxString.RESET_DATA_SEARCH_TEXT,
+  };
+};
+const updateGeneratedParams = (generatedParams = '') => {
+  return {
+    type: reduxString.UPDATE_GENERATED_PARAMS,
+    generatedParams: generatedParams,
+  };
+};
+const resetGeneratedParams = () => {
+  return {
+    type: reduxString.RESET_GENERATED_PARAMS,
+  };
+};
 const setSomethingToFilter = (dataObject = []) => {
   //the data must be look like this
   // {

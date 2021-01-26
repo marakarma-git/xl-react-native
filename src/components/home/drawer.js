@@ -46,7 +46,7 @@ const CustomDrawerContent = (props) => {
           text: 'Yes',
           onPress: () => {
             dispatch(removeEnterPriseLogo());
-            dispatch(authLogout());
+            dispatch(authLogout(props.navigation));
             props.navigation.reset({
               index: 0,
               routes: [{name: 'Auth'}],
