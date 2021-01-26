@@ -1,32 +1,32 @@
-import React, {useState} from 'react';
-import {Card} from 'react-native-paper';
+import React, { useState } from 'react';
+import { Card } from 'react-native-paper';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import AntDesign from 'react-native-vector-icons/AntDesign';
-import {View, Text, ScrollView, TouchableOpacity, Alert} from 'react-native';
-import {useSelector, useDispatch} from 'react-redux';
+import { View, Text, ScrollView, TouchableOpacity, Alert } from 'react-native';
+import { useSelector, useDispatch } from 'react-redux';
 import {
   HeaderContainer,
   OverlayBackground,
   AccountForm,
 } from '../../components/index';
-import {authLogout} from '../../redux/action/auth_action';
-import {removeEnterPriseLogo} from '../../redux/action/enterprise_action';
+import { authLogout } from '../../redux/action/auth_action';
+import { removeEnterPriseLogo } from '../../redux/action/enterprise_action';
 
 import styles from '../../style/account.style';
 
 const userForm = [
-  {title: 'First Name', key: 'firstName'},
-  {title: 'Last Name', key: 'lastName'},
-  {title: 'User ID', key: 'username'},
-  {title: 'Mobile Phone', key: 'phoneNumber'},
-  {title: 'Email Address', key: 'email'},
-  {title: 'Language', key: 'language'},
+  { title: 'First Name', key: 'firstName' },
+  { title: 'Last Name', key: 'lastName' },
+  { title: 'User ID', key: 'username' },
+  { title: 'Mobile Phone', key: 'phoneNumber' },
+  { title: 'Email Address', key: 'email' },
+  { title: 'Language', key: 'language' },
 ];
 
 const MyAccountPage = (props) => {
   const dispatch = useDispatch();
   const userData = useSelector((state) => state.auth_reducer.data);
-  const {imageBase64} = useSelector((state) => state.enterprise_reducer);
+  const { imageBase64 } = useSelector((state) => state.enterprise_reducer);
 
   const [form, setForm] = useState(userData.principal);
   const [editable] = useState(false);
@@ -53,14 +53,10 @@ const MyAccountPage = (props) => {
           onPress: () => {
             dispatch(removeEnterPriseLogo());
             dispatch(authLogout());
-            props.navigation.reset({
-              index: 0,
-              routes: [{name: 'Auth'}],
-            });
           },
         },
       ],
-      {cancelable: false},
+      { cancelable: false },
     );
   };
 
@@ -119,7 +115,7 @@ const MyAccountPage = (props) => {
               <TouchableOpacity
                 onPress={() => alert('Todo edit user')}
                 style={styles.blockButton}>
-                <Text style={{fontSize: 14, color: 'white'}}>Save</Text>
+                <Text style={{ fontSize: 14, color: 'white' }}>Save</Text>
               </TouchableOpacity>
             )}
           </Card>
