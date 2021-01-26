@@ -6,7 +6,7 @@ const thunk = require('redux-thunk').default;
 import {PersistGate} from 'redux-persist/integration/react';
 import {applyMiddleware, createStore} from 'redux';
 import {Provider} from 'react-redux';
-import {SafeAreaProvider, SafeAreaView} from 'react-native-safe-area-context';
+import {SafeAreaProvider} from 'react-native-safe-area-context';
 import Route from './pages/route';
 import RootReducers from './redux/reducer';
 

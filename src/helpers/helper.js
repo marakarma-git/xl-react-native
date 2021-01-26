@@ -12,7 +12,7 @@ class Helper {
       }
 
       if (bytes < 1) {
-        return bytes + "KB"
+        return bytes + 'KB';
       }
 
       const k = 1000;
