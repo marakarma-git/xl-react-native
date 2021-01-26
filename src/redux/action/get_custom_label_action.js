@@ -10,6 +10,7 @@ import lod from 'lodash';
 import randomId from '../../helpers/randomId';
 import {base_url} from '../../constant/connection';
 import {authLogout} from './auth_action';
+import {CommonActions} from '@react-navigation/native';
 
 const getCustomLabelLoading = () => {
   return {
@@ -35,7 +36,17 @@ const getCustomLabel = (navigation) => {
       )
       .then(({data}) => {
         if (data.error === 'invalid_token') {
-          dispatch(authLogout(navigation));
+          dispatch(authLogout());
+          navigation.dispatch(
+            CommonActions.reset({
+              index: 0,
+              routes: [
+                {
+                  name: 'Auth',
+                },
+              ],
+            }),
+          );
         }
         if (data.statusCode === 0) {
           const modifyArray = data.result.map(
@@ -53,7 +64,7 @@ const getCustomLabel = (navigation) => {
               type: fieldType === 'Combo Box' ? 'DropDown' : 'TextInput',
               value: fieldType === 'Combo Box' ? {} : '',
               hard_code: false,
-              params: `customLabel${labelNumber}`,
+              params: `&customLabel${labelNumber}=`,
               ...rest,
             }),
           );

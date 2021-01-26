@@ -27,22 +27,10 @@ const removeAuth = () => {
     type: reduxString.AUTH_LOGOUT,
   };
 };
-const authLogout = (navigation) => {
+const authLogout = () => {
   return async (dispatch) => {
     dispatch(removeEnterPriseLogo());
     dispatch(removeAuth());
-    if (navigation) {
-      navigation.dispatch(
-        CommonActions.reset({
-          index: 0,
-          routes: [
-            {
-              name: 'Auth',
-            },
-          ],
-        }),
-      );
-    }
   };
 };
 

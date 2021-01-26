@@ -80,7 +80,7 @@ const dynamicFilter = [
     value: {},
     data: [],
     type: 'DropDown',
-    params: '&label=',
+    params: '&state=',
     hard_code: true,
   },
   {
@@ -101,7 +101,7 @@ const dynamicFilter = [
     value: {},
     data: [],
     type: 'DropDown',
-    params: '&state=',
+    params: '&stateLock=',
     hard_code: true,
   },
   {
@@ -131,6 +131,7 @@ const dynamicFilter = [
     disabled: false,
     value: dayjs().toDate(),
     type: 'DateTimePicker',
+    isSelected: false,
     params: '&firstActivationDate=',
     hard_code: true,
   },
@@ -139,6 +140,7 @@ const dynamicFilter = [
     label: 'PBR exit date',
     disabled: false,
     value: dayjs().toDate(),
+    isSelected: false,
     type: 'DateTimePicker',
     params: '&pbrExitDate=',
     hard_code: true,

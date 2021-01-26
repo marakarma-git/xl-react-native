@@ -12,19 +12,19 @@ import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import {useDispatch, useSelector} from 'react-redux';
 import {colors} from '../../constant/color';
 import {subscriptionStyle} from '../../style';
-import InputHybrid from '../../components/InputHybrid';
-import {HeaderContainer, OverlayBackground} from '../../components/index';
 import {
-  removeAllHardCodeTrue,
+  generateArrayFilterParams,
   resetDataFilter,
   setSomethingToFilter,
+  updateDataSearchText,
 } from '../../redux/action/dynamic_array_filter_action';
-import {getEnterprisePackageName} from '../../redux/action/get_enterprise_package_name_action';
+import InputHybrid from '../../components/InputHybrid';
 import {getStateCorp} from '../../redux/action/get_state_action';
-import {getEnterpriseCorp} from '../../redux/action/get_enterprise_corp_action';
 import {getStateLock} from '../../redux/action/get_state_lock_action';
 import {getCustomLabel} from '../../redux/action/get_custom_label_action';
-import {Button} from 'react-native-elements';
+import {HeaderContainer, OverlayBackground} from '../../components/index';
+import {getEnterpriseCorp} from '../../redux/action/get_enterprise_corp_action';
+import {getEnterprisePackageName} from '../../redux/action/get_enterprise_package_name_action';
 
 const Container = (props) => {
   const {style, children} = props;
@@ -34,9 +34,12 @@ const Container = (props) => {
 };
 const LandingPage = ({navigation}) => {
   const dispatch = useDispatch();
-  const {array_filter, loading_array_filter} = useSelector(
-    (state) => state.dynamic_array_filter_reducer,
-  );
+  const {
+    array_filter,
+    loading_array_filter,
+    generatedParams,
+    searchText,
+  } = useSelector((state) => state.dynamic_array_filter_reducer);
   useEffect(() => {
     dispatch(getStateCorp(navigation));
     dispatch(getEnterpriseCorp(navigation));
@@ -47,6 +50,7 @@ const LandingPage = ({navigation}) => {
     <HeaderContainer navigation={navigation} headerTitle={'Subscription'}>
       <ScrollView style={{backgroundColor: 'white'}}>
         <OverlayBackground />
+        <Text>params: {JSON.stringify(generatedParams)}</Text>
         <Container style={{marginTop: 28}}>
           <View style={subscriptionStyle.containerTitle}>
             <Text>Search</Text>
@@ -64,6 +68,8 @@ const LandingPage = ({navigation}) => {
               size={15}
             />
             <TextInput
+              value={searchText}
+              onChangeText={(e) => dispatch(updateDataSearchText(e))}
               style={{flex: 1}}
               placeholder={'Search with IMSI, MSISDN, ICCID, Detected IMEI'}
             />
@@ -84,9 +90,11 @@ const LandingPage = ({navigation}) => {
                   selectedValue,
                   disabled,
                   errorText,
+                  isSelected,
                 } = e;
                 return (
                   <InputHybrid
+                    isSelected={isSelected}
                     onChange2={(e) =>
                       dispatch(
                         setSomethingToFilter([
@@ -163,6 +171,9 @@ const LandingPage = ({navigation}) => {
                 onPress={() => {
                   if (value === 'Clear') {
                     dispatch(resetDataFilter());
+                  }
+                  if (value === 'Find') {
+                    dispatch(generateArrayFilterParams());
                   }
                 }}>
                 <Text
