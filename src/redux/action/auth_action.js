@@ -31,16 +31,18 @@ const authLogout = (navigation) => {
   return async (dispatch) => {
     dispatch(removeEnterPriseLogo());
     dispatch(removeAuth());
-    navigation.dispatch(
-      CommonActions.reset({
-        index: 0,
-        routes: [
-          {
-            name: 'Auth',
-          },
-        ],
-      }),
-    );
+    if (navigation) {
+      navigation.dispatch(
+        CommonActions.reset({
+          index: 0,
+          routes: [
+            {
+              name: 'Auth',
+            },
+          ],
+        }),
+      );
+    }
   };
 };
 

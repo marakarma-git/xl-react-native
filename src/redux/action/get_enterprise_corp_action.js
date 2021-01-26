@@ -2,6 +2,7 @@ import axios from 'axios';
 import reduxString from '../reduxString';
 import {base_url} from '../../constant/connection';
 import {setSomethingToFilter} from './dynamic_array_filter_action';
+import {authLogout} from './auth_action';
 const getEnterpriseCorpLoading = () => {
   return {
     type: reduxString.GET_ENTERPRISE_CORP_LOADING,
@@ -24,7 +25,7 @@ const getEnterpriseCorpReset = () => {
     type: reduxString.GET_ENTERPRISE_CORP_RESET,
   };
 };
-const getEnterpriseCorp = () => {
+const getEnterpriseCorp = (navigation) => {
   return async (dispatch, getState) => {
     dispatch(getEnterpriseCorpLoading());
     dispatch(
@@ -44,6 +45,9 @@ const getEnterpriseCorp = () => {
         },
       })
       .then(({data}) => {
+        if (data.error === 'invalid_token') {
+          dispatch(authLogout(navigation));
+        }
         if (data.statusCode === 0) {
           dispatch(getEnterpriseCorpSuccess(data.result));
           dispatch(
@@ -59,8 +63,6 @@ const getEnterpriseCorp = () => {
               },
             ]),
           );
-        } else if (data.error === 'invalid_token') {
-          alert('token is invalid');
         } else {
           dispatch(getEnterpriseCropFailed(JSON.stringify(data)));
           dispatch(

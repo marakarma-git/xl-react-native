@@ -201,12 +201,14 @@ const initialState = {
   searchText: '',
   generatedParams: '',
   array_filter: dynamicFilter,
+  loading_array_filter: false,
 };
 const dynamic_array_filter_reducer = (state = initialState, action) => {
   switch (action.type) {
     case reduxString.UPDATE_DATA_FILTER:
       return {
         ...state,
+        loading_array_filter: false,
         array_filter: action.payload,
       };
     case reduxString.UPDATE_DATA_SEARCH_TEXT:
@@ -223,6 +225,22 @@ const dynamic_array_filter_reducer = (state = initialState, action) => {
       return {
         ...state,
         generatedParams: action.generatedParams,
+      };
+    case reduxString.SET_LOADING_FILTER_TRUE:
+      return {
+        ...state,
+        loading_array_filter: true,
+      };
+    case reduxString.SET_LOADING_FILTER_FALSE:
+      return {
+        ...state,
+        loading_array_filter: false,
+      };
+    case reduxString.MERGE_DATA_FILTER:
+      return {
+        ...state,
+        loading_array_filter: false,
+        array_filter: [...state.array_filter, ...action.data],
       };
     case reduxString.RESET_GENERATED_PARAMS:
       return {

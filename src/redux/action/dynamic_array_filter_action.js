@@ -29,6 +29,32 @@ const resetGeneratedParams = () => {
     type: reduxString.RESET_GENERATED_PARAMS,
   };
 };
+const removeAllHardCodeTrue = () => {
+  return (dispatch, getState) => {
+    const {dynamic_array_filter_reducer} = getState();
+    const {array_filter} = dynamic_array_filter_reducer;
+    const removedHardCode = lod.remove(array_filter, {
+      hard_code: true,
+    });
+    dispatch(updateDataFilter(removedHardCode));
+  };
+};
+const setLoadingFilterTrue = () => {
+  return {
+    type: reduxString.SET_LOADING_FILTER_TRUE,
+  };
+};
+const setLoadingFilterFalse = () => {
+  return {
+    type: reduxString.SET_LOADING_FILTER_FALSE,
+  };
+};
+const mergeDataFilter = (dataCustom = []) => {
+  return {
+    type: reduxString.MERGE_DATA_FILTER,
+    data: dataCustom,
+  };
+};
 const setSomethingToFilter = (dataObject = []) => {
   //the data must be look like this
   // {
@@ -100,38 +126,55 @@ const resetDataFilter = () => {
   return (dispatch, getState) => {
     const {dynamic_array_filter_reducer} = getState();
     const {array_filter} = dynamic_array_filter_reducer;
-    const resetArray = array_filter.map(({type, ...value}) => {
-      switch (type) {
-        case 'DropDown':
-          return {
-            ...value,
-            type: 'DropDown',
-            value: {},
-          };
-        case 'DropDownType2':
-          return {
-            ...value,
-            type: 'DropDownType2',
-            value: '',
-            selectedValue: {},
-          };
-        case 'TextInput':
-          return {
-            ...value,
-            type: 'TextInput',
-            value: '',
-          };
-        case 'DateTimePicker':
-          return {
-            ...value,
-            type: 'DateTimePicker',
-            value: dayjs(),
-          };
-        default:
-          return null;
+    const resetArray = array_filter.map(({formId, type, ...value}) => {
+      if (formId === 'subscription-package-name-hard-code') {
+        return {
+          ...value,
+          type: type,
+          disabled: true,
+          value: {},
+        };
+      } else {
+        switch (type) {
+          case 'DropDown':
+            return {
+              ...value,
+              type: type,
+              value: {},
+            };
+          case 'DropDownType2':
+            return {
+              ...value,
+              value: '',
+              type: type,
+              selectedValue: {},
+            };
+          case 'TextInput':
+            return {
+              ...value,
+              type: type,
+              value: '',
+            };
+          case 'DateTimePicker':
+            return {
+              ...value,
+              type: type,
+              value: dayjs(),
+            };
+          default:
+            return null;
+        }
       }
     });
     dispatch(updateDataFilter(resetArray));
   };
 };
-export {updateDataFilter, resetDataFilter, setSomethingToFilter};
+export {
+  updateDataFilter,
+  resetDataFilter,
+  setSomethingToFilter,
+  removeAllHardCodeTrue,
+  setLoadingFilterTrue,
+  setLoadingFilterFalse,
+  mergeDataFilter,
+};
