@@ -46,16 +46,15 @@ const Login = ({navigation}) => {
   }, [data, dispatch, navigation, statusCode]);
   useEffect(() => {
     if (error !== '') {
-      dispatch(authLogout(navigation));
+      // dispatch(authLogout(navigation));
       setLocalLoading(false);
 
       if (alreadyRequest) {
-        console.log(error, " <<< ")
         errorHandler(error);
       }
     }
     if (errorCheck !== '') {
-      dispatch(authLogout(navigation));
+      // dispatch(authLogout(navigation));
       setLocalLoading(false);
     }
   }, [error, errorCheck, dispatch, alreadyRequest]);
