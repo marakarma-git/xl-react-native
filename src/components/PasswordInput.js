@@ -222,7 +222,7 @@ const ButtonShowHide = ({visible, position, passwordForm, setPasswordForm}) => {
 
   return (
     <TouchableOpacity onPress={showHide} style={styles.buttonShowHide}>
-      <Feather color="#A8A8A8" size={20} name={visible ? 'eye-off' : 'eye'} />
+      <Feather color="#A8A8A8" size={20} name={visible ? 'eye' : 'eye-off'} />
     </TouchableOpacity>
   );
 };
