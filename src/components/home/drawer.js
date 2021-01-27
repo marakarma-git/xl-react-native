@@ -1,18 +1,18 @@
 import React from 'react';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import {View, Image, Text, Alert} from 'react-native';
-import {DrawerContentScrollView, DrawerItem} from '@react-navigation/drawer';
+import { View, Image, Text, Alert } from 'react-native';
+import { DrawerContentScrollView, DrawerItem } from '@react-navigation/drawer';
 import {
   iconHome,
   iconComponents,
   iconGrids,
   iconLogout,
 } from '../../assets/images/index';
-import {useSelector, useDispatch} from 'react-redux';
-import {authLogout} from '../../redux/action/auth_action';
+import { useSelector, useDispatch } from 'react-redux';
+import { authLogout } from '../../redux/action/auth_action';
 import styles from '../../style/drawer.style';
-import {removeEnterPriseLogo} from '../../redux/action/enterprise_action';
-import {TouchableOpacity} from 'react-native';
+import { removeEnterPriseLogo } from '../../redux/action/enterprise_action';
+import { TouchableOpacity } from 'react-native';
 
 const drawerData = [
   {
@@ -46,20 +46,16 @@ const CustomDrawerContent = (props) => {
           text: 'Yes',
           onPress: () => {
             dispatch(removeEnterPriseLogo());
-            dispatch(authLogout(props.navigation));
-            props.navigation.reset({
-              index: 0,
-              routes: [{name: 'Auth'}],
-            });
+            dispatch(authLogout());
           },
         },
       ],
-      {cancelable: false},
+      { cancelable: false },
     );
   };
 
   return (
-    <DrawerContentScrollView {...props} style={{padding: 0}}>
+    <DrawerContentScrollView {...props} style={{ padding: 0 }}>
       <View style={styles.avatarContainer}>
         {/* To-do Avatar Icon jika API sudah ada */}
         <TouchableOpacity
@@ -69,13 +65,13 @@ const CustomDrawerContent = (props) => {
         </TouchableOpacity>
         <TouchableOpacity
           onPress={() => props.navigation.navigate('Account')}
-          style={{paddingLeft: 15}}>
+          style={{ paddingLeft: 15 }}>
           <Text style={styles.userName}>
             {userData.principal
               ? userData.principal.firstName + ' ' + userData.principal.lastName
               : ''}
           </Text>
-          <Text style={{color: '#4BC1FD'}}>
+          <Text style={{ color: '#4BC1FD' }}>
             {userData.principal && `${userData.principal.email || '-'}`}
           </Text>
         </TouchableOpacity>
@@ -86,7 +82,7 @@ const CustomDrawerContent = (props) => {
           key={`drawer_item-${idx + 1}`}
           label={() => (
             <View style={styles.menuLabelFlex}>
-              <Image style={{width: 20, height: 20}} source={item.icon} />
+              <Image style={{ width: 20, height: 20 }} source={item.icon} />
               <Text style={styles.menuTitle}>{item.name}</Text>
             </View>
           )}
@@ -98,7 +94,7 @@ const CustomDrawerContent = (props) => {
         label={() => (
           <View style={styles.menuLabelFlex}>
             <Image
-              style={{width: 15, height: 15, marginTop: 3, marginLeft: 6}}
+              style={{ width: 15, height: 15, marginTop: 3, marginLeft: 6 }}
               source={iconLogout}
             />
             <Text style={styles.menuTitle}>Logout</Text>
