@@ -1,5 +1,5 @@
-import React, {useState, useEffect} from 'react';
-import {useSelector} from 'react-redux';
+import React, { useState, useEffect } from 'react';
+import { useSelector } from 'react-redux';
 import {
   View,
   TextInput,
@@ -13,10 +13,10 @@ import Feather from 'react-native-vector-icons/Feather';
 import styles from '../style/account.style';
 
 const passwordRulesArray = [
-  {label: 'Be between 8 and 30 characters', valid: false},
-  {label: 'contain at least 1 number 0-9', valid: false},
-  {label: 'contain at least 1 lower case letter (a-z)', valid: false},
-  {label: 'contain at least 1 upper case letter (A-Z)', valid: false},
+  { label: 'Be between 8 and 30 characters', valid: false },
+  { label: 'contain at least 1 number 0-9', valid: false },
+  { label: 'contain at least 1 lower case letter (a-z)', valid: false },
+  { label: 'contain at least 1 upper case letter (A-Z)', valid: false },
   {
     label: 'not contain more than 3 consecutives identical characters',
     valid: true,
@@ -30,7 +30,7 @@ const passwordRulesArray = [
       'contain only the following characters a-z, A-Z, 0-9, #, -, !, @, %, &, /, (, ), ?, + *',
     valid: true,
   },
-  {label: "match the entry in 'Confrim Password'", valid: true},
+  { label: "match the entry in 'Confrim Password'", valid: true },
 ];
 
 const passwordFormArray = [
@@ -57,7 +57,7 @@ const passwordFormArray = [
   },
 ];
 
-const PasswordInput = ({submitHandler, requestLoading, navigation}) => {
+const PasswordInput = ({ submitHandler, requestLoading, navigation }) => {
   const userData = useSelector((state) => state.auth_reducer.data);
   const [passwordForm, setPasswordForm] = useState(passwordFormArray);
   const [passwordRules, setPasswordRules] = useState(passwordRulesArray);
@@ -65,13 +65,11 @@ const PasswordInput = ({submitHandler, requestLoading, navigation}) => {
   const [form, setForm] = useState({
     oldPassword: '',
     newPassword: '',
-    confirmPassword: '',
-    updatedBy: userData ? userData.principal.username : '',
-    username: userData ? userData.principal.username : '',
+    confirmPassword: ''
   });
 
   const inputHandler = (name, value, validation) => {
-    setForm({...form, [name]: value});
+    setForm({ ...form, [name]: value });
     {
       validation && passwordValidator(value);
     }
@@ -85,17 +83,17 @@ const PasswordInput = ({submitHandler, requestLoading, navigation}) => {
 
     const newPasswordRules = [...passwordRules];
 
-      newPasswordRules[0].valid = value.length >= 8 && value.length < 30 ? true : false
-      newPasswordRules[1].valid = /(?=.*[0-9])/.test(value) ? true : false;
-      newPasswordRules[2].valid = /(?=.*[a-z])/.test(value) ? true : false;
-      newPasswordRules[3].valid = /(?=.*[A-Z])/.test(value) ? true : false;
-      newPasswordRules[4].valid = /(.)\1{3,}/.test(value) ? false : true;
-      newPasswordRules[5].valid = /([a-z]){4}/.test(value) ? false : true;
-      newPasswordRules[6].valid = /^[a-zA-Z0-9#*!?+&@.$%\-,():;/]+$/.test(value) || isEmpty
-        ? true
-        : false;
+    newPasswordRules[0].valid = value.length >= 8 && value.length < 30 ? true : false
+    newPasswordRules[1].valid = /(?=.*[0-9])/.test(value) ? true : false;
+    newPasswordRules[2].valid = /(?=.*[a-z])/.test(value) ? true : false;
+    newPasswordRules[3].valid = /(?=.*[A-Z])/.test(value) ? true : false;
+    newPasswordRules[4].valid = /(.)\1{3,}/.test(value) ? false : true;
+    newPasswordRules[5].valid = /([a-z]){4}/.test(value) ? false : true;
+    newPasswordRules[6].valid = /^[a-zA-Z0-9#*!?+&@.$%\-,():;/]+$/.test(value) || isEmpty
+      ? true
+      : false;
 
-      setPasswordRules(newPasswordRules);
+    setPasswordRules(newPasswordRules);
   };
 
   const matchConfirmPassword = () => {
@@ -110,7 +108,7 @@ const PasswordInput = ({submitHandler, requestLoading, navigation}) => {
       <View key={index} style={styles.formGroup}>
         <Text style={styles.label}>
           {forms.label}
-          {forms.required && <Text style={{color: 'red'}}> *</Text>}
+          {forms.required && <Text style={{ color: 'red' }}> *</Text>}
         </Text>
         <View style={styles.passwordInputWrapper}>
           <TextInput
@@ -177,14 +175,13 @@ const PasswordInput = ({submitHandler, requestLoading, navigation}) => {
   useEffect(() => {
     matchConfirmPassword();
     checkFormComplete();
-    return;
   }, [form]);
 
   return (
-    <View style={[styles.formContainer, {marginTop: 10}]}>
+    <View style={[styles.formContainer, { marginTop: 10 }]}>
       {generateForm()}
       <View style={styles.passwordRulesContainer}>
-        <Text style={{fontSize: 12, color: '#949494', textAlign: 'left'}}>
+        <Text style={{ fontSize: 12, color: '#949494', textAlign: 'left' }}>
           Follow the Password validation rules:{' '}
         </Text>
         {generatePasswordRules()}
@@ -192,7 +189,7 @@ const PasswordInput = ({submitHandler, requestLoading, navigation}) => {
       <View style={styles.buttonGroupContainer}>
         <TouchableOpacity
           onPress={() => navigation.goBack()}
-          style={[styles.buttonGroup, {backgroundColor: '#AFAFAF'}]}>
+          style={[styles.buttonGroup, { backgroundColor: '#AFAFAF' }]}>
           <Text style={styles.buttonText}>Cancel</Text>
         </TouchableOpacity>
         <TouchableOpacity
@@ -200,20 +197,20 @@ const PasswordInput = ({submitHandler, requestLoading, navigation}) => {
           disabled={!formComplete ? true : false}
           style={[
             styles.buttonGroup,
-            {backgroundColor: !formComplete ? '#949494' : '#002DBB'},
+            { backgroundColor: !formComplete ? '#949494' : '#002DBB' },
           ]}>
           {requestLoading ? (
             <ActivityIndicator color={'#fff'} style={styles.buttonText} />
           ) : (
-            <Text style={styles.buttonText}>Save Changes</Text>
-          )}
+              <Text style={styles.buttonText}>Save Changes</Text>
+            )}
         </TouchableOpacity>
       </View>
     </View>
   );
 };
 
-const ButtonShowHide = ({visible, position, passwordForm, setPasswordForm}) => {
+const ButtonShowHide = ({ visible, position, passwordForm, setPasswordForm }) => {
   const showHide = () => {
     const newForm = [...passwordForm];
     newForm[position].visible = !passwordForm[position].visible;

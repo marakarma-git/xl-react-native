@@ -10,16 +10,20 @@ import Axios from 'axios';
 
 const ChangePasswordPage = ({ navigation }) => {
   const dispatch = useDispatch();
-  const { access_token } = useSelector((state) => state.auth_reducer.data);
+  const userData = useSelector((state) => state.auth_reducer.data);
   const titleVersion = useSelector((state) => state.auth_reducer.titleVersion);
+  const { access_token } = useSelector((state) => state.auth_reducer.data);
   const [requestLoading, setRequestLoading] = useState(false);
 
   const submitHandler = async (form) => {
+    const username = userData ? userData.principal.username : '';
     setRequestLoading(true);
     try {
       const { data } = await Axios.post(
         `${base_url}/user/usr/changePassword`,
-        form,
+        {
+          ...form, updatedBy: username, username
+        },
         {
           headers: {
             Authorization: 'Bearer ' + access_token,
