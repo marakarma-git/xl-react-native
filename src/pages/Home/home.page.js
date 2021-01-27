@@ -71,7 +71,10 @@ const LandingPage = ({ navigation }) => {
                 />
               </View>
               :
-              <ActivityIndicator color="#002DBB" size="large" />
+              <View>
+                <ActivityIndicator color="#002DBB" size="large" />
+                <Text style={{ textAlign: 'center', fontSize: 14, paddingVertical: 10 }}>Loading...</Text>
+              </View>
           }
           {pagination()}
           <View style={style.tradeMark}>
