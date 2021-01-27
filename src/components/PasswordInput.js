@@ -13,23 +13,24 @@ import Feather from 'react-native-vector-icons/Feather';
 import styles from '../style/account.style';
 
 const passwordRulesArray = [
-  {label: 'contain at least 1 number 0-9', valid: null},
-  {label: 'contain at least 1 lower case letter (a-z)', valid: null},
-  {label: 'contain at least 1 upper case letter (A-Z)', valid: null},
+  {label: 'Be between 8 and 30 characters', valid: false},
+  {label: 'contain at least 1 number 0-9', valid: false},
+  {label: 'contain at least 1 lower case letter (a-z)', valid: false},
+  {label: 'contain at least 1 upper case letter (A-Z)', valid: false},
   {
     label: 'not contain more than 3 consecutives identical characters',
-    valid: null,
+    valid: true,
   },
   {
     label: 'not contain more than 3 consecutives lower-case characters',
-    valid: null,
+    valid: true,
   },
   {
     label:
       'contain only the following characters a-z, A-Z, 0-9, #, -, !, @, %, &, /, (, ), ?, + *',
-    valid: null,
+    valid: true,
   },
-  {label: "match the entry in 'Confrim Password'", valid: null},
+  {label: "match the entry in 'Confrim Password'", valid: true},
 ];
 
 const passwordFormArray = [
@@ -80,32 +81,28 @@ const PasswordInput = ({submitHandler, requestLoading, navigation}) => {
   };
 
   const passwordValidator = (value) => {
+    let isEmpty = value == 0;
+
     const newPasswordRules = [...passwordRules];
 
-    if (value.length > 0) {
-      newPasswordRules[0].valid = /(?=.*[0-9])/.test(value) ? true : false;
-      newPasswordRules[1].valid = /(?=.*[a-z])/.test(value) ? true : false;
-      newPasswordRules[2].valid = /(?=.*[A-Z])/.test(value) ? true : false;
-      newPasswordRules[3].valid = /(.)\1{3,}/.test(value) ? false : true;
-      newPasswordRules[4].valid = /([a-z]){3}/.test(value) ? true : false;
-      newPasswordRules[5].valid = /^[a-zA-Z0-9#*!?+&@.$%\-,():;/]+$/.test(value)
+      newPasswordRules[0].valid = value.length >= 8 && value.length < 30 ? true : false
+      newPasswordRules[1].valid = /(?=.*[0-9])/.test(value) ? true : false;
+      newPasswordRules[2].valid = /(?=.*[a-z])/.test(value) ? true : false;
+      newPasswordRules[3].valid = /(?=.*[A-Z])/.test(value) ? true : false;
+      newPasswordRules[4].valid = /(.)\1{3,}/.test(value) ? false : true;
+      newPasswordRules[5].valid = /([a-z]){4}/.test(value) ? false : true;
+      newPasswordRules[6].valid = /^[a-zA-Z0-9#*!?+&@.$%\-,():;/]+$/.test(value) || isEmpty
         ? true
         : false;
 
       setPasswordRules(newPasswordRules);
-    } else {
-      newPasswordRules.map((rules) => (rules.valid = false));
-      setPasswordRules(newPasswordRules);
-    }
   };
 
   const matchConfirmPassword = () => {
     const newPasswordRules = [...passwordRules];
 
-    if (form.newPassword.length > 0) {
-      newPasswordRules[6].valid = form.newPassword == form.confirmPassword;
-      setPasswordRules(newPasswordRules);
-    }
+    newPasswordRules[7].valid = form.newPassword == form.confirmPassword;
+    setPasswordRules(newPasswordRules);
   };
 
   const generateForm = () =>
@@ -156,10 +153,10 @@ const PasswordInput = ({submitHandler, requestLoading, navigation}) => {
 
   const rulesColorValidator = (valid) => {
     if (valid) {
-      return '#00D3A0';
+      return '#048004';
     }
     if (valid == false) {
-      return 'red';
+      return '#FF0101';
     }
     return '#949494';
   };
@@ -178,9 +175,7 @@ const PasswordInput = ({submitHandler, requestLoading, navigation}) => {
   };
 
   useEffect(() => {
-    if (form.confirmPassword.length > 0) {
-      matchConfirmPassword();
-    }
+    matchConfirmPassword();
     checkFormComplete();
     return;
   }, [form]);
