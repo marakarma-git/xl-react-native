@@ -1,4 +1,4 @@
-import { device_width, regular_horizontal_padding } from '../constant/config';
+import { device_width, device_height, regular_horizontal_padding } from '../constant/config';
 import { colors } from '../constant/color';
 export default {
   headerContainer: {
@@ -135,5 +135,16 @@ export default {
     fontSize: 18,
     color: 'white',
     fontWeight: 'bold'
+  },
+  textInput: {
+    height: device_height * 0.05,
+    fontSize: 14,
+    borderWidth: 1,
+    borderColor: '#A8A8A8',
+    backgroundColor: 'white',
+    borderRadius: 5,
+    paddingLeft: 10,
+    marginVertical: 10,
+    color: '#707070',
   }
 };

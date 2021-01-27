@@ -91,3 +91,36 @@ export const getWidgetList = (accessToken) => {
     }
   };
 };
+
+const setCarousel = (data) => ({
+  type: reduxString.SET_CAROUSEL,
+  payload: data
+});
+
+export const getCarousel = (accessToken) => {
+  return async (dispatch) => {
+    dispatch(requestDashboardData());
+    try {
+      const { data } = await Axios.get(`${base_url}/dcp/banner/getListBanner`, {
+        headers: {
+          Authorization: 'Bearer ' + accessToken
+        }
+      });
+
+      if (data) {
+        if (data.statusCode === 0) {
+
+          data.result.map((banner) => {
+            banner.bannerImage = `data:image/jpeg;base64,${banner.bannerImage}`;
+          });
+
+          dispatch(setCarousel(data.result));
+        } else {
+          throw new Error(data);
+        }
+      }
+    } catch (error) {
+      dispatch(setRequestError(error.response.data));
+    }
+  }
+}

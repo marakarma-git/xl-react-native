@@ -39,7 +39,7 @@ const ChangePasswordPage = ({ navigation }) => {
     } catch (error) {
       setRequestLoading(false);
       dispatch(setRequestError(error.response.data));
-      ToastAndroid.show(error.response.data.error, ToastAndroid.LONG);
+      ToastAndroid.show(error.response.data.error_description || error.message, ToastAndroid.LONG);
     }
   };
 

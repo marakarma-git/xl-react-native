@@ -72,5 +72,14 @@ export default {
   keyboardContainer: {
     height: device_height - 80,
     backgroundColor: 'transparent'
+  },
+  footerTitleVersion: {
+    position: 'absolute',
+    top: device_height - 20
+  },
+  forgetPasswordForm: {
+    height: device_height * 0.75,
+    alignItems: 'center',
+    marginTop: 10
   }
 };
