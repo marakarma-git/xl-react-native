@@ -1,30 +1,21 @@
-import React, {useEffect} from 'react';
+import React from 'react';
 import {
   View,
   ScrollView,
   Text,
   TextInput,
   TouchableOpacity,
-  ActivityIndicator,
 } from 'react-native';
-import Ionicons from 'react-native-vector-icons/Ionicons';
-import FontAwesome from 'react-native-vector-icons/FontAwesome';
-import {useDispatch, useSelector} from 'react-redux';
-import {colors} from '../../constant/color';
 import {subscriptionStyle} from '../../style';
-import {
-  generateArrayFilterParams,
-  resetDataFilter,
-  setSomethingToFilter,
-  updateDataSearchText,
-} from '../../redux/action/dynamic_array_filter_action';
-import InputHybrid from '../../components/InputHybrid';
-import {getStateCorp} from '../../redux/action/get_state_action';
-import {getStateLock} from '../../redux/action/get_state_lock_action';
-import {getCustomLabel} from '../../redux/action/get_custom_label_action';
 import {HeaderContainer, OverlayBackground} from '../../components/index';
-import {getEnterpriseCorp} from '../../redux/action/get_enterprise_corp_action';
-import {getEnterprisePackageName} from '../../redux/action/get_enterprise_package_name_action';
+import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
+import {colors} from '../../constant/color';
+import FontAwesome from 'react-native-vector-icons/FontAwesome';
+import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
+import {updateDataSearchText} from '../../redux/action/dynamic_array_filter_action';
+import {useDispatch, useSelector} from 'react-redux';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import {border_radius} from '../../constant/config';
 
 const Container = (props) => {
   const {style, children} = props;
@@ -32,34 +23,16 @@ const Container = (props) => {
     <View style={[subscriptionStyle.localContainer, style]}>{children}</View>
   );
 };
-const LandingPage = ({navigation}) => {
+const Subscription = ({navigation}) => {
   const dispatch = useDispatch();
-  const {
-    array_filter,
-    loading_array_filter,
-    generatedParams,
-    searchText,
-  } = useSelector((state) => state.dynamic_array_filter_reducer);
-  useEffect(() => {
-    dispatch(getStateCorp(navigation));
-    dispatch(getEnterpriseCorp(navigation));
-    dispatch(getStateLock(navigation));
-    dispatch(getCustomLabel(navigation));
-  }, [dispatch, navigation]);
+  const {searchText} = useSelector(
+    (state) => state.dynamic_array_filter_reducer,
+  );
   return (
     <HeaderContainer navigation={navigation} headerTitle={'Subscription'}>
-      <ScrollView style={{backgroundColor: 'white'}}>
+      <View style={{flex: 1, backgroundColor: 'white'}}>
         <OverlayBackground />
-        <Text>params: {JSON.stringify(generatedParams)}</Text>
-        <Container style={{marginTop: 28}}>
-          <View style={subscriptionStyle.containerTitle}>
-            <Text>Search</Text>
-            <Ionicons
-              name={'chevron-back-circle'}
-              color={colors.gray}
-              size={20}
-            />
-          </View>
+        <Container style={{marginTop: 16}}>
           <View style={subscriptionStyle.containerTextInput}>
             <FontAwesome
               style={{marginHorizontal: 8}}
@@ -74,122 +47,110 @@ const LandingPage = ({navigation}) => {
               placeholder={'Search with IMSI, MSISDN, ICCID, Detected IMEI'}
             />
           </View>
-        </Container>
-        <Container style={{marginTop: 12}}>
-          <Text style={{marginBottom: 7}}>Filter</Text>
-          <View style={subscriptionStyle.containerWrap}>
-            {array_filter.length > 0 &&
-              array_filter.map((e) => {
-                const {
-                  formId,
-                  type,
-                  value,
-                  label,
-                  loading,
-                  data,
-                  selectedValue,
-                  disabled,
-                  errorText,
-                  isSelected,
-                } = e;
-                return (
-                  <InputHybrid
-                    isSelected={isSelected}
-                    onChange2={(e) =>
-                      dispatch(
-                        setSomethingToFilter([
-                          {
-                            formId: formId,
-                            needs: `OnChange${type}`,
-                            value: value,
-                            selectedValue: e,
-                          },
-                        ]),
-                      )
-                    }
-                    onChange={(e) => {
-                      if (formId === 'enterprise-hard-code') {
-                        dispatch(getEnterprisePackageName(e.value));
-                        dispatch(
-                          setSomethingToFilter([
-                            {
-                              formId: formId,
-                              needs: `OnChange${type}`,
-                              value: e,
-                              selectedValue: selectedValue,
-                            },
-                          ]),
-                        );
-                      }
-                      dispatch(
-                        setSomethingToFilter([
-                          {
-                            formId: formId,
-                            needs: `OnChange${type}`,
-                            value: e,
-                            selectedValue: selectedValue,
-                          },
-                        ]),
-                      );
-                    }}
-                    errorText={errorText}
-                    disabled={disabled}
-                    type={type}
-                    label={label}
-                    value={value}
-                    loading={loading}
-                    data={data}
-                    selectedValue={selectedValue}
-                  />
-                );
-              })}
-          </View>
-          {loading_array_filter && (
+          <View
+            style={{
+              flexDirection: 'row',
+              alignItems: 'center',
+              justifyContent: 'flex-end',
+            }}>
+            <TouchableOpacity>
+              <FontAwesome5 name={'columns'} size={24} color={colors.gray} />
+            </TouchableOpacity>
             <View
               style={{
-                flex: 1,
-                paddingVertical: 10,
-                alignItems: 'center',
-              }}>
-              <ActivityIndicator color="#002DBB" size="large" />
-            </View>
-          )}
+                height: '100%',
+                width: 2,
+                backgroundColor: colors.gray,
+                marginHorizontal: 12,
+              }}
+            />
+            <TouchableOpacity
+              onPress={() => navigation.navigate('SubscriptionFilter')}>
+              <FontAwesome5 name={'filter'} size={24} color={colors.gray} />
+            </TouchableOpacity>
+          </View>
         </Container>
-        <View style={subscriptionStyle.buttonContainer}>
-          {['Clear', 'Find'].map((value) => {
-            return (
-              <TouchableOpacity
-                style={[
-                  {
-                    backgroundColor:
-                      value === 'Clear'
-                        ? colors.gray_400
-                        : colors.button_color_one,
-                  },
-                  subscriptionStyle.buttonStyle,
-                ]}
-                onPress={() => {
-                  if (value === 'Clear') {
-                    dispatch(resetDataFilter());
-                  }
-                  if (value === 'Find') {
-                    dispatch(generateArrayFilterParams());
-                  }
-                }}>
-                <Text
-                  style={{
-                    color: value === 'Clear' ? 'black' : 'white',
-                    fontWeight: 'bold',
-                  }}>
-                  {value}
-                </Text>
-              </TouchableOpacity>
-            );
-          })}
+        <View
+          style={{
+            marginHorizontal: 16,
+            paddingVertical: 4,
+            justifyContent: 'space-between',
+            flexDirection: 'row',
+          }}>
+          <Text style={{color: colors.font_gray}}>
+            Total: 50.000 | Showing: 10
+          </Text>
+          <View style={{flexDirection: 'row'}}>
+            <Text style={{color: colors.font_gray}}>View: </Text>
+            <TouchableOpacity
+              style={{
+                flexDirection: 'row',
+                paddingLeft: 6,
+                borderRadius: border_radius,
+                borderWidth: 1,
+                borderColor: colors.gray_0,
+              }}>
+              <Text style={{color: colors.font_gray}}>20</Text>
+              <MaterialCommunityIcons
+                name={'chevron-down'}
+                color={colors.gray}
+                size={20}
+              />
+            </TouchableOpacity>
+            <Text style={{color: colors.font_gray}}> per page</Text>
+          </View>
         </View>
-      </ScrollView>
+        <View style={{flex: 1, backgroundColor: 'tomato'}}>
+          <ScrollView>
+            <Text>tengah</Text>
+          </ScrollView>
+        </View>
+        <View
+          style={{
+            marginHorizontal: 16,
+            paddingTop: 4,
+            paddingBottom: 6,
+            paddingRight: 8,
+            justifyContent: 'flex-end',
+            alignItems: 'center',
+            flexDirection: 'row',
+          }}>
+          <TouchableOpacity>
+            <MaterialIcons
+              name={'skip-previous'}
+              color={colors.gray}
+              size={28}
+            />
+          </TouchableOpacity>
+          <TouchableOpacity>
+            <MaterialCommunityIcons
+              name={'chevron-left'}
+              color={colors.gray}
+              size={28}
+            />
+          </TouchableOpacity>
+          <TextInput
+            style={{
+              paddingVertical: 0,
+              borderWidth: 1,
+              borderColor: colors.gray_0,
+              paddingHorizontal: 8,
+            }}
+          />
+          <Text style={{color: colors.font_gray}}> of 50.000</Text>
+          <TouchableOpacity>
+            <MaterialCommunityIcons
+              name={'chevron-right'}
+              color={colors.gray}
+              size={28}
+            />
+          </TouchableOpacity>
+          <TouchableOpacity>
+            <MaterialIcons name={'skip-next'} color={colors.gray} size={28} />
+          </TouchableOpacity>
+        </View>
+      </View>
     </HeaderContainer>
   );
 };
-
-export default LandingPage;
+export default Subscription;

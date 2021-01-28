@@ -7,7 +7,6 @@ import {
 } from './dynamic_array_filter_action';
 import axios from 'axios';
 import lod from 'lodash';
-import randomId from '../../helpers/randomId';
 import {base_url} from '../../constant/connection';
 import {authLogout} from './auth_action';
 import {CommonActions} from '@react-navigation/native';
@@ -51,7 +50,7 @@ const getCustomLabel = (navigation) => {
         if (data.statusCode === 0) {
           const modifyArray = data.result.map(
             ({customLabel, customValue, fieldType, labelNumber, ...rest}) => ({
-              formId: randomId(),
+              formId: `label-${labelNumber}`,
               disabled: false,
               label: customLabel,
               data:
@@ -65,6 +64,7 @@ const getCustomLabel = (navigation) => {
               value: fieldType === 'Combo Box' ? {} : '',
               hard_code: false,
               params: `&customLabel${labelNumber}=`,
+              shown: false,
               ...rest,
             }),
           );

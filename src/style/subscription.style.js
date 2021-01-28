@@ -14,6 +14,7 @@ export default {
   containerTitle: {
     flexDirection: 'row',
     justifyContent: 'space-between',
+    marginBottom: 8,
   },
   containerTextInput: {
     borderWidth: 1,

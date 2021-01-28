@@ -63,6 +63,22 @@ const mergeDataFilter = (dataCustom = []) => {
     data: dataCustom,
   };
 };
+const multipleSetShown = (dataShown = []) => {
+  //sample string that send to here, must like this
+  // 'form-id:shown(true / false)'
+  return (dispatch, getState) => {
+    const {dynamic_array_filter_reducer} = getState();
+    const {array_filter} = dynamic_array_filter_reducer;
+    let newArr = lod.cloneDeep(array_filter);
+    dataShown.map((value) => {
+      const splitValue = value.split(':');
+      const getIndex = array_filter.findIndex(
+        (j) => j.formId === splitValue[0],
+      );
+      newArr[getIndex].shown = splitValue[1] === 'true';
+    });
+  };
+};
 const setSomethingToFilter = (dataObject = []) => {
   //the data must be look like this
   // {
