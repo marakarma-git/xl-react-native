@@ -1,8 +1,8 @@
-import { authLogout } from '../action/auth_action';
-import { removeEnterPriseLogo } from '../action/enterprise_action';
-import { ToastAndroid } from 'react-native';
+import {authLogout} from '../action/auth_action';
+import {removeEnterPriseLogo} from '../action/enterprise_action';
+import {ToastAndroid} from 'react-native';
 
-const validateTokenMiddleware = store => next => action => {
+const validateTokenMiddleware = (store) => (next) => (action) => {
   try {
     if (action.payload) {
       if (action.payload.error) {
@@ -10,14 +10,14 @@ const validateTokenMiddleware = store => next => action => {
           ToastAndroid.show('Token Expired', ToastAndroid.LONG);
           store.dispatch(removeEnterPriseLogo());
           store.dispatch(authLogout());
-          throw new Error('Token Expired')
+          throw new Error('Token Expired');
         }
       }
     }
     next(action);
   } catch (error) {
-    next({ type: "" });
+    next({type: ''});
   }
-}
+};
 
 export default validateTokenMiddleware;

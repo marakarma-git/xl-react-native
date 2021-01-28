@@ -1,13 +1,13 @@
 import React from 'react';
-import { StatusBar } from 'react-native';
+import {StatusBar} from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { persistStore, persistReducer } from 'redux-persist';
+import {persistStore, persistReducer} from 'redux-persist';
 const thunk = require('redux-thunk').default;
-import { validateTokenMiddleware } from './redux/middleware/index';
-import { PersistGate } from 'redux-persist/integration/react';
-import { applyMiddleware, createStore } from 'redux';
-import { Provider } from 'react-redux';
-import { SafeAreaProvider } from 'react-native-safe-area-context';
+import {validateTokenMiddleware} from './redux/middleware/index';
+import {PersistGate} from 'redux-persist/integration/react';
+import {applyMiddleware, createStore} from 'redux';
+import {Provider} from 'react-redux';
+import {SafeAreaProvider} from 'react-native-safe-area-context';
 import Route from './pages/route';
 import RootReducers from './redux/reducer';
 
@@ -17,7 +17,10 @@ const persistConfig = {
   whitelist: ['auth_reducer'],
 };
 const persistReducers = persistReducer(persistConfig, RootReducers);
-const store = createStore(persistReducers, applyMiddleware(thunk, validateTokenMiddleware));
+const store = createStore(
+  persistReducers,
+  applyMiddleware(thunk, validateTokenMiddleware),
+);
 const persist = persistStore(store);
 
 const App = () => {
@@ -33,4 +36,4 @@ const App = () => {
   );
 };
 export default App;
-export { store };
+export {store};
