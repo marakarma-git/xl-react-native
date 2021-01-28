@@ -1,5 +1,5 @@
-import {device_height} from '../constant/config';
-import {colors} from '../constant/color';
+import { device_height } from '../constant/config';
+import { colors } from '../constant/color';
 export default {
   avatarContainer: {
     width: 152,
@@ -69,7 +69,7 @@ export default {
     color: '#707070',
   },
   textInputContainer: {
-    height: device_height * 0.05,
+    height: 40,
     fontSize: 14,
     // borderRadius: border_radius,
     borderWidth: 1,
@@ -147,9 +147,16 @@ export default {
     width: 165,
     height: 40,
     borderRadius: 5,
-    backgroundColor: 'red',
     justifyContent: 'center',
     alignItems: 'center'
+  },
+  buttonBlock: {
+    width: '90%',
+    height: 40,
+    borderRadius: 5,
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginVertical: 10
   },
   buttonText: {
     fontSize: 16,

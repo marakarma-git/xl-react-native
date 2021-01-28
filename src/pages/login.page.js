@@ -117,13 +117,13 @@ const Login = ({ navigation }) => {
               onSubmitEditing={() => onSubmit()}
             />
             {/* Forget Password To-do */}
-            {/* <Text style={styles.normalText}>
-                Forget Password ?&nbsp;
+            <Text style={styles.normalText}>
+              Forget Password ?&nbsp;
               <TouchableWithoutFeedback
-                onPress={() => alert("Todo forget password")}>
+                onPress={() => navigation.navigate('Reset Password')}>
                 <Text style={styles.linkText}>Click Here</Text>
               </TouchableWithoutFeedback>
-            </Text> */}
+            </Text>
             <Button
               buttonStyle={styles.loginButton}
               onPress={() => onSubmit()}
