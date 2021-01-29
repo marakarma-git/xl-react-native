@@ -8,6 +8,7 @@ const initialState = {
   isLoggedIn: false
 };
 const auth_reducers = (state = initialState, action) => {
+  console.log(JSON.stringify(state.data), " ><<<< ")
   switch (action.type) {
     case reduxString.AUTH_REQUEST:
       return {
