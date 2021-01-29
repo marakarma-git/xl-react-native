@@ -169,7 +169,7 @@ const SelectInputType2 = (props) => {
   );
 };
 const DateInput = (props) => {
-  const {value, onChange} = props;
+  const {value, onChange, isSelected} = props;
   const [showDate, setShowDate] = useState(false);
   return (
     <React.Fragment>
@@ -178,7 +178,7 @@ const DateInput = (props) => {
         isTouchable
         customTouchProps={{onPress: () => setShowDate(true)}}>
         <Text numberOfLines={1} style={{paddingVertical: 8, flex: 1}}>
-          {dayjs(value).format('DD-MM-YYYY')}
+          {isSelected ? dayjs(value).format('DD-MM-YYYY') : 'Choose Date'}
         </Text>
         <FontAwesome5 name={'calendar-alt'} color={colors.gray} size={20} />
       </ContainerInput>

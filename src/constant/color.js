@@ -1,4 +1,5 @@
 export const colors = {
+  font_gray: '#575757',
   gray: '#707070',
   gray_0: '#A8A8A8',
   gray_200: '#EAEAEA',

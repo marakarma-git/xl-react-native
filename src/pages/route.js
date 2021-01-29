@@ -28,16 +28,16 @@ const RootStack = () => {
           <Stack.Screen name={'Change Password'} component={ChangePasswordPage} />
           <Stack.Screen name={'Reset Password'} component={ForgetPassword} />
         </>
-      )
+      );
     }
-  }
+  };
 
   return (
     <Stack.Navigator
       screenOptions={{
         headerShown: false,
       }}>
-      { routeLogic()}
+      {routeLogic()}
     </Stack.Navigator>
   );
 };

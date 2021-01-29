@@ -1,5 +1,6 @@
 import dayjs from 'dayjs';
 import lod from 'lodash';
+import generateLink from '../../helpers/generateLink';
 import reduxString from '../reduxString';
 const updateDataFilter = (data = []) => {
   return {
@@ -29,6 +30,13 @@ const resetGeneratedParams = () => {
     type: reduxString.RESET_GENERATED_PARAMS,
   };
 };
+const generateArrayFilterParams = () => {
+  return (dispatch, getState) => {
+    const {dynamic_array_filter_reducer} = getState();
+    const {array_filter} = dynamic_array_filter_reducer;
+    dispatch(updateGeneratedParams(generateLink(array_filter)));
+  };
+};
 const removeAllHardCodeTrue = () => {
   return (dispatch, getState) => {
     const {dynamic_array_filter_reducer} = getState();
@@ -53,6 +61,22 @@ const mergeDataFilter = (dataCustom = []) => {
   return {
     type: reduxString.MERGE_DATA_FILTER,
     data: dataCustom,
+  };
+};
+const multipleSetShown = (dataShown = []) => {
+  //sample string that send to here, must like this
+  // 'form-id:shown(true / false)'
+  return (dispatch, getState) => {
+    const {dynamic_array_filter_reducer} = getState();
+    const {array_filter} = dynamic_array_filter_reducer;
+    let newArr = lod.cloneDeep(array_filter);
+    dataShown.map((value) => {
+      const splitValue = value.split(':');
+      const getIndex = array_filter.findIndex(
+        (j) => j.formId === splitValue[0],
+      );
+      newArr[getIndex].shown = splitValue[1] === 'true';
+    });
   };
 };
 const setSomethingToFilter = (dataObject = []) => {
@@ -108,6 +132,7 @@ const setSomethingToFilter = (dataObject = []) => {
           return dispatch(updateDataFilter(newArr));
         case 'OnChangeDateTimePicker':
           newArr[getIndex].value = value;
+          newArr[getIndex].isSelected = true;
           return dispatch(updateDataFilter(newArr));
         case 'OnChangeDropDown':
           newArr[getIndex].value = {...value};
@@ -124,12 +149,14 @@ const setSomethingToFilter = (dataObject = []) => {
 };
 const resetDataFilter = () => {
   return (dispatch, getState) => {
+    dispatch(resetGeneratedParams());
     const {dynamic_array_filter_reducer} = getState();
     const {array_filter} = dynamic_array_filter_reducer;
     const resetArray = array_filter.map(({formId, type, ...value}) => {
       if (formId === 'subscription-package-name-hard-code') {
         return {
           ...value,
+          formId: formId,
           type: type,
           disabled: true,
           value: {},
@@ -139,12 +166,14 @@ const resetDataFilter = () => {
           case 'DropDown':
             return {
               ...value,
+              formId: formId,
               type: type,
               value: {},
             };
           case 'DropDownType2':
             return {
               ...value,
+              formId: formId,
               value: '',
               type: type,
               selectedValue: {},
@@ -152,12 +181,15 @@ const resetDataFilter = () => {
           case 'TextInput':
             return {
               ...value,
+              formId: formId,
               type: type,
               value: '',
             };
           case 'DateTimePicker':
             return {
               ...value,
+              isSelected: false,
+              formId: formId,
               type: type,
               value: dayjs(),
             };
@@ -177,4 +209,6 @@ export {
   setLoadingFilterTrue,
   setLoadingFilterFalse,
   mergeDataFilter,
+  generateArrayFilterParams,
+  updateDataSearchText,
 };

@@ -21,6 +21,7 @@ const dynamicFilter = [
     type: 'TextInput',
     params: '&imsi=',
     hard_code: true,
+    shown: true,
   },
   {
     formId: 'iccid-hard-code',
@@ -30,6 +31,7 @@ const dynamicFilter = [
     type: 'TextInput',
     params: '&iccid=',
     hard_code: true,
+    shown: false,
   },
   {
     formId: 'detected-imei-hard-code',
@@ -39,6 +41,7 @@ const dynamicFilter = [
     type: 'TextInput',
     params: '&imei=',
     hard_code: true,
+    shown: false,
   },
   {
     formId: 'enterprise-hard-code',
@@ -52,6 +55,7 @@ const dynamicFilter = [
     type: 'DropDown',
     params: '&enterprise=',
     hard_code: true,
+    shown: false,
   },
   {
     formId: 'fixed-ip-hard-code',
@@ -61,6 +65,7 @@ const dynamicFilter = [
     type: 'TextInput',
     params: '&fixedIP=',
     hard_code: true,
+    shown: false,
   },
   {
     formId: 'label-hard-code',
@@ -70,6 +75,7 @@ const dynamicFilter = [
     type: 'TextInput',
     params: '&label=',
     hard_code: true,
+    shown: true,
   },
   {
     formId: 'state-hard-code',
@@ -80,8 +86,9 @@ const dynamicFilter = [
     value: {},
     data: [],
     type: 'DropDown',
-    params: '&label=',
+    params: '&state=',
     hard_code: true,
+    shown: true,
   },
   {
     formId: 'apn-hard-code',
@@ -91,6 +98,7 @@ const dynamicFilter = [
     type: 'TextInput',
     params: '&apn=',
     hard_code: true,
+    shown: false,
   },
   {
     formId: 'state-lock-hard-code',
@@ -101,8 +109,9 @@ const dynamicFilter = [
     value: {},
     data: [],
     type: 'DropDown',
-    params: '&state=',
+    params: '&stateLock=',
     hard_code: true,
+    shown: false,
   },
   {
     formId: 'subscription-package-name-hard-code',
@@ -115,6 +124,7 @@ const dynamicFilter = [
     type: 'DropDown',
     params: '&subscriptionPackageName=',
     hard_code: true,
+    shown: false,
   },
   {
     formId: 'specification-id-hard-code',
@@ -124,6 +134,7 @@ const dynamicFilter = [
     type: 'TextInput',
     params: '&specificationId=',
     hard_code: true,
+    shown: false,
   },
   {
     formId: 'first-activation-date-hard-code',
@@ -131,17 +142,21 @@ const dynamicFilter = [
     disabled: false,
     value: dayjs().toDate(),
     type: 'DateTimePicker',
+    isSelected: false,
     params: '&firstActivationDate=',
     hard_code: true,
+    shown: false,
   },
   {
     formId: 'pbr-exit-date-hard-code',
     label: 'PBR exit date',
     disabled: false,
     value: dayjs().toDate(),
+    isSelected: false,
     type: 'DateTimePicker',
     params: '&pbrExitDate=',
     hard_code: true,
+    shown: false,
   },
   {
     formId: 'monthly-data-hard-code',
@@ -186,6 +201,7 @@ const dynamicFilter = [
     ],
     selectedValue: {},
     hard_code: true,
+    shown: false,
   },
   {
     formId: 'monthly-sms-hard-code',
@@ -195,6 +211,7 @@ const dynamicFilter = [
     type: 'TextInput',
     params: '&monthlySms=',
     hard_code: true,
+    shown: false,
   },
 ];
 const initialState = {

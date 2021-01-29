@@ -3,6 +3,7 @@ import axios from 'axios';
 import {base_url} from '../../constant/connection';
 import {setSomethingToFilter} from './dynamic_array_filter_action';
 import {authLogout} from './auth_action';
+import {CommonActions} from '@react-navigation/native';
 
 const getStateLoading = () => {
   return {
@@ -49,6 +50,16 @@ const getStateCorp = (navigation) => {
       .then(({data}) => {
         if (data.error === 'invalid_token') {
           dispatch(authLogout(navigation));
+          navigation.dispatch(
+            CommonActions.reset({
+              index: 0,
+              routes: [
+                {
+                  name: 'Auth',
+                },
+              ],
+            }),
+          );
         }
         if (data.statusCode === 0) {
           dispatch(getStateSuccess(data.result));

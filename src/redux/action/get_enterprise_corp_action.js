@@ -3,6 +3,7 @@ import reduxString from '../reduxString';
 import {base_url} from '../../constant/connection';
 import {setSomethingToFilter} from './dynamic_array_filter_action';
 import {authLogout} from './auth_action';
+import {CommonActions} from '@react-navigation/native';
 const getEnterpriseCorpLoading = () => {
   return {
     type: reduxString.GET_ENTERPRISE_CORP_LOADING,
@@ -46,7 +47,17 @@ const getEnterpriseCorp = (navigation) => {
       })
       .then(({data}) => {
         if (data.error === 'invalid_token') {
-          dispatch(authLogout(navigation));
+          dispatch(authLogout());
+          navigation.dispatch(
+            CommonActions.reset({
+              index: 0,
+              routes: [
+                {
+                  name: 'Auth',
+                },
+              ],
+            }),
+          );
         }
         if (data.statusCode === 0) {
           dispatch(getEnterpriseCorpSuccess(data.result));
