@@ -11,7 +11,7 @@ import style from '../../style/home.style';
 const LandingPage = ({ navigation }) => {
   const dispatch = useDispatch();
   const userData = useSelector((state) => state.auth_reducer.data);
-  const titleVersion = useSelector((state) => state.auth_reducer.titleVersion);
+  // const titleVersion = useSelector((state) => state.auth_reducer.titleVersion);
   const carouselItems = useSelector((state) => state.dashboard_reducer.carousel);
   const { imageBase64 } = useSelector((state) => state.enterprise_reducer);
   const [activeIndex, setActiveIndex] = useState(0);
@@ -77,11 +77,11 @@ const LandingPage = ({ navigation }) => {
               </View>
           }
           {pagination()}
-          <View style={style.tradeMark}>
+          {/* <View style={style.tradeMark}>
             <Text style={{ fontWeight: 'bold', paddingVertical: 10 }}>
               IoT SIMCare {titleVersion || ''}
             </Text>
-          </View>
+          </View> */}
         </Card>
       </ScrollView>
     </HeaderContainer>

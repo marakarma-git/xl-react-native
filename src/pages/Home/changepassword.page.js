@@ -11,7 +11,7 @@ import Axios from 'axios';
 const ChangePasswordPage = ({ navigation }) => {
   const dispatch = useDispatch();
   const userData = useSelector((state) => state.auth_reducer.data);
-  const titleVersion = useSelector((state) => state.auth_reducer.titleVersion);
+  // const titleVersion = useSelector((state) => state.auth_reducer.titleVersion);
   const { access_token } = useSelector((state) => state.auth_reducer.data);
   const [requestLoading, setRequestLoading] = useState(false);
 
@@ -56,11 +56,11 @@ const ChangePasswordPage = ({ navigation }) => {
         submitHandler={submitHandler}
         requestLoading={requestLoading}
       />
-      <View>
+      {/* <View>
         <Text style={{ fontWeight: 'bold', textAlign: 'center', paddingTop: 10 }}>
           IoT SIMCare {titleVersion || ''}
         </Text>
-      </View>
+      </View> */}
     </ScrollView>
   );
 };
