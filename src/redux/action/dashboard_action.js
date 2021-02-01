@@ -34,8 +34,8 @@ export const getDashboardSummary = (accessToken) => {
         if (data.statusCode === 0) {
           const summaryData = [
             { title: 'Total SIM Card', resultId: 'totalsimcard' },
-            { title: 'Total Active Session', resultId: 'totalactivesim' },
-            { title: 'Total Active SIM Card', resultId: 'totalactivesession' },
+            { title: 'Total Active SIM Card', resultId: 'totalactivesim' },
+            { title: 'Total Active Session', resultId: 'totalactivesession' },
             {
               title: 'Total Aggregated Traffic',
               resultId: 'totalaggregatedtraffic',

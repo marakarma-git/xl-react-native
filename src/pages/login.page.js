@@ -8,15 +8,22 @@ import {
   Keyboard,
   TouchableWithoutFeedback,
   Text,
+  TouchableOpacity,
+  ActivityIndicator,
+  Linking
 } from 'react-native';
-import { Button } from 'react-native-elements';
 import lod from 'lodash';
 import styles from '../style/login.style';
+import { authLogin } from '../redux/action/auth_action';
 import { useDispatch, useSelector } from 'react-redux';
-import { authLogin, authLogout } from '../redux/action/auth_action';
+import { loginBrand } from '../assets/images/index';
+import FontAwesome from 'react-native-vector-icons/FontAwesome';
+import CheckBox from '@react-native-community/checkbox';
 import callEnterpriseLogo from '../redux/action/enterprise_action';
 const busolLogo = require('../assets/images/logo/xl-busol-inverted.png');
 const Login = ({ navigation }) => {
+  const year = new Date().getFullYear();
+  const [rememberMe, setRememberMe] = useState(false);
   const [localLoading, setLocalLoading] = useState(false);
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
@@ -26,7 +33,6 @@ const Login = ({ navigation }) => {
   const alreadyRequest = useSelector(
     (state) => state.auth_reducer.alreadyRequest,
   );
-  const titleVersion = useSelector((state) => state.auth_reducer.titleVersion);
   const { statusCode, error: errorCheck } = useSelector(
     (state) => state.enterprise_reducer,
   );
@@ -96,47 +102,100 @@ const Login = ({ navigation }) => {
             <View style={styles.imageContainer}>
               <Image style={styles.imageSize} source={busolLogo} />
             </View>
-            <View style={{ justifyContent: 'center', marginVertical: 20 }}>
-              <Text style={styles.titleText}>IoT Connectivity+</Text>
-              {errorText && <Text style={styles.errorText}>{errorText}</Text>}
+            <View style={styles.loginContainer}>
+              <View style={styles.loginContainerHeader}>
+                <Image source={loginBrand} style={styles.iotImage}/>
+              </View>
+              <View style={styles.formGroup}>
+                <Text style={styles.label}>{'Username'}</Text>
+                <TextInput
+                      editable={!localLoading}
+                      placeholder="Username"
+                      placeholderColor="#c4c3cb"
+                      style={styles.textInputContainer}
+                      onChangeText={(e) => setUsername(e)}
+                />
+              </View>
+              <View style={styles.formGroup}>
+                <Text style={styles.label}>{'Password'}</Text>
+                <TextInput
+                  editable={!localLoading}
+                  placeholder="Password"
+                  placeholderColor="#c4c3cb"
+                  secureTextEntry
+                  style={styles.textInputContainer}
+                  onChangeText={(e) => setPassword(e)}
+                  onSubmitEditing={() => onSubmit()}
+                />
+              </View>
+              {/* To-do Remember me & terms of use */}
+                <View style={styles.loginSettingWrapper}>
+                    <View style={styles.loginSetting}>
+                      <CheckBox 
+                        disabled={false} 
+                        value={rememberMe} 
+                        onCheckColor="#002DBB"
+                        onValueChange={(value) => setRememberMe(value)}/>
+                      <Text style={{ fontSize: 11}}>Remember Me</Text>
+                    </View>
+                    <TouchableWithoutFeedback
+                      onPress={() => navigation.navigate('Reset Password')}>
+                      <Text style={styles.linkText}>Forget Password ?</Text>
+                    </TouchableWithoutFeedback>
+                </View>
+                {/* To-do */}
+                {/* <View style={styles.loginSettingWrapper}>
+                    <View style={styles.loginSetting}>
+                      <CheckBox disabled={false} onCheckColor="#002DBB"/>
+                      <Text style={{ fontSize: 11 }}>I aggree to the&nbsp;
+                      <TouchableWithoutFeedback
+                        onPress={() => Linking.openURL('https://www.xl.co.id/en/terms-and-conditions')}>
+                        <Text style={styles.linkText}>Terms of use </Text>
+                      </TouchableWithoutFeedback>
+                       and the&nbsp; 
+                       <TouchableWithoutFeedback
+                        onPress={() => Linking.openURL('https://www.xl.co.id/en/privacy-policy')}>
+                        <Text style={styles.linkText}>Privacy Policy </Text>
+                      </TouchableWithoutFeedback>
+                       </Text>
+                    </View>
+                </View> */}
+                <TouchableOpacity
+                  disabled={localLoading}
+                  onPress={onSubmit}
+                  style={[styles.buttonBlock, { backgroundColor: localLoading ? '#949494' : '#002DBB' }]}>
+                  <Text style={styles.buttonText}>
+                    {localLoading ? (
+                      <ActivityIndicator color={'#fff'} style={styles.buttonText} />
+                    ) : (
+                        <Text style={styles.buttonText}>Login</Text>
+                      )}
+                  </Text>
+                </TouchableOpacity>
+                <View style={[styles.loginSettingWrapper,{ marginTop: 10 }]}>
+                      <Text style={[styles.label, { fontSize: 11 }]}>Need Support ?</Text>
+                      <Text>
+                        <FontAwesome name="phone" size={11} color="grey" />
+                        <TouchableWithoutFeedback
+                          onPress={() => Linking.openURL('tel://+622157959556')}>
+                          <Text style={[styles.linkText, { fontSize: 11 }]}>&nbsp;+62 21 57959556 </Text>
+                        </TouchableWithoutFeedback>
+                      </Text>
+                      <Text>
+                        <FontAwesome name="envelope" size={11} color="grey" />
+                        <TouchableWithoutFeedback
+                          onPress={() => Linking.openURL('mailto://+622157959556')}>
+                          <Text style={[styles.linkText, { fontSize: 11 }]}>&nbsp;cs-busol@xl.co.id </Text>
+                        </TouchableWithoutFeedback>
+                      </Text>
+                </View>
             </View>
-            <TextInput
-              editable={!localLoading}
-              placeholder="Username"
-              placeholderColor="#c4c3cb"
-              style={styles.textInputContainer}
-              onChangeText={(e) => setUsername(e)}
-            />
-            <TextInput
-              editable={!localLoading}
-              placeholder="Password"
-              placeholderColor="#c4c3cb"
-              secureTextEntry
-              style={styles.textInputContainer}
-              onChangeText={(e) => setPassword(e)}
-              onSubmitEditing={() => onSubmit()}
-            />
-            {/* Forget Password To-do */}
-            <Text style={styles.normalText}>
-              Forget Password ?&nbsp;
-              <TouchableWithoutFeedback
-                onPress={() => navigation.navigate('Reset Password')}>
-                <Text style={styles.linkText}>Click Here</Text>
-              </TouchableWithoutFeedback>
-            </Text>
-            <Button
-              buttonStyle={styles.loginButton}
-              onPress={() => onSubmit()}
-              disabled={localLoading}
-              loading={localLoading}
-              title="Login"
-            />
           </View>
         </TouchableWithoutFeedback>
       </KeyboardAvoidingView>
       <View style={styles.footer}>
-        <Text style={{ fontWeight: 'bold' }}>
-          IoT SIMCare {titleVersion || ''}
+        <Text style={{ color: '#707070', fontSize: 12 }}>
+          &copy; {`${year} PT. XL Axiata Tbk. All Right Reserved `}
         </Text>
       </View>
     </ScrollView>

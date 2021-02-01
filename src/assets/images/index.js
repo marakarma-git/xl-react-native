@@ -2,6 +2,7 @@
 import logoCompany from './logo/logo-company.png';
 import xlBusolInverted from './logo/xl-busol-inverted.png';
 import xlBusol from './logo/xl-busol.png';
+import loginBrand from './logo/login-brand.png';
 
 // Icon Assets
 import bell from './icons/bell.png';
@@ -24,6 +25,7 @@ export {
   logoCompany,
   xlBusolInverted,
   xlBusol,
+  loginBrand,
   bell,
   arrowBack,
   filter,

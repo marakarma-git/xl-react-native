@@ -62,7 +62,7 @@ export default {
   imageCellItem: {
     width: 300,
     height: 300,
-    marginVertical: 20,
+    resizeMode: 'contain'
   },
   container: {
     flex: 1,

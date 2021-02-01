@@ -50,7 +50,7 @@ const LandingPage = ({ navigation }) => {
       <ScrollView>
         <OverlayBackground />
         <Card style={[style.cardSection]}>
-          <Card.Content style={{ marginBottom: 10 }}>
+          <Card.Content style={{ marginBottom: 20 }}>
             <Title>Hi! {firstName + ' ' + lastName}</Title>
           </Card.Content>
           {
@@ -78,7 +78,7 @@ const LandingPage = ({ navigation }) => {
           }
           {pagination()}
           <View style={style.tradeMark}>
-            <Text style={{ fontWeight: 'bold' }}>
+            <Text style={{ fontWeight: 'bold', paddingVertical: 10 }}>
               IoT SIMCare {titleVersion || ''}
             </Text>
           </View>

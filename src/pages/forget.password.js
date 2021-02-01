@@ -18,9 +18,9 @@ import inputStyles from '../style/account.style';
 import loginStyle from '../style/login.style';
 
 const ChangePasswordPage = ({ navigation }) => {
+  const year = new Date().getFullYear();
   const [username, setUsername] = useState('');
   const [requestLoading, setRequestLoading] = useState(false);
-  const titleVersion = useSelector((state) => state.auth_reducer.titleVersion);
 
   const requestChangePassword = async () => {
     try {
@@ -76,9 +76,9 @@ const ChangePasswordPage = ({ navigation }) => {
           </Text>
         </TouchableOpacity>
       </View>
-      <View>
-        <Text style={{ textAlign: 'center', fontWeight: 'bold' }}>
-          IoT SIMCare {titleVersion || ''}
+      <View style={loginStyle.footer, { bottom: 40 }}>
+        <Text style={{ color: '#707070', fontSize: 12, textAlign: 'center' }}>
+          &copy; {`${year} PT. XL Axiata Tbk. All Right Reserved `}
         </Text>
       </View>
     </ScrollView>
