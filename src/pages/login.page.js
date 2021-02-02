@@ -129,7 +129,6 @@ const Login = ({ navigation }) => {
                   onSubmitEditing={() => onSubmit()}
                 />
               </View>
-              {/* To-do Remember me & terms of use */}
                 <View style={styles.loginSettingWrapper}>
                     <View style={styles.loginSetting}>
                       <CheckBox 
