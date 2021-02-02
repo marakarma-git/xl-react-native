@@ -106,6 +106,7 @@ const Login = ({ navigation }) => {
               <View style={styles.loginContainerHeader}>
                 <Image source={loginBrand} style={styles.iotImage}/>
               </View>
+                {errorText && <Text style={[styles.errorText, { paddingBottom: 10 }]}>{errorText}</Text>}
               <View style={styles.formGroup}>
                 <Text style={styles.label}>{'Username'}</Text>
                 <TextInput
@@ -140,7 +141,7 @@ const Login = ({ navigation }) => {
                     </View>
                     <TouchableWithoutFeedback
                       onPress={() => navigation.navigate('Reset Password')}>
-                      <Text style={styles.linkText}>Forget Password ?</Text>
+                      <Text style={styles.linkText}>Forgot Password ?</Text>
                     </TouchableWithoutFeedback>
                 </View>
                 {/* To-do */}

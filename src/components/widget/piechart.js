@@ -5,6 +5,7 @@ import {View, ActivityIndicator, Text} from 'react-native';
 import {Card, Title} from 'react-native-paper';
 import {base_url} from '../../constant/connection';
 import {dashboardHeaderAuth} from '../../constant/headers';
+import Helper from '../../helpers/helper';
 
 import Axios from 'axios';
 import ChartLegend from './chartlegend';
@@ -14,6 +15,7 @@ const pieChartColor = ['#2ECFD3', '#124EAB', '#0064FB', '#22385A'];
 
 const PieChartComponent = ({item, navigation, filterParams = {}}) => {
   const [dataSet, setDataSet] = useState(null);
+  const [chartColor, setChartColor] = useState([]);
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
   const userData = useSelector((state) => state.auth_reducer.data);
@@ -53,6 +55,14 @@ const PieChartComponent = ({item, navigation, filterParams = {}}) => {
               setDataSet([]);
               setError('All dataset value is 0%');
             } else {
+              Helper.sortDescending(newDataSet, 'total');
+
+              const arrayColor = [];
+              newDataSet.map((data) => {
+                arrayColor.push(data.color);
+              });
+
+              setChartColor(arrayColor);
               setDataSet(newDataSet);
             }
           } else {
@@ -80,7 +90,7 @@ const PieChartComponent = ({item, navigation, filterParams = {}}) => {
             <VictoryPie
               data={dataSet}
               responsive={true}
-              colorScale={pieChartColor}
+              colorScale={chartColor}
               height={230}
               theme={VictoryTheme.material}
               labelComponent={
