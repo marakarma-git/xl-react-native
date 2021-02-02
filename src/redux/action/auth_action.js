@@ -1,5 +1,4 @@
 import Axios from 'axios';
-import { CommonActions } from '@react-navigation/native';
 import { base_url, headerAuth } from '../../constant/connection';
 import subDomain from '../../constant/requestSubPath';
 import reduxString from '../reduxString';
