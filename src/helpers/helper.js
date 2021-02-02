@@ -44,6 +44,24 @@ class Helper {
       return data;
     }
   }
+
+  static sortDescending(data, key){
+    if (typeof data === 'object') {
+      for (let i = 0; i < data.length; i++) {
+        for (let j = 0; j < data.length - 1; j++) {
+          if (data[j][key] < data[j + 1][key]) {
+            temp = data[j];
+            data[j] = data[j + 1];
+            data[j + 1] = temp;
+          }
+        }
+      }
+
+      return data;
+    } else {
+      return data;
+    }
+  }
 }
 
 export default Helper;

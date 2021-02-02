@@ -13,7 +13,7 @@ const ChartLegendComponent = ({dataSet}) => {
         <Text style={{fontSize: 11, color: data.color}}>
           {`${data.percentage}% ${data.status} (${Helper.numberFormat(
             data.total,
-            ',',
+            '.',
           )})`}
         </Text>
       </View>
