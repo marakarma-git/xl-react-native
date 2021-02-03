@@ -8,7 +8,6 @@ import {
 } from 'react-native';
 import {subscriptionStyle} from '../../style';
 import {HeaderContainer, OverlayBackground} from '../../components/index';
-import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import {colors} from '../../constant/color';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
