@@ -16,6 +16,8 @@ import {updateDataSearchText} from '../../redux/action/dynamic_array_filter_acti
 import {useDispatch, useSelector} from 'react-redux';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import {border_radius} from '../../constant/config';
+import MaterialCommunityIcon from 'react-native-paper/src/components/MaterialCommunityIcon';
+import Ionicons from 'react-native-vector-icons/Ionicons';
 
 const Container = (props) => {
   const {style, children} = props;
@@ -33,40 +35,44 @@ const Subscription = ({navigation}) => {
       <View style={{flex: 1, backgroundColor: 'white'}}>
         <OverlayBackground />
         <Container style={{marginTop: 16}}>
-          <View style={subscriptionStyle.containerTextInput}>
-            <FontAwesome
-              style={{marginHorizontal: 8}}
-              name={'search'}
-              color={colors.gray_0}
-              size={15}
-            />
-            <TextInput
-              value={searchText}
-              onChangeText={(e) => dispatch(updateDataSearchText(e))}
-              style={{flex: 1}}
-              placeholder={'Search with IMSI, MSISDN, ICCID, Detected IMEI'}
-            />
-          </View>
           <View
             style={{
               flexDirection: 'row',
+              justifyContent: 'center',
               alignItems: 'center',
-              justifyContent: 'flex-end',
             }}>
+            <View style={subscriptionStyle.containerTextInput}>
+              <FontAwesome
+                style={{marginHorizontal: 8}}
+                name={'search'}
+                color={colors.gray_0}
+                size={15}
+              />
+              <TextInput
+                value={searchText}
+                onChangeText={(e) => dispatch(updateDataSearchText(e))}
+                style={{flex: 1, fontSize: 11}}
+                placeholder={'Search with IMSI, MSISDN, ICCID, Detected IMEI'}
+              />
+            </View>
             <TouchableOpacity>
-              <FontAwesome5 name={'columns'} size={24} color={colors.gray} />
+              <MaterialCommunityIcon
+                name={'filter'}
+                size={26}
+                color={colors.gray}
+              />
             </TouchableOpacity>
             <View
               style={{
-                height: '100%',
-                width: 2,
+                height: '50%',
+                width: 1,
                 backgroundColor: colors.gray,
-                marginHorizontal: 12,
+                marginHorizontal: 8,
               }}
             />
             <TouchableOpacity
               onPress={() => navigation.navigate('SubscriptionFilter')}>
-              <FontAwesome5 name={'filter'} size={24} color={colors.gray} />
+              <Ionicons name={'settings-sharp'} size={22} color={colors.gray} />
             </TouchableOpacity>
           </View>
         </Container>
@@ -74,12 +80,52 @@ const Subscription = ({navigation}) => {
           style={{
             marginHorizontal: 16,
             paddingVertical: 4,
+            flexDirection: 'row',
+            alignItems: 'center',
+          }}>
+          <TouchableOpacity
+            style={{
+              borderRadius: border_radius,
+              borderWidth: 1,
+              borderColor: colors.gray,
+              flexDirection: 'row',
+            }}>
+            <Text style={{paddingVertical: 4, paddingHorizontal: 16}}>
+              Actions
+            </Text>
+            <View
+              style={{
+                backgroundColor: colors.gray_0,
+                borderRadius: border_radius - 1,
+                justifyContent: 'center',
+                paddingHorizontal: 4,
+              }}>
+              <MaterialCommunityIcons
+                name={'chevron-down'}
+                color={colors.gray}
+                size={26}
+              />
+            </View>
+          </TouchableOpacity>
+          <Text style={{color: colors.font_gray, flex: 1, marginLeft: 12}}>
+            Total: 50.000 | Filtered: 5 | Selected: 1
+          </Text>
+        </View>
+        <View style={{flex: 1, backgroundColor: 'tomato'}}>
+          <ScrollView>
+            <Text>tengah</Text>
+          </ScrollView>
+        </View>
+        <View
+          style={{
+            marginHorizontal: 16,
+            paddingTop: 4,
+            paddingBottom: 6,
+            paddingRight: 8,
             justifyContent: 'space-between',
+            alignItems: 'center',
             flexDirection: 'row',
           }}>
-          <Text style={{color: colors.font_gray}}>
-            Total: 50.000 | Showing: 10
-          </Text>
           <View style={{flexDirection: 'row'}}>
             <Text style={{color: colors.font_gray}}>View: </Text>
             <TouchableOpacity
@@ -99,55 +145,41 @@ const Subscription = ({navigation}) => {
             </TouchableOpacity>
             <Text style={{color: colors.font_gray}}> per page</Text>
           </View>
-        </View>
-        <View style={{flex: 1, backgroundColor: 'tomato'}}>
-          <ScrollView>
-            <Text>tengah</Text>
-          </ScrollView>
-        </View>
-        <View
-          style={{
-            marginHorizontal: 16,
-            paddingTop: 4,
-            paddingBottom: 6,
-            paddingRight: 8,
-            justifyContent: 'flex-end',
-            alignItems: 'center',
-            flexDirection: 'row',
-          }}>
-          <TouchableOpacity>
-            <MaterialIcons
-              name={'skip-previous'}
-              color={colors.gray}
-              size={28}
+          <View style={{flexDirection: 'row', alignItems: 'center'}}>
+            <TouchableOpacity>
+              <MaterialIcons
+                name={'skip-previous'}
+                color={colors.gray}
+                size={28}
+              />
+            </TouchableOpacity>
+            <TouchableOpacity>
+              <MaterialCommunityIcons
+                name={'chevron-left'}
+                color={colors.gray}
+                size={28}
+              />
+            </TouchableOpacity>
+            <TextInput
+              style={{
+                paddingVertical: 0,
+                borderWidth: 1,
+                borderColor: colors.gray_0,
+                paddingHorizontal: 8,
+              }}
             />
-          </TouchableOpacity>
-          <TouchableOpacity>
-            <MaterialCommunityIcons
-              name={'chevron-left'}
-              color={colors.gray}
-              size={28}
-            />
-          </TouchableOpacity>
-          <TextInput
-            style={{
-              paddingVertical: 0,
-              borderWidth: 1,
-              borderColor: colors.gray_0,
-              paddingHorizontal: 8,
-            }}
-          />
-          <Text style={{color: colors.font_gray}}> of 50.000</Text>
-          <TouchableOpacity>
-            <MaterialCommunityIcons
-              name={'chevron-right'}
-              color={colors.gray}
-              size={28}
-            />
-          </TouchableOpacity>
-          <TouchableOpacity>
-            <MaterialIcons name={'skip-next'} color={colors.gray} size={28} />
-          </TouchableOpacity>
+            <Text style={{color: colors.font_gray}}> of 50.000</Text>
+            <TouchableOpacity>
+              <MaterialCommunityIcons
+                name={'chevron-right'}
+                color={colors.gray}
+                size={28}
+              />
+            </TouchableOpacity>
+            <TouchableOpacity>
+              <MaterialIcons name={'skip-next'} color={colors.gray} size={28} />
+            </TouchableOpacity>
+          </View>
         </View>
       </View>
     </HeaderContainer>

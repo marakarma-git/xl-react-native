@@ -17,12 +17,14 @@ export default {
     marginBottom: 8,
   },
   containerTextInput: {
+    flex: 1,
     borderWidth: 1,
     borderColor: colors.gray_0,
     borderRadius: border_radius,
     marginVertical: 10,
     flexDirection: 'row',
     alignItems: 'center',
+    marginRight: 8,
   },
   containerWrap: {
     flexWrap: 'wrap',
