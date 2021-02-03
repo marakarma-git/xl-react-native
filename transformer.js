@@ -1,7 +1,6 @@
-const obfuscatingTransformer = require("react-native-obfuscating-transformer")
+const obfuscatingTransformer = require("react-native-obfuscator")
 
 module.exports = obfuscatingTransformer({
-  /* options */
   obfuscatorOptions:{
     compact: true,
     controlFlowFlattening: true,
@@ -31,5 +30,9 @@ module.exports = obfuscatingTransformer({
     stringArrayThreshold: 0.75,
     transformObjectKeys: true,
     unicodeEscapeSequence: false
-}
+},
+upstreamTransformer: require('metro-react-native-babel-transformer'),
+emitObfuscatedFiles: false,
+enableInDevelopment: false,
+trace: true
 })
