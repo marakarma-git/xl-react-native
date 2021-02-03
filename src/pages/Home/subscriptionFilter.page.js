@@ -40,7 +40,6 @@ const SubscriptionFilter = () => {
     dispatch(getStateCorp(navigation));
     dispatch(getEnterpriseCorp(navigation));
     dispatch(getStateLock(navigation));
-    dispatch(getCustomLabel(navigation));
   }, [dispatch, navigation]);
   return (
     <HeaderContainer navigation={navigation} headerTitle={'Subscription'}>
