@@ -5,6 +5,7 @@ import { Card, Title } from 'react-native-paper';
 import { View, Text, ScrollView, Image, ActivityIndicator } from 'react-native';
 import { useSelector, useDispatch } from 'react-redux';
 import { HeaderContainer, OverlayBackground } from '../../components';
+import Orientation from '../../helpers/orientation';
 
 import style from '../../style/home.style';
 
@@ -31,7 +32,22 @@ const LandingPage = ({ navigation }) => {
   const renderItem = ({ item }) => {
     return (
       <View style={style.cellItem}>
-        <Image source={{ uri: item.bannerImage }} style={style.imageCellItem} />
+        <Image 
+          source={{ uri: item.bannerImage }} 
+          style={
+            Orientation.isPortrait()? 
+            { 
+              width: Orientation.getWidth()- 50, 
+              height:Orientation.getHeight() - 350,
+              resizeMode: 'contain'
+            }
+            : {
+              width: Orientation.getWidth()-50, 
+              height:Orientation.getHeight()-50,
+              resizeMode: 'contain'
+            }
+          } 
+        />
       </View>
     );
   };
@@ -46,7 +62,7 @@ const LandingPage = ({ navigation }) => {
     <HeaderContainer
       navigation={navigation}
       companyLogo={imageBase64}
-      headerTitle={'Home'}>
+      headerTitle={Orientation.isPortrait()?'Yes':'No'}>
       <ScrollView>
         <OverlayBackground />
         <Card style={[style.cardSection]}>
@@ -61,8 +77,8 @@ const LandingPage = ({ navigation }) => {
                   style={{ margin: 0, padding: 0 }}
                   layout={'default'}
                   data={carouselItems}
-                  sliderWidth={300}
-                  itemWidth={500}
+                  sliderWidth={Orientation.getWidth()-50}
+                  itemWidth={Orientation.getWidth()-50}
                   renderItem={renderItem}
                   onSnapToItem={(index) => setActiveIndex(index)}
                   loop
