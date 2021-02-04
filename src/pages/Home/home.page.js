@@ -63,7 +63,7 @@ const LandingPage = ({ navigation }) => {
     <HeaderContainer
       navigation={navigation}
       companyLogo={imageBase64}
-      headerTitle={Orientation.isPortrait()?'Yes':'No'}>
+      headerTitle={'Home'}>
       <ScrollView>
         <OverlayBackground />
         <Card style={[style.cardSection]}>
