@@ -20,10 +20,7 @@ const TableCellHeaderOptionCheckBox = (props) => {
         alignItems: 'center',
         backgroundColor: backgroundColor || 'blue',
       }}>
-      <CustomCheckBox
-        style={{marginLeft: 16}}
-        value={value}
-        onPress={() => onChangeCheck(otherInformation)}>
+      <CustomCheckBox style={{marginLeft: 16}} value={value} onPress={onPress}>
         <View
           style={{
             alignItems: 'center',
@@ -46,7 +43,7 @@ const TableCellHeaderOptionCheckBox = (props) => {
           flex: 1,
           flexDirection: 'row',
         }}
-        onPress={() => onPress(otherInformation)}>
+        onPress={onPress}>
         <View
           style={{
             flex: 1,

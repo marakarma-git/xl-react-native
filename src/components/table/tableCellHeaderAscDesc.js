@@ -23,7 +23,7 @@ const TableCellHeaderAscDesc = (props) => {
           alignItems: 'center',
           flexDirection: 'row',
         }}
-        onPress={onPress(otherInformation)}>
+        onPress={onPress}>
         <Text
           style={{
             color: fontColor || 'white',

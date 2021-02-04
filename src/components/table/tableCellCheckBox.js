@@ -37,7 +37,7 @@ const TableCellCheckBox = (props) => {
           }}>
           <Text
             style={{
-              color: fontColor || 'white',
+              color: fontColor || 'black',
               fontWeight: 'bold',
             }}>
             {label}

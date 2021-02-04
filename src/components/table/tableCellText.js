@@ -31,7 +31,7 @@ const TableCellText = (props) => {
           }}>
           <Text
             style={{
-              color: fontColor || 'white',
+              color: fontColor || 'black',
               fontWeight: 'bold',
             }}>
             {label}
