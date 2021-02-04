@@ -1,14 +1,15 @@
 import React, {useEffect} from 'react';
-import {View, ScrollView, Text} from 'react-native';
-import {subscriptionStyle} from '../../style';
-import {HeaderContainer, OverlayBackground} from '../../components/index';
 import {useDispatch} from 'react-redux';
+import {View} from 'react-native';
 import {useNavigation} from '@react-navigation/native';
-import {getCustomLabel} from '../../redux/action/get_custom_label_action';
-import AppliedFilter from '../../components/subscription/appliedFilter';
-import SearchHeader from '../../components/subscription/searchHeader';
-import FilterActionLabel from '../../components/subscription/filterActionLabel';
+import {subscriptionStyle} from '../../style';
 import TableFooter from '../../components/subscription/tableFooter';
+import SearchHeader from '../../components/subscription/searchHeader';
+import AppliedFilter from '../../components/subscription/appliedFilter';
+import {HeaderContainer, OverlayBackground} from '../../components/index';
+import {getCustomLabel} from '../../redux/action/get_custom_label_action';
+import FilterActionLabel from '../../components/subscription/filterActionLabel';
+import TableCellViewMap from '../../components/table/tableCellViewMap';
 
 const Subscription = () => {
   const dispatch = useDispatch();
@@ -24,9 +25,7 @@ const Subscription = () => {
         <AppliedFilter data={[{type: 'abc', title: '123'}]} />
         <FilterActionLabel />
         <View style={{flex: 1, backgroundColor: 'tomato'}}>
-          <ScrollView>
-            <Text>tengah</Text>
-          </ScrollView>
+          <TableCellViewMap />
         </View>
         <TableFooter />
       </View>
