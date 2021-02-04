@@ -19,49 +19,38 @@ import { useDispatch, useSelector } from 'react-redux';
 import { loginBrand } from '../assets/images/index';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import CheckBox from '@react-native-community/checkbox';
-import callEnterpriseLogo from '../redux/action/enterprise_action';
 const busolLogo = require('../assets/images/logo/xl-busol-inverted.png');
-const Login = ({ navigation }) => {
-  const year = new Date().getFullYear();
-  const [rememberMe, setRememberMe] = useState(false);
-  const [localLoading, setLocalLoading] = useState(false);
-  const [username, setUsername] = useState('');
-  const [password, setPassword] = useState('');
-  const [errorText, setErrorText] = useState(null);
-  const dispatch = useDispatch();
-  const { data, error } = useSelector((state) => state.auth_reducer);
-  const alreadyRequest = useSelector(
-    (state) => state.auth_reducer.alreadyRequest,
-  );
-  const { statusCode, error: errorCheck } = useSelector(
-    (state) => state.enterprise_reducer,
-  );
-  useEffect(() => {
-    if (!lod.isEmpty(data)) {
-      const { principal, access_token } = data || {};
-      const { enterpriseId } = principal || {};
-      dispatch(callEnterpriseLogo(enterpriseId, access_token));
-    }
-    if (statusCode === 0 && !lod.isEmpty(data)) {
-      if (data.principal.mustChangePass) {
-        navigation.replace('Change Password');
-      } else {
-        navigation.replace('Home');
-      }
-    }
-  }, [data, dispatch, navigation, statusCode]);
-  useEffect(() => {
-    if (error !== '') {
-      setLocalLoading(false);
 
-      if (alreadyRequest) {
-        errorHandler(error);
+const Login = ({ navigation }) => {
+const year = new Date().getFullYear();
+const [rememberMe, setRememberMe] = useState(false);
+const [localLoading, setLocalLoading] = useState(false);
+const [username, setUsername] = useState('');
+const [password, setPassword] = useState('');
+const [errorText, setErrorText] = useState(null);
+const dispatch = useDispatch();
+const { data, error, isLoggedIn, alreadyRequest } = useSelector((state) => state.auth_reducer);
+
+
+  useEffect(() => {
+    if(isLoggedIn){
+      if(!lod.isEmpty(data)){
+        if (data.principal.mustChangePass) {
+          navigation.replace('Change Password');
+        } else {
+          navigation.replace('Home');
+        }
       }
     }
-    if (errorCheck !== '') {
+
+    if(error){
       setLocalLoading(false);
+      if(alreadyRequest){
+        errorHandler(error)
+      }
     }
-  }, [error, errorCheck, dispatch, alreadyRequest]);
+  }, [data, error, isLoggedIn]);
+
   const onSubmit = () => {
     if (username.length > 0 && password.length > 0) {
       dispatch(authLogin(username, password));
@@ -93,12 +82,13 @@ const Login = ({ navigation }) => {
   };
 
   return (
-    <ScrollView style={styles.container}>
+    <ScrollView 
+      style={styles.container}>
       <KeyboardAvoidingView
         style={styles.keyboardContainer}
         behavior={'padding'}>
         <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-          <View>
+          <View style={{ flex: 1, justifyContent: 'center' }}>
             <View style={styles.imageContainer}>
               <Image style={styles.imageSize} source={busolLogo} />
             </View>
@@ -194,7 +184,7 @@ const Login = ({ navigation }) => {
         </TouchableWithoutFeedback>
       </KeyboardAvoidingView>
       <View style={styles.footer}>
-        <Text style={{ color: '#707070', fontSize: 12 }}>
+        <Text style={{ color: '#707070', fontSize: 12, bottom: 20 }}>
           &copy; {`${year} PT. XL Axiata Tbk. All Right Reserved `}
         </Text>
       </View>

@@ -61,7 +61,7 @@ const BarChartComponent = ({item, navigation, filterParams = {}}) => {
   };
 
   const generateChart = () => (
-    <View style={{position: 'relative', top: -20}}>
+    <View style={{position: 'relative', top: -20, left: -15}}>
       {dataSet.length > 0 ? (
         <VictoryChart>
           <VictoryAxis crossAxis label="Subscriptions" tickFormat={() => ''} />

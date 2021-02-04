@@ -1,17 +1,18 @@
 import React, { useState, useEffect } from 'react';
 import Carousel, { Pagination } from 'react-native-snap-carousel';
 import { getCarousel } from '../../redux/action/dashboard_action';
+import { callEnterpriseLogo } from '../../redux/action/enterprise_action';
 import { Card, Title } from 'react-native-paper';
 import { View, Text, ScrollView, Image, ActivityIndicator } from 'react-native';
 import { useSelector, useDispatch } from 'react-redux';
 import { HeaderContainer, OverlayBackground } from '../../components';
+import Orientation from '../../helpers/orientation';
 
 import style from '../../style/home.style';
 
 const LandingPage = ({ navigation }) => {
   const dispatch = useDispatch();
   const userData = useSelector((state) => state.auth_reducer.data);
-  // const titleVersion = useSelector((state) => state.auth_reducer.titleVersion);
   const carouselItems = useSelector((state) => state.dashboard_reducer.carousel);
   const { imageBase64 } = useSelector((state) => state.enterprise_reducer);
   const [activeIndex, setActiveIndex] = useState(0);
@@ -31,7 +32,22 @@ const LandingPage = ({ navigation }) => {
   const renderItem = ({ item }) => {
     return (
       <View style={style.cellItem}>
-        <Image source={{ uri: item.bannerImage }} style={style.imageCellItem} />
+        <Image 
+          source={{ uri: item.bannerImage }} 
+          style={
+            Orientation.isPortrait()? 
+            { 
+              width: Orientation.getWidth()- 50, 
+              height:Orientation.getHeight() - 350,
+              resizeMode: 'contain'
+            }
+            : {
+              width: Orientation.getWidth()-50, 
+              height:Orientation.getHeight()-50,
+              resizeMode: 'contain'
+            }
+          } 
+        />
       </View>
     );
   };
@@ -40,6 +56,7 @@ const LandingPage = ({ navigation }) => {
 
   useEffect(() => {
     dispatch(getCarousel(userData.access_token));
+    dispatch(callEnterpriseLogo(userData.principal.enterpriseId, userData.access_token));
   }, []);
 
   return (
@@ -61,8 +78,8 @@ const LandingPage = ({ navigation }) => {
                   style={{ margin: 0, padding: 0 }}
                   layout={'default'}
                   data={carouselItems}
-                  sliderWidth={300}
-                  itemWidth={500}
+                  sliderWidth={Orientation.getWidth()-50}
+                  itemWidth={Orientation.getWidth()-50}
                   renderItem={renderItem}
                   onSnapToItem={(index) => setActiveIndex(index)}
                   loop

@@ -9,7 +9,6 @@ const validateTokenMiddleware = (store) => (next) => (action) => {
       if (action.payload.error) {
         if (action.payload.error === 'invalid_token') {
           ToastAndroid.show('Token Expired', ToastAndroid.LONG);
-          store.dispatch(removeEnterPriseLogo());
           store.dispatch(authLogout());
           throw new Error('Token Expired');
         }

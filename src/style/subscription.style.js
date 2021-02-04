@@ -17,12 +17,14 @@ export default {
     marginBottom: 8,
   },
   containerTextInput: {
+    flex: 1,
     borderWidth: 1,
     borderColor: colors.gray_0,
     borderRadius: border_radius,
     marginVertical: 10,
     flexDirection: 'row',
     alignItems: 'center',
+    marginRight: 8,
   },
   containerWrap: {
     flexWrap: 'wrap',
@@ -44,5 +46,51 @@ export default {
     marginVertical: 5,
     elevation: 3,
     borderRadius: border_radius,
+  },
+  containerBackground: {
+    flex: 1,
+    backgroundColor: 'white',
+  },
+  containerMargin: {
+    marginTop: 16,
+  },
+  containerTextInput2: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  spacer: {
+    height: '50%',
+    width: 1,
+    backgroundColor: colors.gray,
+    marginHorizontal: 8,
+  },
+  wrapperMenuOption: {
+    marginHorizontal: 16,
+    paddingVertical: 4,
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: 4,
+  },
+  menuOption: {
+    borderRadius: border_radius,
+    borderWidth: 1,
+    borderColor: colors.gray,
+    flexDirection: 'row',
+  },
+  textOption: {
+    paddingVertical: 4,
+    paddingHorizontal: 16,
+  },
+  menuOptionChevronDown: {
+    backgroundColor: colors.gray_0,
+    borderRadius: border_radius - 1,
+    justifyContent: 'center',
+    paddingHorizontal: 4,
+  },
+  textMenuTotal: {
+    color: colors.font_gray,
+    flex: 1,
+    marginLeft: 12,
   },
 };
