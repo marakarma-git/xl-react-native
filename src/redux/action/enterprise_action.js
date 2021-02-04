@@ -45,5 +45,5 @@ const callEnterpriseLogo = (enterpriseId, token) => {
       .catch((e) => dispatch(getEnterpriseLogoFailed(e.response.data)));
   };
 };
-export default callEnterpriseLogo;
-export { removeEnterPriseLogo };
+
+export { removeEnterPriseLogo, callEnterpriseLogo };

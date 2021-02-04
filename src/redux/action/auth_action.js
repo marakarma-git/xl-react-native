@@ -1,5 +1,4 @@
 import Axios from 'axios';
-import { CommonActions } from '@react-navigation/native';
 import { base_url, headerAuth } from '../../constant/connection';
 import subDomain from '../../constant/requestSubPath';
 import reduxString from '../reduxString';
@@ -16,10 +15,11 @@ const authFailed = (error) => {
     payload: error,
   };
 };
-const authSuccess = (data) => {
+const authSuccess = (data, params) => {
   return {
     type: reduxString.AUTH_SUCCESS,
     payload: data,
+    params
   };
 };
 const removeAuth = () => {
@@ -27,6 +27,7 @@ const removeAuth = () => {
     type: reduxString.AUTH_LOGOUT,
   };
 };
+
 const authLogout = () => {
   return async (dispatch) => {
     dispatch(removeEnterPriseLogo());
@@ -56,7 +57,7 @@ const authLogin = (username, password) => {
       );
 
       if (data) {
-        dispatch(authSuccess(data));
+        dispatch(authSuccess(data, { username, password }));
       }
     } catch (error) {
       dispatch(authFailed(error.response.data));

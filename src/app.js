@@ -4,7 +4,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { headerAuth } from './constant/connection';
 import {persistStore, persistReducer} from 'redux-persist';
 const thunk = require('redux-thunk').default;
-import {validateTokenMiddleware} from './redux/middleware/index';
+import {validateTokenMiddleware, activityLogMiddleware} from './redux/middleware/index';
 import {PersistGate} from 'redux-persist/integration/react';
 import {applyMiddleware, createStore} from 'redux';
 import {Provider} from 'react-redux';
@@ -21,6 +21,7 @@ const persistConfig = {
     encryptTransform({
       secretKey: headerAuth,
       onError: function (error) {
+        console.log(error, "error transform encrypt")
         // Handle the error.
       },
     })
@@ -30,7 +31,7 @@ const persistConfig = {
 const persistReducers = persistReducer(persistConfig, RootReducers);
 const store = createStore(
   persistReducers,
-  applyMiddleware(thunk, validateTokenMiddleware),
+  applyMiddleware(thunk, validateTokenMiddleware, activityLogMiddleware),
 );
 const persist = persistStore(store);
 
