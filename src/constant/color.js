@@ -6,6 +6,7 @@ export const colors = {
   gray_300: '#D4D4D4',
   gray_400: '#B8B8B8',
   green_check: '#53B867',
+  green_filter_text: '#00D3A0',
   border_color: '#eaeaea',
   background_color: '#fafafa',
   button_color_one: '#002DBB',
