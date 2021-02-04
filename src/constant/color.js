@@ -5,6 +5,7 @@ export const colors = {
   gray_200: '#EAEAEA',
   gray_300: '#D4D4D4',
   gray_400: '#B8B8B8',
+  gray_button: '#D9D9D9',
   green_check: '#53B867',
   green_filter_text: '#00D3A0',
   border_color: '#eaeaea',
