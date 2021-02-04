@@ -1,7 +1,9 @@
 import Axios from 'axios';
+import Helper from '../../helpers/helper';
 import reduxString from '../reduxString';
 import { base_url } from '../../constant/connection';
-import Helper from '../../helpers/helper';
+import { dashboardHeaderAuth } from '../../constant/headers';
+import { filter } from '../../assets/images';
 
 const setDashboardSummary = (data) => ({
   type: reduxString.SET_DASHBOARD_SUMMARY,
@@ -119,6 +121,74 @@ export const getCarousel = (accessToken) => {
           throw new Error(data);
         }
       }
+    } catch (error) {
+      dispatch(setRequestError(error.response.data));
+    }
+  }
+}
+
+const setSimStatistics = (data, params) => {
+  const newDataSet = [];
+  const pieChartColor = ['#2ECFD3', '#124EAB', '#0064FB', '#22385A'];
+
+  data.map((datas, i) => {
+    newDataSet.push({
+      y: +datas.total,
+      percentage: +datas.percentage,
+      status: datas.status,
+      color: pieChartColor[i],
+      total: +datas.total,
+    })
+  });
+
+  Helper.sortDescending(newDataSet, 'total');
+
+  return {
+    type: "SET_SIM_STATISTICS",
+    payload: newDataSet,
+    params
+  }
+}
+
+const setTopTrafficStatistics = (data, params) => {
+  const newDataSet = [];
+
+  data.map((datas) => {
+    newDataSet.push({x: datas.msisdn, y: +datas.datausage});
+  });
+
+  Helper.sortAscending(newDataSet, 'y');
+
+  return {
+    type: "SET_TOP_TRAFFIC_STATISTICS",
+    payload: newDataSet,
+    params
+  }
+}
+
+export const requestWidgetData = (accessToken, item, filterParams, type = 'sim') => {
+  console.log("REQUEST WIDGET DATA NEW ========================= > ")
+  return async (dispatch) => {
+    dispatch(requestDashboardData());
+    try {
+      const { data } = await Axios.post(`${base_url}/dcp/dashboard/v2/getDataSet?datasetId=${item.datasetId}`, 
+        filterParams, 
+      {
+        headers: dashboardHeaderAuth(accessToken)
+      });
+
+      if(data){
+        if(data.statusCode === 0){
+          if(type === 'sim'){
+              dispatch(setSimStatistics(data.result.dataset, filterParams));
+            }else{
+              dispatch(setTopTrafficStatistics(data.result.dataset, filterParams));
+          }
+        }else{
+          dispatch(setRequestError(data.statusDescription));
+        }
+      }
+
     } catch (error) {
       dispatch(setRequestError(error.response.data));
     }

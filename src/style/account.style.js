@@ -123,7 +123,7 @@ export default {
     width: '100%',
     flexDirection: 'row',
     flexWrap: 'wrap',
-    height: device_height * 0.05,
+    height: 40,
     borderWidth: 1,
     borderColor: '#A8A8A8',
     backgroundColor: 'white',

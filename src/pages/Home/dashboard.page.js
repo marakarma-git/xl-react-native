@@ -81,7 +81,7 @@ const DashboardPage = ({navigation}) => {
           </Card>
           <View>
             {widgetList && (
-              <WidgetStore navigation={navigation} widgetList={widgetList} />
+              <WidgetStore widgetList={widgetList} />
             )}
           </View>
         </View>

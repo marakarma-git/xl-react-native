@@ -1,64 +1,25 @@
-import React, {useState, useEffect} from 'react';
-import {useSelector} from 'react-redux';
+import React, {useEffect} from 'react';
+import {useNavigation} from '@react-navigation/native';
+import {requestWidgetData} from '../../redux/action/dashboard_action';
+import {useSelector, useDispatch} from 'react-redux';
 import {
   VictoryBar,
   VictoryAxis,
   VictoryChart,
   VictoryLabel,
 } from 'victory-native';
-import {View, ActivityIndicator, Text} from 'react-native';
 import {Card, Title} from 'react-native-paper';
-import {base_url} from '../../constant/connection';
-import {dashboardHeaderAuth} from '../../constant/headers';
+import {View, ActivityIndicator, Text} from 'react-native';
 
-import Axios from 'axios';
 import Helper from '../../helpers/helper';
 import style from '../../style/home.style';
 
-const BarChartComponent = ({item, navigation, filterParams = {}}) => {
-  const [dataSet, setDataSet] = useState(null);
-  const [error, setError] = useState('');
-  const [loading, setLoading] = useState(false);
-  const userData = useSelector((state) => state.auth_reducer.data);
-
-  const getWidgetData = async () => {
-    try {
-      setLoading(true);
-      const {data} = await Axios.post(
-        `${base_url}/dcp/dashboard/v2/getDataSet?datasetId=${item.datasetId}`,
-        filterParams,
-        {
-          headers: dashboardHeaderAuth(userData.access_token),
-        },
-      );
-
-      if (data) {
-        if (data.statusCode == 0) {
-          if (data.result.dataset.length > 0) {
-            const newDataSet = [];
-
-            data.result.dataset.map((datas) => {
-              newDataSet.push({x: datas.msisdn, y: +datas.datausage});
-            });
-
-            Helper.sortAscending(newDataSet, 'y');
-
-            setDataSet(newDataSet);
-          } else {
-            setDataSet([]);
-            setError('No dataset found...');
-          }
-        } else {
-          setDataSet([]);
-          setError(data.statusDescription);
-        }
-        setLoading(false);
-      }
-    } catch (error) {
-      setLoading(false);
-      setError(error);
-    }
-  };
+const BarChartComponent = ({item, filterParams = {}}) => {
+  const dispatch    = useDispatch();
+  const navigation  = useNavigation();
+  const dataSet     = useSelector((state) => state.dashboard_reducer.topTrafficStatistics);
+  const userData    = useSelector((state) => state.auth_reducer.data);
+  const {loading, error}     = useSelector((state) => state.dashboard_reducer);
 
   const generateChart = () => (
     <View style={{position: 'relative', top: -20, left: -15}}>
@@ -97,12 +58,12 @@ const BarChartComponent = ({item, navigation, filterParams = {}}) => {
   );
 
   useEffect(() => {
-    if (dataSet == null) {
-      getWidgetData();
+    if(dataSet === null){
+      dispatch(requestWidgetData(userData.access_token, item, filterParams, type = 'top'));
     }
 
     const pageLoad = navigation.addListener('focus', () => {
-      getWidgetData();
+      dispatch(requestWidgetData(userData.access_token, item, filterParams, type = 'top'));
     });
 
     return pageLoad;

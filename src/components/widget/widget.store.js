@@ -3,7 +3,7 @@ import {View} from 'react-native';
 import PieChart from './piechart';
 import BarChart from './barchart';
 
-const WidgetStore = ({widgetList, navigation}) => {
+const WidgetStore = ({widgetList}) => {
   const generateWidget = () => (
     <>
       {widgetList.map((item, index) => (
@@ -15,9 +15,9 @@ const WidgetStore = ({widgetList, navigation}) => {
   const widgetType = (item) => {
     switch (item.widgetCode) {
       case 'SIM-Statistics':
-        return <PieChart navigation={navigation} item={item} />;
+        return <PieChart item={item} />;
       case 'Top-Traffic':
-        return <BarChart navigation={navigation} item={item} />;
+        return <BarChart item={item} />;
       // case 'Aggregated-Traffic':
       //     return(
       //         <AggregateTraffic

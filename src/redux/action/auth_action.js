@@ -1,7 +1,8 @@
 import Axios from 'axios';
-import { base_url, headerAuth } from '../../constant/connection';
-import subDomain from '../../constant/requestSubPath';
 import reduxString from '../reduxString';
+import subDomain from '../../constant/requestSubPath';
+import { getState } from 'redux';
+import { base_url, headerAuth } from '../../constant/connection';
 import { removeEnterPriseLogo } from './enterprise_action';
 
 const authRequest = () => {
@@ -15,6 +16,7 @@ const authFailed = (error) => {
     payload: error,
   };
 };
+
 const authSuccess = (data, params) => {
   return {
     type: reduxString.AUTH_SUCCESS,
@@ -22,16 +24,23 @@ const authSuccess = (data, params) => {
     params
   };
 };
-const removeAuth = () => {
+
+const removeAuth = (username) => {
   return {
     type: reduxString.AUTH_LOGOUT,
+    params: { username }
   };
 };
 
+const changePassword = (username) => ({
+  type: reduxString.CHANGE_PASSWORD,
+  params: { username }
+});
+
 const authLogout = () => {
-  return async (dispatch) => {
+  return async (dispatch, getState) => {
     dispatch(removeEnterPriseLogo());
-    dispatch(removeAuth());
+    dispatch(removeAuth(getState().auth_reducer.data.principal.username));
   };
 };
 
@@ -95,4 +104,4 @@ const getTitleVersion = () => {
   };
 };
 
-export { authLogin, authLogout, getTitleVersion };
+export { authLogin, authLogout, getTitleVersion, changePassword };
