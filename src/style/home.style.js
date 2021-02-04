@@ -1,12 +1,13 @@
 import { device_width, device_height, regular_horizontal_padding } from '../constant/config';
 import { colors } from '../constant/color';
+import Orientation from '../helpers/orientation';
 export default {
   headerContainer: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
     paddingHorizontal: regular_horizontal_padding,
-    width: device_width,
+    width: '100%',
     height: 60,
     backgroundColor: colors.button_color_one,
   },
@@ -23,7 +24,7 @@ export default {
     justifyContent: 'space-between',
     alignItems: 'center',
     paddingHorizontal: regular_horizontal_padding * 2,
-    width: device_width,
+    width: '100%',
     height: 60,
     backgroundColor: 'white',
   },
@@ -43,7 +44,7 @@ export default {
     top: 0,
     right: 0,
     left: 0,
-    width: device_width,
+    width: '100%',
     height: 100,
     backgroundColor: colors.background_overlay,
   },
@@ -59,11 +60,18 @@ export default {
     margin: 0,
     padding: 0,
   },
-  imageCellItem: {
-    width: 300,
-    height: 300,
+  //don't know why but this kind of apporachment not work
+  imageCellItemPotrait: { 
+    width: Orientation.getWidth()- 50, 
+    height:Orientation.getHeight() - 350,
     resizeMode: 'contain'
   },
+  imageCellItemLandscape: {
+    width: Orientation.getWidth()-50, 
+    height:Orientation.getHeight()-50,
+    resizeMode: 'contain'
+  },
+  //end of don't know why
   container: {
     flex: 1,
   },
