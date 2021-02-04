@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
-import { setRequestError } from '../../redux/action/dashboard_action';
 import { base_url } from '../../constant/connection';
-import { View, Text, ScrollView, ToastAndroid } from 'react-native';
+import { setRequestError } from '../../redux/action/dashboard_action';
+import { changePassword } from '../../redux/action/auth_action';
+import { useSelector, useDispatch } from 'react-redux';
+import { ScrollView, ToastAndroid } from 'react-native';
 import { Header, NavbarTitle, PasswordInput } from '../../components/index';
 
 import styles from '../../style/home.style';
@@ -11,7 +12,6 @@ import Axios from 'axios';
 const ChangePasswordPage = ({ navigation }) => {
   const dispatch = useDispatch();
   const userData = useSelector((state) => state.auth_reducer.data);
-  // const titleVersion = useSelector((state) => state.auth_reducer.titleVersion);
   const { access_token } = useSelector((state) => state.auth_reducer.data);
   const [requestLoading, setRequestLoading] = useState(false);
 
@@ -33,6 +33,7 @@ const ChangePasswordPage = ({ navigation }) => {
 
       if (data) {
         if (data.statusCode == 0) {
+          dispatch(changePassword(username));
           ToastAndroid.show(data.result, ToastAndroid.LONG);
           navigation.replace('Home');
         } else {
@@ -56,11 +57,6 @@ const ChangePasswordPage = ({ navigation }) => {
         submitHandler={submitHandler}
         requestLoading={requestLoading}
       />
-      {/* <View>
-        <Text style={{ fontWeight: 'bold', textAlign: 'center', paddingTop: 10 }}>
-          IoT SIMCare {titleVersion || ''}
-        </Text>
-      </View> */}
     </ScrollView>
   );
 };

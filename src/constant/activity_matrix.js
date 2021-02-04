@@ -8,8 +8,14 @@ export default ActivityMatrix = [
     { 
         actionType: "AUTH_LOGOUT", 
         activityType: "Logout", 
-        initDescription: "Logout success ", 
-        moduleName: "Logout" 
+        initDescription: "Logout success user ", 
+        moduleName: "My Account" 
+    },
+    { 
+        actionType: "CHANGE_PASSWORD", 
+        activityType: "Change Password", 
+        initDescription: "has change the password", 
+        moduleName: "My Account" 
     },
     { 
         actionType: "SET_WIDGET_LIST", 
@@ -19,14 +25,26 @@ export default ActivityMatrix = [
     },
     { 
         actionType: "SET_DASHBOARD_SUMMARY", 
-        activityType: "Get dashboard summary", 
-        initDescription: "Success get dashboard summary data", 
+        activityType: "Generate dashboard summary", 
+        initDescription: "Success generate dashboard summary data", 
         moduleName: "Dashboard" 
     },
     { 
         actionType: "SET_CAROUSEL", 
-        activityType: "Get banner list", 
-        initDescription: "Success get banner list", 
+        activityType: "Generate banner list", 
+        initDescription: "Success generate banner list", 
         moduleName: "Home" 
-    }
+    },
+    { 
+        actionType: "SET_SIM_STATISTICS", 
+        activityType: "Generate sim statistics", 
+        initDescription: "Success generate sim statistics", 
+        moduleName: "Dashboard" 
+    },
+    { 
+        actionType: "SET_TOP_TRAFFIC_STATISTICS", 
+        activityType: "Generate top traffic list", 
+        initDescription: "Success generate top traffic statistics", 
+        moduleName: "Dashboard" 
+    },
 ];

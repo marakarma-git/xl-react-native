@@ -62,6 +62,16 @@ class Helper {
       return data;
     }
   }
+
+  static objectToString(object){
+      const arrayFormat = [];
+
+      for(let key in object){
+        arrayFormat.push(`${key}: ${object[key]}`);
+      }
+
+      return arrayFormat.join();
+  }
 }
 
 export default Helper;

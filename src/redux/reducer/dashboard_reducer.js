@@ -6,6 +6,8 @@ const initialState = {
   carousel: [],
   loading: false,
   error: '',
+  simStatistics: null,
+  topTrafficStatistics: null
 };
 const dashboard_reducer = (state = initialState, action) => {
   switch (action.type) {
@@ -27,6 +29,18 @@ const dashboard_reducer = (state = initialState, action) => {
         loading: false,
         carousel: action.payload,
       };
+    case reduxString.SET_SIM_STATISTICS: 
+      return {
+        ...state,
+        loading: false,
+        simStatistics: action.payload
+      }  
+    case reduxString.SET_TOP_TRAFFIC_STATISTICS: 
+      return {
+        ...state,
+        loading: false,
+        topTrafficStatistics: action.payload
+      }  
     case reduxString.REQUEST_ERROR:
       return {
         ...state,
