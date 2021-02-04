@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import Carousel, { Pagination } from 'react-native-snap-carousel';
 import { getCarousel } from '../../redux/action/dashboard_action';
+import { callEnterpriseLogo } from '../../redux/action/enterprise_action';
 import { Card, Title } from 'react-native-paper';
 import { View, Text, ScrollView, Image, ActivityIndicator } from 'react-native';
 import { useSelector, useDispatch } from 'react-redux';
@@ -11,7 +12,6 @@ import style from '../../style/home.style';
 const LandingPage = ({ navigation }) => {
   const dispatch = useDispatch();
   const userData = useSelector((state) => state.auth_reducer.data);
-  // const titleVersion = useSelector((state) => state.auth_reducer.titleVersion);
   const carouselItems = useSelector((state) => state.dashboard_reducer.carousel);
   const { imageBase64 } = useSelector((state) => state.enterprise_reducer);
   const [activeIndex, setActiveIndex] = useState(0);
@@ -40,6 +40,7 @@ const LandingPage = ({ navigation }) => {
 
   useEffect(() => {
     dispatch(getCarousel(userData.access_token));
+    dispatch(callEnterpriseLogo(userData.principal.enterpriseId, userData.access_token));
   }, []);
 
   return (

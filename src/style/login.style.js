@@ -102,7 +102,6 @@ export default {
     height: 50, 
     justifyContent: 'center', 
     alignItems: 'center',
-    marginVertical: 10 
   },
   formGroup: {
     width: '90%',
