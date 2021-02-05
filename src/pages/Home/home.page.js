@@ -89,7 +89,7 @@ const LandingPage = ({navigation}) => {
         <OverlayBackground />
         <Card style={[style.cardSection]}>
           <Card.Content style={{marginBottom: 20}}>
-            <Title>Hi! {firstName + ' ' + lastName + ' ' + orientation}</Title>
+            <Title>Hi! {firstName + ' ' + lastName}</Title>
           </Card.Content>
           {carouselItems.length > 0 ? (
             <View style={{alignItems: 'center', backgroundColor: '#002DBB'}}>

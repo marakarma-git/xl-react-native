@@ -89,7 +89,7 @@ const Login = ({navigation}) => {
         style={styles.keyboardContainer}
         behavior={'padding'}>
         <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-          <View style={{flex: 1, justifyContent: 'center'}}>
+          <View style={{height: '85%', justifyContent: 'center'}}>
             <View style={styles.imageContainer}>
               <Image style={styles.imageSize} source={busolLogo} />
             </View>
@@ -136,7 +136,7 @@ const Login = ({navigation}) => {
                 </View>
                 <TouchableWithoutFeedback
                   onPress={() => navigation.navigate('Reset Password')}>
-                  <Text style={styles.linkText}>Forgot Password ?</Text>
+                  <Text style={styles.linkText}>Forgot password?</Text>
                 </TouchableWithoutFeedback>
               </View>
               {/* To-do */}
@@ -176,7 +176,7 @@ const Login = ({navigation}) => {
               </TouchableOpacity>
               <View style={[styles.loginSettingWrapper, {marginTop: 10}]}>
                 <Text style={[styles.label, {fontSize: 11}]}>
-                  Need Support ?
+                  Need support?
                 </Text>
                 <Text>
                   <FontAwesome name="phone" size={11} color="grey" />
