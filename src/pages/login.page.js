@@ -89,7 +89,7 @@ const Login = ({navigation}) => {
         style={styles.keyboardContainer}
         behavior={'padding'}>
         <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-          <View style={{flex: 1, justifyContent: 'center'}}>
+          <View style={{height: '85%', justifyContent: 'center'}}>
             <View style={styles.imageContainer}>
               <Image style={styles.imageSize} source={busolLogo} />
             </View>
