@@ -15,11 +15,13 @@ import Helper from '../../helpers/helper';
 import style from '../../style/home.style';
 
 const BarChartComponent = ({item, filterParams = {}}) => {
-  const dispatch    = useDispatch();
-  const navigation  = useNavigation();
-  const dataSet     = useSelector((state) => state.dashboard_reducer.topTrafficStatistics);
-  const userData    = useSelector((state) => state.auth_reducer.data);
-  const {loading, error}     = useSelector((state) => state.dashboard_reducer);
+  const dispatch = useDispatch();
+  const navigation = useNavigation();
+  const dataSet = useSelector(
+    (state) => state.dashboard_reducer.topTrafficStatistics,
+  );
+  const userData = useSelector((state) => state.auth_reducer.data);
+  const {loading, error} = useSelector((state) => state.dashboard_reducer);
 
   const generateChart = () => (
     <View style={{position: 'relative', top: -20, left: -15}}>
@@ -58,12 +60,26 @@ const BarChartComponent = ({item, filterParams = {}}) => {
   );
 
   useEffect(() => {
-    if(dataSet === null){
-      dispatch(requestWidgetData(userData.access_token, item, filterParams, type = 'top'));
+    if (dataSet === null) {
+      dispatch(
+        requestWidgetData(
+          userData.access_token,
+          item,
+          filterParams,
+          (type = 'top'),
+        ),
+      );
     }
 
     const pageLoad = navigation.addListener('focus', () => {
-      dispatch(requestWidgetData(userData.access_token, item, filterParams, type = 'top'));
+      dispatch(
+        requestWidgetData(
+          userData.access_token,
+          item,
+          filterParams,
+          (type = 'top'),
+        ),
+      );
     });
 
     return pageLoad;

@@ -32,7 +32,7 @@ class Helper {
       for (let i = 0; i < data.length; i++) {
         for (let j = 0; j < data.length - 1; j++) {
           if (data[j][key] > data[j + 1][key]) {
-            temp = data[j];
+            let temp = data[j];
             data[j] = data[j + 1];
             data[j + 1] = temp;
           }
@@ -45,12 +45,12 @@ class Helper {
     }
   }
 
-  static sortDescending(data, key){
+  static sortDescending(data, key) {
     if (typeof data === 'object') {
       for (let i = 0; i < data.length; i++) {
         for (let j = 0; j < data.length - 1; j++) {
           if (data[j][key] < data[j + 1][key]) {
-            temp = data[j];
+            let temp = data[j];
             data[j] = data[j + 1];
             data[j + 1] = temp;
           }
@@ -63,14 +63,14 @@ class Helper {
     }
   }
 
-  static objectToString(object){
-      const arrayFormat = [];
+  static objectToString(object) {
+    const arrayFormat = [];
 
-      for(let key in object){
-        arrayFormat.push(`${key}: ${object[key]}`);
-      }
+    for (let key in object) {
+      arrayFormat.push(`${key}: ${object[key]}`);
+    }
 
-      return arrayFormat.join();
+    return arrayFormat.join();
   }
 }
 

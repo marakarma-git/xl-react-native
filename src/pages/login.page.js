@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, {useState, useEffect} from 'react';
 import {
   View,
   ScrollView,
@@ -10,31 +10,32 @@ import {
   Text,
   TouchableOpacity,
   ActivityIndicator,
-  Linking
+  Linking,
 } from 'react-native';
 import lod from 'lodash';
 import styles from '../style/login.style';
-import { authLogin } from '../redux/action/auth_action';
-import { useDispatch, useSelector } from 'react-redux';
-import { loginBrand } from '../assets/images/index';
+import {authLogin} from '../redux/action/auth_action';
+import {useDispatch, useSelector} from 'react-redux';
+import {loginBrand} from '../assets/images/index';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import CheckBox from '@react-native-community/checkbox';
 const busolLogo = require('../assets/images/logo/xl-busol-inverted.png');
 
-const Login = ({ navigation }) => {
-const year = new Date().getFullYear();
-const [rememberMe, setRememberMe] = useState(false);
-const [localLoading, setLocalLoading] = useState(false);
-const [username, setUsername] = useState('');
-const [password, setPassword] = useState('');
-const [errorText, setErrorText] = useState(null);
-const dispatch = useDispatch();
-const { data, error, isLoggedIn, alreadyRequest } = useSelector((state) => state.auth_reducer);
-
+const Login = ({navigation}) => {
+  const year = new Date().getFullYear();
+  const [rememberMe, setRememberMe] = useState(false);
+  const [localLoading, setLocalLoading] = useState(false);
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
+  const [errorText, setErrorText] = useState(null);
+  const dispatch = useDispatch();
+  const {data, error, isLoggedIn, alreadyRequest} = useSelector(
+    (state) => state.auth_reducer,
+  );
 
   useEffect(() => {
-    if(isLoggedIn){
-      if(!lod.isEmpty(data)){
+    if (isLoggedIn) {
+      if (!lod.isEmpty(data)) {
         if (data.principal.mustChangePass) {
           navigation.replace('Change Password');
         } else {
@@ -43,10 +44,10 @@ const { data, error, isLoggedIn, alreadyRequest } = useSelector((state) => state
       }
     }
 
-    if(error){
+    if (error) {
       setLocalLoading(false);
-      if(alreadyRequest){
-        errorHandler(error)
+      if (alreadyRequest) {
+        errorHandler(error);
       }
     }
   }, [data, error, isLoggedIn]);
@@ -70,7 +71,8 @@ const { data, error, isLoggedIn, alreadyRequest } = useSelector((state) => state
     }
     if (error.error === 'unauthorized') {
       setErrorText(
-        `Sorry for security reasons, after 3 more failed login\nattempts you'll have to wait ${error.error_description.split(': ')[1]
+        `Sorry for security reasons, after 3 more failed login\nattempts you'll have to wait ${
+          error.error_description.split(': ')[1]
         } before trying again`,
       );
     }
@@ -82,29 +84,32 @@ const { data, error, isLoggedIn, alreadyRequest } = useSelector((state) => state
   };
 
   return (
-    <ScrollView 
-      style={styles.container}>
+    <ScrollView style={styles.container}>
       <KeyboardAvoidingView
         style={styles.keyboardContainer}
         behavior={'padding'}>
         <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-          <View style={{ flex: 1, justifyContent: 'center' }}>
+          <View style={{flex: 1, justifyContent: 'center'}}>
             <View style={styles.imageContainer}>
               <Image style={styles.imageSize} source={busolLogo} />
             </View>
             <View style={styles.loginContainer}>
               <View style={styles.loginContainerHeader}>
-                <Image source={loginBrand} style={styles.iotImage}/>
+                <Image source={loginBrand} style={styles.iotImage} />
               </View>
-                {errorText && <Text style={[styles.errorText, { paddingBottom: 10 }]}>{errorText}</Text>}
+              {errorText && (
+                <Text style={[styles.errorText, {paddingBottom: 10}]}>
+                  {errorText}
+                </Text>
+              )}
               <View style={styles.formGroup}>
                 <Text style={styles.label}>{'Username'}</Text>
                 <TextInput
-                      editable={!localLoading}
-                      placeholder="Username"
-                      placeholderColor="#c4c3cb"
-                      style={styles.textInputContainer}
-                      onChangeText={(e) => setUsername(e)}
+                  editable={!localLoading}
+                  placeholder="Username"
+                  placeholderColor="#c4c3cb"
+                  style={styles.textInputContainer}
+                  onChangeText={(e) => setUsername(e)}
                 />
               </View>
               <View style={styles.formGroup}>
@@ -119,22 +124,23 @@ const { data, error, isLoggedIn, alreadyRequest } = useSelector((state) => state
                   onSubmitEditing={() => onSubmit()}
                 />
               </View>
-                <View style={styles.loginSettingWrapper}>
-                    <View style={styles.loginSetting}>
-                      <CheckBox 
-                        disabled={false} 
-                        value={rememberMe} 
-                        onCheckColor="#002DBB"
-                        onValueChange={(value) => setRememberMe(value)}/>
-                      <Text style={{ fontSize: 11}}>Remember Me</Text>
-                    </View>
-                    <TouchableWithoutFeedback
-                      onPress={() => navigation.navigate('Reset Password')}>
-                      <Text style={styles.linkText}>Forgot Password ?</Text>
-                    </TouchableWithoutFeedback>
+              <View style={styles.loginSettingWrapper}>
+                <View style={styles.loginSetting}>
+                  <CheckBox
+                    disabled={false}
+                    value={rememberMe}
+                    onCheckColor="#002DBB"
+                    onValueChange={(value) => setRememberMe(value)}
+                  />
+                  <Text style={{fontSize: 11}}>Remember Me</Text>
                 </View>
-                {/* To-do */}
-                {/* <View style={styles.loginSettingWrapper}>
+                <TouchableWithoutFeedback
+                  onPress={() => navigation.navigate('Reset Password')}>
+                  <Text style={styles.linkText}>Forgot Password ?</Text>
+                </TouchableWithoutFeedback>
+              </View>
+              {/* To-do */}
+              {/* <View style={styles.loginSettingWrapper}>
                     <View style={styles.loginSetting}>
                       <CheckBox disabled={false} onCheckColor="#002DBB"/>
                       <Text style={{ fontSize: 11 }}>I aggree to the&nbsp;
@@ -142,7 +148,7 @@ const { data, error, isLoggedIn, alreadyRequest } = useSelector((state) => state
                         onPress={() => Linking.openURL('https://www.xl.co.id/en/terms-and-conditions')}>
                         <Text style={styles.linkText}>Terms of use </Text>
                       </TouchableWithoutFeedback>
-                       and the&nbsp; 
+                       and the&nbsp;
                        <TouchableWithoutFeedback
                         onPress={() => Linking.openURL('https://www.xl.co.id/en/privacy-policy')}>
                         <Text style={styles.linkText}>Privacy Policy </Text>
@@ -150,41 +156,55 @@ const { data, error, isLoggedIn, alreadyRequest } = useSelector((state) => state
                        </Text>
                     </View>
                 </View> */}
-                <TouchableOpacity
-                  disabled={localLoading}
-                  onPress={onSubmit}
-                  style={[styles.buttonBlock, { backgroundColor: localLoading ? '#949494' : '#002DBB' }]}>
-                  <Text style={styles.buttonText}>
-                    {localLoading ? (
-                      <ActivityIndicator color={'#fff'} style={styles.buttonText} />
-                    ) : (
-                        <Text style={styles.buttonText}>Login</Text>
-                      )}
-                  </Text>
-                </TouchableOpacity>
-                <View style={[styles.loginSettingWrapper,{ marginTop: 10 }]}>
-                      <Text style={[styles.label, { fontSize: 11 }]}>Need Support ?</Text>
-                      <Text>
-                        <FontAwesome name="phone" size={11} color="grey" />
-                        <TouchableWithoutFeedback
-                          onPress={() => Linking.openURL('tel://+622157959556')}>
-                          <Text style={[styles.linkText, { fontSize: 11 }]}>&nbsp;+62 21 57959556 </Text>
-                        </TouchableWithoutFeedback>
-                      </Text>
-                      <Text>
-                        <FontAwesome name="envelope" size={11} color="grey" />
-                        <TouchableWithoutFeedback
-                          onPress={() => Linking.openURL('mailto://cs-busol@xl.co.id')}>
-                          <Text style={[styles.linkText, { fontSize: 11 }]}>&nbsp;cs-busol@xl.co.id </Text>
-                        </TouchableWithoutFeedback>
-                      </Text>
-                </View>
+              <TouchableOpacity
+                disabled={localLoading}
+                onPress={onSubmit}
+                style={[
+                  styles.buttonBlock,
+                  {backgroundColor: localLoading ? '#949494' : '#002DBB'},
+                ]}>
+                <Text style={styles.buttonText}>
+                  {localLoading ? (
+                    <ActivityIndicator
+                      color={'#fff'}
+                      style={styles.buttonText}
+                    />
+                  ) : (
+                    <Text style={styles.buttonText}>Login</Text>
+                  )}
+                </Text>
+              </TouchableOpacity>
+              <View style={[styles.loginSettingWrapper, {marginTop: 10}]}>
+                <Text style={[styles.label, {fontSize: 11}]}>
+                  Need Support ?
+                </Text>
+                <Text>
+                  <FontAwesome name="phone" size={11} color="grey" />
+                  <TouchableWithoutFeedback
+                    onPress={() => Linking.openURL('tel://+622157959556')}>
+                    <Text style={[styles.linkText, {fontSize: 11}]}>
+                      &nbsp;+62 21 57959556{' '}
+                    </Text>
+                  </TouchableWithoutFeedback>
+                </Text>
+                <Text>
+                  <FontAwesome name="envelope" size={11} color="grey" />
+                  <TouchableWithoutFeedback
+                    onPress={() =>
+                      Linking.openURL('mailto://cs-busol@xl.co.id')
+                    }>
+                    <Text style={[styles.linkText, {fontSize: 11}]}>
+                      &nbsp;cs-busol@xl.co.id{' '}
+                    </Text>
+                  </TouchableWithoutFeedback>
+                </Text>
+              </View>
             </View>
           </View>
         </TouchableWithoutFeedback>
       </KeyboardAvoidingView>
       <View style={styles.footer}>
-        <Text style={{ color: '#707070', fontSize: 12, bottom: 20 }}>
+        <Text style={{color: '#707070', fontSize: 12, bottom: 20}}>
           &copy; {`${year} PT. XL Axiata Tbk. All Right Reserved `}
         </Text>
       </View>

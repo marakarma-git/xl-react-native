@@ -10,11 +10,11 @@ import ChartLegend from './chartlegend';
 import style from '../../style/home.style';
 
 const PieChartComponent = ({item, filterParams = {}}) => {
-  const dispatch    = useDispatch();
-  const navigation  = useNavigation();
-  const userData    = useSelector((state) => state.auth_reducer.data);
-  const dataSet     = useSelector((state) => state.dashboard_reducer.simStatistics);
-  const {loading, error}            = useSelector((state) => state.dashboard_reducer);
+  const dispatch = useDispatch();
+  const navigation = useNavigation();
+  const userData = useSelector((state) => state.auth_reducer.data);
+  const dataSet = useSelector((state) => state.dashboard_reducer.simStatistics);
+  const {loading, error} = useSelector((state) => state.dashboard_reducer);
   const [chartColor, setChartColor] = useState([]);
 
   const generateChartColor = () => {
@@ -63,13 +63,17 @@ const PieChartComponent = ({item, filterParams = {}}) => {
 
   useEffect(() => {
     const pageLoad = navigation.addListener('focus', () => {
-      dispatch(requestWidgetData(userData.access_token, item, filterParams, 'sim'));
+      dispatch(
+        requestWidgetData(userData.access_token, item, filterParams, 'sim'),
+      );
     });
 
-    if(dataSet !== null){
+    if (dataSet !== null) {
       generateChartColor();
-    }else if(dataSet === null){
-      dispatch(requestWidgetData(userData.access_token, item, filterParams, 'sim'));
+    } else if (dataSet === null) {
+      dispatch(
+        requestWidgetData(userData.access_token, item, filterParams, 'sim'),
+      );
     }
 
     return pageLoad;

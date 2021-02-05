@@ -1,7 +1,7 @@
 import Axios from 'axios';
 import subDomain from '../../constant/requestSubPath';
 import reduxString from '../reduxString';
-import { base_url } from '../../constant/connection';
+import {base_url} from '../../constant/connection';
 
 const getEnterpriseLogo = () => {
   return {
@@ -34,8 +34,8 @@ const callEnterpriseLogo = (enterpriseId, token) => {
       },
     })
       .then((response) => {
-        const { data } = response;
-        const { result } = data || {};
+        const {data} = response;
+        const {result} = data || {};
         if (data) {
           dispatch(getEnterpriseLogoSuccess(result));
         } else {
@@ -46,4 +46,4 @@ const callEnterpriseLogo = (enterpriseId, token) => {
   };
 };
 
-export { removeEnterPriseLogo, callEnterpriseLogo };
+export {removeEnterPriseLogo, callEnterpriseLogo};

@@ -1,9 +1,8 @@
 import Axios from 'axios';
 import reduxString from '../reduxString';
 import subDomain from '../../constant/requestSubPath';
-import { getState } from 'redux';
-import { base_url, headerAuth } from '../../constant/connection';
-import { removeEnterPriseLogo } from './enterprise_action';
+import {base_url, headerAuth} from '../../constant/connection';
+import {removeEnterPriseLogo} from './enterprise_action';
 
 const authRequest = () => {
   return {
@@ -21,20 +20,20 @@ const authSuccess = (data, params) => {
   return {
     type: reduxString.AUTH_SUCCESS,
     payload: data,
-    params
+    params,
   };
 };
 
 const removeAuth = (username) => {
   return {
     type: reduxString.AUTH_LOGOUT,
-    params: { username }
+    params: {username},
   };
 };
 
 const changePassword = (username) => ({
   type: reduxString.CHANGE_PASSWORD,
-  params: { username }
+  params: {username},
 });
 
 const authLogout = () => {
@@ -54,7 +53,7 @@ const authLogin = (username, password) => {
   return async (dispatch) => {
     dispatch(authRequest());
     try {
-      const { data } = await Axios.post(
+      const {data} = await Axios.post(
         `${base_url}${subDomain.fetchLogin}`,
         formData,
         {
@@ -66,7 +65,7 @@ const authLogin = (username, password) => {
       );
 
       if (data) {
-        dispatch(authSuccess(data, { username, password }));
+        dispatch(authSuccess(data, {username, password}));
       }
     } catch (error) {
       dispatch(authFailed(error.response.data));
@@ -87,7 +86,7 @@ const getTitleVersionFail = (error) => ({
 const getTitleVersion = () => {
   return async (dispatch) => {
     try {
-      const { data } = await Axios.get(`${base_url}/user/usr/getUserAppVersion`, {
+      const {data} = await Axios.get(`${base_url}/user/usr/getUserAppVersion`, {
         headers: {
           Authorization: headerAuth,
         },
@@ -104,4 +103,4 @@ const getTitleVersion = () => {
   };
 };
 
-export { authLogin, authLogout, getTitleVersion, changePassword };
+export {authLogin, authLogout, getTitleVersion, changePassword};

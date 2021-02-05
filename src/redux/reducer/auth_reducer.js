@@ -5,7 +5,7 @@ const initialState = {
   data: {},
   titleVersion: null,
   alreadyRequest: false,
-  isLoggedIn: false
+  isLoggedIn: false,
 };
 const auth_reducers = (state = initialState, action) => {
   switch (action.type) {
@@ -28,14 +28,14 @@ const auth_reducers = (state = initialState, action) => {
         data: action.payload,
         error: '',
         alreadyRequest: false,
-        isLoggedIn: true
+        isLoggedIn: true,
       };
     case reduxString.AUTH_LOGOUT:
       return {
         ...state,
         data: {},
         alreadyRequest: false,
-        isLoggedIn: false
+        isLoggedIn: false,
       };
     case reduxString.GET_TITLE_VERSION:
       return {

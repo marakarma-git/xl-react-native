@@ -1,9 +1,9 @@
 import Axios from 'axios';
 import Helper from '../../helpers/helper';
 import reduxString from '../reduxString';
-import { base_url } from '../../constant/connection';
-import { dashboardHeaderAuth } from '../../constant/headers';
-import { filter } from '../../assets/images';
+import {base_url} from '../../constant/connection';
+import {dashboardHeaderAuth} from '../../constant/headers';
+import {filter} from '../../assets/images';
 
 const setDashboardSummary = (data) => ({
   type: reduxString.SET_DASHBOARD_SUMMARY,
@@ -19,12 +19,11 @@ export const setRequestError = (error) => ({
   payload: error,
 });
 
-
 export const getDashboardSummary = (accessToken) => {
   return async (dispatch) => {
     try {
       dispatch(requestDashboardData());
-      const { data } = await Axios.get(
+      const {data} = await Axios.get(
         `${base_url}/dcp/dashboard/getSummaryDashboard`,
         {
           headers: {
@@ -35,9 +34,9 @@ export const getDashboardSummary = (accessToken) => {
       if (data) {
         if (data.statusCode === 0) {
           const summaryData = [
-            { title: 'Total SIM Card', resultId: 'totalsimcard' },
-            { title: 'Total Active SIM Card', resultId: 'totalactivesim' },
-            { title: 'Total Active Session', resultId: 'totalactivesession' },
+            {title: 'Total SIM Card', resultId: 'totalsimcard'},
+            {title: 'Total Active SIM Card', resultId: 'totalactivesim'},
+            {title: 'Total Active Session', resultId: 'totalactivesession'},
             {
               title: 'Total Aggregated Traffic',
               resultId: 'totalaggregatedtraffic',
@@ -72,7 +71,7 @@ export const getWidgetList = (accessToken) => {
   return async (dispatch) => {
     try {
       dispatch(requestDashboardData());
-      const { data } = await Axios.get(
+      const {data} = await Axios.get(
         `${base_url}/dcp/dashboard/getWidgetList`,
         {
           headers: {
@@ -96,22 +95,21 @@ export const getWidgetList = (accessToken) => {
 
 const setCarousel = (data) => ({
   type: reduxString.SET_CAROUSEL,
-  payload: data
+  payload: data,
 });
 
 export const getCarousel = (accessToken) => {
   return async (dispatch) => {
     dispatch(requestDashboardData());
     try {
-      const { data } = await Axios.get(`${base_url}/dcp/banner/getListBanner`, {
+      const {data} = await Axios.get(`${base_url}/dcp/banner/getListBanner`, {
         headers: {
-          Authorization: 'Bearer ' + accessToken
-        }
+          Authorization: 'Bearer ' + accessToken,
+        },
       });
 
       if (data) {
         if (data.statusCode === 0) {
-
           data.result.map((banner) => {
             banner.bannerImage = `data:image/jpeg;base64,${banner.bannerImage}`;
           });
@@ -124,8 +122,8 @@ export const getCarousel = (accessToken) => {
     } catch (error) {
       dispatch(setRequestError(error.response.data));
     }
-  }
-}
+  };
+};
 
 const setSimStatistics = (data, params) => {
   const newDataSet = [];
@@ -138,17 +136,17 @@ const setSimStatistics = (data, params) => {
       status: datas.status,
       color: pieChartColor[i],
       total: +datas.total,
-    })
+    });
   });
 
   Helper.sortDescending(newDataSet, 'total');
 
   return {
-    type: "SET_SIM_STATISTICS",
+    type: 'SET_SIM_STATISTICS',
     payload: newDataSet,
-    params
-  }
-}
+    params,
+  };
+};
 
 const setTopTrafficStatistics = (data, params) => {
   const newDataSet = [];
@@ -160,37 +158,44 @@ const setTopTrafficStatistics = (data, params) => {
   Helper.sortAscending(newDataSet, 'y');
 
   return {
-    type: "SET_TOP_TRAFFIC_STATISTICS",
+    type: 'SET_TOP_TRAFFIC_STATISTICS',
     payload: newDataSet,
-    params
-  }
-}
+    params,
+  };
+};
 
-export const requestWidgetData = (accessToken, item, filterParams, type = 'sim') => {
-  console.log("REQUEST WIDGET DATA NEW ========================= > ")
+export const requestWidgetData = (
+  accessToken,
+  item,
+  filterParams,
+  type = 'sim',
+) => {
   return async (dispatch) => {
     dispatch(requestDashboardData());
     try {
-      const { data } = await Axios.post(`${base_url}/dcp/dashboard/v2/getDataSet?datasetId=${item.datasetId}`, 
-        filterParams, 
-      {
-        headers: dashboardHeaderAuth(accessToken)
-      });
+      const {data} = await Axios.post(
+        `${base_url}/dcp/dashboard/v2/getDataSet?datasetId=${item.datasetId}`,
+        filterParams,
+        {
+          headers: dashboardHeaderAuth(accessToken),
+        },
+      );
 
-      if(data){
-        if(data.statusCode === 0){
-          if(type === 'sim'){
-              dispatch(setSimStatistics(data.result.dataset, filterParams));
-            }else{
-              dispatch(setTopTrafficStatistics(data.result.dataset, filterParams));
+      if (data) {
+        if (data.statusCode === 0) {
+          if (type === 'sim') {
+            dispatch(setSimStatistics(data.result.dataset, filterParams));
+          } else {
+            dispatch(
+              setTopTrafficStatistics(data.result.dataset, filterParams),
+            );
           }
-        }else{
+        } else {
           dispatch(setRequestError(data.statusDescription));
         }
       }
-
     } catch (error) {
       dispatch(setRequestError(error.response.data));
     }
-  }
-}
+  };
+};
