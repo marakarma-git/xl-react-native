@@ -1,13 +1,10 @@
-import React, {useEffect, useState} from 'react';
+import React, {useState} from 'react';
 import {
   View,
   Text,
   TouchableOpacity,
   TextInput,
   ActivityIndicator,
-  KeyboardAvoidingView,
-  FlatList,
-  Modal,
 } from 'react-native';
 import dayjs from 'dayjs';
 import PropTypes from 'prop-types';
@@ -16,6 +13,7 @@ import RNDateTimePicker from '@react-native-community/datetimepicker';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import {inputHybridStyle} from '../style';
 import {colors} from '../constant/color';
+import ModalSearchPicker from './modal/ModalSearchPicker';
 
 const InputHybrid = (props) => {
   const {type} = props;
@@ -117,7 +115,7 @@ const SelectInput = (props) => {
         />
       </ContainerInput>
       {visible && (
-        <ModalPicker
+        <ModalSearchPicker
           title={`Select ${label}`}
           data={data}
           value={value.value}
@@ -154,7 +152,7 @@ const SelectInputType2 = (props) => {
         </TouchableOpacity>
       </ContainerInput>
       {visible && (
-        <ModalPicker
+        <ModalSearchPicker
           title={`Select ${label}`}
           data={data}
           value={selectedValue.value}
@@ -197,78 +195,6 @@ const DateInput = (props) => {
     </React.Fragment>
   );
 };
-const ModalPicker = (props) => {
-  // to use this modal picker the array object must be liked this
-  // {
-  //   label: "",
-  //   value: ""
-  // }
-  const {data, onClose, onChange, value, title} = props;
-  const [searchText, setSearchText] = useState('');
-  const [searchResults, setSearchResult] = useState([]);
-  useEffect(() => {
-    if (data.length > 0) {
-      const results = data.filter((item) =>
-        item.label.toLowerCase().includes(searchText.toLowerCase()),
-      );
-      setSearchResult(results);
-    }
-  }, [data, searchText]);
-  return (
-    <Modal animationType="slide" transparent onRequestClose={onClose}>
-      <View style={inputHybridStyle.modalBackdrop} />
-      <KeyboardAvoidingView
-        enabled={false}
-        style={inputHybridStyle.modalContainer}>
-        <View style={inputHybridStyle.modalTitleContainer}>
-          <Text style={inputHybridStyle.modalTitleText}>{title}</Text>
-          <TouchableOpacity onPress={onClose}>
-            <MaterialCommunityIcons
-              name={'close-circle-outline'}
-              color={colors.gray}
-              size={28}
-            />
-          </TouchableOpacity>
-        </View>
-        <View style={inputHybridStyle.modalTextInputContainer}>
-          <TextInput
-            placeholder={'Search state lock'}
-            onChangeText={(e) => setSearchText(e)}
-          />
-        </View>
-        <FlatList
-          data={searchResults}
-          renderItem={({item, index}) => {
-            const {label} = item;
-            return (
-              <TouchableOpacity
-                onPress={() => {
-                  onChange(item);
-                }}
-                style={[
-                  {
-                    backgroundColor:
-                      index % 2 === 0 ? colors.gray_300 : colors.gray_200,
-                  },
-                  inputHybridStyle.modalItem,
-                ]}>
-                <Text style={{flex: 1}}>{label}</Text>
-                {(label === value || item.value === value) && (
-                  <MaterialCommunityIcons
-                    name={'check-bold'}
-                    color={colors.green_check}
-                    size={20}
-                  />
-                )}
-              </TouchableOpacity>
-            );
-          }}
-        />
-      </KeyboardAvoidingView>
-    </Modal>
-  );
-};
-
 //example how to use
 // <InputHybrid type={'TextInput'} label={'IMSI'} />
 // <InputHybrid

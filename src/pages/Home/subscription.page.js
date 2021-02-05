@@ -3,14 +3,14 @@ import {useDispatch} from 'react-redux';
 import {View} from 'react-native';
 import {useNavigation} from '@react-navigation/native';
 import {subscriptionStyle} from '../../style';
+import Table from '../../components/table/Table';
 import TableFooter from '../../components/subscription/tableFooter';
 import SearchHeader from '../../components/subscription/searchHeader';
 import AppliedFilter from '../../components/subscription/appliedFilter';
 import {HeaderContainer, OverlayBackground} from '../../components/index';
 import {getCustomLabel} from '../../redux/action/get_custom_label_action';
 import FilterActionLabel from '../../components/subscription/filterActionLabel';
-import TableCellViewMap from '../../components/table/tableCellViewMap';
-import Table from '../../components/table/Table';
+import ModalMenuPicker from '../../components/modal/ModalMenuPicker';
 
 const Subscription = () => {
   const dispatch = useDispatch();
@@ -27,6 +27,19 @@ const Subscription = () => {
         <FilterActionLabel />
         <Table dataHeader={dataTableHeaderDummy} dataTable={dataTableDummy} />
         <TableFooter />
+        <ModalMenuPicker
+          title={'Menu Picker'}
+          data={[
+            {
+              value: '123',
+              label: '123',
+            },
+            {
+              value: '321',
+              label: '321',
+            },
+          ]}
+        />
       </View>
     </HeaderContainer>
   );

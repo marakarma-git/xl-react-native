@@ -21,6 +21,7 @@ const Table = (props) => {
               <TableCell
                 config={dataHeader[0].config}
                 type={dataHeader[0].type}
+                dataOption={dataHeader[0].dataOption}
               />
             )}
             <ScrollView
@@ -38,11 +39,9 @@ const Table = (props) => {
               }}>
               {dataHeader &&
                 dataHeader.map((item, index) => {
-                  const {type, config, value, shown} = item;
+                  const {shown} = item;
                   if (index > 0 && shown) {
-                    return (
-                      <TableCell config={config} type={type} value={value} />
-                    );
+                    return <TableCell {...item} />;
                   } else {
                     return null;
                   }
@@ -95,14 +94,7 @@ const Table = (props) => {
                     <>
                       {value.map((subValue, index2) => {
                         if (index2 > 0) {
-                          const {type, config, value} = subValue || {};
-                          return (
-                            <TableCell
-                              config={config}
-                              type={type}
-                              value={value}
-                            />
-                          );
+                          return <TableCell {...subValue} />;
                         } else {
                           return null;
                         }
