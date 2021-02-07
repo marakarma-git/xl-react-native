@@ -132,11 +132,11 @@ const Login = ({navigation}) => {
                     onCheckColor="#002DBB"
                     onValueChange={(value) => setRememberMe(value)}
                   />
-                  <Text style={{fontSize: 11}}>Remember Me</Text>
+                  <Text style={{fontSize: 11}}>Remember me</Text>
                 </View>
                 <TouchableWithoutFeedback
                   onPress={() => navigation.navigate('Reset Password')}>
-                  <Text style={styles.linkText}>Forgot Password ?</Text>
+                  <Text style={styles.linkText}>Forgot password?</Text>
                 </TouchableWithoutFeedback>
               </View>
               {/* To-do */}
@@ -176,7 +176,7 @@ const Login = ({navigation}) => {
               </TouchableOpacity>
               <View style={[styles.loginSettingWrapper, {marginTop: 10}]}>
                 <Text style={[styles.label, {fontSize: 11}]}>
-                  Need Support ?
+                  Need support?
                 </Text>
                 <Text>
                   <FontAwesome name="phone" size={11} color="grey" />
