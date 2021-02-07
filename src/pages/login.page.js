@@ -132,7 +132,7 @@ const Login = ({navigation}) => {
                     onCheckColor="#002DBB"
                     onValueChange={(value) => setRememberMe(value)}
                   />
-                  <Text style={{fontSize: 11}}>Remember Me</Text>
+                  <Text style={{fontSize: 11}}>Remember me</Text>
                 </View>
                 <TouchableWithoutFeedback
                   onPress={() => navigation.navigate('Reset Password')}>
