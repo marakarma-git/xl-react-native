@@ -98,7 +98,7 @@ const saveActivity = async (dataRaw, accessToken) => {
       }
     }
   } catch (error) {
-    console.log(JSON.stringify(error));
+    // console.log(JSON.stringify(error));
   }
 };
 

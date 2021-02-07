@@ -8,7 +8,7 @@ import PropTypes from 'prop-types';
 import ModalSearchPicker from '../modal/ModalSearchPicker';
 
 const TableCellHeaderOptionCheckBox = (props) => {
-  const {config, onPress, onChangeCheck, otherInformation, value, dataOption} =
+  const {config, onPress, onChangeCheck, valueCheck, sorted, dataOption} =
     props || {};
   const {label, width, height, isTouchable, fontColor, backgroundColor} =
     config || {};
@@ -25,7 +25,7 @@ const TableCellHeaderOptionCheckBox = (props) => {
       }}>
       <CustomCheckBox
         style={{marginLeft: 16}}
-        value={value}
+        value={valueCheck}
         onPress={() => setViewModal(true)}>
         <View
           style={{
@@ -67,7 +67,13 @@ const TableCellHeaderOptionCheckBox = (props) => {
           </Text>
           <FontAwesome
             style={{marginLeft: 5}}
-            name={'unsorted'}
+            name={
+              sorted === 'ASC'
+                ? 'sort-asc'
+                : sorted === 'DESC'
+                ? 'sort-desc'
+                : 'unsorted'
+            }
             color={'white'}
             size={18}
           />
@@ -77,6 +83,10 @@ const TableCellHeaderOptionCheckBox = (props) => {
         <ModalSearchPicker
           title={'Select Attribute'}
           data={dataOption}
+          onChange={(value) => {
+            onChangeCheck(value);
+            setViewModal(false);
+          }}
           onClose={() => setViewModal(false)}
         />
       )}
@@ -96,7 +106,7 @@ TableCellHeaderOptionCheckBox.propTypes = {
   dataOption: PropTypes.array,
   onPress: PropTypes.func,
   onChangeCheck: PropTypes.func,
-  otherInformation: PropTypes.any,
-  value: PropTypes.bool,
+  sorted: PropTypes.oneOf(['ASC', 'DESC', null]),
+  valueCheck: PropTypes.bool,
 };
 export default TableCellHeaderOptionCheckBox;

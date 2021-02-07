@@ -1,27 +1,67 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {View, TextInput, TouchableOpacity, Text} from 'react-native';
 import PropTypes from 'prop-types';
 import {subscriptionStyle} from '../../style';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import {colors} from '../../constant/color';
+import ModalSearchPicker from '../modal/ModalSearchPicker';
+const actionData = [
+  {
+    value: 'abc',
+    label: 'abc',
+  },
+];
 const FilterActionLabel = (props) => {
+  const {value, onChange, total, filtered, selected} = props || {};
+  const [showAction, setShowAction] = useState(false);
   return (
-    <View style={subscriptionStyle.wrapperMenuOption}>
-      <TouchableOpacity style={subscriptionStyle.menuOption}>
-        <Text style={subscriptionStyle.textOption}>Actions</Text>
-        <View style={subscriptionStyle.menuOptionChevronDown}>
-          <MaterialCommunityIcons
-            name={'chevron-down'}
-            color={colors.gray}
-            size={26}
-          />
-        </View>
-      </TouchableOpacity>
-      <Text style={subscriptionStyle.textMenuTotal}>
-        Total: 50.000 | Filtered: 5 | Selected: 1
-      </Text>
-    </View>
+    <>
+      <View style={subscriptionStyle.wrapperMenuOption}>
+        <TouchableOpacity
+          style={subscriptionStyle.menuOption}
+          onPress={() => setShowAction(true)}>
+          <Text style={subscriptionStyle.textOption}>Actions</Text>
+          <View style={subscriptionStyle.menuOptionChevronDown}>
+            <MaterialCommunityIcons
+              name={'chevron-down'}
+              color={colors.gray}
+              size={26}
+            />
+          </View>
+        </TouchableOpacity>
+        <Text style={subscriptionStyle.textMenuTotal}>
+          {`Total: ${total || 0} | Filtered:${filtered || 0} | Selected: ${
+            selected || 0
+          }`}
+        </Text>
+      </View>
+      {showAction && (
+        <ModalSearchPicker
+          data={actionData}
+          onChange={(e) => {
+            onChange(e);
+            setShowAction(false);
+          }}
+          onClose={() => setShowAction(false)}
+          removeSearch={true}
+          title={'Action'}
+          value={value}
+        />
+      )}
+    </>
   );
 };
-FilterActionLabel.propTypes = {};
+FilterActionLabel.propTypes = {
+  value: PropTypes.objectOf({
+    value: PropTypes.any,
+    label: PropTypes.string,
+  }),
+  onChange: PropTypes.func,
+  total: PropTypes.string || PropTypes.number,
+  filtered: PropTypes.string || PropTypes.number,
+  selected: PropTypes.string || PropTypes.number,
+};
+FilterActionLabel.defaultProps = {
+  onChange: () => {},
+};
 export default FilterActionLabel;

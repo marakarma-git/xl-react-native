@@ -89,7 +89,7 @@ export default {
   buttonStyle: {
     backgroundColor: 'blue',
     paddingHorizontal: 26,
-    paddingVertical: 4,
+    paddingVertical: 6,
     borderRadius: border_radius,
     margin: 4,
     elevation: 3,

@@ -11,6 +11,7 @@ import get_enterprise_package_name_reducer from './get_enterprise_package_name_r
 import get_state_reducer from './get_state_reducer';
 import get_state_lock_reducer from './get_state_lock_reducer';
 import get_custom_label_reducer from './get_custom_label_reducer';
+import get_sim_inventory_reducer from './get_sim_inventory_reducer';
 const RootReducers = combineReducers({
   dummy_reducer,
   auth_reducer,
@@ -24,5 +25,6 @@ const RootReducers = combineReducers({
   get_state_reducer,
   get_state_lock_reducer,
   get_custom_label_reducer,
+  get_sim_inventory_reducer,
 });
 export default RootReducers;

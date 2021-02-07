@@ -9,7 +9,7 @@ const regular_horizontal_padding = 10;
 const regular_vertical_padding = 10;
 const height_keyboard = 43;
 const reguler_font_size = 14;
-const defaultHeightCell = 35;
+const defaultHeightCell = 40;
 const defaultWidthCell = 150;
 export {
   device_height,

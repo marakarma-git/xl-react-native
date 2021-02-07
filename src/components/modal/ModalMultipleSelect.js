@@ -21,13 +21,13 @@ const ModalMultipleSelect = (props) => {
   const [searchText, setSearchText] = useState('');
   const [searchResults, setSearchResult] = useState([]);
   useEffect(() => {
-    if (localData.length > 0) {
+    if (localData.length > 0 && !removeSearch) {
       const results = localData.filter((item) =>
         item.label.toLowerCase().includes(searchText.toLowerCase()),
       );
       setSearchResult(results);
     }
-  }, [localData, searchText]);
+  }, [localData, removeSearch, searchText]);
   const onClick = (index) => {
     let newArr = lod.cloneDeep(localData);
     newArr[index].is_selected = !newArr[index].is_selected;
@@ -64,7 +64,7 @@ const ModalMultipleSelect = (props) => {
           </View>
         )}
         <FlatList
-          data={searchResults}
+          data={!removeSearch ? searchResults : data}
           renderItem={({item, index}) => {
             const {label, is_selected} = item;
             return (

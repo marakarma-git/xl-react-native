@@ -4,7 +4,7 @@ import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import {defaultHeightCell, defaultWidthCell} from '../../constant/config';
 import PropTypes from 'prop-types';
 const TableCellHeaderAscDesc = (props) => {
-  const {config, onPress, otherInformation, value} = props || {};
+  const {config, onPress, sorted} = props || {};
   const {label, width, height, isTouchable, fontColor, backgroundColor} =
     config || {};
   const TouchView = isTouchable ? TouchableOpacity : View;
@@ -35,9 +35,9 @@ const TableCellHeaderAscDesc = (props) => {
         <FontAwesome
           style={{marginLeft: 5}}
           name={
-            value === 'ASC'
+            sorted === 'ASC'
               ? 'sort-asc'
-              : value === 'DESC'
+              : sorted === 'DESC'
               ? 'sort-desc'
               : 'unsorted'
           }
@@ -59,7 +59,7 @@ TableCellHeaderAscDesc.propTypes = {
     isTouchable: PropTypes.bool,
   }),
   onPress: PropTypes.func,
-  value: PropTypes.oneOf(['ASC', 'DESC', null]),
+  sorted: PropTypes.oneOf(['ASC', 'DESC', null]),
   otherInformation: PropTypes.any,
 };
 export default TableCellHeaderAscDesc;

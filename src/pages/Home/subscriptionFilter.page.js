@@ -17,7 +17,6 @@ import {
 import InputHybrid from '../../components/InputHybrid';
 import {getStateCorp} from '../../redux/action/get_state_action';
 import {getStateLock} from '../../redux/action/get_state_lock_action';
-import {getCustomLabel} from '../../redux/action/get_custom_label_action';
 import {HeaderContainer, OverlayBackground} from '../../components/index';
 import {getEnterpriseCorp} from '../../redux/action/get_enterprise_corp_action';
 import {getEnterprisePackageName} from '../../redux/action/get_enterprise_package_name_action';
@@ -61,16 +60,17 @@ const SubscriptionFilter = () => {
               array_filter.map((e) => {
                 const {
                   formId,
-                  type,
+                  typeInput,
                   value,
-                  label,
+                  config,
                   loading,
                   data,
                   selectedValue,
                   disabled,
                   errorText,
                   isSelected,
-                } = e;
+                } = e || {};
+                const {label} = config || {};
                 return (
                   <InputHybrid
                     isSelected={isSelected}
@@ -79,7 +79,7 @@ const SubscriptionFilter = () => {
                         setSomethingToFilter([
                           {
                             formId: formId,
-                            needs: `OnChange${type}`,
+                            needs: `OnChange${typeInput}`,
                             value: value,
                             selectedValue: e,
                           },
@@ -93,7 +93,7 @@ const SubscriptionFilter = () => {
                           setSomethingToFilter([
                             {
                               formId: formId,
-                              needs: `OnChange${type}`,
+                              needs: `OnChange${typeInput}`,
                               value: e,
                               selectedValue: selectedValue,
                             },
@@ -104,7 +104,7 @@ const SubscriptionFilter = () => {
                         setSomethingToFilter([
                           {
                             formId: formId,
-                            needs: `OnChange${type}`,
+                            needs: `OnChange${typeInput}`,
                             value: e,
                             selectedValue: selectedValue,
                           },
@@ -113,7 +113,7 @@ const SubscriptionFilter = () => {
                     }}
                     errorText={errorText}
                     disabled={disabled}
-                    type={type}
+                    type={typeInput}
                     label={label}
                     value={value}
                     loading={loading}

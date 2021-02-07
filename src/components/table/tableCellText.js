@@ -4,8 +4,15 @@ import {Text, TouchableOpacity, View} from 'react-native';
 import {defaultHeightCell, defaultWidthCell} from '../../constant/config';
 const TableCellText = (props) => {
   const {config, onPress, otherInformation} = props || {};
-  const {label, width, height, isTouchable, fontColor, backgroundColor} =
-    config || {};
+  const {
+    label,
+    width,
+    height,
+    isTouchable,
+    fontColor,
+    backgroundColor,
+    superType,
+  } = config || {};
   const TouchView = isTouchable ? TouchableOpacity : View;
   return (
     <View
@@ -54,5 +61,6 @@ TableCellText.proptTypes = {
   onPress: PropTypes.func,
   otherInformation: PropTypes.any,
   value: PropTypes.any,
+  superType: PropTypes.oneOf(['BYTE', 'DATE']),
 };
 export default TableCellText;

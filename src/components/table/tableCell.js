@@ -26,7 +26,7 @@ const TableCell = (props) => {
     case 'TableCellViewMap':
       return <TableCellViewMap {...props} />;
     default:
-      return null;
+      return <React.Fragment />;
   }
 };
 TableCell.propTypes = {
@@ -47,6 +47,7 @@ TableCell.propTypes = {
     backgroundColor: PropTypes.string,
     fontSize: PropTypes.number,
     isTouchable: PropTypes.bool,
+    superType: PropTypes.oneOf(['DATE', 'BYTE']),
   },
   onPress: PropTypes.func,
   onChangeCheck: PropTypes.func,
@@ -70,5 +71,9 @@ TableCell.propTypes = {
     }),
   ]),
   otherInformation: PropTypes.any,
+};
+TableCell.defaultProps = {
+  onPress: () => {},
+  onChangeCheck: () => {},
 };
 export default TableCell;

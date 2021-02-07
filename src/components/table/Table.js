@@ -1,9 +1,16 @@
 import React, {useState, useRef} from 'react';
-import {View, ScrollView, Text} from 'react-native';
+import {View, ScrollView} from 'react-native';
 import PropTypes from 'prop-types';
 import TableCell from './tableCell';
 const Table = (props) => {
-  const {dataHeader, dataTable} = props || {};
+  const {
+    dataHeader,
+    dataTable,
+    onPressHeader,
+    onPressCell,
+    onPressCheckHeader,
+    onPressCheckCell,
+  } = props || {};
   const headerScrollView = useRef(ScrollView);
   const rowsScrollView = useRef(ScrollView);
   const [borderWidth, setBorderWidth] = useState(false);
@@ -19,9 +26,16 @@ const Table = (props) => {
             }}>
             {dataHeader && (
               <TableCell
-                config={dataHeader[0].config}
-                type={dataHeader[0].type}
+                type={dataHeader[0].cellType}
                 dataOption={dataHeader[0].dataOption}
+                onPress={() => onPressHeader(dataHeader[0])}
+                onChangeCheck={(value) =>
+                  onPressCheckHeader({
+                    selectedValue: value,
+                    ...dataHeader[0],
+                  })
+                }
+                {...dataHeader[0]}
               />
             )}
             <ScrollView
@@ -39,9 +53,16 @@ const Table = (props) => {
               }}>
               {dataHeader &&
                 dataHeader.map((item, index) => {
-                  const {shown} = item;
+                  const {cellType, shown} = item || {};
                   if (index > 0 && shown) {
-                    return <TableCell {...item} />;
+                    return (
+                      <TableCell
+                        type={cellType}
+                        onPress={() => onPressHeader(dataHeader[0])}
+                        onChangeCheck={() => onPressCheckHeader(dataHeader[0])}
+                        {...item}
+                      />
+                    );
                   } else {
                     return null;
                   }
@@ -60,11 +81,13 @@ const Table = (props) => {
                 borderColor: 'white',
               }}>
               {dataTable &&
-                dataTable.map((value, index) => {
+                dataTable.map((value) => {
                   return (
                     <TableCell
-                      config={value[index].config}
-                      type={value[index].type}
+                      type={'TableCellCheckBox'}
+                      onPress={() => onPressCell(value[0])}
+                      onChangeCheck={() => onPressCheckCell(value[0])}
+                      {...value[0]}
                     />
                   );
                 })}
@@ -88,20 +111,31 @@ const Table = (props) => {
                 }
                 setRightIsScrolling(false);
               }}>
-              {dataTable &&
-                dataTable.map((value, index) => {
-                  return (
-                    <>
-                      {value.map((subValue, index2) => {
-                        if (index2 > 0) {
-                          return <TableCell {...subValue} />;
-                        } else {
-                          return null;
-                        }
-                      })}
-                    </>
-                  );
-                })}
+              <View style={{flexDirection: 'column'}}>
+                {dataTable &&
+                  dataTable.map((value, index) => {
+                    return (
+                      <View style={{flexDirection: 'row'}}>
+                        {value.map((subValue, index2) => {
+                          const {cellType} = subValue || {};
+                          if (index2 > 0) {
+                            return (
+                              <TableCell
+                                key={index2 + index}
+                                type={cellType}
+                                onPress={() => onPressCell(subValue)}
+                                onChangeCheck={() => onPressCheckCell(subValue)}
+                                {...subValue}
+                              />
+                            );
+                          } else {
+                            return null;
+                          }
+                        })}
+                      </View>
+                    );
+                  })}
+              </View>
             </ScrollView>
           </View>
         </ScrollView>
@@ -112,5 +146,17 @@ const Table = (props) => {
 Table.propTypes = {
   dataHeader: PropTypes.array,
   dataTable: PropTypes.array,
+  onPressHeader: PropTypes.func,
+  onPressCell: PropTypes.func,
+  onPressCheckHeader: PropTypes.func,
+  onPressCheckCell: PropTypes.func,
+};
+Table.defaultProps = {
+  dataHeader: [],
+  dataTable: [],
+  onPressHeader: () => {},
+  onPressCell: () => {},
+  onPressCheckHeader: () => {},
+  onPressCheckCell: () => {},
 };
 export default Table;

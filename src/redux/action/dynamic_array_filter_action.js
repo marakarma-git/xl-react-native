@@ -152,22 +152,22 @@ const resetDataFilter = () => {
     dispatch(resetGeneratedParams());
     const {dynamic_array_filter_reducer} = getState();
     const {array_filter} = dynamic_array_filter_reducer;
-    const resetArray = array_filter.map(({formId, type, ...value}) => {
+    const resetArray = array_filter.map(({formId, typeInput, ...value}) => {
       if (formId === 'subscription-package-name-hard-code') {
         return {
           ...value,
           formId: formId,
-          type: type,
+          typeInput: typeInput,
           disabled: true,
           value: {},
         };
       } else {
-        switch (type) {
+        switch (typeInput) {
           case 'DropDown':
             return {
               ...value,
               formId: formId,
-              type: type,
+              typeInput: typeInput,
               value: {},
             };
           case 'DropDownType2':
@@ -175,14 +175,14 @@ const resetDataFilter = () => {
               ...value,
               formId: formId,
               value: '',
-              type: type,
+              typeInput: typeInput,
               selectedValue: {},
             };
           case 'TextInput':
             return {
               ...value,
               formId: formId,
-              type: type,
+              typeInput: typeInput,
               value: '',
             };
           case 'DateTimePicker':
@@ -190,7 +190,7 @@ const resetDataFilter = () => {
               ...value,
               isSelected: false,
               formId: formId,
-              type: type,
+              typeInput: typeInput,
               value: dayjs(),
             };
           default:

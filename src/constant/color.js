@@ -9,6 +9,7 @@ export const colors = {
   gray_table: '#F7F7F7',
   gray_border: '#D8D8D8',
   gray_border_input: '#BEBEBE',
+  gray_button_cancel: '#CBC9C9',
   green_check: '#53B867',
   green_filter_text: '#00D3A0',
   border_color: '#eaeaea',

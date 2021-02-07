@@ -51,8 +51,8 @@ const getCustomLabel = (navigation) => {
           const modifyArray = data.result.map(
             ({customLabel, customValue, fieldType, labelNumber, ...rest}) => ({
               formId: `label-${labelNumber}`,
+              api_id: `label${labelNumber}`,
               disabled: false,
-              label: customLabel,
               data:
                 fieldType === 'Combo Box'
                   ? lod.split(customValue, ',').map((value) => ({
@@ -60,11 +60,18 @@ const getCustomLabel = (navigation) => {
                       label: value,
                     }))
                   : [],
-              type: fieldType === 'Combo Box' ? 'DropDown' : 'TextInput',
+              typeInput: fieldType === 'Combo Box' ? 'DropDown' : 'TextInput',
               value: fieldType === 'Combo Box' ? {} : '',
               hard_code: false,
+              cellType: 'TableCellText',
+              cellRowType: 'TableCellText',
+              config: {
+                label: customLabel,
+                width: 120,
+              },
               params: `&customLabel${labelNumber}=`,
               shown: false,
+              sorted: null,
               ...rest,
             }),
           );

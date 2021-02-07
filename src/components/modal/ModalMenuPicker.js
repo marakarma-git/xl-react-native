@@ -1,36 +1,24 @@
-import React, {useEffect, useState} from 'react';
+import React, {useState} from 'react';
 import PropTypes from 'prop-types';
 import {
-  FlatList,
   KeyboardAvoidingView,
   Modal,
+  ScrollView,
   Text,
-  TextInput,
   TouchableOpacity,
   View,
 } from 'react-native';
 import {colors} from '../../constant/color';
-import {inputHybridStyle} from '../../style';
-import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
-import FontAwesome from 'react-native-vector-icons/FontAwesome';
-import lod from 'lodash';
+import {inputHybridStyle, subscriptionStyle} from '../../style';
+import {device_width} from '../../constant/config';
 import CustomCheckBox from '../customCheckBox';
+import lod from 'lodash';
 const ModalMenuPicker = (props) => {
-  const {data, onClose, onApply, title, removeSearch} = props;
+  const {data, onClose, onApply, title} = props;
   const [localData, setLocaldata] = useState(data);
-  const [searchText, setSearchText] = useState('');
-  const [searchResults, setSearchResult] = useState([]);
-  useEffect(() => {
-    if (localData.length > 0) {
-      const results = localData.filter((item) =>
-        item.label.toLowerCase().includes(searchText.toLowerCase()),
-      );
-      setSearchResult(results);
-    }
-  }, [localData, searchText]);
-  const onClick = (index) => {
+  const onPress = (index) => {
     let newArr = lod.cloneDeep(localData);
-    newArr[index].is_selected = !newArr[index].is_selected;
+    newArr[index].shown = !newArr[index].shown;
     setLocaldata(newArr);
   };
   return (
@@ -41,61 +29,47 @@ const ModalMenuPicker = (props) => {
         style={inputHybridStyle.modalContainer}>
         <View style={inputHybridStyle.modalTitleContainer}>
           <Text style={inputHybridStyle.modalTitleText}>{title}</Text>
-          <TouchableOpacity onPress={onClose}>
-            <MaterialCommunityIcons
-              name={'close-circle'}
-              color={colors.gray}
-              size={28}
-            />
-          </TouchableOpacity>
         </View>
-        {!removeSearch && (
-          <View style={inputHybridStyle.modalTextInputContainer}>
-            <FontAwesome
-              style={{marginRight: 8}}
-              name={'search'}
-              color={colors.gray_0}
-              size={20}
-            />
-            <TextInput
-              placeholder={`Search ${title}`}
-              onChangeText={(e) => setSearchText(e)}
-            />
+        <ScrollView style={{flex: 1}}>
+          <View style={[subscriptionStyle.containerWrap]}>
+            {localData.map((value, index) => {
+              const {shown, config} = value || {};
+              const {label} = config || {};
+              return (
+                <TouchableOpacity
+                  style={{
+                    width: device_width * 0.38,
+                    marginBottom: 12,
+                    flexDirection: 'row',
+                  }}>
+                  <CustomCheckBox
+                    style={{marginRight: 12}}
+                    value={shown}
+                    onPress={() => onPress(index)}
+                  />
+                  <Text style={{flex: 1}}>{label}</Text>
+                </TouchableOpacity>
+              );
+            })}
           </View>
-        )}
-        <FlatList
-          data={searchResults}
-          renderItem={({item, index}) => {
-            const {label, is_selected} = item;
-            return (
-              <TouchableOpacity
-                onPress={() => onClick(index)}
-                style={[
-                  {
-                    backgroundColor:
-                      index % 2 === 0 ? colors.gray_table : 'white',
-                    borderRadius: 3,
-                    borderColor: colors.gray_border,
-                  },
-                  inputHybridStyle.modalItem,
-                ]}>
-                <CustomCheckBox
-                  value={is_selected}
-                  style={{marginRight: 5}}
-                  onPress={() => onClick(index)}
-                />
-                <Text style={{flex: 1}}>{label}</Text>
-              </TouchableOpacity>
-            );
-          }}
-        />
-        <View style={{alignItems: 'flex-end'}}>
+        </ScrollView>
+        <View
+          style={{
+            alignItems: 'center',
+            justifyContent: 'center',
+            flexDirection: 'row',
+          }}>
+          <TouchableOpacity
+            style={[
+              inputHybridStyle.buttonStyle,
+              {backgroundColor: colors.gray_button_cancel},
+            ]}
+            onPress={onClose}>
+            <Text style={{color: 'black'}}>Cancel</Text>
+          </TouchableOpacity>
           <TouchableOpacity
             style={inputHybridStyle.buttonStyle}
-            onPress={() => {
-              onApply(localData);
-              onClose(true);
-            }}>
+            onPress={() => onApply(localData)}>
             <Text style={{color: 'white'}}>Apply</Text>
           </TouchableOpacity>
         </View>
@@ -107,12 +81,14 @@ ModalMenuPicker.propTypes = {
   title: PropTypes.string,
   data: PropTypes.array,
   onClose: PropTypes.func,
-  removeSearch: PropTypes.bool,
+  onApply: PropTypes.func,
   value: PropTypes.oneOf([
     PropTypes.objectOf({
-      label: PropTypes.string,
-      value: PropTypes.string,
-      is_selected: PropTypes.bool,
+      ...PropTypes.any,
+      shown: PropTypes.string,
+      config: PropTypes.objectOf({
+        label: PropTypes.string,
+      }),
     }),
     PropTypes.any,
   ]),

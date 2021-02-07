@@ -1,13 +1,13 @@
 import React from 'react';
 import {Header, Navbar} from '../index';
 import PropTypes from 'prop-types';
-const homePageContainer = ({navigation, ...props}) => {
+import {useNavigation} from '@react-navigation/native';
+const homePageContainer = (props) => {
+  const navigation = useNavigation();
   const {companyLogo, headerTitle, children} = props || null;
   return (
     <>
-      <Header 
-        notifications={true}
-      />
+      <Header notifications={true} />
       <Navbar
         navigation={navigation}
         companyLogo={companyLogo}

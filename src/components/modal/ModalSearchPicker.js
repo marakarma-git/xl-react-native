@@ -14,17 +14,18 @@ import {inputHybridStyle} from '../../style';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 const ModalSearchPicker = (props) => {
+  console.log(JSON.stringify(props, null, 2));
   const {data, onClose, onChange, value, title, removeSearch} = props;
   const [searchText, setSearchText] = useState('');
   const [searchResults, setSearchResult] = useState([]);
   useEffect(() => {
-    if (data.length > 0) {
+    if (data.length > 0 && !removeSearch) {
       const results = data.filter((item) =>
         item.label.toLowerCase().includes(searchText.toLowerCase()),
       );
       setSearchResult(results);
     }
-  }, [data, searchText]);
+  }, [data, removeSearch, searchText]);
   return (
     <Modal animationType="slide" transparent onRequestClose={onClose}>
       <View style={inputHybridStyle.modalBackdrop} />
@@ -56,7 +57,7 @@ const ModalSearchPicker = (props) => {
           </View>
         )}
         <FlatList
-          data={searchResults}
+          data={!removeSearch ? searchResults : data}
           renderItem={({item, index}) => {
             const {label} = item;
             return (
