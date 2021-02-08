@@ -13,7 +13,6 @@ export default {
   },
   imageContainer: {
     alignItems: 'center',
-    marginTop: 20,
     marginBottom: 10
   },
   imageSize: {
@@ -32,7 +31,6 @@ export default {
     borderWidth: 1,
     borderColor: '#A8A8A8',
     backgroundColor: 'white',
-    borderRadius: 5,
     paddingLeft: 10,
     marginVertical: 10,
     color: '#707070',
@@ -64,8 +62,8 @@ export default {
     paddingVertical: 5,
   },
   linkText: {
-    fontSize: 12,
-    color: colors.button_color_one,
+    fontSize: 11,
+    color: '#20A8D8',
     textAlign: 'center',
     paddingVertical: 5,
   },
@@ -75,7 +73,7 @@ export default {
     alignItems: 'center',
   },
   keyboardContainer: {
-    height: device_height - 80,
+    height: device_height - 100,
     backgroundColor: 'transparent'
   },
   footerTitleVersion: {
@@ -90,10 +88,10 @@ export default {
   loginContainer: {
     width: '85%',
     marginHorizontal: '7.5%',
-    marginTop: 20,
+    marginTop: 10,
     borderWidth: 1,
     paddingVertical: 10,
-    borderColor: 'black',
+    borderColor: '#8D8D8D',
     backgroundColor: 'white',
     alignItems: 'center'
   },
@@ -110,7 +108,6 @@ export default {
   buttonBlock: {
     width: '90%',
     height: 40,
-    borderRadius: 5,
     justifyContent: 'center',
     alignItems: 'center',
     marginVertical: 10
