@@ -192,7 +192,7 @@ const Login = ({navigation}) => {
                   <FontAwesome name="envelope" size={11} color="grey" />
                   <TouchableWithoutFeedback
                     onPress={() =>
-                      Linking.openURL('mailto://cs-busol@xl.co.id')
+                      Linking.openURL('mailto:cs-busol@xl.co.id')
                     }>
                     <Text style={[styles.linkText, {fontSize: 11}]}>
                       &nbsp;cs-busol@xl.co.id{' '}
