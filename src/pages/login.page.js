@@ -89,7 +89,7 @@ const Login = ({navigation}) => {
         style={styles.keyboardContainer}
         behavior={'padding'}>
         <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-          <View style={{height: '85%', justifyContent: 'center'}}>
+          <View style={{flex: 1, justifyContent: 'center'}}>
             <View style={styles.imageContainer}>
               <Image style={styles.imageSize} source={busolLogo} />
             </View>
@@ -132,11 +132,11 @@ const Login = ({navigation}) => {
                     onCheckColor="#002DBB"
                     onValueChange={(value) => setRememberMe(value)}
                   />
-                  <Text style={{fontSize: 11}}>Remember me</Text>
+                  <Text style={{fontSize: 11, color: "#747474", fontWeight: '200', letterSpacing: 0.5}}>Remember me</Text>
                 </View>
                 <TouchableWithoutFeedback
                   onPress={() => navigation.navigate('Reset Password')}>
-                  <Text style={styles.linkText}>Forgot password?</Text>
+                  <Text style={styles.linkText, { color: '#3552C6', fontSize: 11 }}>Forgot password?</Text>
                 </TouchableWithoutFeedback>
               </View>
               {/* To-do */}
@@ -170,12 +170,12 @@ const Login = ({navigation}) => {
                       style={styles.buttonText}
                     />
                   ) : (
-                    <Text style={styles.buttonText}>Login</Text>
+                    <Text style={styles.buttonText}>LOGIN</Text>
                   )}
                 </Text>
               </TouchableOpacity>
               <View style={[styles.loginSettingWrapper, {marginTop: 10}]}>
-                <Text style={[styles.label, {fontSize: 11}]}>
+                <Text style={[styles.label, {fontSize: 11, color: '#23282C'}]}>
                   Need support?
                 </Text>
                 <Text>
@@ -204,7 +204,7 @@ const Login = ({navigation}) => {
         </TouchableWithoutFeedback>
       </KeyboardAvoidingView>
       <View style={styles.footer}>
-        <Text style={{color: '#707070', fontSize: 12, bottom: 20}}>
+        <Text style={{color: '#707070', fontSize: 12, bottom: 0}}>
           &copy; {`${year} PT. XL Axiata Tbk. All Right Reserved `}
         </Text>
       </View>

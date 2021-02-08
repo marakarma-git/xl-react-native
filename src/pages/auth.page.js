@@ -10,7 +10,9 @@ const Auth = ({navigation}) => {
   const {data, error, isLoggedIn} = useSelector((state) => state.auth_reducer);
 
   useEffect(() => {
-    SplashScreen.hide();
+    setTimeout(() => {
+      SplashScreen.hide();
+    }, 1000);
     if (isLoggedIn) {
       if (!lod.isEmpty(data)) {
         if (data.principal.mustChangePass) {
