@@ -92,7 +92,9 @@ const Table = (props) => {
                         key={index}
                         type={'TableCellCheckBox'}
                         onPress={() => onPressCell(dataCell[0])}
-                        onChangeCheck={() => onPressCheckCell(dataCell[0])}
+                        onChangeCheck={() =>
+                          onPressCheckCell({item: dataCell[0], index: index})
+                        }
                         {...dataCell[0]}
                       />
                     );

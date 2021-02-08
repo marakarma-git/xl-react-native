@@ -8,6 +8,11 @@ const getSimInventoryLoading = () => {
     type: reduxString.GET_SIM_INVENTORY_LOADING,
   };
 };
+const getSimInventoryLoadingFalse = () => {
+  return {
+    type: reduxString.GET_SIM_INVENTORY_LOADING_FALSE,
+  };
+};
 const getSimInventoryFailed = (error) => {
   return {
     type: reduxString.GET_SIM_INVENTORY_FAILED,
@@ -49,6 +54,22 @@ const resetSimInventoryTable = () => {
     type: reduxString.RESET_SIM_INVENTORY_TABLE,
   };
 };
+const changeCheckSimInventory = (index) => {
+  return {
+    type: reduxString.CHANGE_CHECK_SIM_INVENTORY,
+    index: index,
+  };
+};
+const changeCheckSimInventoryAllTrue = () => {
+  return {
+    type: reduxString.CHANGE_CHECK_SIM_INVENTORY_ALL_TRUE,
+  };
+};
+const changeCheckSimInventoryAllFalse = () => {
+  return {
+    type: reduxString.CHANGE_CHECK_SIM_INVENTORY_ALL_FALSE,
+  };
+};
 const dataMatcherArray2D = (listData = [], headerData = []) => {
   const generated = [];
   listData.map((item, index) => {
@@ -76,7 +97,7 @@ const dataMatcherArray2D = (listData = [], headerData = []) => {
       }
     });
     generated.push({
-      is_checked_root: index % 2 === 0,
+      is_checked_root: false,
       dataCell: subGenerated,
     });
   });
@@ -134,4 +155,13 @@ const callSimInventory = (data) => {
   };
 };
 export default callSimInventory;
-export {reGenerateHideNShow, dataMatcherArray2D};
+export {
+  reGenerateHideNShow,
+  dataMatcherArray2D,
+  setSimInventoryTable,
+  getSimInventoryLoading,
+  getSimInventoryLoadingFalse,
+  changeCheckSimInventory,
+  changeCheckSimInventoryAllTrue,
+  changeCheckSimInventoryAllFalse,
+};

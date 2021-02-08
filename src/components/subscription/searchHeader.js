@@ -3,7 +3,6 @@ import {
   View,
   TextInput,
   TouchableOpacity,
-  Text,
   ActivityIndicator,
 } from 'react-native';
 import PropTypes from 'prop-types';
@@ -14,15 +13,9 @@ import {colors} from '../../constant/color';
 import MaterialCommunityIcon from 'react-native-paper/src/components/MaterialCommunityIcon';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import {useNavigation} from '@react-navigation/native';
-import ModalMenuPicker from '../modal/ModalMenuPicker';
-import {useSelector} from 'react-redux';
 const SearchHeader = (props) => {
   const navigation = useNavigation();
-  const [showMenu, setShowMenu] = useState(false);
-  const {value, onChangeText, loading} = props || {};
-  const {array_filter} = useSelector(
-    (state) => state.dynamic_array_filter_reducer,
-  );
+  const {value, onChangeText, loading, onClickColumn} = props || {};
   return (
     <Container style={subscriptionStyle.containerMargin}>
       <View style={subscriptionStyle.containerTextInput2}>
@@ -56,16 +49,9 @@ const SearchHeader = (props) => {
         {loading ? (
           <ActivityIndicator size={26} color={colors.button_color_one} />
         ) : (
-          <TouchableOpacity onPress={() => setShowMenu(true)}>
+          <TouchableOpacity onPress={onClickColumn}>
             <Ionicons name={'settings-sharp'} size={22} color={colors.gray} />
           </TouchableOpacity>
-        )}
-        {showMenu && (
-          <ModalMenuPicker
-            title={'Column'}
-            data={array_filter}
-            onClose={() => setShowMenu(false)}
-          />
         )}
       </View>
     </Container>
@@ -75,5 +61,11 @@ SearchHeader.propTypes = {
   value: PropTypes.string,
   onChangeText: PropTypes.func,
   loading: PropTypes.bool,
+  onClickColumn: PropTypes.func,
+};
+SearchHeader.defaultProps = {
+  showMenu: false,
+  onChangeText: () => {},
+  onClickColumn: () => {},
 };
 export default SearchHeader;

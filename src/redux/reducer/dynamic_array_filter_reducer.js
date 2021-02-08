@@ -15,6 +15,7 @@ const dynamicFilter = [
       label: 'IMSI',
       width: 180,
       isTouchable: true,
+      doNotShowOnFilter: true,
     },
     dataOption: [
       {
@@ -108,7 +109,7 @@ const dynamicFilter = [
     cellType: 'TableCellHeaderAscDesc',
     cellRowType: 'TableCellText',
     config: {
-      label: 'Ip Address',
+      label: 'IP Address',
       width: 120,
       isTouchable: true,
     },
