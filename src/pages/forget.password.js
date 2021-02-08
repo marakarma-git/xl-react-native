@@ -47,7 +47,7 @@ const ChangePasswordPage = ({navigation}) => {
     <ScrollView style={[inputStyles.container, {backgroundColor: 'white'}]}>
       <Header notifications={false} />
       <NavbarTitle title={'Reset Password'} />
-      <View style={loginStyle.forgetPasswordForm}>
+      <View style={[loginStyle.forgetPasswordForm, { marginTop: 50 }]}>
         <View style={inputStyles.formGroup}>
           <Text style={inputStyles.label}>
             Username
@@ -59,11 +59,11 @@ const ChangePasswordPage = ({navigation}) => {
             placeholder={'Username'}
           />
         </View>
-        <Text style={loginStyle.normalText}>
+        <Text style={loginStyle.normalText, { paddingTop: 50, paddingBottom: 10 }}>
           Back to&nbsp;
           <TouchableWithoutFeedback
             onPress={() => navigation.navigate('Login')}>
-            <Text style={loginStyle.linkText}>Login</Text>
+            <Text style={[loginStyle.linkText, { fontSize: 14, color: '#3552C6' }]}>Login</Text>
           </TouchableWithoutFeedback>
         </Text>
         <TouchableOpacity

@@ -89,7 +89,7 @@ export default {
     width: '85%',
     marginHorizontal: '7.5%',
     marginTop: 10,
-    borderWidth: 1,
+    borderWidth: 0.8,
     paddingVertical: 10,
     borderColor: '#8D8D8D',
     backgroundColor: 'white',

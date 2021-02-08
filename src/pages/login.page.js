@@ -127,6 +127,7 @@ const Login = ({navigation}) => {
               <View style={styles.loginSettingWrapper}>
                 <View style={styles.loginSetting}>
                   <CheckBox
+                    lineWidth={0.1}
                     disabled={false}
                     value={rememberMe}
                     onCheckColor="#002DBB"
