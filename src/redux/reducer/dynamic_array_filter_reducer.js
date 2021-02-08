@@ -69,7 +69,7 @@ const dynamicFilter = [
     cellRowType: 'TableCellText',
     config: {
       label: 'Detected IMEI',
-      width: 130,
+      width: 200,
       isTouchable: true,
     },
     shown: true,
@@ -94,7 +94,7 @@ const dynamicFilter = [
       width: 280,
       isTouchable: true,
     },
-    shown: false,
+    shown: true,
     sorted: null,
   },
   {
@@ -112,7 +112,7 @@ const dynamicFilter = [
       width: 120,
       isTouchable: true,
     },
-    shown: false,
+    shown: true,
   },
   {
     formId: 'label-hard-code',
@@ -129,7 +129,7 @@ const dynamicFilter = [
       width: 120,
       isTouchable: true,
     },
-    shown: false,
+    shown: true,
     sorted: null,
   },
   {
@@ -150,7 +150,7 @@ const dynamicFilter = [
       width: 150,
       isTouchable: true,
     },
-    shown: false,
+    shown: true,
     sorted: null,
   },
   {
@@ -168,7 +168,7 @@ const dynamicFilter = [
       width: 130,
       isTouchable: true,
     },
-    shown: false,
+    shown: true,
     sorted: null,
   },
   {
@@ -189,7 +189,7 @@ const dynamicFilter = [
       width: 150,
       isTouchable: true,
     },
-    shown: false,
+    shown: true,
     sorted: null,
   },
   {
@@ -210,7 +210,7 @@ const dynamicFilter = [
       width: 280,
       isTouchable: true,
     },
-    shown: false,
+    shown: true,
     sorted: null,
   },
   {
@@ -228,7 +228,7 @@ const dynamicFilter = [
       width: 200,
       isTouchable: true,
     },
-    shown: false,
+    shown: true,
     sorted: null,
   },
   {
@@ -248,7 +248,7 @@ const dynamicFilter = [
       isTouchable: true,
       superType: 'DATE',
     },
-    shown: false,
+    shown: true,
     sorted: null,
   },
   {
@@ -268,7 +268,7 @@ const dynamicFilter = [
       isTouchable: true,
       superType: 'DATE',
     },
-    shown: false,
+    shown: true,
     sorted: null,
   },
   {
@@ -323,7 +323,7 @@ const dynamicFilter = [
       isTouchable: true,
       superType: 'BYTE',
     },
-    shown: false,
+    shown: true,
     sorted: null,
   },
   {
@@ -341,7 +341,7 @@ const dynamicFilter = [
       width: 150,
       isTouchable: true,
     },
-    shown: false,
+    shown: true,
     sorted: null,
   },
 ];

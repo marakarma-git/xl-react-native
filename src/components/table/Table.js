@@ -1,5 +1,5 @@
 import React, {useState, useRef} from 'react';
-import {View, ScrollView} from 'react-native';
+import {View, ScrollView, ActivityIndicator, Text} from 'react-native';
 import PropTypes from 'prop-types';
 import TableCell from './tableCell';
 const Table = (props) => {
@@ -10,6 +10,7 @@ const Table = (props) => {
     onPressCell,
     onPressCheckHeader,
     onPressCheckCell,
+    loading,
   } = props || {};
   const headerScrollView = useRef(ScrollView);
   const rowsScrollView = useRef(ScrollView);
@@ -57,6 +58,7 @@ const Table = (props) => {
                   if (index > 0 && shown) {
                     return (
                       <TableCell
+                        key={index}
                         type={cellType}
                         onPress={() => onPressHeader(dataHeader[0])}
                         onChangeCheck={() => onPressCheckHeader(dataHeader[0])}
@@ -72,74 +74,109 @@ const Table = (props) => {
         </ScrollView>
       </View>
       <View style={{flex: 1}}>
-        <ScrollView>
-          <View style={{flexDirection: 'row'}}>
-            <View
-              style={{
-                elevation: borderWidth ? 5 : 0,
-                borderRightWidth: borderWidth ? 1 : 0,
-                borderColor: 'white',
-              }}>
-              {dataTable &&
-                dataTable.map((value) => {
-                  return (
-                    <TableCell
-                      type={'TableCellCheckBox'}
-                      onPress={() => onPressCell(value[0])}
-                      onChangeCheck={() => onPressCheckCell(value[0])}
-                      {...value[0]}
-                    />
-                  );
-                })}
-            </View>
-            <ScrollView
-              horizontal={true}
-              scrollEventThrottle={16}
-              ref={rowsScrollView}
-              showsHorizontalScrollIndicator={false}
-              onScroll={(event) => {
-                const offsetX = event.nativeEvent.contentOffset.x;
-                if (offsetX >= 10) {
-                  setBorderWidth(true);
-                }
-                if (offsetX < 10) {
-                  setBorderWidth(false);
-                }
-                if (!rightIsScrolling) {
-                  setHeaderIsScrolling(true);
-                  headerScrollView.current.scrollTo({x: offsetX});
-                }
-                setRightIsScrolling(false);
-              }}>
-              <View style={{flexDirection: 'column'}}>
+        {dataTable.length > 0 ? (
+          <ScrollView>
+            <View style={{flexDirection: 'row'}}>
+              <View
+                style={{
+                  elevation: borderWidth ? 5 : 0,
+                  borderRightWidth: borderWidth ? 1 : 0,
+                  borderColor: 'white',
+                }}>
                 {dataTable &&
                   dataTable.map((value, index) => {
+                    const {dataCell, is_checked_root} = value || {};
                     return (
-                      <View style={{flexDirection: 'row'}}>
-                        {value.map((subValue, index2) => {
-                          const {cellType} = subValue || {};
-                          if (index2 > 0) {
-                            return (
-                              <TableCell
-                                key={index2 + index}
-                                type={cellType}
-                                onPress={() => onPressCell(subValue)}
-                                onChangeCheck={() => onPressCheckCell(subValue)}
-                                {...subValue}
-                              />
-                            );
-                          } else {
-                            return null;
-                          }
-                        })}
-                      </View>
+                      <TableCell
+                        value={is_checked_root}
+                        key={index}
+                        type={'TableCellCheckBox'}
+                        onPress={() => onPressCell(dataCell[0])}
+                        onChangeCheck={() => onPressCheckCell(dataCell[0])}
+                        {...dataCell[0]}
+                      />
                     );
                   })}
               </View>
-            </ScrollView>
-          </View>
-        </ScrollView>
+              <ScrollView
+                horizontal={true}
+                scrollEventThrottle={16}
+                ref={rowsScrollView}
+                showsHorizontalScrollIndicator={false}
+                onScroll={(event) => {
+                  const offsetX = event.nativeEvent.contentOffset.x;
+                  if (!rightIsScrolling) {
+                    setHeaderIsScrolling(true);
+                    headerScrollView.current.scrollTo({x: offsetX});
+                  }
+                  setRightIsScrolling(false);
+                  if (offsetX >= 10) {
+                    setBorderWidth(true);
+                  }
+                  if (offsetX < 10) {
+                    setBorderWidth(false);
+                  }
+                }}>
+                <View style={{flexDirection: 'column'}}>
+                  {dataTable &&
+                    dataTable.map((value, index) => {
+                      const {dataCell} = value || [];
+                      return (
+                        <View style={{flexDirection: 'row'}} key={index}>
+                          {dataCell.map((subValue, index2) => {
+                            const {cellType} = subValue || {};
+                            if (index2 > 0) {
+                              return (
+                                <TableCell
+                                  key={index2}
+                                  type={cellType}
+                                  onPress={() => onPressCell(subValue)}
+                                  onChangeCheck={() =>
+                                    onPressCheckCell(subValue)
+                                  }
+                                  {...subValue}
+                                />
+                              );
+                            } else {
+                              return null;
+                            }
+                          })}
+                        </View>
+                      );
+                    })}
+                </View>
+              </ScrollView>
+            </View>
+          </ScrollView>
+        ) : (
+          <Text
+            style={{
+              flex: 1,
+              textAlignVertical: 'center',
+              textAlign: 'center',
+              fontWeight: 'bold',
+              fontSize: 16,
+            }}>
+            There is no data, to show
+          </Text>
+        )}
       </View>
+      {loading && (
+        <View
+          style={{
+            flex: 1,
+            position: 'absolute',
+            top: 0,
+            bottom: 0,
+            left: 0,
+            right: 0,
+            backgroundColor: 'rgba(0,0,0,0.3)',
+            justifyContent: 'flex-end',
+            alignItems: 'flex-end',
+          }}>
+          <ActivityIndicator color={'white'} size={'large'} />
+        </View>
+      )}
     </View>
   );
 };
@@ -150,6 +187,7 @@ Table.propTypes = {
   onPressCell: PropTypes.func,
   onPressCheckHeader: PropTypes.func,
   onPressCheckCell: PropTypes.func,
+  loading: PropTypes.bool,
 };
 Table.defaultProps = {
   dataHeader: [],

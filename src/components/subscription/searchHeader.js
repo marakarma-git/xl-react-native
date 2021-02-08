@@ -1,5 +1,11 @@
 import React, {useState} from 'react';
-import {View, TextInput, TouchableOpacity, Text} from 'react-native';
+import {
+  View,
+  TextInput,
+  TouchableOpacity,
+  Text,
+  ActivityIndicator,
+} from 'react-native';
 import PropTypes from 'prop-types';
 import Container from './container';
 import {subscriptionStyle} from '../../style';
@@ -13,7 +19,7 @@ import {useSelector} from 'react-redux';
 const SearchHeader = (props) => {
   const navigation = useNavigation();
   const [showMenu, setShowMenu] = useState(false);
-  const {value, onChangeText} = props || {};
+  const {value, onChangeText, loading} = props || {};
   const {array_filter} = useSelector(
     (state) => state.dynamic_array_filter_reducer,
   );
@@ -34,18 +40,26 @@ const SearchHeader = (props) => {
             placeholder={'Search with IMSI, MSISDN, ICCID, Detected IMEI'}
           />
         </View>
-        <TouchableOpacity
-          onPress={() => navigation.navigate('SubscriptionFilter')}>
-          <MaterialCommunityIcon
-            name={'filter'}
-            size={26}
-            color={colors.gray}
-          />
-        </TouchableOpacity>
+        {loading ? (
+          <ActivityIndicator size={26} color={colors.button_color_one} />
+        ) : (
+          <TouchableOpacity
+            onPress={() => navigation.navigate('SubscriptionFilter')}>
+            <MaterialCommunityIcon
+              name={'filter'}
+              size={26}
+              color={colors.gray}
+            />
+          </TouchableOpacity>
+        )}
         <View style={subscriptionStyle.spacer} />
-        <TouchableOpacity onPress={() => setShowMenu(true)}>
-          <Ionicons name={'settings-sharp'} size={22} color={colors.gray} />
-        </TouchableOpacity>
+        {loading ? (
+          <ActivityIndicator size={26} color={colors.button_color_one} />
+        ) : (
+          <TouchableOpacity onPress={() => setShowMenu(true)}>
+            <Ionicons name={'settings-sharp'} size={22} color={colors.gray} />
+          </TouchableOpacity>
+        )}
         {showMenu && (
           <ModalMenuPicker
             title={'Column'}
@@ -60,5 +74,6 @@ const SearchHeader = (props) => {
 SearchHeader.propTypes = {
   value: PropTypes.string,
   onChangeText: PropTypes.func,
+  loading: PropTypes.bool,
 };
 export default SearchHeader;

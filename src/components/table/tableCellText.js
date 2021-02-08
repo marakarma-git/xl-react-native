@@ -11,11 +11,13 @@ const TableCellText = (props) => {
     isTouchable,
     fontColor,
     backgroundColor,
+    key,
     superType,
   } = config || {};
   const TouchView = isTouchable ? TouchableOpacity : View;
   return (
     <View
+      key={key}
       style={{
         width: width || defaultWidthCell,
         height: height || defaultHeightCell,

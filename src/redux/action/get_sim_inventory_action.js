@@ -1,5 +1,7 @@
 import reduxString from '../reduxString';
 import {colors} from '../../constant/color';
+import axios from 'axios';
+import {base_url} from '../../constant/connection';
 
 const getSimInventoryLoading = () => {
   return {
@@ -56,7 +58,6 @@ const dataMatcherArray2D = (listData = [], headerData = []) => {
       const {width, superType} = config || {};
       if (shown) {
         const generateObject = {
-          is_checked_root: false,
           cellType: subItem.cellRowType,
           config: {
             width: width,
@@ -64,9 +65,7 @@ const dataMatcherArray2D = (listData = [], headerData = []) => {
             label: item[`${api_id}`],
             backgroundColor: index % 2 ? colors.gray_table : 'white',
           },
-          item: {
-            ...item,
-          },
+          item: {...item},
           subItem: {
             ...rest,
           },
@@ -76,7 +75,10 @@ const dataMatcherArray2D = (listData = [], headerData = []) => {
         return null;
       }
     });
-    generated.push(subGenerated);
+    generated.push({
+      is_checked_root: index % 2 === 0,
+      dataCell: subGenerated,
+    });
   });
   return generated;
 };
@@ -92,9 +94,44 @@ const reGenerateHideNShow = () => {
     dispatch(setSimInventoryTable(generated));
   };
 };
-const callSimInventory = ({page}) => {
+const callSimInventory = (data) => {
+  const {page} = data || {};
   const getPage = page || 0;
-  return (dispatch, getState) => {};
+  return (dispatch, getState) => {
+    dispatch(getSimInventoryLoading());
+    const {auth_reducer} = getState();
+    const {dynamic_array_filter_reducer} = getState();
+    const {access_token} = auth_reducer.data || {};
+    const {array_filter} = dynamic_array_filter_reducer || {};
+    axios
+      .get(`${base_url}/dcp/sim/getSimInventory?page=${getPage}&size=20`, {
+        headers: {
+          Authorization: `Bearer ${access_token}`,
+        },
+      })
+      .then(({data}) => {
+        const {result, statusCode, totalPage, number} = data || {};
+        const {content} = result || {};
+        if (statusCode === 0) {
+          const generated = dataMatcherArray2D(content, array_filter);
+          dispatch(
+            getSimInventorySuccess({
+              dataSimInventory: data,
+              dataSimInventoryTable: generated,
+              currentPage: number,
+              totalPage: totalPage,
+            }),
+          );
+        } else {
+          dispatch(getSimInventoryFailed(data));
+        }
+      })
+      .catch((e) =>
+        console.log(
+          'error_api_call_sim_inventory: ' + JSON.stringify(e, null, 2),
+        ),
+      );
+  };
 };
 export default callSimInventory;
 export {reGenerateHideNShow, dataMatcherArray2D};

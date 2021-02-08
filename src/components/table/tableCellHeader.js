@@ -3,10 +3,11 @@ import PropTypes from 'prop-types';
 import {Text, View} from 'react-native';
 import {defaultHeightCell, defaultWidthCell} from '../../constant/config';
 const TableCellHeader = (props) => {
-  const {config} = props || {};
+  const {config, key} = props || {};
   const {label, width, height, fontColor, backgroundColor} = config || {};
   return (
     <View
+      key={key}
       style={{
         width: width || defaultWidthCell,
         height: height || defaultHeightCell,
