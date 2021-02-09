@@ -9,10 +9,11 @@ import PropTypes from 'prop-types';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import {colors} from '../../constant/color';
 const TableCellViewMap = (props) => {
-  const {config, onPress, otherInformation} = props || {};
+  const {config, onPress, otherInformation, key} = props || {};
   const {width, height, fontColor, backgroundColor} = config || {};
   return (
     <View
+      key={key}
       style={{
         width: width || defaultWidthCell,
         height: height || defaultHeightCell,

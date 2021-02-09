@@ -10,6 +10,7 @@ import lod from 'lodash';
 import {base_url} from '../../constant/connection';
 import {authLogout} from './auth_action';
 import {CommonActions} from '@react-navigation/native';
+import callSimInventory from './get_sim_inventory_action';
 
 const getCustomLabelLoading = () => {
   return {

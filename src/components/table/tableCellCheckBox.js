@@ -4,12 +4,14 @@ import {defaultHeightCell, defaultWidthCell} from '../../constant/config';
 import CustomCheckBox from '../customCheckBox';
 import PropTypes from 'prop-types';
 const TableCellCheckBox = (props) => {
-  const {config, onPress, onChangeCheck, otherInformation, value} = props || {};
+  const {config, onPress, onChangeCheck, otherInformation, value, key} =
+    props || {};
   const {label, width, height, isTouchable, fontColor, backgroundColor} =
     config || {};
   const TouchView = isTouchable ? TouchableOpacity : View;
   return (
     <View
+      key={key}
       style={{
         width: width || defaultWidthCell,
         height: height || defaultHeightCell,

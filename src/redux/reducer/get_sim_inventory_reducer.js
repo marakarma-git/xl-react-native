@@ -1,3 +1,4 @@
+import lod from 'lodash';
 import reduxString from '../reduxString';
 
 const initialState = {
@@ -49,6 +50,36 @@ const get_sim_inventory_reducer = (state = initialState, action) => {
       return {
         ...state,
         data_sim_inventory_table: [],
+      };
+    case reduxString.CHANGE_CHECK_SIM_INVENTORY:
+      let newArr = lod.cloneDeep(state.data_sim_inventory_table);
+      newArr[action.index].is_checked_root = !newArr[action.index]
+        .is_checked_root;
+      return {
+        ...state,
+        data_sim_inventory_table: newArr,
+      };
+    case reduxString.CHANGE_CHECK_SIM_INVENTORY_ALL_TRUE:
+      let containerTrue = [];
+      let copyInventoryTrue = lod.cloneDeep(state.data_sim_inventory_table);
+      copyInventoryTrue.map((value) => {
+        value.is_checked_root = true;
+        containerTrue.push(value);
+      });
+      return {
+        ...state,
+        data_sim_inventory_table: containerTrue,
+      };
+    case reduxString.CHANGE_CHECK_SIM_INVENTORY_ALL_FALSE:
+      let containerFalse = [];
+      let copyInventoryFalse = lod.cloneDeep(state.data_sim_inventory_table);
+      copyInventoryFalse.map((value) => {
+        value.is_checked_root = false;
+        containerFalse.push(value);
+      });
+      return {
+        ...state,
+        data_sim_inventory_table: containerFalse,
       };
     default:
       return state;

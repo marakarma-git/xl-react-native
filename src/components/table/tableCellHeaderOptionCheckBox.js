@@ -8,7 +8,7 @@ import PropTypes from 'prop-types';
 import ModalSearchPicker from '../modal/ModalSearchPicker';
 
 const TableCellHeaderOptionCheckBox = (props) => {
-  const {config, onPress, onChangeCheck, valueCheck, sorted, dataOption} =
+  const {config, onPress, onChangeCheck, valueCheck, sorted, dataOption, key} =
     props || {};
   const {label, width, height, isTouchable, fontColor, backgroundColor} =
     config || {};
@@ -16,6 +16,7 @@ const TableCellHeaderOptionCheckBox = (props) => {
   const [viewModal, setViewModal] = useState(false);
   return (
     <View
+      key={key}
       style={{
         width: width || defaultWidthCell,
         height: height || defaultHeightCell,
@@ -82,6 +83,7 @@ const TableCellHeaderOptionCheckBox = (props) => {
       {viewModal && (
         <ModalSearchPicker
           title={'Select Attribute'}
+          removeSearch={true}
           data={dataOption}
           onChange={(value) => {
             onChangeCheck(value);

@@ -4,7 +4,7 @@ import {Text, TouchableOpacity, View} from 'react-native';
 import {defaultHeightCell, defaultWidthCell} from '../../constant/config';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 const TableCellStatus = (props) => {
-  const {config, onPress, otherInformation} = props || {};
+  const {config, onPress, otherInformation, key} = props || {};
   const {
     label,
     width,
@@ -17,6 +17,7 @@ const TableCellStatus = (props) => {
   const TouchView = isTouchable ? TouchableOpacity : View;
   return (
     <View
+      key={key}
       style={{
         width: width || defaultWidthCell,
         height: height || defaultHeightCell,

@@ -34,22 +34,27 @@ const ModalMenuPicker = (props) => {
           <View style={[subscriptionStyle.containerWrap]}>
             {localData.map((value, index) => {
               const {shown, config} = value || {};
-              const {label} = config || {};
-              return (
-                <TouchableOpacity
-                  style={{
-                    width: device_width * 0.38,
-                    marginBottom: 12,
-                    flexDirection: 'row',
-                  }}>
-                  <CustomCheckBox
-                    style={{marginRight: 12}}
-                    value={shown}
-                    onPress={() => onPress(index)}
-                  />
-                  <Text style={{flex: 1}}>{label}</Text>
-                </TouchableOpacity>
-              );
+              const {label, doNotShowOnFilter} = config || {};
+              if (!doNotShowOnFilter) {
+                return (
+                  <TouchableOpacity
+                    key={`${index}${label}`}
+                    style={{
+                      width: device_width * 0.38,
+                      marginBottom: 12,
+                      flexDirection: 'row',
+                    }}>
+                    <CustomCheckBox
+                      style={{marginRight: 12}}
+                      value={shown}
+                      onPress={() => onPress(index)}
+                    />
+                    <Text style={{flex: 1}}>{label}</Text>
+                  </TouchableOpacity>
+                );
+              } else {
+                return null;
+              }
             })}
           </View>
         </ScrollView>
