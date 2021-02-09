@@ -20,8 +20,12 @@ export default {
     height: device_width * 0.2,
     resizeMode: 'contain'
   },
+  imageSizeLandscape: {
+    width: device_width * 0.4,
+    height: device_width * 0.15,
+    resizeMode: 'contain'
+  },
   iotImage: {
-    width: '100%',
     resizeMode: 'contain'
   },
   textInputContainer: {
@@ -33,6 +37,16 @@ export default {
     backgroundColor: 'white',
     paddingLeft: 10,
     marginVertical: 10,
+    color: '#707070',
+  },
+  textInputContainerLandscape: {
+    height: 35,
+    fontSize: 10,
+    // borderRadius: border_radius,
+    borderWidth: 1,
+    borderColor: '#A8A8A8',
+    backgroundColor: 'white',
+    paddingLeft: 10,
     color: '#707070',
   },
   loginButton: {
@@ -74,7 +88,11 @@ export default {
   },
   keyboardContainer: {
     height: device_height - 100,
-    backgroundColor: 'transparent'
+    backgroundColor: 'transparent',
+  },
+  keyboardContainerLandscape: {
+    height: device_width + 30,
+    backgroundColor: 'transparent',
   },
   footerTitleVersion: {
     position: 'absolute',
@@ -89,7 +107,7 @@ export default {
     width: '85%',
     marginHorizontal: '7.5%',
     marginTop: 10,
-    borderWidth: 1,
+    borderWidth: 0.8,
     paddingVertical: 10,
     borderColor: '#8D8D8D',
     backgroundColor: 'white',
@@ -111,6 +129,13 @@ export default {
     justifyContent: 'center',
     alignItems: 'center',
     marginVertical: 10
+  },
+  buttonBlockLandscape: {
+    width: '90%',
+    height: 35,
+    marginVertical: 5,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   buttonText: {
     fontSize: 16,

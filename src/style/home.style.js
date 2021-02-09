@@ -154,5 +154,11 @@ export default {
     paddingLeft: 10,
     marginVertical: 10,
     color: '#707070',
+  },
+  carouselWrapper: {
+    height: 350,
+    backgroundColor: '#002DBB',
+    alignItems: 'center',
+    justifyContent: 'center',
   }
 };

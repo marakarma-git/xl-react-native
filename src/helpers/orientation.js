@@ -1,4 +1,7 @@
-import {Dimensions} from 'react-native';
+import {Dimensions, PixelRatio} from 'react-native';
+
+  // Font Scaling
+const { width: SCREEN_WIDTH } = Dimensions.get('window');
 
 class Orientation {
   /**
