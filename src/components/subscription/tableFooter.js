@@ -12,8 +12,8 @@ const initialPerPage = [
     value: 20,
   },
   {
-    label: 60,
-    value: 60,
+    label: 40,
+    value: 40,
   },
   {
     label: 60,
@@ -100,10 +100,11 @@ const TableFooter = (props) => {
       {showPerPage && (
         <ModalSearchPicker
           data={initialPerPage}
+          value={perPageValue}
           removeSearch={true}
           title={'Per Page'}
-          onChange={() => {
-            onChangePerPage();
+          onChange={(e) => {
+            onChangePerPage(e);
             setShowPerPage(false);
           }}
           onClose={() => setShowPerPage(false)}

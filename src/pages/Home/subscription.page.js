@@ -1,12 +1,11 @@
 import React, {useEffect, useState} from 'react';
 import {useDispatch, useSelector} from 'react-redux';
-import {TouchableOpacity, View, Text} from 'react-native';
+import {View} from 'react-native';
 import {useNavigation} from '@react-navigation/native';
 import {subscriptionStyle} from '../../style';
 import Table from '../../components/table/Table';
 import TableFooter from '../../components/subscription/tableFooter';
 import SearchHeader from '../../components/subscription/searchHeader';
-import AppliedFilter from '../../components/subscription/appliedFilter';
 import {HeaderContainer, OverlayBackground} from '../../components/index';
 import {getCustomLabel} from '../../redux/action/get_custom_label_action';
 import FilterActionLabel from '../../components/subscription/filterActionLabel';
@@ -16,36 +15,55 @@ import callSimInventory, {
   changeCheckSimInventoryAllFalse,
   dataMatcherArray2D,
   setSimInventoryTable,
-  getSimInventoryLoading,
-  getSimInventoryLoadingFalse,
 } from '../../redux/action/get_sim_inventory_action';
-import {updateDataFilter} from '../../redux/action/dynamic_array_filter_action';
+import {
+  updateDataFilter,
+  updateDataSearchText,
+} from '../../redux/action/dynamic_array_filter_action';
 import ModalMenuPicker from '../../components/modal/ModalMenuPicker';
 
 const Subscription = () => {
   const dispatch = useDispatch();
   const navigation = useNavigation();
+  const [firstRender, setFirstRender] = useState(true);
   const [showMenu, setShowMenu] = useState(false);
-  const {array_filter, loading_array_filter} = useSelector(
+  const {array_filter, loading_array_filter, searchText} = useSelector(
     (state) => state.dynamic_array_filter_reducer,
   );
-  const {loading, data_sim_inventory_table, data_sim_inventory} = useSelector(
-    (state) => state.get_sim_inventory_reducer,
-  );
+  const {
+    loading,
+    data_sim_inventory_table,
+    data_sim_inventory,
+    current_size,
+  } = useSelector((state) => state.get_sim_inventory_reducer);
   useEffect(() => {
-    dispatch(getCustomLabel(navigation));
-    dispatch(callSimInventory());
-  }, [dispatch, navigation]);
+    const timer = setTimeout(() => {
+      if (!firstRender) {
+        dispatch(
+          callSimInventory({
+            page_value: 0,
+          }),
+        );
+      } else {
+        dispatch(getCustomLabel(navigation));
+        dispatch(callSimInventory());
+        setFirstRender(false);
+      }
+    }, 500);
+    return () => clearTimeout(timer);
+  }, [current_size, dispatch, firstRender, navigation, searchText]);
   return (
     <HeaderContainer headerTitle={'Subscription'}>
       <View style={subscriptionStyle.containerBackground}>
         <OverlayBackground />
         <SearchHeader
+          value={searchText}
+          onChangeText={(e) => dispatch(updateDataSearchText(e))}
           showMenu={showMenu}
           onClickColumn={() => setShowMenu((state) => !state)}
           loading={loading_array_filter || loading}
         />
-        <AppliedFilter data={[{type: 'abc', title: '123'}]} />
+        {/*<AppliedFilter data={[{type: 'abc', title: '123'}]} />*/}
         <FilterActionLabel />
         <Table
           dataHeader={array_filter}
@@ -66,7 +84,19 @@ const Subscription = () => {
             dispatch(changeCheckSimInventory(index))
           }
         />
-        <TableFooter totalPage={50} currentPage={2} />
+        <TableFooter
+          totalPage={50}
+          currentPage={2}
+          onChangePerPage={(e) => {
+            const {value} = e || {};
+            dispatch(
+              callSimInventory({
+                size_value: value,
+              }),
+            );
+          }}
+          perPageValue={current_size}
+        />
       </View>
       {showMenu && (
         <ModalMenuPicker

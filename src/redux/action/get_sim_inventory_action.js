@@ -2,7 +2,6 @@ import reduxString from '../reduxString';
 import {colors} from '../../constant/color';
 import axios from 'axios';
 import {base_url} from '../../constant/connection';
-
 const getSimInventoryLoading = () => {
   return {
     type: reduxString.GET_SIM_INVENTORY_LOADING,
@@ -19,18 +18,22 @@ const getSimInventoryFailed = (error) => {
     error: error,
   };
 };
-const getSimInventorySuccess = ({
-  dataSimInventory,
-  dataSimInventoryTable,
-  currentPage,
-  totalPage,
-}) => {
+const getSimInventorySuccess = (data) => {
+  console.log(JSON.stringify(data.currentPage, null, 2));
+  const {
+    dataSimInventory,
+    dataSimInventoryTable,
+    currentPage,
+    currentTotalPage,
+    currentSize,
+  } = data || {};
   return {
     type: reduxString.GET_SIM_INVENTORY_SUCCESS,
     data_sim_inventory: dataSimInventory,
     data_sim_inventory_table: dataSimInventoryTable,
-    current_page: currentPage,
-    total_page: totalPage,
+    currentPage: currentPage,
+    currentTotalPage: currentTotalPage,
+    currentSize: currentSize,
   };
 };
 const getSimInventoryReset = () => {
@@ -115,43 +118,53 @@ const reGenerateHideNShow = () => {
     dispatch(setSimInventoryTable(generated));
   };
 };
-const callSimInventory = (data) => {
-  const {page} = data || {};
-  const getPage = page || 0;
-  return (dispatch, getState) => {
+const callSimInventory = (paginate) => {
+  return async (dispatch, getState) => {
+    const {current_page, current_size} = await getState()
+      .get_sim_inventory_reducer;
+    const {page_value, size_value} = paginate || {};
     dispatch(getSimInventoryLoading());
-    const {auth_reducer} = getState();
-    const {dynamic_array_filter_reducer} = getState();
-    const {access_token} = auth_reducer.data || {};
-    const {array_filter} = dynamic_array_filter_reducer || {};
+    const {data} = await getState().auth_reducer;
+    const {array_filter, searchText} = await getState()
+      .dynamic_array_filter_reducer;
+    const {filterParams} = await getState().query_params_filter_reducer;
+    const {access_token} = data || {};
+    const getPage = page_value || current_page;
+    const getSize = size_value || current_size;
     axios
-      .get(`${base_url}/dcp/sim/getSimInventory?page=${getPage}&size=20`, {
-        headers: {
-          Authorization: `Bearer ${access_token}`,
+      .get(
+        `${base_url}/dcp/sim/getSimInventory?page=${getPage}&size=${getSize}&keyword=${searchText}${filterParams}`,
+        {
+          headers: {
+            Authorization: `Bearer ${access_token}`,
+          },
         },
-      })
+      )
       .then(({data}) => {
-        const {result, statusCode, totalPage, number} = data || {};
-        const {content} = result || {};
+        const {result, statusCode} = data || {};
+        const {content, pageable, totalPages, size} = result || {};
+        const {pageNumber} = pageable || {};
         if (statusCode === 0) {
           const generated = dataMatcherArray2D(content, array_filter);
           dispatch(
             getSimInventorySuccess({
               dataSimInventory: data,
               dataSimInventoryTable: generated,
-              currentPage: number,
-              totalPage: totalPage,
+              currentPage: pageNumber,
+              currentTotalPage: totalPages,
+              currentSize: size,
             }),
           );
         } else {
           dispatch(getSimInventoryFailed(data));
         }
       })
-      .catch((e) =>
+      .catch((e) => {
         console.log(
           'error_api_call_sim_inventory: ' + JSON.stringify(e, null, 2),
         ),
-      );
+          dispatch(getSimInventoryLoadingFalse());
+      });
   };
 };
 export default callSimInventory;

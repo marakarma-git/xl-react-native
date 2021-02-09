@@ -37,7 +37,8 @@ const dynamicFilter = [
     ],
     shown: true,
     sorted: null,
-    valueCheck: false,
+    valueCheck: true,
+    valueOption: null,
   },
   {
     formId: 'iccid-hard-code',

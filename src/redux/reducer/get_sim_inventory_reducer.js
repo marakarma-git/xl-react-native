@@ -7,7 +7,8 @@ const initialState = {
   data_sim_inventory: [],
   data_sim_inventory_table: [],
   current_page: 0,
-  total_page: 0,
+  current_size: 20,
+  current_total_page: 0,
 };
 const get_sim_inventory_reducer = (state = initialState, action) => {
   switch (action.type) {
@@ -17,6 +18,11 @@ const get_sim_inventory_reducer = (state = initialState, action) => {
         loading: true,
         error: '',
       };
+    case reduxString.GET_SIM_INVENTORY_LOADING_FALSE:
+      return {
+        ...state,
+        loading: false,
+      };
     case reduxString.GET_SIM_INVENTORY_FAILED:
       return {
         ...state,
@@ -25,12 +31,14 @@ const get_sim_inventory_reducer = (state = initialState, action) => {
       };
     case reduxString.GET_SIM_INVENTORY_SUCCESS:
       return {
+        ...state,
         loading: false,
         error: '',
         data_sim_inventory: action.data_sim_inventory,
         data_sim_inventory_table: action.data_sim_inventory_table,
         current_page: action.currentPage,
-        total_page: action.total_page,
+        current_total_page: action.currentTotalPage,
+        current_size: action.currentSize,
       };
     case reduxString.GET_SIM_INVENTORY_RESET:
       return state;

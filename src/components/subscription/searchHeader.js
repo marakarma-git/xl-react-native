@@ -19,7 +19,11 @@ const SearchHeader = (props) => {
   return (
     <Container style={subscriptionStyle.containerMargin}>
       <View style={subscriptionStyle.containerTextInput2}>
-        <View style={subscriptionStyle.containerTextInput}>
+        <View
+          style={[
+            subscriptionStyle.containerTextInput,
+            {backgroundColor: loading ? colors.gray_button : null},
+          ]}>
           <FontAwesome
             style={{marginHorizontal: 8}}
             name={'search'}
@@ -28,6 +32,7 @@ const SearchHeader = (props) => {
           />
           <TextInput
             value={value}
+            editable={!loading}
             onChangeText={onChangeText}
             style={{flex: 1, fontSize: 11}}
             placeholder={'Search with IMSI, MSISDN, ICCID, Detected IMEI'}
