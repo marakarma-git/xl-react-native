@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect, useCallback} from 'react';
 import {
   View,
   ScrollView,
@@ -11,6 +11,7 @@ import {
   TouchableOpacity,
   ActivityIndicator,
   Linking,
+  Dimensions
 } from 'react-native';
 import lod from 'lodash';
 import styles from '../style/login.style';
@@ -19,6 +20,7 @@ import {useDispatch, useSelector} from 'react-redux';
 import {loginBrand} from '../assets/images/index';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import CheckBox from '@react-native-community/checkbox';
+import Orientation from '../helpers/orientation';
 const busolLogo = require('../assets/images/logo/xl-busol-inverted.png');
 
 const Login = ({navigation}) => {
@@ -28,10 +30,17 @@ const Login = ({navigation}) => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [errorText, setErrorText] = useState(null);
+  const [orientation, setOrientation] = useState('potrait');
   const dispatch = useDispatch();
   const {data, error, isLoggedIn, alreadyRequest} = useSelector(
     (state) => state.auth_reducer,
   );
+
+  const detectOrientation = useCallback(() => {
+    Dimensions.addEventListener('change', () => {
+        setOrientation(Orientation.isPortrait() ? 'potrait' : 'landscape');
+    });
+  }, [Dimensions]);
 
   useEffect(() => {
     if (isLoggedIn) {
@@ -50,6 +59,9 @@ const Login = ({navigation}) => {
         errorHandler(error);
       }
     }
+
+    detectOrientation();
+
   }, [data, error, isLoggedIn]);
 
   const onSubmit = () => {
@@ -86,19 +98,33 @@ const Login = ({navigation}) => {
   return (
     <ScrollView style={styles.container}>
       <KeyboardAvoidingView
-        style={styles.keyboardContainer}
+        style={orientation === 'landscape' ? styles.keyboardContainerLandscape : styles.keyboardContainer}
         behavior={'padding'}>
         <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-          <View style={{flex: 1, justifyContent: 'center'}}>
+          <View style={[
+            {flex: 1},
+            orientation === 'potrait' 
+            ? { justifyContent: 'center' }
+            : { marginTop: 10 }
+            ]}>
             <View style={styles.imageContainer}>
-              <Image style={styles.imageSize} source={busolLogo} />
+              <Image resizeMode="contain" style={
+                  orientation === 'landscape'
+                  ? styles.imageSizeLandscape
+                  : styles.imageSize
+                } 
+                source={busolLogo} />
             </View>
-            <View style={styles.loginContainer}>
+            <View style={[styles.loginContainer, orientation === 'landscape' && { width: '48%', marginHorizontal: '26%' }]}>
               <View style={styles.loginContainerHeader}>
-                <Image source={loginBrand} style={styles.iotImage} />
+                <Image source={loginBrand} resizeMode="contain" style={
+                  orientation === 'landscape'
+                  ? { width: '80%' }
+                  : { width: '100%' }
+                } />
               </View>
               {errorText && (
-                <Text style={[styles.errorText, {paddingBottom: 10}]}>
+                <Text style={[styles.errorText, {paddingBottom: 5, fontSize: orientation === 'landscape' ? 12 : 14}]}>
                   {errorText}
                 </Text>
               )}
@@ -108,7 +134,11 @@ const Login = ({navigation}) => {
                   editable={!localLoading}
                   placeholder="Username"
                   placeholderColor="#c4c3cb"
-                  style={styles.textInputContainer}
+                  style={
+                    orientation === 'landscape'
+                    ? styles.textInputContainerLandscape
+                    : styles.textInputContainer
+                  }
                   onChangeText={(e) => setUsername(e)}
                 />
               </View>
@@ -119,7 +149,11 @@ const Login = ({navigation}) => {
                   placeholder="Password"
                   placeholderColor="#c4c3cb"
                   secureTextEntry
-                  style={styles.textInputContainer}
+                  style={
+                    orientation === 'landscape'
+                    ? styles.textInputContainerLandscape
+                    : styles.textInputContainer
+                  }
                   onChangeText={(e) => setPassword(e)}
                   onSubmitEditing={() => onSubmit()}
                 />
@@ -161,7 +195,7 @@ const Login = ({navigation}) => {
                 disabled={localLoading}
                 onPress={onSubmit}
                 style={[
-                  styles.buttonBlock,
+                  orientation === 'landscape' ? styles.buttonBlockLandscape : styles.buttonBlock,
                   {backgroundColor: localLoading ? '#949494' : '#002DBB'},
                 ]}>
                 <Text style={styles.buttonText}>
@@ -204,8 +238,8 @@ const Login = ({navigation}) => {
           </View>
         </TouchableWithoutFeedback>
       </KeyboardAvoidingView>
-      <View style={styles.footer}>
-        <Text style={{color: '#707070', fontSize: 12, bottom: 0}}>
+      <View style={styles.footer, { alignItems: 'center' }}>
+        <Text style={{color: '#707070', fontSize: 12, bottom: orientation === 'potrait' ? 0 : 5}}>
           &copy; {`${year} PT. XL Axiata Tbk. All Right Reserved `}
         </Text>
       </View>
