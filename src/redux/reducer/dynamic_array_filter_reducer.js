@@ -36,7 +36,6 @@ const dynamicFilter = [
       },
     ],
     shown: true,
-    sorted: null,
     valueCheck: true,
     valueOption: null,
   },
@@ -56,7 +55,6 @@ const dynamicFilter = [
       isTouchable: true,
     },
     shown: true,
-    sorted: null,
   },
   {
     formId: 'detected-imei-hard-code',
@@ -75,7 +73,6 @@ const dynamicFilter = [
       isTouchable: true,
     },
     shown: true,
-    sorted: null,
   },
   {
     formId: 'enterprise-hard-code',
@@ -97,7 +94,6 @@ const dynamicFilter = [
       isTouchable: true,
     },
     shown: true,
-    sorted: null,
   },
   {
     formId: 'fixed-ip-hard-code',
@@ -132,7 +128,6 @@ const dynamicFilter = [
       isTouchable: true,
     },
     shown: true,
-    sorted: null,
   },
   {
     formId: 'state-hard-code',
@@ -153,7 +148,6 @@ const dynamicFilter = [
       isTouchable: true,
     },
     shown: true,
-    sorted: null,
   },
   {
     formId: 'apn-hard-code',
@@ -171,7 +165,6 @@ const dynamicFilter = [
       isTouchable: true,
     },
     shown: true,
-    sorted: null,
   },
   {
     formId: 'state-lock-hard-code',
@@ -192,7 +185,6 @@ const dynamicFilter = [
       isTouchable: true,
     },
     shown: true,
-    sorted: null,
   },
   {
     formId: 'subscription-package-name-hard-code',
@@ -213,7 +205,6 @@ const dynamicFilter = [
       isTouchable: true,
     },
     shown: true,
-    sorted: null,
   },
   {
     formId: 'specification-id-hard-code',
@@ -231,7 +222,6 @@ const dynamicFilter = [
       isTouchable: true,
     },
     shown: true,
-    sorted: null,
   },
   {
     formId: 'first-activation-date-hard-code',
@@ -251,7 +241,6 @@ const dynamicFilter = [
       superType: 'DATE',
     },
     shown: true,
-    sorted: null,
   },
   {
     formId: 'pbr-exit-date-hard-code',
@@ -271,7 +260,6 @@ const dynamicFilter = [
       superType: 'DATE',
     },
     shown: true,
-    sorted: null,
   },
   {
     formId: 'monthly-data-hard-code',
@@ -326,7 +314,6 @@ const dynamicFilter = [
       superType: 'BYTE',
     },
     shown: true,
-    sorted: null,
   },
   {
     formId: 'monthly-sms-hard-code',
@@ -344,7 +331,6 @@ const dynamicFilter = [
       isTouchable: true,
     },
     shown: true,
-    sorted: null,
   },
 ];
 const initialState = {

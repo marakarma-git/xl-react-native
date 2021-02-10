@@ -156,6 +156,11 @@ export default {
     color: '#707070',
   },
   carouselWrapper: {
+<<<<<<< HEAD
+    flex: 1,
+    // height: device_height - 100,
+=======
+>>>>>>> deb6c94cc8d57553847cfb7b563455489ddd7a0a
     backgroundColor: '#002DBB',
     alignItems: 'center',
     justifyContent: 'center',

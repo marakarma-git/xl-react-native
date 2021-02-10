@@ -37,12 +37,15 @@ const Login = ({navigation}) => {
   );
 
   const detectOrientation = useCallback(() => {
+    if(Orientation.getHeight() <= Orientation.getWidth()){
+      setOrientation('landscape');
+    }
     Dimensions.addEventListener('change', () => {
         setOrientation(Orientation.isPortrait() ? 'potrait' : 'landscape');
     });
   }, [Dimensions]);
 
-  useEffect(() => {
+  useEffect(() => {    
     if (isLoggedIn) {
       if (!lod.isEmpty(data)) {
         if (data.principal.mustChangePass) {
@@ -98,7 +101,10 @@ const Login = ({navigation}) => {
   return (
     <ScrollView style={styles.container}>
       <KeyboardAvoidingView
-        style={orientation === 'landscape' ? styles.keyboardContainerLandscape : styles.keyboardContainer}
+        style={orientation === 'landscape' 
+        ? { height: Orientation.getHeight() + 30, backgroundColor: 'transparent' }
+        : { height: Orientation.getHeight() - 100, backgroundColor: 'transparent' } 
+      }
         behavior={'padding'}>
         <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
           <View style={[
@@ -115,7 +121,9 @@ const Login = ({navigation}) => {
                 } 
                 source={busolLogo} />
             </View>
-            <View style={[styles.loginContainer, orientation === 'landscape' && { width: '48%', marginHorizontal: '26%' }]}>
+            <View style={[styles.loginContainer, orientation === 'landscape' 
+            ? { width: '48%', marginHorizontal: '26%' }
+            : { width: '85%', marginHorizontal: '7.5%' }]}>
               <View style={styles.loginContainerHeader}>
                 <Image source={loginBrand} resizeMode="contain" style={
                   orientation === 'landscape'
