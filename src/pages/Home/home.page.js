@@ -63,11 +63,7 @@ const LandingPage = ({navigation}) => {
         <Image
           source={{uri: item.bannerImage}}
           resizeMode="contain"
-<<<<<<< HEAD
           style={{ height: actualSizePercent(90, 'height')}}
-=======
-          style={{ height: heightProportion}}
->>>>>>> deb6c94cc8d57553847cfb7b563455489ddd7a0a
         />
       </View>
     );
@@ -108,7 +104,7 @@ const LandingPage = ({navigation}) => {
             <View 
             style={{
               ...style.carouselWrapper,
-              ...{ height: heightProportion }
+              // ...{ height: heightProportion }
               }}>
               <Carousel
                 style={{ margin: 0, padding: 0 }}
