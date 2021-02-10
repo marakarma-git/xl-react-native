@@ -3,7 +3,7 @@ import Carousel, {Pagination} from 'react-native-snap-carousel';
 import {getCarousel} from '../../redux/action/dashboard_action';
 import {callEnterpriseLogo} from '../../redux/action/enterprise_action';
 import {Card, Title} from 'react-native-paper';
-import {View, Text, ScrollView, Image, ActivityIndicator, PixelRatio} from 'react-native';
+import {View, Text, ScrollView, Image, ActivityIndicator} from 'react-native';
 import {useSelector, useDispatch} from 'react-redux';
 import {HeaderContainer, OverlayBackground} from '../../components';
 import Orientation from '../../helpers/orientation';
@@ -31,7 +31,7 @@ const LandingPage = ({navigation}) => {
     const orientationSize = type === 'width' ? Orientation.getWidth() : 350;
     const scale = (percent / 100) * orientationSize;
     return Math.round(scale);
-  }
+  };
 
   const pagination = () => {
     return (
@@ -46,7 +46,10 @@ const LandingPage = ({navigation}) => {
     );
   };
 
-  const heightProportion = actualSizePercent(orientation === 'potrait' ? 131 : 100, 'height')
+  const heightProportion = actualSizePercent(
+    orientation === 'potrait' ? 131 : 100,
+    'height',
+  );
 
   const renderItem = ({item}) => {
     return (
@@ -54,7 +57,7 @@ const LandingPage = ({navigation}) => {
         <Image
           source={{uri: item.bannerImage}}
           resizeMode="contain"
-          style={{ height: heightProportion}}
+          style={{height: heightProportion}}
         />
       </View>
     );
@@ -89,17 +92,23 @@ const LandingPage = ({navigation}) => {
             <Title>Hi! {firstName + ' ' + lastName}</Title>
           </Card.Content>
           {carouselItems.length > 0 ? (
-            <View 
-            style={{
-              ...style.carouselWrapper,
-              ...{ height: heightProportion }
+            <View
+              style={{
+                ...style.carouselWrapper,
+                ...{height: heightProportion},
               }}>
               <Carousel
-                style={{ margin: 0, padding: 0 }}
+                style={{margin: 0, padding: 0}}
                 layout={'default'}
                 data={carouselItems}
-                sliderWidth={actualSizePercent(orientation === 'potrait' ? 85 : 80, 'width')}
-                itemWidth={actualSizePercent(orientation === 'potrait' ? 85 : 80, 'width')}
+                sliderWidth={actualSizePercent(
+                  orientation === 'potrait' ? 85 : 80,
+                  'width',
+                )}
+                itemWidth={actualSizePercent(
+                  orientation === 'potrait' ? 85 : 80,
+                  'width',
+                )}
                 renderItem={renderItem}
                 onSnapToItem={(index) => setActiveIndex(index)}
                 loop

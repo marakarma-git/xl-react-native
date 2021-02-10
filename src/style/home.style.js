@@ -1,5 +1,9 @@
-import { device_width, device_height, regular_horizontal_padding } from '../constant/config';
-import { colors } from '../constant/color';
+import {
+  device_width,
+  device_height,
+  regular_horizontal_padding,
+} from '../constant/config';
+import {colors} from '../constant/color';
 import Orientation from '../helpers/orientation';
 export default {
   headerContainer: {
@@ -61,15 +65,15 @@ export default {
     padding: 0,
   },
   //don't know why but this kind of apporachment not work
-  imageCellItemPotrait: { 
-    width: Orientation.getWidth()- 50, 
-    height:Orientation.getHeight() - 350,
-    resizeMode: 'contain'
+  imageCellItemPotrait: {
+    width: Orientation.getWidth() - 50,
+    height: Orientation.getHeight() - 350,
+    resizeMode: 'contain',
   },
   imageCellItemLandscape: {
-    width: Orientation.getWidth()-50, 
-    height:Orientation.getHeight()-50,
-    resizeMode: 'contain'
+    width: Orientation.getWidth() - 50,
+    height: Orientation.getHeight() - 50,
+    resizeMode: 'contain',
   },
   //end of don't know why
   container: {
@@ -133,16 +137,16 @@ export default {
     marginVertical: 2,
     flexDirection: 'row',
     alignItems: 'center',
-    paddingHorizontal: 10
+    paddingHorizontal: 10,
   },
   legendIcon: {
     fontSize: 16,
-    paddingRight: 5
+    paddingRight: 5,
   },
   largeText: {
     fontSize: 18,
     color: 'white',
-    fontWeight: 'bold'
+    fontWeight: 'bold',
   },
   textInput: {
     height: device_height * 0.05,
@@ -159,5 +163,5 @@ export default {
     backgroundColor: '#002DBB',
     alignItems: 'center',
     justifyContent: 'center',
-  }
+  },
 };

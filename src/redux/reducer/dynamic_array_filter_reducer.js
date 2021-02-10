@@ -36,7 +36,7 @@ const dynamicFilter = [
       },
     ],
     shown: true,
-    valueCheck: true,
+    valueCheck: false,
     valueOption: null,
   },
   {
@@ -228,6 +228,7 @@ const dynamicFilter = [
     api_id: 'firsActivationDate',
     disabled: false,
     value: dayjs().toDate(),
+    isSelectedDate: false,
     typeInput: 'DateTimePicker',
     isSelected: false,
     params: '&firstActivationDate=',
@@ -249,6 +250,7 @@ const dynamicFilter = [
     value: dayjs().toDate(),
     isSelected: false,
     typeInput: 'DateTimePicker',
+    isSelectedDate: false,
     params: '&pbrExitDate=',
     hard_code: true,
     cellType: 'TableCellHeaderAscDesc',
@@ -336,6 +338,7 @@ const dynamicFilter = [
 const initialState = {
   searchText: '',
   generatedParams: '',
+  totalFiltered: 0,
   array_filter: dynamicFilter,
   loading_array_filter: false,
 };
@@ -360,6 +363,7 @@ const dynamic_array_filter_reducer = (state = initialState, action) => {
     case reduxString.UPDATE_GENERATED_PARAMS:
       return {
         ...state,
+        totalFiltered: action.totalFiltered,
         generatedParams: action.generatedParams,
       };
     case reduxString.SET_LOADING_FILTER_TRUE:

@@ -19,10 +19,12 @@ const resetDataSearchText = () => {
     type: reduxString.RESET_DATA_SEARCH_TEXT,
   };
 };
-const updateGeneratedParams = (generatedParams = '') => {
+const updateGeneratedParams = (generatedParams) => {
+  const {count, linkParams} = generatedParams || '';
   return {
     type: reduxString.UPDATE_GENERATED_PARAMS,
-    generatedParams: generatedParams,
+    generatedParams: linkParams,
+    totalFiltered: count,
   };
 };
 const resetGeneratedParams = () => {
@@ -147,7 +149,7 @@ const setSomethingToFilter = (dataObject = []) => {
           return dispatch(updateDataFilter(newArr));
         case 'OnChangeDateTimePicker':
           newArr[getIndex].value = value;
-          newArr[getIndex].isSelected = true;
+          newArr[getIndex].isSelected = !newArr[getIndex].isSelected;
           return dispatch(updateDataFilter(newArr));
         case 'OnChangeDropDown':
           newArr[getIndex].value = {...value};
@@ -206,7 +208,7 @@ const resetDataFilter = () => {
               isSelected: false,
               formId: formId,
               typeInput: typeInput,
-              value: dayjs(),
+              value: dayjs().toDate(),
             };
           default:
             return null;

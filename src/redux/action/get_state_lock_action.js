@@ -2,7 +2,7 @@ import reduxString from '../reduxString';
 import axios from 'axios';
 import {base_url} from '../../constant/connection';
 import {setSomethingToFilter} from './dynamic_array_filter_action';
-import {authLogout} from './auth_action';
+import {authFailed, authLogout} from './auth_action';
 import {CommonActions} from '@react-navigation/native';
 
 const getStateLockLoading = () => {
@@ -92,7 +92,15 @@ const getStateLock = (navigation) => {
         }
       })
       .catch((e) => {
-        dispatch(getStateLockFailed(e));
+        if (e.response.data) {
+          dispatch(authFailed(e.response.data));
+        } else {
+          alert('Something went wrong went fetching data');
+          console.log(
+            'error_api_get_custom_label: ' + JSON.stringify(e, null, 2),
+          );
+          dispatch(getStateLockFailed(e));
+        }
       });
   };
 };

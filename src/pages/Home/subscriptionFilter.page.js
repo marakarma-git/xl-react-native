@@ -153,6 +153,7 @@ const SubscriptionFilter = () => {
                   }
                   if (value === 'Find') {
                     dispatch(generateArrayFilterParams());
+                    navigation.goBack();
                   }
                 }}>
                 <Text

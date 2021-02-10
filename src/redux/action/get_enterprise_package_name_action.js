@@ -2,7 +2,8 @@ import reduxString from '../reduxString';
 import {setSomethingToFilter} from './dynamic_array_filter_action';
 import axios from 'axios';
 import {base_url} from '../../constant/connection';
-import {authLogout} from './auth_action';
+import {authFailed, authLogout} from './auth_action';
+import {getSimInventoryLoadingFalse} from './get_sim_inventory_action';
 
 const getEnterprisePackageNameLoading = () => {
   return {
@@ -88,20 +89,27 @@ const getEnterprisePackageName = (enterpriseName, navigation) => {
         }
       })
       .catch((e) => {
-        dispatch(getEnterprisePackageNameFailed(e));
-        dispatch(
-          setSomethingToFilter([
-            {
-              formId: 'subscription-package-name-hard-code',
-              needs: 'FilterLoadingFalse',
-            },
-            {
-              formId: 'subscription-package-name-hard-code',
-              needs: 'SetFilterErrorText',
-              errorText: 'catch failed to load list',
-            },
-          ]),
-        );
+        if (e.response.data) {
+          dispatch(authFailed(e.response.data));
+        } else {
+          alert('Something went wrong went fetching data');
+          console.log(
+            'error_api_call_sim_inventory: ' + JSON.stringify(e, null, 2),
+          );
+          dispatch(
+            setSomethingToFilter([
+              {
+                formId: 'subscription-package-name-hard-code',
+                needs: 'FilterLoadingFalse',
+              },
+              {
+                formId: 'subscription-package-name-hard-code',
+                needs: 'SetFilterErrorText',
+                errorText: 'catch failed to load list',
+              },
+            ]),
+          );
+        }
       });
   };
 };
