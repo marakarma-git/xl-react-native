@@ -2,6 +2,7 @@ import React, {useState, useRef} from 'react';
 import {View, ScrollView, ActivityIndicator, Text} from 'react-native';
 import PropTypes from 'prop-types';
 import TableCell from './tableCell';
+import lod from 'lodash';
 const Table = (props) => {
   const {
     dataHeader,
@@ -11,12 +12,14 @@ const Table = (props) => {
     onPressCheckHeader,
     onPressCheckCell,
     loading,
+    selectedHeaderOrderSort,
   } = props || {};
   const headerScrollView = useRef(ScrollView);
   const rowsScrollView = useRef(ScrollView);
   const [borderWidth, setBorderWidth] = useState(false);
   const [headerIsScrolling, setHeaderIsScrolling] = useState(false);
   const [rightIsScrolling, setRightIsScrolling] = useState(false);
+  const {formId, sortBy} = selectedHeaderOrderSort || {};
   return (
     <View style={{flex: 1}}>
       <View>
@@ -27,9 +30,15 @@ const Table = (props) => {
             }}>
             {dataHeader && (
               <TableCell
+                sorted={dataHeader[0].formId === formId ? sortBy : null}
                 type={dataHeader[0].cellType}
                 dataOption={dataHeader[0].dataOption}
-                onPress={() => onPressHeader(dataHeader[0])}
+                onPress={() =>
+                  onPressHeader({
+                    dataSort: selectedHeaderOrderSort,
+                    item: dataHeader[0],
+                  })
+                }
                 onChangeCheck={(value) =>
                   onPressCheckHeader({
                     selectedValue: value,
@@ -54,13 +63,19 @@ const Table = (props) => {
               }}>
               {dataHeader &&
                 dataHeader.map((item, index) => {
-                  const {cellType, shown} = item || {};
+                  const {cellType, shown, formId: inFormId} = item || {};
                   if (index > 0 && shown) {
                     return (
                       <TableCell
                         key={index}
+                        sorted={inFormId === formId ? sortBy : null}
                         type={cellType}
-                        onPress={() => onPressHeader(dataHeader[0])}
+                        onPress={() =>
+                          onPressHeader({
+                            dataSort: selectedHeaderOrderSort,
+                            item: dataHeader[index],
+                          })
+                        }
                         onChangeCheck={() => onPressCheckHeader(dataHeader[0])}
                         {...item}
                       />
@@ -190,6 +205,11 @@ Table.propTypes = {
   onPressCheckHeader: PropTypes.func,
   onPressCheckCell: PropTypes.func,
   loading: PropTypes.bool,
+  selectedHeaderOrderSort: PropTypes.objectOf({
+    formId: PropTypes.string,
+    orderBy: PropTypes.string,
+    sortBy: PropTypes.string,
+  }),
 };
 Table.defaultProps = {
   dataHeader: [],
