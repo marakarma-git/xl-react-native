@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import {useDispatch, useSelector} from 'react-redux';
-import {View} from 'react-native';
+import {View, Text} from 'react-native';
 import {useNavigation} from '@react-navigation/native';
 import {subscriptionStyle} from '../../style';
 import Table from '../../components/table/Table';
@@ -30,11 +30,17 @@ const Subscription = () => {
   const {array_filter, loading_array_filter, searchText} = useSelector(
     (state) => state.dynamic_array_filter_reducer,
   );
+  const {filterParams} = useSelector(
+    (state) => state.query_params_filter_reducer,
+  );
   const {
     loading,
     data_sim_inventory_table,
     data_sim_inventory,
     current_size,
+    current_page,
+    current_total_page,
+    current_header_sort,
   } = useSelector((state) => state.get_sim_inventory_reducer);
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -51,7 +57,7 @@ const Subscription = () => {
       }
     }, 500);
     return () => clearTimeout(timer);
-  }, [current_size, dispatch, firstRender, navigation, searchText]);
+  }, [current_size, dispatch, navigation, searchText, filterParams]);
   return (
     <HeaderContainer headerTitle={'Subscription'}>
       <View style={subscriptionStyle.containerBackground}>
@@ -66,9 +72,50 @@ const Subscription = () => {
         {/*<AppliedFilter data={[{type: 'abc', title: '123'}]} />*/}
         <FilterActionLabel />
         <Table
+          selectedHeaderOrderSort={current_header_sort}
           dataHeader={array_filter}
           dataTable={data_sim_inventory_table}
           loading={loading}
+          onPressHeader={(e) => {
+            const {dataSort, item} = e || {};
+            const {sortBy, formId: currentFormId} = dataSort || {};
+            const {formId, api_id} = item || {};
+            const getSort = () => {
+              if (formId !== currentFormId) {
+                return 'ASC';
+              }
+              if (formId === currentFormId) {
+                if (sortBy === '') {
+                  return 'ASC';
+                }
+                if (sortBy === 'ASC') {
+                  return 'DESC';
+                }
+                if (sortBy === 'DESC') {
+                  return '';
+                }
+              }
+            };
+            console.log(getSort());
+            if (getSort()) {
+              dispatch(
+                callSimInventory({
+                  page_value: 0,
+                  selectedHeaderSort: {
+                    formId: formId,
+                    orderBy: api_id,
+                    sortBy: getSort(),
+                  },
+                }),
+              );
+            } else {
+              dispatch(
+                callSimInventory({
+                  page_value: 0,
+                }),
+              );
+            }
+          }}
           onPressCheckHeader={({selectedValue}) => {
             const {value} = selectedValue || {};
             switch (value) {
@@ -85,8 +132,10 @@ const Subscription = () => {
           }
         />
         <TableFooter
-          totalPage={50}
-          currentPage={2}
+          loading={loading}
+          totalPage={current_total_page}
+          currentPage={current_page}
+          perPageValue={current_size}
           onChangePerPage={(e) => {
             const {value} = e || {};
             dispatch(
@@ -95,7 +144,13 @@ const Subscription = () => {
               }),
             );
           }}
-          perPageValue={current_size}
+          onChangePaging={(e) => {
+            dispatch(
+              callSimInventory({
+                page_value: e,
+              }),
+            );
+          }}
         />
       </View>
       {showMenu && (

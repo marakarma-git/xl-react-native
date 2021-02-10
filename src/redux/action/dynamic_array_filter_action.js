@@ -63,6 +63,21 @@ const mergeDataFilter = (dataCustom = []) => {
     data: dataCustom,
   };
 };
+const updateSortBy = ({formId, orderBy, sortBy}) => {
+  return {
+    type: reduxString.UPDATE_SORT_BY,
+    payload: {
+      formId: formId,
+      orderBy: orderBy,
+      sortBy: sortBy,
+    },
+  };
+};
+const resetSortBy = () => {
+  return {
+    type: reduxString.RESET_SORT_BY,
+  };
+};
 const multipleSetShown = (dataShown = []) => {
   //sample string that send to here, must like this
   // 'form-id:shown(true / false)'
@@ -211,4 +226,6 @@ export {
   mergeDataFilter,
   generateArrayFilterParams,
   updateDataSearchText,
+  updateSortBy,
+  resetSortBy,
 };

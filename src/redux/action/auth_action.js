@@ -103,4 +103,4 @@ const getTitleVersion = () => {
   };
 };
 
-export {authLogin, authLogout, getTitleVersion, changePassword};
+export {authLogin, authFailed, authLogout, getTitleVersion, changePassword};

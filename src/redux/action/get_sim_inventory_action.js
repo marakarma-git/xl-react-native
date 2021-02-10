@@ -2,6 +2,7 @@ import reduxString from '../reduxString';
 import {colors} from '../../constant/color';
 import axios from 'axios';
 import {base_url} from '../../constant/connection';
+import {authFailed} from './auth_action';
 const getSimInventoryLoading = () => {
   return {
     type: reduxString.GET_SIM_INVENTORY_LOADING,
@@ -19,13 +20,13 @@ const getSimInventoryFailed = (error) => {
   };
 };
 const getSimInventorySuccess = (data) => {
-  console.log(JSON.stringify(data.currentPage, null, 2));
   const {
     dataSimInventory,
     dataSimInventoryTable,
     currentPage,
     currentTotalPage,
     currentSize,
+    selectedHeaderSort,
   } = data || {};
   return {
     type: reduxString.GET_SIM_INVENTORY_SUCCESS,
@@ -34,6 +35,7 @@ const getSimInventorySuccess = (data) => {
     currentPage: currentPage,
     currentTotalPage: currentTotalPage,
     currentSize: currentSize,
+    selectedHeaderSort: selectedHeaderSort,
   };
 };
 const getSimInventoryReset = () => {
@@ -122,18 +124,26 @@ const callSimInventory = (paginate) => {
   return async (dispatch, getState) => {
     const {current_page, current_size} = await getState()
       .get_sim_inventory_reducer;
-    const {page_value, size_value} = paginate || {};
+    const {page_value, size_value, selectedHeaderSort} = paginate || {};
     dispatch(getSimInventoryLoading());
     const {data} = await getState().auth_reducer;
     const {array_filter, searchText} = await getState()
       .dynamic_array_filter_reducer;
+    const {orderBy, sortBy, formId} = selectedHeaderSort || {};
     const {filterParams} = await getState().query_params_filter_reducer;
     const {access_token} = data || {};
     const getPage = page_value || current_page;
     const getSize = size_value || current_size;
+    console.log(
+      `${base_url}/dcp/sim/getSimInventory?page=${getPage}&size=${getSize}&keyword=${searchText}&sort=${
+        orderBy || ''
+      }&order=${sortBy || ''}${filterParams}`,
+    );
     axios
       .get(
-        `${base_url}/dcp/sim/getSimInventory?page=${getPage}&size=${getSize}&keyword=${searchText}${filterParams}`,
+        `${base_url}/dcp/sim/getSimInventory?page=${getPage}&size=${getSize}&keyword=${searchText}&sort=${
+          orderBy || ''
+        }&order=${sortBy || ''}${filterParams}`,
         {
           headers: {
             Authorization: `Bearer ${access_token}`,
@@ -153,6 +163,7 @@ const callSimInventory = (paginate) => {
               currentPage: pageNumber,
               currentTotalPage: totalPages,
               currentSize: size,
+              selectedHeaderSort: selectedHeaderSort,
             }),
           );
         } else {
@@ -162,8 +173,12 @@ const callSimInventory = (paginate) => {
       .catch((e) => {
         console.log(
           'error_api_call_sim_inventory: ' + JSON.stringify(e, null, 2),
-        ),
+        );
+        if (e.response.data) {
+          dispatch(authFailed(e.response.data));
+        } else {
           dispatch(getSimInventoryLoadingFalse());
+        }
       });
   };
 };
