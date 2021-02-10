@@ -160,6 +160,8 @@ export default {
     color: '#707070',
   },
   carouselWrapper: {
+    flex: 1,
+    // height: device_height - 100,
     backgroundColor: '#002DBB',
     alignItems: 'center',
     justifyContent: 'center',

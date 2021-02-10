@@ -82,11 +82,11 @@ export default {
   },
   keyboardContainer: {
     height: device_height - 100,
-    backgroundColor: 'transparent',
+    backgroundColor: 'blue',
   },
   keyboardContainerLandscape: {
-    height: device_width + 30,
-    backgroundColor: 'transparent',
+    height: 350,
+    backgroundColor: 'red',
   },
   footerTitleVersion: {
     position: 'absolute',

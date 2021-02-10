@@ -4,10 +4,13 @@ import PropTypes from 'prop-types';
 import {useNavigation} from '@react-navigation/native';
 const homePageContainer = (props) => {
   const navigation = useNavigation();
-  const {companyLogo, headerTitle, children} = props || null;
+  const {companyLogo, headerTitle, children, orientation} = props || null;
   return (
     <>
-      <Header notifications={true} />
+      <Header 
+        notifications={true}
+        orientation={orientation}
+        />
       <Navbar
         navigation={navigation}
         companyLogo={companyLogo}
@@ -18,6 +21,7 @@ const homePageContainer = (props) => {
   );
 };
 homePageContainer.propTypes = {
+  orientation: PropTypes.string,
   navigation: PropTypes.any.isRequired,
   companyLogo: PropTypes.string,
   headerTitle: PropTypes.string,

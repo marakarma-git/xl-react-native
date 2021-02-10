@@ -37,6 +37,9 @@ const Login = ({navigation}) => {
   );
 
   const detectOrientation = useCallback(() => {
+    if (Orientation.getHeight() <= Orientation.getWidth()) {
+      setOrientation('landscape');
+    }
     Dimensions.addEventListener('change', () => {
       setOrientation(Orientation.isPortrait() ? 'potrait' : 'landscape');
     });
@@ -99,8 +102,14 @@ const Login = ({navigation}) => {
       <KeyboardAvoidingView
         style={
           orientation === 'landscape'
-            ? styles.keyboardContainerLandscape
-            : styles.keyboardContainer
+            ? {
+                height: Orientation.getHeight() + 30,
+                backgroundColor: 'transparent',
+              }
+            : {
+                height: Orientation.getHeight() - 100,
+                backgroundColor: 'transparent',
+              }
         }
         behavior={'padding'}>
         <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
@@ -125,10 +134,9 @@ const Login = ({navigation}) => {
             <View
               style={[
                 styles.loginContainer,
-                orientation === 'landscape' && {
-                  width: '48%',
-                  marginHorizontal: '26%',
-                },
+                orientation === 'landscape'
+                  ? {width: '48%', marginHorizontal: '26%'}
+                  : {width: '85%', marginHorizontal: '7.5%'},
               ]}>
               <View style={styles.loginContainerHeader}>
                 <Image
