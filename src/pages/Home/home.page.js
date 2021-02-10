@@ -46,13 +46,15 @@ const LandingPage = ({navigation}) => {
     );
   };
 
+  const heightProportion = actualSizePercent(orientation === 'potrait' ? 131 : 100, 'height')
+
   const renderItem = ({item}) => {
     return (
       <View style={style.cellItem}>
         <Image
           source={{uri: item.bannerImage}}
           resizeMode="contain"
-          style={{ height: actualSizePercent(100, 'height')}}
+          style={{ height: heightProportion}}
         />
       </View>
     );
@@ -87,7 +89,11 @@ const LandingPage = ({navigation}) => {
             <Title>Hi! {firstName + ' ' + lastName}</Title>
           </Card.Content>
           {carouselItems.length > 0 ? (
-            <View style={style.carouselWrapper}>
+            <View 
+            style={{
+              ...style.carouselWrapper,
+              ...{ height: heightProportion }
+              }}>
               <Carousel
                 style={{ margin: 0, padding: 0 }}
                 layout={'default'}

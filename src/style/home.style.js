@@ -156,7 +156,6 @@ export default {
     color: '#707070',
   },
   carouselWrapper: {
-    height: 350,
     backgroundColor: '#002DBB',
     alignItems: 'center',
     justifyContent: 'center',
