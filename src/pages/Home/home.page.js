@@ -22,13 +22,22 @@ const LandingPage = ({navigation}) => {
   const [orientation, setOrientation] = useState('potrait');
 
   const detectOrientation = useCallback(() => {
+    if(Orientation.getHeight() <= Orientation.getWidth()){
+      setOrientation('landscape');
+    }
     Dimensions.addEventListener('change', () => {
       setOrientation(Orientation.isPortrait() ? 'potrait' : 'landscape');
     });
   }, [Dimensions]);
 
   const actualSizePercent = (percent, type = 'width') => {
-    const orientationSize = type === 'width' ? Orientation.getWidth() : 350;
+    let tempHeight = Orientation.getHeight();
+    let heightAboveBanner = 320; //header navbar margin
+
+    if(Orientation.getHeight() > 600){
+      tempHeight = Math.round(Orientation.getHeight() - heightAboveBanner);
+    }
+    const orientationSize = type === 'width' ? Orientation.getWidth() : tempHeight;
     const scale = (percent / 100) * orientationSize;
     return Math.round(scale);
   }
@@ -52,7 +61,7 @@ const LandingPage = ({navigation}) => {
         <Image
           source={{uri: item.bannerImage}}
           resizeMode="contain"
-          style={{ height: actualSizePercent(100, 'height')}}
+          style={{ height: actualSizePercent(90, 'height')}}
         />
       </View>
     );
@@ -69,7 +78,9 @@ const LandingPage = ({navigation}) => {
           userData.access_token,
         ),
       );
+
       detectOrientation();
+
     });
 
     return pageLoad;
@@ -77,6 +88,7 @@ const LandingPage = ({navigation}) => {
 
   return (
     <HeaderContainer
+      orientation={orientation}
       navigation={navigation}
       companyLogo={imageBase64}
       headerTitle={'Home'}>
