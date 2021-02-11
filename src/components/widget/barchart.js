@@ -40,21 +40,44 @@ const BarChartComponent = ({item, filterParams = {}}) => {
             />
             <VictoryBar
               data={dataSet}
+              events={[{
+                  target: "data",
+                  eventHandlers: {
+                    onPressIn: () => {
+                      return [
+                        {
+                          target: 'labels',
+                          eventKey: 'all',
+                          mutation: () => ({active: false}),
+                        },
+                      ];
+                    },
+                    onPressOut: () => {
+                      return [
+                        {
+                          target: 'labels',
+                          mutation: () => ({active: true}),
+                        }
+                      ];
+                    },
+                  },
+                }
+              ]}
               horizontal
               style={{
                 data: {fill: '#00D3A0', width: 15},
               }}
               labelComponent={
                   <VictoryTooltip
-                    flyoutStyle={{ stroke:"white", fill: 'white' }}
-                    flyoutWidth={150}
                     dx={-50}
-                    dy={10}
+                    dy={15}
                     orientation="top"
+                    flyoutPadding={2}
+                    flyoutStyle={{ stroke:"#00D3A0", fill: 'white' }}
+                    flyoutWidth={150}
                     labelComponent={<CustomLabel/>}
-                    flyoutPadding={10}
                     style={{ textAlign: 'center', fontSize: 10 }} 
-                    renderInPortal={true} />
+                    renderInPortal={false} />
               }
             />
           </VictoryChart>
@@ -118,7 +141,7 @@ const BarChartComponent = ({item, filterParams = {}}) => {
 const CustomLabel = (props) => {
   const {text, x, y} = props;
 
-  let yPos = y - 10;
+  let yPos = y - 15;
   let xPos = x- 65;
 
   return(
