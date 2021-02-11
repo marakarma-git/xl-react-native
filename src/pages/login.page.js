@@ -103,7 +103,9 @@ const Login = ({navigation}) => {
         style={
           orientation === 'landscape'
             ? {
-                height: Orientation.getHeight() + 30,
+                height: errorText
+                  ? Orientation.getHeight() + 70
+                  : Orientation.getHeight() + 30,
                 backgroundColor: 'transparent',
               }
             : {
@@ -149,6 +151,16 @@ const Login = ({navigation}) => {
                   }
                 />
               </View>
+              <Text
+                style={{
+                  ...styles.loginDesc,
+                  ...{
+                    fontSize: orientation === 'landscape' ? 14 : 16,
+                    marginVertical: orientation === 'landscape' ? 2 : '3%',
+                  },
+                }}>
+                Sign in to your account:
+              </Text>
               {errorText && (
                 <Text
                   style={[
@@ -235,26 +247,21 @@ const Login = ({navigation}) => {
                        </Text>
                     </View>
                 </View> */}
-              <TouchableOpacity
-                disabled={localLoading}
-                onPress={onSubmit}
-                style={[
-                  orientation === 'landscape'
-                    ? styles.buttonBlockLandscape
-                    : styles.buttonBlock,
-                  {backgroundColor: localLoading ? '#949494' : '#002DBB'},
-                ]}>
-                <Text style={styles.buttonText}>
-                  {localLoading ? (
-                    <ActivityIndicator
-                      color={'#fff'}
-                      style={styles.buttonText}
-                    />
-                  ) : (
+              {localLoading ? (
+                <Text style={styles.labelLoading}>Loading ...</Text>
+              ) : (
+                <TouchableOpacity
+                  onPress={onSubmit}
+                  style={[
+                    orientation === 'landscape'
+                      ? styles.buttonBlockLandscape
+                      : styles.buttonBlock,
+                  ]}>
+                  <Text style={styles.buttonText}>
                     <Text style={styles.buttonText}>LOGIN</Text>
-                  )}
-                </Text>
-              </TouchableOpacity>
+                  </Text>
+                </TouchableOpacity>
+              )}
               <View style={[styles.loginSettingWrapper, {marginTop: 10}]}>
                 <Text style={[styles.label, {fontSize: 11, color: '#23282C'}]}>
                   Need support?
