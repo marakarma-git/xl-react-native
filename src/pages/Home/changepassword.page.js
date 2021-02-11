@@ -34,7 +34,7 @@ const ChangePasswordPage = ({navigation}) => {
       );
 
       if (data) {
-        if (data.statusCode == 0) {
+        if (data.statusCode === 0) {
           dispatch(changePassword(username));
           ToastAndroid.show(data.result, ToastAndroid.LONG);
           navigation.replace('Home');

@@ -9,24 +9,32 @@ import dayjs from 'dayjs';
 // };
 const generateLink = (array = []) => {
   let paramsLink = '';
+  let count = 0;
   array.map((v) => {
-    const {value, params, type, isSelected} = v;
+    const {value, params, typeInput: type, isSelected} = v;
     if (type === 'DateTimePicker' && isSelected) {
       paramsLink = paramsLink + params + dayjs(value).format('YYYY-MM-DD');
+      count = count + 1;
     }
     if (!lod.isEmpty(value)) {
       switch (type) {
         case 'TextInput':
+          count = count + 1;
           return (paramsLink = paramsLink + params + value);
         case 'DropDown':
+          count = count + 1;
           return (paramsLink = paramsLink + params + value.value);
         case 'DropDownType2':
+          count = count + 1;
           return (paramsLink = paramsLink + params + value);
         default:
           return null;
       }
     }
   });
-  return paramsLink;
+  return {
+    linkParams: paramsLink,
+    count: count,
+  };
 };
 export default generateLink;

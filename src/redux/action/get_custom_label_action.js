@@ -8,10 +8,8 @@ import {
 import axios from 'axios';
 import lod from 'lodash';
 import {base_url} from '../../constant/connection';
-import {authLogout} from './auth_action';
+import {authFailed, authLogout} from './auth_action';
 import {CommonActions} from '@react-navigation/native';
-import callSimInventory from './get_sim_inventory_action';
-
 const getCustomLabelLoading = () => {
   return {
     type: reduxString.GET_CUSTOM_LABEL_LOADING,
@@ -81,7 +79,13 @@ const getCustomLabel = (navigation) => {
           dispatch(setLoadingFilterFalse());
         }
       })
-      .catch(() => dispatch(setLoadingFilterFalse()));
+      .catch((e) => {
+        if (e.response.data) {
+          dispatch(authFailed(e.response.data));
+        } else {
+          alert('Something went wrong went fetching data');
+        }
+      });
   };
 };
 export {getCustomLabel};

@@ -3,7 +3,7 @@ import Carousel, {Pagination} from 'react-native-snap-carousel';
 import {getCarousel} from '../../redux/action/dashboard_action';
 import {callEnterpriseLogo} from '../../redux/action/enterprise_action';
 import {Card, Title} from 'react-native-paper';
-import {View, Text, ScrollView, Image, ActivityIndicator, PixelRatio} from 'react-native';
+import {View, Text, ScrollView, Image, ActivityIndicator} from 'react-native';
 import {useSelector, useDispatch} from 'react-redux';
 import {HeaderContainer, OverlayBackground} from '../../components';
 import Orientation from '../../helpers/orientation';
@@ -22,7 +22,7 @@ const LandingPage = ({navigation}) => {
   const [orientation, setOrientation] = useState('potrait');
 
   const detectOrientation = useCallback(() => {
-    if(Orientation.getHeight() <= Orientation.getWidth()){
+    if (Orientation.getHeight() <= Orientation.getWidth()) {
       setOrientation('landscape');
     }
     Dimensions.addEventListener('change', () => {
@@ -34,13 +34,14 @@ const LandingPage = ({navigation}) => {
     let tempHeight = Orientation.getHeight();
     let heightAboveBanner = 320; //header navbar margin
 
-    if(Orientation.getHeight() > 600){
+    if (Orientation.getHeight() > 600) {
       tempHeight = Math.round(Orientation.getHeight() - heightAboveBanner);
     }
-    const orientationSize = type === 'width' ? Orientation.getWidth() : tempHeight;
+    const orientationSize =
+      type === 'width' ? Orientation.getWidth() : tempHeight;
     const scale = (percent / 100) * orientationSize;
     return Math.round(scale);
-  }
+  };
 
   const pagination = () => {
     return (
@@ -55,7 +56,10 @@ const LandingPage = ({navigation}) => {
     );
   };
 
-  const heightProportion = actualSizePercent(orientation === 'potrait' ? 131 : 100, 'height')
+  const heightProportion = actualSizePercent(
+    orientation === 'potrait' ? 131 : 100,
+    'height',
+  );
 
   const renderItem = ({item}) => {
     return (
@@ -63,7 +67,7 @@ const LandingPage = ({navigation}) => {
         <Image
           source={{uri: item.bannerImage}}
           resizeMode="contain"
-          style={{ height: actualSizePercent(90, 'height')}}
+          style={{height: actualSizePercent(90, 'height')}}
         />
       </View>
     );
@@ -82,7 +86,6 @@ const LandingPage = ({navigation}) => {
       );
 
       detectOrientation();
-
     });
 
     return pageLoad;
@@ -101,17 +104,23 @@ const LandingPage = ({navigation}) => {
             <Title>Hi! {firstName + ' ' + lastName}</Title>
           </Card.Content>
           {carouselItems.length > 0 ? (
-            <View 
-            style={{
-              ...style.carouselWrapper,
-              // ...{ height: heightProportion }
+            <View
+              style={{
+                ...style.carouselWrapper,
+                // ...{ height: heightProportion }
               }}>
               <Carousel
-                style={{ margin: 0, padding: 0 }}
+                style={{margin: 0, padding: 0}}
                 layout={'default'}
                 data={carouselItems}
-                sliderWidth={actualSizePercent(orientation === 'potrait' ? 85 : 80, 'width')}
-                itemWidth={actualSizePercent(orientation === 'potrait' ? 85 : 80, 'width')}
+                sliderWidth={actualSizePercent(
+                  orientation === 'potrait' ? 85 : 80,
+                  'width',
+                )}
+                itemWidth={actualSizePercent(
+                  orientation === 'potrait' ? 85 : 80,
+                  'width',
+                )}
                 renderItem={renderItem}
                 onSnapToItem={(index) => setActiveIndex(index)}
                 loop

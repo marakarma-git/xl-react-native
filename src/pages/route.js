@@ -3,10 +3,10 @@ import Auth from './auth.page';
 import Login from './login.page';
 import Home from './home.route';
 import ForgetPassword from './forget.password';
-import { useSelector } from 'react-redux';
-import { createStackNavigator } from '@react-navigation/stack';
-import { NavigationContainer } from '@react-navigation/native';
-import { ChangePasswordPage } from './Home';
+import {useSelector} from 'react-redux';
+import {createStackNavigator} from '@react-navigation/stack';
+import {NavigationContainer} from '@react-navigation/native';
+import {ChangePasswordPage} from './Home';
 
 const Stack = createStackNavigator();
 const RootStack = () => {
@@ -25,7 +25,10 @@ const RootStack = () => {
         <>
           <Stack.Screen name={'Auth'} component={Auth} />
           <Stack.Screen name={'Login'} component={Login} />
-          <Stack.Screen name={'Change Password'} component={ChangePasswordPage} />
+          <Stack.Screen
+            name={'Change Password'}
+            component={ChangePasswordPage}
+          />
           <Stack.Screen name={'Reset Password'} component={ForgetPassword} />
         </>
       );

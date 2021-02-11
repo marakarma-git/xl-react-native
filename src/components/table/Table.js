@@ -2,7 +2,6 @@ import React, {useState, useRef} from 'react';
 import {View, ScrollView, ActivityIndicator, Text} from 'react-native';
 import PropTypes from 'prop-types';
 import TableCell from './tableCell';
-import lod from 'lodash';
 const Table = (props) => {
   const {
     dataHeader,

@@ -1,5 +1,4 @@
-import { device_height } from '../constant/config';
-import { colors } from '../constant/color';
+import {colors} from '../constant/color';
 export default {
   avatarContainer: {
     width: 152,
@@ -108,7 +107,7 @@ export default {
   passwordRulesContainer: {
     width: '90%',
     alignItems: 'flex-start',
-    marginBottom: 20
+    marginBottom: 20,
   },
   buttonGroupContainer: {
     flexDirection: 'row',
@@ -117,7 +116,7 @@ export default {
     alignItems: 'center',
     width: '90%',
     height: 50,
-    marginVertical: 20
+    marginVertical: 20,
   },
   passwordInputWrapper: {
     width: '100%',
@@ -130,7 +129,7 @@ export default {
     borderRadius: 5,
     marginVertical: 10,
     color: '#707070',
-    justifyContent: 'space-between'
+    justifyContent: 'space-between',
   },
   passwordInput: {
     width: '80%',
@@ -141,14 +140,14 @@ export default {
     width: 50,
     height: '100%',
     justifyContent: 'center',
-    alignItems: 'center'
+    alignItems: 'center',
   },
   buttonGroup: {
     width: 165,
     height: 40,
     borderRadius: 5,
     justifyContent: 'center',
-    alignItems: 'center'
+    alignItems: 'center',
   },
   buttonBlock: {
     width: '90%',
@@ -156,11 +155,11 @@ export default {
     borderRadius: 5,
     justifyContent: 'center',
     alignItems: 'center',
-    marginVertical: 10
+    marginVertical: 10,
   },
   buttonText: {
     fontSize: 16,
     fontWeight: 'bold',
-    color: 'white'
-  }
+    color: 'white',
+  },
 };

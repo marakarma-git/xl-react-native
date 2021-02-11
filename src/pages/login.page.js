@@ -11,7 +11,7 @@ import {
   TouchableOpacity,
   ActivityIndicator,
   Linking,
-  Dimensions
+  Dimensions,
 } from 'react-native';
 import lod from 'lodash';
 import styles from '../style/login.style';
@@ -37,15 +37,15 @@ const Login = ({navigation}) => {
   );
 
   const detectOrientation = useCallback(() => {
-    if(Orientation.getHeight() <= Orientation.getWidth()){
+    if (Orientation.getHeight() <= Orientation.getWidth()) {
       setOrientation('landscape');
     }
     Dimensions.addEventListener('change', () => {
-        setOrientation(Orientation.isPortrait() ? 'potrait' : 'landscape');
+      setOrientation(Orientation.isPortrait() ? 'potrait' : 'landscape');
     });
   }, [Dimensions]);
 
-  useEffect(() => {    
+  useEffect(() => {
     if (isLoggedIn) {
       if (!lod.isEmpty(data)) {
         if (data.principal.mustChangePass) {
@@ -64,7 +64,6 @@ const Login = ({navigation}) => {
     }
 
     detectOrientation();
-
   }, [data, error, isLoggedIn]);
 
   const onSubmit = () => {
@@ -101,38 +100,64 @@ const Login = ({navigation}) => {
   return (
     <ScrollView style={styles.container}>
       <KeyboardAvoidingView
-        style={orientation === 'landscape' 
-        ? { height: Orientation.getHeight() + 30, backgroundColor: 'transparent' }
-        : { height: Orientation.getHeight() - 100, backgroundColor: 'transparent' } 
-      }
+        style={
+          orientation === 'landscape'
+            ? {
+                height: Orientation.getHeight() + 30,
+                backgroundColor: 'transparent',
+              }
+            : {
+                height: Orientation.getHeight() - 100,
+                backgroundColor: 'transparent',
+              }
+        }
         behavior={'padding'}>
         <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-          <View style={[
-            {flex: 1},
-            orientation === 'potrait' 
-            ? { justifyContent: 'center' }
-            : { marginTop: 10 }
+          <View
+            style={[
+              {flex: 1},
+              orientation === 'potrait'
+                ? {justifyContent: 'center'}
+                : {marginTop: 10},
             ]}>
             <View style={styles.imageContainer}>
-              <Image resizeMode="contain" style={
+              <Image
+                resizeMode="contain"
+                style={
                   orientation === 'landscape'
-                  ? styles.imageSizeLandscape
-                  : styles.imageSize
-                } 
-                source={busolLogo} />
+                    ? styles.imageSizeLandscape
+                    : styles.imageSize
+                }
+                source={busolLogo}
+              />
             </View>
-            <View style={[styles.loginContainer, orientation === 'landscape' 
-            ? { width: '48%', marginHorizontal: '26%' }
-            : { width: '85%', marginHorizontal: '7.5%' }]}>
+            <View
+              style={[
+                styles.loginContainer,
+                orientation === 'landscape'
+                  ? {width: '48%', marginHorizontal: '26%'}
+                  : {width: '85%', marginHorizontal: '7.5%'},
+              ]}>
               <View style={styles.loginContainerHeader}>
-                <Image source={loginBrand} resizeMode="contain" style={
-                  orientation === 'landscape'
-                  ? { width: '80%' }
-                  : { width: '100%' }
-                } />
+                <Image
+                  source={loginBrand}
+                  resizeMode="contain"
+                  style={
+                    orientation === 'landscape'
+                      ? {width: '80%'}
+                      : {width: '100%'}
+                  }
+                />
               </View>
               {errorText && (
-                <Text style={[styles.errorText, {paddingBottom: 5, fontSize: orientation === 'landscape' ? 12 : 14}]}>
+                <Text
+                  style={[
+                    styles.errorText,
+                    {
+                      paddingBottom: 5,
+                      fontSize: orientation === 'landscape' ? 12 : 14,
+                    },
+                  ]}>
                   {errorText}
                 </Text>
               )}
@@ -144,8 +169,8 @@ const Login = ({navigation}) => {
                   placeholderColor="#c4c3cb"
                   style={
                     orientation === 'landscape'
-                    ? styles.textInputContainerLandscape
-                    : styles.textInputContainer
+                      ? styles.textInputContainerLandscape
+                      : styles.textInputContainer
                   }
                   onChangeText={(e) => setUsername(e)}
                 />
@@ -159,8 +184,8 @@ const Login = ({navigation}) => {
                   secureTextEntry
                   style={
                     orientation === 'landscape'
-                    ? styles.textInputContainerLandscape
-                    : styles.textInputContainer
+                      ? styles.textInputContainerLandscape
+                      : styles.textInputContainer
                   }
                   onChangeText={(e) => setPassword(e)}
                   onSubmitEditing={() => onSubmit()}
@@ -175,11 +200,22 @@ const Login = ({navigation}) => {
                     onCheckColor="#002DBB"
                     onValueChange={(value) => setRememberMe(value)}
                   />
-                  <Text style={{fontSize: 11, color: "#747474", fontWeight: '200', letterSpacing: 0.5}}>Remember me</Text>
+                  <Text
+                    style={{
+                      fontSize: 11,
+                      color: '#747474',
+                      fontWeight: '200',
+                      letterSpacing: 0.5,
+                    }}>
+                    Remember me
+                  </Text>
                 </View>
                 <TouchableWithoutFeedback
                   onPress={() => navigation.navigate('Reset Password')}>
-                  <Text style={styles.linkText, { color: '#3552C6', fontSize: 11 }}>Forgot password?</Text>
+                  <Text
+                    style={(styles.linkText, {color: '#3552C6', fontSize: 11})}>
+                    Forgot password?
+                  </Text>
                 </TouchableWithoutFeedback>
               </View>
               {/* To-do */}
@@ -203,7 +239,9 @@ const Login = ({navigation}) => {
                 disabled={localLoading}
                 onPress={onSubmit}
                 style={[
-                  orientation === 'landscape' ? styles.buttonBlockLandscape : styles.buttonBlock,
+                  orientation === 'landscape'
+                    ? styles.buttonBlockLandscape
+                    : styles.buttonBlock,
                   {backgroundColor: localLoading ? '#949494' : '#002DBB'},
                 ]}>
                 <Text style={styles.buttonText}>
@@ -233,9 +271,7 @@ const Login = ({navigation}) => {
                 <Text>
                   <FontAwesome name="envelope" size={11} color="grey" />
                   <TouchableWithoutFeedback
-                    onPress={() =>
-                      Linking.openURL('mailto:cs-busol@xl.co.id')
-                    }>
+                    onPress={() => Linking.openURL('mailto:cs-busol@xl.co.id')}>
                     <Text style={[styles.linkText, {fontSize: 11}]}>
                       &nbsp;cs-busol@xl.co.id{' '}
                     </Text>
@@ -246,8 +282,13 @@ const Login = ({navigation}) => {
           </View>
         </TouchableWithoutFeedback>
       </KeyboardAvoidingView>
-      <View style={styles.footer, { alignItems: 'center' }}>
-        <Text style={{color: '#707070', fontSize: 12, bottom: orientation === 'potrait' ? 0 : 5}}>
+      <View style={(styles.footer, {alignItems: 'center'})}>
+        <Text
+          style={{
+            color: '#707070',
+            fontSize: 12,
+            bottom: orientation === 'potrait' ? 0 : 5,
+          }}>
           &copy; {`${year} PT. XL Axiata Tbk. All Right Reserved `}
         </Text>
       </View>

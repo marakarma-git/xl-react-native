@@ -122,28 +122,36 @@ const reGenerateHideNShow = () => {
 };
 const callSimInventory = (paginate) => {
   return async (dispatch, getState) => {
-    const {current_page, current_size} = await getState()
-      .get_sim_inventory_reducer;
-    const {page_value, size_value, selectedHeaderSort} = paginate || {};
+    const {
+      current_page,
+      current_size,
+      current_header_sort: selectedHeaderSort,
+    } = await getState().get_sim_inventory_reducer;
+    const {
+      page_value,
+      size_value,
+      selectedHeaderSort: selectedHeaderSortPaginate,
+    } = paginate || {};
     dispatch(getSimInventoryLoading());
     const {data} = await getState().auth_reducer;
-    const {array_filter, searchText} = await getState()
+    const {array_filter, searchText, generatedParams} = await getState()
       .dynamic_array_filter_reducer;
-    const {orderBy, sortBy, formId} = selectedHeaderSort || {};
-    const {filterParams} = await getState().query_params_filter_reducer;
+    const {orderBy: orderByPaginate, sortBy: sortByPaginate} =
+      selectedHeaderSortPaginate || {};
+    const {orderBy, sortBy} = selectedHeaderSort || {};
     const {access_token} = data || {};
     const getPage = page_value || current_page;
     const getSize = size_value || current_size;
     console.log(
       `${base_url}/dcp/sim/getSimInventory?page=${getPage}&size=${getSize}&keyword=${searchText}&sort=${
-        orderBy || ''
-      }&order=${sortBy || ''}${filterParams}`,
+        orderBy || orderByPaginate || ''
+      }&order=${sortBy || sortByPaginate || ''}${generatedParams}`,
     );
     axios
       .get(
         `${base_url}/dcp/sim/getSimInventory?page=${getPage}&size=${getSize}&keyword=${searchText}&sort=${
-          orderBy || ''
-        }&order=${sortBy || ''}${filterParams}`,
+          orderBy || orderByPaginate || ''
+        }&order=${sortBy || sortByPaginate || ''}${generatedParams}`,
         {
           headers: {
             Authorization: `Bearer ${access_token}`,
@@ -163,7 +171,8 @@ const callSimInventory = (paginate) => {
               currentPage: pageNumber,
               currentTotalPage: totalPages,
               currentSize: size,
-              selectedHeaderSort: selectedHeaderSort,
+              selectedHeaderSort:
+                selectedHeaderSortPaginate || selectedHeaderSort,
             }),
           );
         } else {
@@ -171,13 +180,14 @@ const callSimInventory = (paginate) => {
         }
       })
       .catch((e) => {
-        console.log(
-          'error_api_call_sim_inventory: ' + JSON.stringify(e, null, 2),
-        );
         if (e.response.data) {
           dispatch(authFailed(e.response.data));
         } else {
           dispatch(getSimInventoryLoadingFalse());
+          alert('Something went wrong went fetching data');
+          console.log(
+            'error_api_call_sim_inventory: ' + JSON.stringify(e, null, 2),
+          );
         }
       });
   };
