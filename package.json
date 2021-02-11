@@ -4,6 +4,7 @@
   "private": true,
   "scripts": {
     "android": "react-native run-android",
+    "android-dev": "adb reverse tcp:8081 tcp:8081 && react-native run-android",
     "clean": "cd android && ./gradlew clean && cd .. && react-native run-android",
     "android-release": "cd android && ./gradlew clean && cd .. && react-native run-android --variant=release",
     "android-build": "cd android && ./gradlew clean && ./gradlew assembleRelease && cd ..",
