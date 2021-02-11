@@ -93,7 +93,6 @@ const LandingPage = ({navigation}) => {
 
   return (
     <HeaderContainer
-      orientation={orientation}
       navigation={navigation}
       companyLogo={imageBase64}
       headerTitle={'Home'}>
