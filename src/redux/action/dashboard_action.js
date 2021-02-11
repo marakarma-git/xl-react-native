@@ -152,7 +152,14 @@ const setTopTrafficStatistics = (data, params) => {
   const newDataSet = [];
 
   data.map((datas) => {
-    newDataSet.push({x: datas.msisdn, y: +datas.datausage});
+    newDataSet.push({
+      x: datas.msisdn, 
+      y: +datas.datausage, 
+      label: [
+        `MSISDN: `, 
+        `${datas.msisdn}`, 
+        `Data usage: `, 
+        `${Helper.formatBytes(+datas.datausage)}`]});
   });
 
   Helper.sortAscending(newDataSet, 'y');

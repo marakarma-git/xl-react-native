@@ -7,6 +7,8 @@ import {
   VictoryAxis,
   VictoryChart,
   VictoryLabel,
+  VictoryTooltip,
+  VictoryContainer
 } from 'victory-native';
 import {Card, Title} from 'react-native-paper';
 import {View, ActivityIndicator, Text} from 'react-native';
@@ -26,23 +28,37 @@ const BarChartComponent = ({item, filterParams = {}}) => {
   const generateChart = () => (
     <View style={{position: 'relative', top: -20, left: -15}}>
       {dataSet.length > 0 ? (
-        <VictoryChart>
-          <VictoryAxis crossAxis label="Subscriptions" tickFormat={() => ''} />
-          <VictoryAxis
-            dependentAxis
-            style={{axis: {stroke: 'none'}}}
-            standalone={false}
-            tickFormat={(t) => Helper.formatBytes(t)}
-            tickLabelComponent={<VictoryLabel style={{fontSize: 10}} />}
-          />
-          <VictoryBar
-            horizontal
-            style={{
-              data: {fill: '#00D3A0', width: 15},
-            }}
-            data={dataSet}
-          />
-        </VictoryChart>
+        <VictoryContainer>
+          <VictoryChart>
+            <VictoryAxis crossAxis label="Subscriptions" tickFormat={() => ''} />
+            <VictoryAxis
+              dependentAxis
+              style={{axis: {stroke: 'none'}}}
+              standalone={false}
+              tickFormat={(t) => Helper.formatBytes(t)}
+              tickLabelComponent={<VictoryLabel style={{fontSize: 10}} />}
+            />
+            <VictoryBar
+              data={dataSet}
+              horizontal
+              style={{
+                data: {fill: '#00D3A0', width: 15},
+              }}
+              labelComponent={
+                  <VictoryTooltip
+                    flyoutStyle={{ stroke:"white", fill: 'white' }}
+                    flyoutWidth={150}
+                    dx={-50}
+                    dy={10}
+                    orientation="top"
+                    labelComponent={<CustomLabel/>}
+                    flyoutPadding={10}
+                    style={{ textAlign: 'center', fontSize: 10 }} 
+                    renderInPortal={true} />
+              }
+            />
+          </VictoryChart>
+        </VictoryContainer>
       ) : (
         <View style={{marginTop: 30}}>
           <Text
@@ -98,5 +114,29 @@ const BarChartComponent = ({item, filterParams = {}}) => {
     </Card>
   );
 };
+
+const CustomLabel = (props) => {
+  const {text, x, y} = props;
+
+  let yPos = y - 10;
+  let xPos = x- 65;
+
+  return(
+    <View style={{ position: "absolute", top: yPos, left: xPos }}>
+      <Text style={{ fontSize: 11 }}>
+        {text[0]}
+        <Text style={{ fontWeight: 'bold' }}>
+          {text[1]}
+        </Text>
+      </Text>
+      <Text style={{ fontSize: 12 }}>
+        {text[2]}
+        <Text style={{ fontWeight: 'bold' }}>
+          {text[3]}
+        </Text>
+      </Text>
+    </View>
+  );
+}
 
 export default BarChartComponent;
