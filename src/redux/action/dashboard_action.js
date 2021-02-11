@@ -114,7 +114,7 @@ export const getCarousel = (accessToken) => {
             banner.bannerImage = `data:image/jpeg;base64,${banner.bannerImage}`;
           });
 
-          dispatch(setCarousel(data.result.slice(0, 4)));
+          dispatch(setCarousel(data.result));
         } else {
           throw new Error(data);
         }
