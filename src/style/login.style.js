@@ -123,6 +123,7 @@ export default {
     justifyContent: 'center',
     alignItems: 'center',
     marginVertical: 10,
+    backgroundColor: '#002DBB'
   },
   buttonBlockLandscape: {
     width: '90%',
@@ -130,6 +131,7 @@ export default {
     marginVertical: 5,
     justifyContent: 'center',
     alignItems: 'center',
+    backgroundColor: '#002DBB'
   },
   buttonText: {
     fontSize: 16,
@@ -150,4 +152,16 @@ export default {
     fontSize: 12,
     color: '#707070',
   },
+  loginDesc: {
+    color: 'black',
+    fontWeight: 'bold',
+  },
+  labelLoading: {
+    color: 'black',
+    fontSize: 14,
+    marginVertical: 5,
+    justifyContent: 'center',
+    alignItems: 'center',
+    height: 40,
+  }
 };
