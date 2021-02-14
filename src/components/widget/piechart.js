@@ -82,7 +82,7 @@ const PieChartComponent = ({item, filterParams = {}}) => {
   return (
     <Card style={style.cardSection}>
       <Card.Content style={style.cardContentWrapper}>
-        <Title style>{item.jsonData.title.text}</Title>
+        <Title>{item.jsonData.title.text}</Title>
         {loading ? (
           <ActivityIndicator color="#002DBB" size="large" />
         ) : (
