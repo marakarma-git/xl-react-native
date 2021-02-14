@@ -26,7 +26,7 @@ const PieChartComponent = ({item, filterParams = {}}) => {
   };
 
   const generateChart = () => (
-    <View style={{position: 'relative', top: -20}}>
+    <View style={{position: 'relative', justifyContent: 'center'}}>
       {dataSet.length > 0 ? (
         <View style={{flexDirection: 'row', flexWrap: 'wrap'}}>
           <View style={[style.containerPie, {width: '45%'}]}>
@@ -82,7 +82,7 @@ const PieChartComponent = ({item, filterParams = {}}) => {
   return (
     <Card style={style.cardSection}>
       <Card.Content style={style.cardContentWrapper}>
-        <Title>{item.jsonData.title.text}</Title>
+        <Title style>{item.jsonData.title.text}</Title>
         {loading ? (
           <ActivityIndicator color="#002DBB" size="large" />
         ) : (
