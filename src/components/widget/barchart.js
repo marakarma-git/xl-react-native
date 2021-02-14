@@ -69,14 +69,13 @@ const BarChartComponent = ({item, filterParams = {}}) => {
               }}
               labelComponent={
                   <VictoryTooltip
-                    dx={-50}
-                    dy={15}
+                    dx={-60}
+                    dy={20}
                     orientation="top"
-                    flyoutPadding={2}
                     flyoutStyle={{ stroke:"#00D3A0", fill: 'white' }}
-                    flyoutWidth={150}
+                    flyoutWidth={130}
+                    flyoutHeight={40}
                     labelComponent={<CustomLabel/>}
-                    style={{ textAlign: 'center', fontSize: 10 }} 
                     renderInPortal={false} />
               }
             />
@@ -142,17 +141,17 @@ const CustomLabel = (props) => {
   const {text, x, y} = props;
 
   let yPos = y - 15;
-  let xPos = x- 65;
+  let xPos = x- 60;
 
   return(
     <View style={{ position: "absolute", top: yPos, left: xPos }}>
-      <Text style={{ fontSize: 11 }}>
+      <Text style={{ fontSize: 10 }}>
         {text[0]}
         <Text style={{ fontWeight: 'bold' }}>
           {text[1]}
         </Text>
       </Text>
-      <Text style={{ fontSize: 12 }}>
+      <Text style={{ fontSize: 10 }}>
         {text[2]}
         <Text style={{ fontWeight: 'bold' }}>
           {text[3]}
