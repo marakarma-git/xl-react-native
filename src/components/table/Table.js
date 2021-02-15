@@ -92,6 +92,17 @@ const Table = (props) => {
                   }
                 })}
             </ScrollView>
+            {loading && (
+              <View
+                style={{
+                  position: 'absolute',
+                  top: 0,
+                  bottom: 0,
+                  right: 0,
+                  left: 0,
+                }}
+              />
+            )}
           </View>
         </ScrollView>
       </View>
@@ -173,24 +184,29 @@ const Table = (props) => {
             </View>
           </ScrollView>
         ) : (
-          <>
-            <Text
-              style={{
-                flex: 1,
-                textAlignVertical: 'center',
-                textAlign: 'center',
-                fontWeight: 'bold',
-                fontSize: 16,
-              }}>
-              There is no data, to show
-            </Text>
-            {loading && (
-              <ActivityIndicator
-                color={colors.button_color_one}
-                size={'small'}
-              />
-            )}
-          </>
+          <Text
+            style={{
+              flex: 1,
+              textAlignVertical: 'center',
+              textAlign: 'center',
+              fontWeight: 'bold',
+              fontSize: 16,
+            }}>
+            There is no data, to show
+          </Text>
+        )}
+        {loading && (
+          <View
+            style={{
+              position: 'absolute',
+              top: 0,
+              bottom: 0,
+              right: 0,
+              left: 0,
+              alignItems: 'flex-end',
+            }}>
+            <ActivityIndicator color={colors.button_color_one} size={'small'} />
+          </View>
         )}
       </View>
     </CreateComponent>
