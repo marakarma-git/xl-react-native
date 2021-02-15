@@ -64,7 +64,7 @@ const DashboardPage = ({navigation}) => {
         showsVerticalScrollIndicator={false}>
         <View style={{height: '100%'}}>
           <OverlayBackground />
-          <Card style={[style.cardSection]}>
+          <Card style={[style.cardSection,{ marginTop: '5%' }]}>
             <Card.Content style={style.cardContentWrapper}>
               {loading ? (
                 <ActivityIndicator color="#002DBB" size="large" />
