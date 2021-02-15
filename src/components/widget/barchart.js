@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React, {useState, useEffect, useCallback} from 'react';
 import {useNavigation} from '@react-navigation/native';
 import {requestWidgetData} from '../../redux/action/dashboard_action';
 import {useSelector, useDispatch} from 'react-redux';
@@ -11,7 +11,8 @@ import {
   VictoryContainer
 } from 'victory-native';
 import {Card, Title} from 'react-native-paper';
-import {View, ActivityIndicator, Text} from 'react-native';
+import {View, ActivityIndicator, Text, Dimensions} from 'react-native';
+import Orientation from '../../helpers/orientation';
 
 import Helper from '../../helpers/helper';
 import style from '../../style/home.style';
@@ -24,12 +25,14 @@ const BarChartComponent = ({item, filterParams = {}}) => {
   );
   const userData = useSelector((state) => state.auth_reducer.data);
   const {loading, error} = useSelector((state) => state.dashboard_reducer);
+  const [orientation, setOrientation] = useState('potrait');
 
   const generateChart = () => (
     <View style={{position: 'relative', top: -20, left: -15}}>
       {dataSet.length > 0 ? (
         <VictoryContainer>
-          <VictoryChart>
+          <VictoryChart
+            width={Orientation.getWidth() - (orientation === 'landscape' ? 100 : 50)}>
             <VictoryAxis crossAxis label="Subscriptions" tickFormat={() => ''} />
             <VictoryAxis
               dependentAxis
@@ -40,6 +43,7 @@ const BarChartComponent = ({item, filterParams = {}}) => {
             />
             <VictoryBar
               data={dataSet}
+              width={300}
               events={[{
                   target: "data",
                   eventHandlers: {
@@ -69,7 +73,7 @@ const BarChartComponent = ({item, filterParams = {}}) => {
               }}
               labelComponent={
                   <VictoryTooltip
-                    dx={-60}
+                    dx={-20}
                     dy={20}
                     orientation="top"
                     flyoutStyle={{ stroke:"#00D3A0", fill: 'white' }}
@@ -97,6 +101,15 @@ const BarChartComponent = ({item, filterParams = {}}) => {
     </View>
   );
 
+  const detectOrientation = useCallback(() => {
+    if (Orientation.getHeight() <= Orientation.getWidth()) {
+      setOrientation('landscape');
+    }
+    Dimensions.addEventListener('change', () => {
+      setOrientation(Orientation.isPortrait() ? 'potrait' : 'landscape');
+    });
+  }, [Dimensions]);
+
   useEffect(() => {
     if (dataSet === null) {
       dispatch(
@@ -119,6 +132,8 @@ const BarChartComponent = ({item, filterParams = {}}) => {
         ),
       );
     });
+
+    detectOrientation();
 
     return pageLoad;
   }, [navigation]);

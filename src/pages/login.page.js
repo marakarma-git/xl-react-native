@@ -9,7 +9,6 @@ import {
   TouchableWithoutFeedback,
   Text,
   TouchableOpacity,
-  ActivityIndicator,
   Linking,
   Dimensions,
 } from 'react-native';

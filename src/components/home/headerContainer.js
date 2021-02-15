@@ -32,6 +32,7 @@ const homePageContainer = (props) => {
         orientation={orientation}
         />
       <Navbar
+        orientation={orientation}
         navigation={navigation}
         companyLogo={companyLogo}
         headerTitle={headerTitle}

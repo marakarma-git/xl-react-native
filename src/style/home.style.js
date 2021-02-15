@@ -33,7 +33,6 @@ export default {
     backgroundColor: 'white',
   },
   navbarButton: {
-    width: device_width * 0.05,
     height: '100%',
     resizeMode: 'center',
   },

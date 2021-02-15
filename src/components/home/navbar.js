@@ -3,12 +3,20 @@ import {View, Image, TouchableOpacity, Text} from 'react-native';
 import PropTypes from 'prop-types';
 import {homeStyle} from '../../style/index';
 import {burgerMenu} from '../../assets/images/index';
+import Orientation from '../../helpers/orientation';
+
 const NavbarComponent = (props) => {
-  const {companyLogo, headerTitle} = props || null;
+  const {companyLogo, headerTitle, orientation} = props || null;
   return (
     <View style={[homeStyle.navbarContainer, props.customStyle]}>
       <TouchableOpacity onPress={() => props.navigation.toggleDrawer()}>
-        <Image source={burgerMenu} style={[homeStyle.navbarButton]} />
+        <Image source={burgerMenu} 
+        style={[homeStyle.navbarButton, 
+        { width:
+          orientation === 'landscape' 
+          ? Orientation.getWidth() * 0.03 
+          : Orientation.getWidth() * 0.05
+        }]} />
       </TouchableOpacity>
       {headerTitle && (
         <Text
