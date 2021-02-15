@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import {useDispatch, useSelector} from 'react-redux';
-import {Text, View} from 'react-native';
+import {View} from 'react-native';
 import {useNavigation} from '@react-navigation/native';
 import {subscriptionStyle} from '../../style';
 import Table from '../../components/table/Table';
@@ -67,40 +67,48 @@ const Subscription = () => {
     dispatch(generateArrayFilterParams());
   }, [array_filter]);
   return (
-    <HeaderContainer headerTitle={'Subscription'}>
+    <HeaderContainer headerTitle={'Subscription'} style={{flex: 1}}>
       <View style={subscriptionStyle.containerBackground}>
-        <OverlayBackground />
-        <SearchHeader
-          value={searchText}
-          onChangeText={(e) => dispatch(updateDataSearchText(e))}
-          showMenu={showMenu}
-          onClickColumn={() => setShowMenu((state) => !state)}
-          loading={loading_array_filter || loading}
-        />
-        <AppliedFilter
-          data={array_filter}
-          onDelete={(e) => {
-            const {formId, typeInput} = e || {};
-            dispatch(
-              setSomethingToFilter([
-                {
-                  formId: formId,
-                  needs: `OnChange${typeInput}`,
-                  value:
-                    typeInput === 'DateTimePicker'
-                      ? dayjs().toDate()
-                      : typeInput === 'DropDown'
-                      ? {}
-                      : '',
-                  selectedValue: {},
-                  isSelected: false,
-                },
-              ]),
+        <Table
+          isScrollView={true}
+          stickHeaderIndices={[1]}
+          headerOtherLayout={() => {
+            return (
+              <>
+                <OverlayBackground />
+                <SearchHeader
+                  value={searchText}
+                  onChangeText={(e) => dispatch(updateDataSearchText(e))}
+                  showMenu={showMenu}
+                  onClickColumn={() => setShowMenu((state) => !state)}
+                  loading={loading_array_filter || loading}
+                />
+                <AppliedFilter
+                  data={array_filter}
+                  onDelete={(e) => {
+                    const {formId, typeInput} = e || {};
+                    dispatch(
+                      setSomethingToFilter([
+                        {
+                          formId: formId,
+                          needs: `OnChange${typeInput}`,
+                          value:
+                            typeInput === 'DateTimePicker'
+                              ? dayjs().toDate()
+                              : typeInput === 'DropDown'
+                              ? {}
+                              : '',
+                          selectedValue: {},
+                          isSelected: false,
+                        },
+                      ]),
+                    );
+                  }}
+                />
+                <FilterActionLabel filtered={totalFiltered} />
+              </>
             );
           }}
-        />
-        <FilterActionLabel filtered={totalFiltered} />
-        <Table
           selectedHeaderOrderSort={current_header_sort}
           dataHeader={array_filter}
           dataTable={data_sim_inventory_table}
