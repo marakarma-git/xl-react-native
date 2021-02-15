@@ -144,7 +144,7 @@ const dynamicFilter = [
     cellRowType: 'TableCellStatus',
     config: {
       label: 'State',
-      width: 150,
+      width: 170,
       isTouchable: true,
     },
     shown: true,
@@ -161,7 +161,7 @@ const dynamicFilter = [
     cellRowType: 'TableCellText',
     config: {
       label: 'APN',
-      width: 130,
+      width: 150,
       isTouchable: true,
     },
     shown: true,
@@ -181,7 +181,7 @@ const dynamicFilter = [
     cellRowType: 'TableCellStatus',
     config: {
       label: 'State Lock',
-      width: 150,
+      width: 170,
       isTouchable: true,
     },
     shown: true,
@@ -257,7 +257,7 @@ const dynamicFilter = [
     cellRowType: 'TableCellText',
     config: {
       label: 'PBR Exit Date',
-      width: 170,
+      width: 190,
       isTouchable: true,
       superType: 'DATE',
     },
@@ -311,7 +311,7 @@ const dynamicFilter = [
     cellRowType: 'TableCellText',
     config: {
       label: 'Monthly Data',
-      width: 150,
+      width: 170,
       isTouchable: true,
       superType: 'BYTE',
     },
@@ -329,7 +329,7 @@ const dynamicFilter = [
     cellRowType: 'TableCellText',
     config: {
       label: 'Monthly SMS',
-      width: 150,
+      width: 190,
       isTouchable: true,
     },
     shown: true,

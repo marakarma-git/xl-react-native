@@ -85,7 +85,6 @@ export default {
   },
   keyboardContainerLandscape: {
     height: 350,
-    backgroundColor: 'red',
   },
   footerTitleVersion: {
     position: 'absolute',

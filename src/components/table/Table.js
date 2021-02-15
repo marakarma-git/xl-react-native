@@ -2,6 +2,7 @@ import React, {useState, useRef} from 'react';
 import {View, ScrollView, ActivityIndicator, Text} from 'react-native';
 import PropTypes from 'prop-types';
 import TableCell from './tableCell';
+import {colors} from '../../constant/color';
 const Table = (props) => {
   const {
     dataHeader,
@@ -12,6 +13,9 @@ const Table = (props) => {
     onPressCheckCell,
     loading,
     selectedHeaderOrderSort,
+    isScrollView,
+    headerOtherLayout,
+    stickHeaderIndices,
   } = props || {};
   const headerScrollView = useRef(ScrollView);
   const rowsScrollView = useRef(ScrollView);
@@ -19,8 +23,12 @@ const Table = (props) => {
   const [headerIsScrolling, setHeaderIsScrolling] = useState(false);
   const [rightIsScrolling, setRightIsScrolling] = useState(false);
   const {formId, sortBy} = selectedHeaderOrderSort || {};
+  const CreateComponent = isScrollView ? ScrollView : View;
   return (
-    <View style={{flex: 1}}>
+    <CreateComponent
+      style={{flex: 1}}
+      stickyHeaderIndices={stickHeaderIndices || null}>
+      {headerOtherLayout()}
       <View>
         <ScrollView>
           <View
@@ -84,6 +92,17 @@ const Table = (props) => {
                   }
                 })}
             </ScrollView>
+            {loading && (
+              <View
+                style={{
+                  position: 'absolute',
+                  top: 0,
+                  bottom: 0,
+                  right: 0,
+                  left: 0,
+                }}
+              />
+            )}
           </View>
         </ScrollView>
       </View>
@@ -176,24 +195,21 @@ const Table = (props) => {
             There is no data, to show
           </Text>
         )}
+        {loading && (
+          <View
+            style={{
+              position: 'absolute',
+              top: 0,
+              bottom: 0,
+              right: 0,
+              left: 0,
+              alignItems: 'flex-end',
+            }}>
+            <ActivityIndicator color={colors.button_color_one} size={'small'} />
+          </View>
+        )}
       </View>
-      {loading && (
-        <View
-          style={{
-            flex: 1,
-            position: 'absolute',
-            top: 0,
-            bottom: 0,
-            left: 0,
-            right: 0,
-            backgroundColor: 'rgba(0,0,0,0.3)',
-            justifyContent: 'flex-end',
-            alignItems: 'flex-end',
-          }}>
-          <ActivityIndicator color={'white'} size={'large'} />
-        </View>
-      )}
-    </View>
+    </CreateComponent>
   );
 };
 Table.propTypes = {
@@ -209,6 +225,9 @@ Table.propTypes = {
     orderBy: PropTypes.string,
     sortBy: PropTypes.string,
   }),
+  isScrollView: PropTypes.bool,
+  stickyHeaderIndices: PropTypes.arrayOf([PropTypes.number]),
+  headerOtherLayout: PropTypes.func,
 };
 Table.defaultProps = {
   dataHeader: [],
@@ -217,5 +236,6 @@ Table.defaultProps = {
   onPressCell: () => {},
   onPressCheckHeader: () => {},
   onPressCheckCell: () => {},
+  headerOtherLayout: () => <></>,
 };
 export default Table;
