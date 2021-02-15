@@ -98,7 +98,7 @@ const LandingPage = ({navigation}) => {
       headerTitle={'Home'}>
       <ScrollView>
         <OverlayBackground />
-        <Card style={[style.cardSection]}>
+        <Card style={[style.cardSection, { marginTop: '5%' }]}>
           <Card.Content style={{marginBottom: 20}}>
             <Title>Hi! {firstName + ' ' + lastName}</Title>
           </Card.Content>
