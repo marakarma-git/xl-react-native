@@ -69,8 +69,8 @@ const ChangePasswordPage = ({navigation}) => {
   }, [navigation]);
 
   return (
-    <ScrollView style={[inputloginStyle.container, {backgroundColor: 'white'}]}>
-      <Header notifications={false} />
+    <ScrollView style={{backgroundColor: 'white'}}>
+      <Header notifications={false} orientation={orientation} />
       <NavbarTitle title={'Reset Password'} />
       <KeyboardAvoidingView
         style={
@@ -88,7 +88,7 @@ const ChangePasswordPage = ({navigation}) => {
         <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
           <View
             style={[
-              {flex: 1},
+              {height: '85%'},
               orientation === 'potrait'
                 ? {justifyContent: 'center'}
                 : {marginTop: 10},
@@ -216,7 +216,7 @@ const ChangePasswordPage = ({navigation}) => {
           style={{
             color: '#707070',
             fontSize: 12,
-            bottom: orientation === 'potrait' ? 10 : 5,
+            bottom: orientation === 'potrait' ? 30 : 5,
           }}>
           &copy; {`${year} PT. XL Axiata Tbk. All Right Reserved `}
         </Text>
