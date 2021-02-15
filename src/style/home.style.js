@@ -89,8 +89,7 @@ export default {
   },
   cardSection: {
     flex: 1,
-    marginTop: 30,
-    margin: 10,
+    margin: 5,
   },
   tradeMark: {
     paddingVertical: 2,
@@ -113,7 +112,6 @@ export default {
     borderColor: 'white',
   },
   containerPie: {
-    marginTop: 15,
     justifyContent: 'center',
     alignItems: 'center',
   },
