@@ -111,10 +111,9 @@ export default {
   },
   buttonGroupContainer: {
     flexDirection: 'row',
-    flexWrap: 'wrap',
     justifyContent: 'space-between',
     alignItems: 'center',
-    width: '90%',
+    width: '80%',
     height: 50,
     marginVertical: 20,
   },
@@ -143,7 +142,7 @@ export default {
     alignItems: 'center',
   },
   buttonGroup: {
-    width: 165,
+    width: 150,
     height: 40,
     borderRadius: 5,
     justifyContent: 'center',
