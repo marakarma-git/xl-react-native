@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {View, TextInput, TouchableOpacity, Text} from 'react-native';
+import {View, TouchableOpacity, Text} from 'react-native';
 import PropTypes from 'prop-types';
 import {subscriptionStyle} from '../../style';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
@@ -30,7 +30,7 @@ const FilterActionLabel = (props) => {
           </View>
         </TouchableOpacity>
         <Text style={subscriptionStyle.textMenuTotal}>
-          {`Total: ${total || 0} | Filtered:${filtered || 0} | Selected: ${
+          {`Total: ${total || 0} | Filtered: ${filtered || 0} | Selected: ${
             selected || 0
           }`}
         </Text>

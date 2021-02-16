@@ -4,12 +4,13 @@ import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import {defaultHeightCell, defaultWidthCell} from '../../constant/config';
 import PropTypes from 'prop-types';
 const TableCellHeaderAscDesc = (props) => {
-  const {config, onPress, sorted} = props || {};
+  const {config, onPress, sorted, key} = props || {};
   const {label, width, height, isTouchable, fontColor, backgroundColor} =
     config || {};
   const TouchView = isTouchable ? TouchableOpacity : View;
   return (
     <View
+      key={key}
       style={{
         width: width || defaultWidthCell,
         height: height || defaultHeightCell,

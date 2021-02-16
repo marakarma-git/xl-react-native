@@ -22,10 +22,26 @@ const LandingPage = ({navigation}) => {
   const [orientation, setOrientation] = useState('potrait');
 
   const detectOrientation = useCallback(() => {
+    if (Orientation.getHeight() <= Orientation.getWidth()) {
+      setOrientation('landscape');
+    }
     Dimensions.addEventListener('change', () => {
       setOrientation(Orientation.isPortrait() ? 'potrait' : 'landscape');
     });
   }, [Dimensions]);
+
+  const actualSizePercent = (percent, type = 'width') => {
+    let tempHeight = Orientation.getHeight();
+    let heightAboveBanner = 320; //header navbar margin
+
+    if (Orientation.getHeight() > 600) {
+      tempHeight = Math.round(Orientation.getHeight() - heightAboveBanner);
+    }
+    const orientationSize =
+      type === 'width' ? Orientation.getWidth() : tempHeight;
+    const scale = (percent / 100) * orientationSize;
+    return Math.round(scale);
+  };
 
   const pagination = () => {
     return (
@@ -40,24 +56,18 @@ const LandingPage = ({navigation}) => {
     );
   };
 
+  const heightProportion = actualSizePercent(
+    orientation === 'potrait' ? 131 : 100,
+    'height',
+  );
+
   const renderItem = ({item}) => {
     return (
       <View style={style.cellItem}>
         <Image
           source={{uri: item.bannerImage}}
-          style={
-            orientation === 'potrait'
-              ? {
-                  width: Orientation.getWidth() - 50,
-                  height: Orientation.getHeight() - 350,
-                  resizeMode: 'contain',
-                }
-              : {
-                  width: Orientation.getWidth() - 50,
-                  height: Orientation.getHeight() - 50,
-                  resizeMode: 'contain',
-                }
-          }
+          resizeMode="contain"
+          style={{height: actualSizePercent(90, 'height')}}
         />
       </View>
     );
@@ -74,6 +84,7 @@ const LandingPage = ({navigation}) => {
           userData.access_token,
         ),
       );
+
       detectOrientation();
     });
 
@@ -87,18 +98,28 @@ const LandingPage = ({navigation}) => {
       headerTitle={'Home'}>
       <ScrollView>
         <OverlayBackground />
-        <Card style={[style.cardSection]}>
+        <Card style={[style.cardSection, { marginTop: '5%' }]}>
           <Card.Content style={{marginBottom: 20}}>
             <Title>Hi! {firstName + ' ' + lastName}</Title>
           </Card.Content>
           {carouselItems.length > 0 ? (
-            <View style={{alignItems: 'center', backgroundColor: '#002DBB'}}>
+            <View
+              style={{
+                ...style.carouselWrapper,
+                // ...{ height: heightProportion }
+              }}>
               <Carousel
                 style={{margin: 0, padding: 0}}
                 layout={'default'}
                 data={carouselItems}
-                sliderWidth={Orientation.getWidth() - 50}
-                itemWidth={Orientation.getWidth() - 50}
+                sliderWidth={actualSizePercent(
+                  orientation === 'potrait' ? 85 : 80,
+                  'width',
+                )}
+                itemWidth={actualSizePercent(
+                  orientation === 'potrait' ? 85 : 80,
+                  'width',
+                )}
                 renderItem={renderItem}
                 onSnapToItem={(index) => setActiveIndex(index)}
                 loop

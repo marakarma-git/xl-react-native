@@ -1,6 +1,6 @@
 import React from 'react';
 import {Text} from 'react-native';
-import {Card, Title, Headline} from 'react-native-paper';
+import {Card, Title} from 'react-native-paper';
 
 import style from '../../style/home.style';
 

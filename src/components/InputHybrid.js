@@ -184,8 +184,13 @@ const DateInput = (props) => {
         <RNDateTimePicker
           value={value}
           onChange={(e) => {
-            setShowDate(false);
-            onChange(dayjs(e.nativeEvent.timestamp).toDate());
+            const {type, nativeEvent} = e || {};
+            if (type === 'dismissed') {
+              setShowDate(false);
+            } else {
+              setShowDate(false);
+              onChange(dayjs(e.nativeEvent.timestamp).toDate());
+            }
           }}
           mode={'date'}
           is24Hour={true}

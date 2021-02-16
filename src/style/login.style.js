@@ -1,28 +1,26 @@
 import React from 'react-native';
-import {
-  border_radius,
-  device_height,
-  device_width,
-  height_keyboard,
-  reguler_font_size,
-} from '../constant/config';
-import { colors } from '../constant/color';
+import {device_height, device_width} from '../constant/config';
+import {colors} from '../constant/color';
 export default {
   container: {
-    backgroundColor: 'transparent'
+    backgroundColor: 'transparent',
   },
   imageContainer: {
     alignItems: 'center',
-    marginBottom: 10
+    marginBottom: 10,
   },
   imageSize: {
     width: device_width * 0.5,
     height: device_width * 0.2,
-    resizeMode: 'contain'
+    resizeMode: 'contain',
+  },
+  imageSizeLandscape: {
+    width: device_width * 0.4,
+    height: device_width * 0.15,
+    resizeMode: 'contain',
   },
   iotImage: {
-    width: '100%',
-    resizeMode: 'contain'
+    resizeMode: 'contain',
   },
   textInputContainer: {
     height: 40,
@@ -33,6 +31,16 @@ export default {
     backgroundColor: 'white',
     paddingLeft: 10,
     marginVertical: 10,
+    color: '#707070',
+  },
+  textInputContainerLandscape: {
+    height: 35,
+    fontSize: 10,
+    // borderRadius: border_radius,
+    borderWidth: 1,
+    borderColor: '#A8A8A8',
+    backgroundColor: 'white',
+    paddingLeft: 10,
     color: '#707070',
   },
   loginButton: {
@@ -47,14 +55,14 @@ export default {
   titleText: {
     fontSize: 24,
     fontWeight: 'bold',
-    textAlign: 'center'
+    textAlign: 'center',
   },
   errorText: {
     fontSize: 14,
     color: 'red',
     textAlign: 'center',
     paddingTop: 10,
-    paddingHorizontal: 20
+    paddingHorizontal: 20,
   },
   normalText: {
     fontSize: 12,
@@ -74,16 +82,18 @@ export default {
   },
   keyboardContainer: {
     height: device_height - 100,
-    backgroundColor: 'transparent'
+  },
+  keyboardContainerLandscape: {
+    height: 350,
   },
   footerTitleVersion: {
     position: 'absolute',
-    top: device_height - 20
+    top: device_height - 20,
   },
   forgetPasswordForm: {
     height: device_height * 0.75,
     alignItems: 'center',
-    marginTop: 10
+    marginTop: 10,
   },
   loginContainer: {
     width: '85%',
@@ -93,12 +103,12 @@ export default {
     paddingVertical: 10,
     borderColor: '#8D8D8D',
     backgroundColor: 'white',
-    alignItems: 'center'
+    alignItems: 'center',
   },
-  loginContainerHeader: { 
-    width: '80%', 
-    height: 50, 
-    justifyContent: 'center', 
+  loginContainerHeader: {
+    width: '80%',
+    height: 50,
+    justifyContent: 'center',
     alignItems: 'center',
   },
   formGroup: {
@@ -110,25 +120,46 @@ export default {
     height: 40,
     justifyContent: 'center',
     alignItems: 'center',
-    marginVertical: 10
+    marginVertical: 10,
+    backgroundColor: '#002DBB'
+  },
+  buttonBlockLandscape: {
+    width: '90%',
+    height: 35,
+    marginVertical: 5,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: '#002DBB'
   },
   buttonText: {
     fontSize: 16,
     fontWeight: 'bold',
-    color: 'white'
+    color: 'white',
   },
-  loginSettingWrapper: { 
-    flexDirection: 'row', 
-    width: '90%', 
-    justifyContent: 'space-between', 
+  loginSettingWrapper: {
+    flexDirection: 'row',
+    width: '90%',
+    justifyContent: 'space-between',
     alignItems: 'center',
   },
-  loginSetting: { 
-    flexDirection: 'row', 
-    alignItems: 'center' 
+  loginSetting: {
+    flexDirection: 'row',
+    alignItems: 'center',
   },
   label: {
     fontSize: 12,
     color: '#707070',
   },
+  loginDesc: {
+    color: 'black',
+    fontWeight: 'bold',
+  },
+  labelLoading: {
+    color: 'black',
+    fontSize: 14,
+    marginVertical: 5,
+    justifyContent: 'center',
+    alignItems: 'center',
+    height: 40,
+  }
 };

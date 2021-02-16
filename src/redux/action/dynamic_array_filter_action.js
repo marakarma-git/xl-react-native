@@ -19,10 +19,12 @@ const resetDataSearchText = () => {
     type: reduxString.RESET_DATA_SEARCH_TEXT,
   };
 };
-const updateGeneratedParams = (generatedParams = '') => {
+const updateGeneratedParams = (generatedParams) => {
+  const {count, linkParams} = generatedParams || '';
   return {
     type: reduxString.UPDATE_GENERATED_PARAMS,
-    generatedParams: generatedParams,
+    generatedParams: linkParams,
+    totalFiltered: count,
   };
 };
 const resetGeneratedParams = () => {
@@ -61,6 +63,21 @@ const mergeDataFilter = (dataCustom = []) => {
   return {
     type: reduxString.MERGE_DATA_FILTER,
     data: dataCustom,
+  };
+};
+const updateSortBy = ({formId, orderBy, sortBy}) => {
+  return {
+    type: reduxString.UPDATE_SORT_BY,
+    payload: {
+      formId: formId,
+      orderBy: orderBy,
+      sortBy: sortBy,
+    },
+  };
+};
+const resetSortBy = () => {
+  return {
+    type: reduxString.RESET_SORT_BY,
   };
 };
 const multipleSetShown = (dataShown = []) => {
@@ -132,7 +149,7 @@ const setSomethingToFilter = (dataObject = []) => {
           return dispatch(updateDataFilter(newArr));
         case 'OnChangeDateTimePicker':
           newArr[getIndex].value = value;
-          newArr[getIndex].isSelected = true;
+          newArr[getIndex].isSelected = !newArr[getIndex].isSelected;
           return dispatch(updateDataFilter(newArr));
         case 'OnChangeDropDown':
           newArr[getIndex].value = {...value};
@@ -191,7 +208,7 @@ const resetDataFilter = () => {
               isSelected: false,
               formId: formId,
               typeInput: typeInput,
-              value: dayjs(),
+              value: dayjs().toDate(),
             };
           default:
             return null;
@@ -211,4 +228,6 @@ export {
   mergeDataFilter,
   generateArrayFilterParams,
   updateDataSearchText,
+  updateSortBy,
+  resetSortBy,
 };

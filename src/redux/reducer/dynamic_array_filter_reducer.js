@@ -15,6 +15,7 @@ const dynamicFilter = [
       label: 'IMSI',
       width: 180,
       isTouchable: true,
+      doNotShowOnFilter: true,
     },
     dataOption: [
       {
@@ -35,8 +36,8 @@ const dynamicFilter = [
       },
     ],
     shown: true,
-    sorted: null,
     valueCheck: false,
+    valueOption: null,
   },
   {
     formId: 'iccid-hard-code',
@@ -54,7 +55,6 @@ const dynamicFilter = [
       isTouchable: true,
     },
     shown: true,
-    sorted: null,
   },
   {
     formId: 'detected-imei-hard-code',
@@ -69,11 +69,10 @@ const dynamicFilter = [
     cellRowType: 'TableCellText',
     config: {
       label: 'Detected IMEI',
-      width: 130,
+      width: 200,
       isTouchable: true,
     },
     shown: true,
-    sorted: null,
   },
   {
     formId: 'enterprise-hard-code',
@@ -94,8 +93,7 @@ const dynamicFilter = [
       width: 280,
       isTouchable: true,
     },
-    shown: false,
-    sorted: null,
+    shown: true,
   },
   {
     formId: 'fixed-ip-hard-code',
@@ -108,11 +106,11 @@ const dynamicFilter = [
     cellType: 'TableCellHeaderAscDesc',
     cellRowType: 'TableCellText',
     config: {
-      label: 'Ip Address',
+      label: 'IP Address',
       width: 120,
       isTouchable: true,
     },
-    shown: false,
+    shown: true,
   },
   {
     formId: 'label-hard-code',
@@ -129,8 +127,7 @@ const dynamicFilter = [
       width: 120,
       isTouchable: true,
     },
-    shown: false,
-    sorted: null,
+    shown: true,
   },
   {
     formId: 'state-hard-code',
@@ -147,11 +144,10 @@ const dynamicFilter = [
     cellRowType: 'TableCellStatus',
     config: {
       label: 'State',
-      width: 150,
+      width: 170,
       isTouchable: true,
     },
-    shown: false,
-    sorted: null,
+    shown: true,
   },
   {
     formId: 'apn-hard-code',
@@ -165,11 +161,10 @@ const dynamicFilter = [
     cellRowType: 'TableCellText',
     config: {
       label: 'APN',
-      width: 130,
+      width: 150,
       isTouchable: true,
     },
-    shown: false,
-    sorted: null,
+    shown: true,
   },
   {
     formId: 'state-lock-hard-code',
@@ -186,11 +181,10 @@ const dynamicFilter = [
     cellRowType: 'TableCellStatus',
     config: {
       label: 'State Lock',
-      width: 150,
+      width: 170,
       isTouchable: true,
     },
-    shown: false,
-    sorted: null,
+    shown: true,
   },
   {
     formId: 'subscription-package-name-hard-code',
@@ -210,8 +204,7 @@ const dynamicFilter = [
       width: 280,
       isTouchable: true,
     },
-    shown: false,
-    sorted: null,
+    shown: true,
   },
   {
     formId: 'specification-id-hard-code',
@@ -228,14 +221,14 @@ const dynamicFilter = [
       width: 200,
       isTouchable: true,
     },
-    shown: false,
-    sorted: null,
+    shown: true,
   },
   {
     formId: 'first-activation-date-hard-code',
     api_id: 'firsActivationDate',
     disabled: false,
     value: dayjs().toDate(),
+    isSelectedDate: false,
     typeInput: 'DateTimePicker',
     isSelected: false,
     params: '&firstActivationDate=',
@@ -248,8 +241,7 @@ const dynamicFilter = [
       isTouchable: true,
       superType: 'DATE',
     },
-    shown: false,
-    sorted: null,
+    shown: true,
   },
   {
     formId: 'pbr-exit-date-hard-code',
@@ -258,18 +250,18 @@ const dynamicFilter = [
     value: dayjs().toDate(),
     isSelected: false,
     typeInput: 'DateTimePicker',
+    isSelectedDate: false,
     params: '&pbrExitDate=',
     hard_code: true,
     cellType: 'TableCellHeaderAscDesc',
     cellRowType: 'TableCellText',
     config: {
       label: 'PBR Exit Date',
-      width: 170,
+      width: 190,
       isTouchable: true,
       superType: 'DATE',
     },
-    shown: false,
-    sorted: null,
+    shown: true,
   },
   {
     formId: 'monthly-data-hard-code',
@@ -319,12 +311,11 @@ const dynamicFilter = [
     cellRowType: 'TableCellText',
     config: {
       label: 'Monthly Data',
-      width: 150,
+      width: 170,
       isTouchable: true,
       superType: 'BYTE',
     },
-    shown: false,
-    sorted: null,
+    shown: true,
   },
   {
     formId: 'monthly-sms-hard-code',
@@ -338,16 +329,16 @@ const dynamicFilter = [
     cellRowType: 'TableCellText',
     config: {
       label: 'Monthly SMS',
-      width: 150,
+      width: 190,
       isTouchable: true,
     },
-    shown: false,
-    sorted: null,
+    shown: true,
   },
 ];
 const initialState = {
   searchText: '',
   generatedParams: '',
+  totalFiltered: 0,
   array_filter: dynamicFilter,
   loading_array_filter: false,
 };
@@ -372,6 +363,7 @@ const dynamic_array_filter_reducer = (state = initialState, action) => {
     case reduxString.UPDATE_GENERATED_PARAMS:
       return {
         ...state,
+        totalFiltered: action.totalFiltered,
         generatedParams: action.generatedParams,
       };
     case reduxString.SET_LOADING_FILTER_TRUE:

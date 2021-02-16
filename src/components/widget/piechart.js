@@ -26,7 +26,7 @@ const PieChartComponent = ({item, filterParams = {}}) => {
   };
 
   const generateChart = () => (
-    <View style={{position: 'relative', top: -20}}>
+    <View style={{position: 'relative', justifyContent: 'center'}}>
       {dataSet.length > 0 ? (
         <View style={{flexDirection: 'row', flexWrap: 'wrap'}}>
           <View style={[style.containerPie, {width: '45%'}]}>

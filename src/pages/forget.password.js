@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect, useCallback} from 'react';
 import {base_url} from '../constant/connection';
 import {
   View,
@@ -12,21 +12,32 @@ import {
   Keyboard,
   KeyboardAvoidingView,
   Image,
-  Linking
+  Linking,
+  Dimensions
 } from 'react-native';
 import {Header, NavbarTitle} from '../components';
-import {xlBusol} from '../assets/images/index';
 
 import Axios from 'axios';
-import inputStyles from '../style/account.style';
+import inputloginStyle from '../style/account.style';
 import loginStyle from '../style/login.style';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
+import Orientation from '../helpers/orientation';
 const busolLogo = require('../assets/images/logo/xl-busol-inverted.png');
 
 const ChangePasswordPage = ({navigation}) => {
   const year = new Date().getFullYear();
   const [username, setUsername] = useState('');
   const [requestLoading, setRequestLoading] = useState(false);
+  const [orientation, setOrientation] = useState('potrait');
+
+  const detectOrientation = useCallback(() => {
+    if (Orientation.getHeight() <= Orientation.getWidth()) {
+      setOrientation('landscape');
+    }
+    Dimensions.addEventListener('change', () => {
+      setOrientation(Orientation.isPortrait() ? 'potrait' : 'landscape');
+    });
+  }, [Dimensions]);
 
   const requestChangePassword = async () => {
     try {
@@ -49,57 +60,130 @@ const ChangePasswordPage = ({navigation}) => {
     }
   };
 
+  useEffect(() => {
+    const pageLoad = navigation.addListener('focus', () => {
+      detectOrientation();
+    });
+
+    return pageLoad;
+  }, [navigation]);
+
   return (
-    <ScrollView style={[inputStyles.container, {backgroundColor: 'white'}]}>
-      <Header notifications={false} />
+    <ScrollView style={{backgroundColor: 'white'}}>
+      <Header notifications={false} orientation={orientation} />
       <NavbarTitle title={'Reset Password'} />
       <KeyboardAvoidingView
-        style={loginStyle.keyboardContainer}
+        style={
+          orientation === 'landscape'
+            ? {
+                height: Orientation.getHeight() + 80,
+                backgroundColor: 'transparent',
+              }
+            : {
+                height: Orientation.getHeight() - 150,
+                backgroundColor: 'transparent',
+              }
+        }
         behavior={'padding'}>
         <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-        <View style={{height: '80%', justifyContent: 'center'}}>
-          <View style={loginStyle.imageContainer}>
-            <Image style={loginStyle.imageSize} source={busolLogo} />
-          </View>
-          <View style={[loginStyle.loginContainer]}>
-            <Text style={{ color: "#363636", fontSize: 16, fontWeight: 'bold' }}>Forgot Your Password?</Text>
-            <Text style={{ color: "#707070", fontSize: 10, paddingVertical: 11, width: '90%' }}>
-              Please provide the username that you used when you signed up for your account. We will send you an email that will allow you to reset your password.
-            </Text>
-            <View style={inputStyles.formGroup}>
-              <Text style={inputStyles.label, { color: '#747474' }}>
-                Username
-              </Text>
-              <TextInput
-                onChangeText={(text) => setUsername(text)}
-                style={[inputStyles.textInputContainer, {width: '100%', borderRadius: 0}]}
-                placeholder={'Username'}
+          <View
+            style={[
+              {height: '85%'},
+              orientation === 'potrait'
+                ? {justifyContent: 'center'}
+                : {marginTop: 10},
+            ]}>
+            <View style={[loginStyle.imageContainer, 
+              { height: 100, justifyContent: 'center', alignItems: 'center' }]}>
+              <Image
+                resizeMode="contain"
+                style={
+                  { 
+                    width: Orientation.getWidth() * (orientation === 'potrait' ? 0.5 : 0.4), 
+                    height: Orientation.getHeight() * (orientation === 'potrait' ? 0.2 : 0.15) 
+                  }
+                }
+                source={busolLogo}
               />
             </View>
-            <TouchableOpacity
-              disabled={requestLoading}
-              onPress={requestChangePassword}
-              style={[
-                inputStyles.buttonBlock,
-                {backgroundColor: requestLoading ? '#949494' : '#002DBB', borderRadius: 0},
-              ]}>
-              <Text style={inputStyles.buttonText}>
-                {requestLoading ? (
-                  <ActivityIndicator color={'#fff'} style={styles.buttonText} />
-                ) : (
-                  <Text style={inputStyles.buttonText}>Reset Password</Text>
-                )}
+              <View
+                style={[
+                  loginStyle.loginContainer,
+                  orientation === 'landscape'
+                    ? {width: '48%', marginHorizontal: '26%'}
+                    : {width: '85%', marginHorizontal: '7.5%'},
+                ]}>
+              <Text
+                style={{color: '#363636', fontSize: 16, fontWeight: 'bold'}}>
+                Forgot Your Password?
               </Text>
-            </TouchableOpacity>
-            <Text style={loginStyle.normalText, { fontSize: 11, color: "#747474", fontWeight: '200', letterSpacing: 0.5, paddingVertical: 10 }}>
-              Back to&nbsp;
-              <TouchableWithoutFeedback
-                onPress={() => navigation.navigate('Login')}>
-                <Text style={[loginStyle.linkText, { color: '#3552C6' }]}>Login</Text>
-              </TouchableWithoutFeedback>
-            </Text>
-            <View style={[loginStyle.loginSettingWrapper, {marginTop: 10}]}>
-                <Text style={[loginStyle.label, {fontSize: 11, color: '#23282C'}]}>
+              <Text
+                style={{
+                  color: '#707070',
+                  fontSize: 10,
+                  paddingVertical: 11,
+                  width: '90%',
+                }}>
+                Please provide the username that you used when you signed up for
+                your account. We will send you an email that will allow you to
+                reset your password.
+              </Text>
+              <View style={inputloginStyle.formGroup}>
+                <Text style={(inputloginStyle.label, {color: '#747474'})}>
+                  Username
+                </Text>
+                <TextInput
+                  onChangeText={(text) => setUsername(text)}
+                  style={[
+                    inputloginStyle.textInputContainer,
+                    {width: '100%', borderRadius: 0},
+                  ]}
+                  placeholder={'Username'}
+                />
+              </View>
+              <TouchableOpacity
+                disabled={requestLoading}
+                onPress={requestChangePassword}
+                style={[
+                  inputloginStyle.buttonBlock,
+                  {
+                    backgroundColor: requestLoading ? '#949494' : '#002DBB',
+                    borderRadius: 0,
+                  },
+                ]}>
+                <Text style={inputloginStyle.buttonText}>
+                  {requestLoading ? (
+                    <ActivityIndicator
+                      color={'#fff'}
+                      style={loginStyle.buttonText}
+                    />
+                  ) : (
+                    <Text style={inputloginStyle.buttonText}>Reset Password</Text>
+                  )}
+                </Text>
+              </TouchableOpacity>
+              <Text
+                style={
+                  (loginStyle.normalText,
+                  {
+                    fontSize: 11,
+                    color: '#747474',
+                    fontWeight: '200',
+                    letterSpacing: 0.5,
+                    paddingVertical: 10,
+                  })
+                }>
+                Back to&nbsp;
+                <TouchableWithoutFeedback
+                  onPress={() => navigation.navigate('Login')}>
+                  <Text style={[loginStyle.linkText, {color: '#3552C6'}]}>
+                    Login
+                  </Text>
+                </TouchableWithoutFeedback>
+              </Text>
+              <View style={[loginStyle.loginSettingWrapper, {marginTop: 10}]}>
+                <Text
+                  style={[loginStyle.label, {fontSize: 11, color: '#23282C'}]}>
                   Need support?
                 </Text>
                 <Text>
@@ -123,12 +207,17 @@ const ChangePasswordPage = ({navigation}) => {
                   </TouchableWithoutFeedback>
                 </Text>
               </View>
+            </View>
           </View>
-        </View>
         </TouchableWithoutFeedback>
       </KeyboardAvoidingView>
-      <View style={(loginStyle.footer, {bottom: 100})}>
-        <Text style={{color: '#707070', fontSize: 12, textAlign: 'center'}}>
+      <View style={(loginStyle.footer, {alignItems: 'center'})}>
+        <Text
+          style={{
+            color: '#707070',
+            fontSize: 12,
+            bottom: orientation === 'potrait' ? 30 : 5,
+          }}>
           &copy; {`${year} PT. XL Axiata Tbk. All Right Reserved `}
         </Text>
       </View>

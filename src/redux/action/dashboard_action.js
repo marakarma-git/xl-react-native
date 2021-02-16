@@ -114,7 +114,7 @@ export const getCarousel = (accessToken) => {
             banner.bannerImage = `data:image/jpeg;base64,${banner.bannerImage}`;
           });
 
-          dispatch(setCarousel(data.result.slice(0, 4)));
+          dispatch(setCarousel(data.result));
         } else {
           throw new Error(data);
         }
@@ -152,7 +152,14 @@ const setTopTrafficStatistics = (data, params) => {
   const newDataSet = [];
 
   data.map((datas) => {
-    newDataSet.push({x: datas.msisdn, y: +datas.datausage});
+    newDataSet.push({
+      x: datas.msisdn, 
+      y: +datas.datausage, 
+      label: [
+        `MSISDN: `, 
+        `${datas.msisdn}`, 
+        `Data usage: `, 
+        `${Helper.formatBytes(+datas.datausage)}`]});
   });
 
   Helper.sortAscending(newDataSet, 'y');

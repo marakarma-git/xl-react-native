@@ -8,9 +8,8 @@ import {
 import axios from 'axios';
 import lod from 'lodash';
 import {base_url} from '../../constant/connection';
-import {authLogout} from './auth_action';
+import {authFailed, authLogout} from './auth_action';
 import {CommonActions} from '@react-navigation/native';
-
 const getCustomLabelLoading = () => {
   return {
     type: reduxString.GET_CUSTOM_LABEL_LOADING,
@@ -63,11 +62,12 @@ const getCustomLabel = (navigation) => {
               typeInput: fieldType === 'Combo Box' ? 'DropDown' : 'TextInput',
               value: fieldType === 'Combo Box' ? {} : '',
               hard_code: false,
-              cellType: 'TableCellText',
+              cellType: 'TableCellHeaderAscDesc',
               cellRowType: 'TableCellText',
               config: {
                 label: customLabel,
-                width: 120,
+                width: 200,
+                isTouchable: true,
               },
               params: `&customLabel${labelNumber}=`,
               shown: false,
@@ -80,7 +80,13 @@ const getCustomLabel = (navigation) => {
           dispatch(setLoadingFilterFalse());
         }
       })
-      .catch(() => dispatch(setLoadingFilterFalse()));
+      .catch((e) => {
+        if (e.response.data) {
+          dispatch(authFailed(e.response.data));
+        } else {
+          alert('Something went wrong went fetching data');
+        }
+      });
   };
 };
 export {getCustomLabel};

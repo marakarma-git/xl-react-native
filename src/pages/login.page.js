@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect, useCallback} from 'react';
 import {
   View,
   ScrollView,
@@ -9,8 +9,8 @@ import {
   TouchableWithoutFeedback,
   Text,
   TouchableOpacity,
-  ActivityIndicator,
   Linking,
+  Dimensions,
 } from 'react-native';
 import lod from 'lodash';
 import styles from '../style/login.style';
@@ -19,6 +19,7 @@ import {useDispatch, useSelector} from 'react-redux';
 import {loginBrand} from '../assets/images/index';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import CheckBox from '@react-native-community/checkbox';
+import Orientation from '../helpers/orientation';
 const busolLogo = require('../assets/images/logo/xl-busol-inverted.png');
 
 const Login = ({navigation}) => {
@@ -28,10 +29,20 @@ const Login = ({navigation}) => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [errorText, setErrorText] = useState(null);
+  const [orientation, setOrientation] = useState('potrait');
   const dispatch = useDispatch();
   const {data, error, isLoggedIn, alreadyRequest} = useSelector(
     (state) => state.auth_reducer,
   );
+
+  const detectOrientation = useCallback(() => {
+    if (Orientation.getHeight() <= Orientation.getWidth()) {
+      setOrientation('landscape');
+    }
+    Dimensions.addEventListener('change', () => {
+      setOrientation(Orientation.isPortrait() ? 'potrait' : 'landscape');
+    });
+  }, [Dimensions]);
 
   useEffect(() => {
     if (isLoggedIn) {
@@ -50,6 +61,8 @@ const Login = ({navigation}) => {
         errorHandler(error);
       }
     }
+
+    detectOrientation();
   }, [data, error, isLoggedIn]);
 
   const onSubmit = () => {
@@ -86,19 +99,78 @@ const Login = ({navigation}) => {
   return (
     <ScrollView style={styles.container}>
       <KeyboardAvoidingView
-        style={styles.keyboardContainer}
+        style={
+          orientation === 'landscape'
+            ? {
+                height: errorText
+                  ? Orientation.getHeight() + 100
+                  : Orientation.getHeight() + 70,
+                backgroundColor: 'transparent',
+              }
+            : {
+                height: Orientation.getHeight() - 100,
+                backgroundColor: 'transparent',
+              }
+        }
         behavior={'padding'}>
         <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-          <View style={{flex: 1, justifyContent: 'center'}}>
-            <View style={styles.imageContainer}>
-              <Image style={styles.imageSize} source={busolLogo} />
+          <View
+            style={[
+              {flex: 1},
+              orientation === 'potrait'
+                ? {justifyContent: 'center'}
+                : {marginTop: 10},
+            ]}>
+            <View style={[styles.imageContainer, 
+              { height: 100, justifyContent: 'center', alignItems: 'center' }]}>
+              <Image
+                resizeMode="contain"
+                style={
+                  { 
+                    width: Orientation.getWidth() * (orientation === 'potrait' ? 0.5 : 0.4), 
+                    height: Orientation.getHeight() * (orientation === 'potrait' ? 0.2 : 0.15) 
+                  }
+                }
+                source={busolLogo}
+              />
             </View>
-            <View style={styles.loginContainer}>
+            <View
+              style={[
+                styles.loginContainer,
+                orientation === 'landscape'
+                  ? {width: '48%', marginHorizontal: '26%'}
+                  : {width: '85%', marginHorizontal: '7.5%'},
+              ]}>
               <View style={styles.loginContainerHeader}>
-                <Image source={loginBrand} style={styles.iotImage} />
+                <Image
+                  source={loginBrand}
+                  resizeMode="contain"
+                  style={
+                    orientation === 'landscape'
+                      ? {width: '80%'}
+                      : {width: '100%'}
+                  }
+                />
               </View>
+              <Text
+                style={{
+                  ...styles.loginDesc,
+                  ...{
+                    fontSize: orientation === 'landscape' ? 14 : 16,
+                    marginVertical: orientation === 'landscape' ? 2 : '3%',
+                  },
+                }}>
+                Sign in to your account:
+              </Text>
               {errorText && (
-                <Text style={[styles.errorText, {paddingBottom: 10}]}>
+                <Text
+                  style={[
+                    styles.errorText,
+                    {
+                      paddingBottom: 5,
+                      fontSize: orientation === 'landscape' ? 12 : 14,
+                    },
+                  ]}>
                   {errorText}
                 </Text>
               )}
@@ -108,7 +180,11 @@ const Login = ({navigation}) => {
                   editable={!localLoading}
                   placeholder="Username"
                   placeholderColor="#c4c3cb"
-                  style={styles.textInputContainer}
+                  style={
+                    orientation === 'landscape'
+                      ? styles.textInputContainerLandscape
+                      : styles.textInputContainer
+                  }
                   onChangeText={(e) => setUsername(e)}
                 />
               </View>
@@ -119,7 +195,11 @@ const Login = ({navigation}) => {
                   placeholder="Password"
                   placeholderColor="#c4c3cb"
                   secureTextEntry
-                  style={styles.textInputContainer}
+                  style={
+                    orientation === 'landscape'
+                      ? styles.textInputContainerLandscape
+                      : styles.textInputContainer
+                  }
                   onChangeText={(e) => setPassword(e)}
                   onSubmitEditing={() => onSubmit()}
                 />
@@ -133,11 +213,22 @@ const Login = ({navigation}) => {
                     onCheckColor="#002DBB"
                     onValueChange={(value) => setRememberMe(value)}
                   />
-                  <Text style={{fontSize: 11, color: "#747474", fontWeight: '200', letterSpacing: 0.5}}>Remember me</Text>
+                  <Text
+                    style={{
+                      fontSize: 11,
+                      color: '#747474',
+                      fontWeight: '200',
+                      letterSpacing: 0.5,
+                    }}>
+                    Remember me
+                  </Text>
                 </View>
                 <TouchableWithoutFeedback
                   onPress={() => navigation.navigate('Reset Password')}>
-                  <Text style={styles.linkText, { color: '#3552C6', fontSize: 11 }}>Forgot password?</Text>
+                  <Text
+                    style={(styles.linkText, {color: '#3552C6', fontSize: 11})}>
+                    Forgot password?
+                  </Text>
                 </TouchableWithoutFeedback>
               </View>
               {/* To-do */}
@@ -157,24 +248,21 @@ const Login = ({navigation}) => {
                        </Text>
                     </View>
                 </View> */}
-              <TouchableOpacity
-                disabled={localLoading}
-                onPress={onSubmit}
-                style={[
-                  styles.buttonBlock,
-                  {backgroundColor: localLoading ? '#949494' : '#002DBB'},
-                ]}>
-                <Text style={styles.buttonText}>
-                  {localLoading ? (
-                    <ActivityIndicator
-                      color={'#fff'}
-                      style={styles.buttonText}
-                    />
-                  ) : (
+              {localLoading ? (
+                <Text style={styles.labelLoading}>Loading ...</Text>
+              ) : (
+                <TouchableOpacity
+                  onPress={onSubmit}
+                  style={[
+                    orientation === 'landscape'
+                      ? styles.buttonBlockLandscape
+                      : styles.buttonBlock,
+                  ]}>
+                  <Text style={styles.buttonText}>
                     <Text style={styles.buttonText}>LOGIN</Text>
-                  )}
-                </Text>
-              </TouchableOpacity>
+                  </Text>
+                </TouchableOpacity>
+              )}
               <View style={[styles.loginSettingWrapper, {marginTop: 10}]}>
                 <Text style={[styles.label, {fontSize: 11, color: '#23282C'}]}>
                   Need support?
@@ -191,9 +279,7 @@ const Login = ({navigation}) => {
                 <Text>
                   <FontAwesome name="envelope" size={11} color="grey" />
                   <TouchableWithoutFeedback
-                    onPress={() =>
-                      Linking.openURL('mailto://cs-busol@xl.co.id')
-                    }>
+                    onPress={() => Linking.openURL('mailto:cs-busol@xl.co.id')}>
                     <Text style={[styles.linkText, {fontSize: 11}]}>
                       &nbsp;cs-busol@xl.co.id{' '}
                     </Text>
@@ -204,8 +290,13 @@ const Login = ({navigation}) => {
           </View>
         </TouchableWithoutFeedback>
       </KeyboardAvoidingView>
-      <View style={styles.footer}>
-        <Text style={{color: '#707070', fontSize: 12, bottom: 0}}>
+      <View style={(styles.footer, {alignItems: 'center'})}>
+        <Text
+          style={{
+            color: '#707070',
+            fontSize: 12,
+            bottom: orientation === 'potrait' ? 0 : 5,
+          }}>
           &copy; {`${year} PT. XL Axiata Tbk. All Right Reserved `}
         </Text>
       </View>
