@@ -129,7 +129,7 @@ const Subscription = () => {
                   return 'DESC';
                 }
                 if (sortBy === 'DESC') {
-                  return '';
+                  return 'RESET';
                 }
               }
             };

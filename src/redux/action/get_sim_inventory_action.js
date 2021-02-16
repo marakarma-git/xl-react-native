@@ -5,6 +5,7 @@ import {base_url} from '../../constant/connection';
 import {authFailed} from './auth_action';
 import dayjs from 'dayjs';
 import Helper from '../../helpers/helper';
+import lod from 'lodash';
 const getSimInventoryLoading = () => {
   return {
     type: reduxString.GET_SIM_INVENTORY_LOADING,
@@ -153,16 +154,34 @@ const callSimInventory = (paginate) => {
     const {access_token} = data || {};
     const getPage = page_value || current_page;
     const getSize = size_value || current_size;
+    const getOrderBy = () => {
+      if (sortByPaginate === 'RESET') {
+        return '';
+      } else {
+        if (orderByPaginate) {
+          return orderByPaginate;
+        } else {
+          return orderBy;
+        }
+      }
+    };
+    const getSortBy = () => {
+      if (sortByPaginate === 'RESET') {
+        return '';
+      } else {
+        if (sortByPaginate) {
+          return sortByPaginate;
+        } else {
+          return sortBy;
+        }
+      }
+    };
     console.log(
-      `${base_url}/dcp/sim/getSimInventory?page=${getPage}&size=${getSize}&keyword=${searchText}&sort=${
-        orderBy || orderByPaginate || ''
-      }&order=${sortBy || sortByPaginate || ''}${generatedParams}`,
+      `${base_url}/dcp/sim/getSimInventory?page=${getPage}&size=${getSize}&keyword=${searchText}&sort=${getOrderBy()}&order=${getSortBy()}${generatedParams}`,
     );
     axios
       .get(
-        `${base_url}/dcp/sim/getSimInventory?page=${getPage}&size=${getSize}&keyword=${searchText}&sort=${
-          orderBy || orderByPaginate || ''
-        }&order=${sortBy || sortByPaginate || ''}${generatedParams}`,
+        `${base_url}/dcp/sim/getSimInventory?page=${getPage}&size=${getSize}&keyword=${searchText}&sort=${getOrderBy()}&order=${getSortBy()}`,
         {
           headers: {
             Authorization: `Bearer ${access_token}`,
