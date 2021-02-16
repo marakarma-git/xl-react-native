@@ -88,7 +88,8 @@ export default {
   },
   cardSection: {
     flex: 1,
-    margin: 5,
+    marginVertical: 5,
+    marginHorizontal: '2%'
   },
   tradeMark: {
     paddingVertical: 2,

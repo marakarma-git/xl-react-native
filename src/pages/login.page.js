@@ -103,8 +103,8 @@ const Login = ({navigation}) => {
           orientation === 'landscape'
             ? {
                 height: errorText
-                  ? Orientation.getHeight() + 70
-                  : Orientation.getHeight() + 30,
+                  ? Orientation.getHeight() + 100
+                  : Orientation.getHeight() + 70,
                 backgroundColor: 'transparent',
               }
             : {
@@ -121,13 +121,15 @@ const Login = ({navigation}) => {
                 ? {justifyContent: 'center'}
                 : {marginTop: 10},
             ]}>
-            <View style={styles.imageContainer}>
+            <View style={[styles.imageContainer, 
+              { height: 100, justifyContent: 'center', alignItems: 'center' }]}>
               <Image
                 resizeMode="contain"
                 style={
-                  orientation === 'landscape'
-                    ? styles.imageSizeLandscape
-                    : styles.imageSize
+                  { 
+                    width: Orientation.getWidth() * (orientation === 'potrait' ? 0.5 : 0.4), 
+                    height: Orientation.getHeight() * (orientation === 'potrait' ? 0.2 : 0.15) 
+                  }
                 }
                 source={busolLogo}
               />
