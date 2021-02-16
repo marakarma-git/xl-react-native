@@ -3,6 +3,8 @@ import {colors} from '../../constant/color';
 import axios from 'axios';
 import {base_url} from '../../constant/connection';
 import {authFailed} from './auth_action';
+import dayjs from 'dayjs';
+import Helper from '../../helpers/helper';
 const getSimInventoryLoading = () => {
   return {
     type: reduxString.GET_SIM_INVENTORY_LOADING,
@@ -83,12 +85,21 @@ const dataMatcherArray2D = (listData = [], headerData = []) => {
       const {shown, api_id, config, ...rest} = subItem || {};
       const {width, superType} = config || {};
       if (shown) {
+        const createObject = (superType, labelValue) => {
+          if (superType === 'DATE') {
+            return labelValue ? dayjs(labelValue).format('DD-MM-YYYY') : '';
+          } else if (superType === 'BYTE') {
+            return Helper.formatBytes(labelValue);
+          } else {
+            return labelValue;
+          }
+        };
         const generateObject = {
           cellType: subItem.cellRowType,
           config: {
             width: width,
             superType: superType,
-            label: item[`${api_id}`],
+            label: createObject(superType, item[`${api_id}`]),
             backgroundColor: index % 2 ? colors.gray_table : 'white',
           },
           item: {...item},
