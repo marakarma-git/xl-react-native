@@ -103,8 +103,8 @@ const Login = ({navigation}) => {
           orientation === 'landscape'
             ? {
                 height: errorText
-                  ? Orientation.getHeight() + 100
-                  : Orientation.getHeight() + 70,
+                  ? Orientation.getHeight() + 120
+                  : Orientation.getHeight() + 90,
                 backgroundColor: 'transparent',
               }
             : {
@@ -232,7 +232,7 @@ const Login = ({navigation}) => {
                 </TouchableWithoutFeedback>
               </View>
               {/* To-do */}
-              {/* <View style={styles.loginSettingWrapper}>
+              <View style={styles.loginSettingWrapper}>
                     <View style={styles.loginSetting}>
                       <CheckBox disabled={false} onCheckColor="#002DBB"/>
                       <Text style={{ fontSize: 11 }}>I aggree to the&nbsp;
@@ -247,7 +247,7 @@ const Login = ({navigation}) => {
                       </TouchableWithoutFeedback>
                        </Text>
                     </View>
-                </View> */}
+                </View>
               {localLoading ? (
                 <Text style={styles.labelLoading}>Loading ...</Text>
               ) : (
