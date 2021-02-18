@@ -1,8 +1,8 @@
 import React, {useEffect, useState} from 'react';
 import {useDispatch, useSelector} from 'react-redux';
-import {View} from 'react-native';
+import {ActivityIndicator, View} from 'react-native';
 import {useNavigation} from '@react-navigation/native';
-import {subscriptionStyle} from '../../style';
+import {inputHybridStyle, subscriptionStyle} from '../../style';
 import Table from '../../components/table/Table';
 import TableFooter from '../../components/subscription/tableFooter';
 import SearchHeader from '../../components/subscription/searchHeader';
@@ -25,6 +25,7 @@ import {
 import ModalMenuPicker from '../../components/modal/ModalMenuPicker';
 import AppliedFilter from '../../components/subscription/appliedFilter';
 import dayjs from 'dayjs';
+import {colors} from '../../constant/color';
 
 const Subscription = () => {
   const dispatch = useDispatch();
@@ -81,7 +82,6 @@ const Subscription = () => {
                   onChangeText={(e) => dispatch(updateDataSearchText(e))}
                   showMenu={showMenu}
                   onClickColumn={() => setShowMenu((state) => !state)}
-                  loading={loading_array_filter || loading}
                 />
                 <AppliedFilter
                   data={array_filter}
@@ -112,7 +112,6 @@ const Subscription = () => {
           selectedHeaderOrderSort={current_header_sort}
           dataHeader={array_filter}
           dataTable={data_sim_inventory_table}
-          loading={loading}
           onPressHeader={(e) => {
             const {dataSort, item} = e || {};
             const {sortBy, formId: currentFormId} = dataSort || {};
@@ -168,7 +167,6 @@ const Subscription = () => {
           }
         />
         <TableFooter
-          loading={loading}
           totalPage={current_total_page}
           currentPage={current_page}
           perPageValue={current_size}
@@ -188,6 +186,25 @@ const Subscription = () => {
             );
           }}
         />
+        {loading_array_filter ||
+          (loading && (
+            <View
+              style={{
+                position: 'absolute',
+                top: 0,
+                bottom: 0,
+                right: 0,
+                left: 0,
+                justifyContent: 'center',
+                alignItems: 'center',
+              }}>
+              <View style={inputHybridStyle.modalBackdrop} />
+              <ActivityIndicator
+                size={'large'}
+                color={colors.button_color_one}
+              />
+            </View>
+          ))}
       </View>
       {showMenu && (
         <ModalMenuPicker
