@@ -293,16 +293,16 @@ const dynamicFilter = [
         label: 'KiB',
       },
       {
-        value: 'MIB',
-        label: 'MIB',
+        value: 'MiB',
+        label: 'MiB',
       },
       {
-        value: 'GIB',
-        label: 'GIB',
+        value: 'GiB',
+        label: 'GiB',
       },
       {
-        value: 'TIB',
-        label: 'TIB',
+        value: 'TiB',
+        label: 'TiB',
       },
     ],
     selectedValue: {},
