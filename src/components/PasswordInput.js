@@ -57,7 +57,7 @@ const passwordFormArray = [
   },
 ];
 
-const PasswordInput = ({submitHandler, requestLoading, navigation}) => {
+const PasswordInput = ({submitHandler, requestLoading, navigation, orientation}) => {
   const userData = useSelector((state) => state.auth_reducer.data);
   const [passwordForm, setPasswordForm] = useState(passwordFormArray);
   const [passwordRules, setPasswordRules] = useState(passwordRulesArray);
@@ -178,35 +178,39 @@ const PasswordInput = ({submitHandler, requestLoading, navigation}) => {
   }, [form]);
 
   return (
-    <View style={[styles.formContainer, {marginTop: 10}]}>
-      {generateForm()}
-      <View style={styles.passwordRulesContainer}>
-        <Text style={{fontSize: 12, color: '#949494', textAlign: 'left'}}>
-          Follow the Password validation rules:{' '}
-        </Text>
-        {generatePasswordRules()}
+    <View style={{ alignItems: 'center', position: 'relative', top: -60 }}>
+      <View style={[styles.formContainer, 
+      {marginTop: 10, borderColor: '#8D8D8D', borderWidth: 0.8, width: orientation === 'potrait' ? '90%' : '50%', backgroundColor: 'white'}]}>
+        <Text style={styles.headerText}>Password</Text>
+        {generateForm()}
+        <View style={styles.passwordRulesContainer}>
+          <Text style={{fontSize: 12, color: '#949494', textAlign: 'left'}}>
+            Follow the Password validation rules:{' '}
+          </Text>
+          {generatePasswordRules()}
+        </View>
       </View>
-      <View style={styles.buttonGroupContainer}>
-        <TouchableOpacity
-          onPress={() => navigation.goBack()}
-          style={[styles.buttonGroup, {backgroundColor: '#AFAFAF'}]}>
-          <Text style={styles.buttonText}>Cancel</Text>
-        </TouchableOpacity>
-        <TouchableOpacity
-          onPress={() => submitHandler(form)}
-          disabled={!formComplete ? true : false}
-          style={[
-            styles.buttonGroup,
-            {backgroundColor: !formComplete ? '#949494' : '#002DBB'},
-          ]}>
-          {requestLoading ? (
-            <ActivityIndicator color={'#fff'} style={styles.buttonText} />
-          ) : (
-            <Text style={styles.buttonText}>Save Changes</Text>
-          )}
-        </TouchableOpacity>
+        <View style={[styles.buttonGroupContainer, { width: orientation === 'potrait' ? '80%' : '40%' }]}>
+          <TouchableOpacity
+            onPress={() => navigation.goBack()}
+            style={[styles.buttonGroup, {backgroundColor: '#AFAFAF'}]}>
+            <Text style={styles.buttonText}>Cancel</Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            onPress={() => submitHandler(form)}
+            disabled={!formComplete ? true : false}
+            style={[
+              styles.buttonGroup,
+              {backgroundColor: '#002DBB'},
+            ]}>
+            {requestLoading ? (
+              <ActivityIndicator color={'#fff'} style={styles.buttonText} />
+            ) : (
+              <Text style={styles.buttonText}>Submit</Text>
+            )}
+          </TouchableOpacity>
+        </View>
       </View>
-    </View>
   );
 };
 

@@ -125,7 +125,6 @@ export default {
     borderWidth: 1,
     borderColor: '#A8A8A8',
     backgroundColor: 'white',
-    borderRadius: 5,
     marginVertical: 10,
     color: '#707070',
     justifyContent: 'space-between',
@@ -161,4 +160,11 @@ export default {
     fontWeight: 'bold',
     color: 'white',
   },
+  headerText: {
+    textAlign: 'left', 
+    width: '90%', 
+    fontSize: 18, 
+    fontWeight: 'bold',
+    paddingVertical: 10
+  }
 };

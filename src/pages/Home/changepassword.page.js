@@ -71,8 +71,9 @@ const ChangePasswordPage = ({navigation}) => {
   return (
     <ScrollView style={[styles.container, {backgroundColor: 'white'}]}>
       <Header notifications={false} orientation={orientation}/>
-      <NavbarTitle title={'Change Password'} />
+      <NavbarTitle title={'Change Password'} type={'change'}/>
       <PasswordInput
+        orientation={orientation}
         navigation={navigation}
         submitHandler={submitHandler}
         requestLoading={requestLoading}
