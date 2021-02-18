@@ -27,6 +27,45 @@ class Helper {
     }
   }
 
+  static convertToByte(value, type) {
+    const dataType = [
+      {
+        type: 'KB',
+        value: 1000,
+      },
+      {
+        type: 'MB',
+        value: 1000000,
+      },
+      {
+        type: 'GB',
+        value: 1000000000,
+      },
+      {
+        type: 'TB',
+        value: 1000000000000,
+      },
+      {
+        type: 'KiB',
+        value: 1024,
+      },
+      {
+        type: 'MiB',
+        value: 1048576,
+      },
+      {
+        type: 'GiB',
+        value: 1073741824,
+      },
+      {
+        type: 'TiB',
+        value: 1099511627776,
+      },
+    ];
+    const convertVal = dataType.find((d) => d.type === type);
+    return convertVal.value * value;
+  }
+
   static sortAscending(data, key) {
     if (typeof data === 'object') {
       for (let i = 0; i < data.length; i++) {
