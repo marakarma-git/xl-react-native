@@ -14,6 +14,7 @@ const initialState = {
     orderBy: '',
     sortBy: '',
   },
+  current_params_applied: null,
 };
 const get_sim_inventory_reducer = (state = initialState, action) => {
   switch (action.type) {
@@ -49,6 +50,7 @@ const get_sim_inventory_reducer = (state = initialState, action) => {
           orderBy: '',
           sortBy: '',
         },
+        current_params_applied: action.paramsApplied,
       };
     case reduxString.GET_SIM_INVENTORY_RESET:
       return state;

@@ -47,6 +47,7 @@ const Subscription = () => {
     current_page,
     current_total_page,
     current_header_sort,
+    current_params_applied,
   } = useSelector((state) => state.get_sim_inventory_reducer);
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -67,6 +68,11 @@ const Subscription = () => {
   useEffect(() => {
     dispatch(generateArrayFilterParams());
   }, [array_filter]);
+  useEffect(() => {
+    if (current_params_applied) {
+      console.log('params_ada_isi: ' + current_params_applied);
+    }
+  }, [current_params_applied]);
   return (
     <HeaderContainer headerTitle={'Subscription'} style={{flex: 1}}>
       <View style={subscriptionStyle.containerBackground}>

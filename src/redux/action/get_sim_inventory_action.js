@@ -203,6 +203,7 @@ const callSimInventory = (paginate) => {
               currentSize: size,
               selectedHeaderSort:
                 selectedHeaderSortPaginate || selectedHeaderSort,
+              paramsApplied: generatedParams || null,
             }),
           );
         } else {
