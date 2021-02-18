@@ -225,7 +225,7 @@ const dynamicFilter = [
   },
   {
     formId: 'first-activation-date-hard-code',
-    api_id: 'firsActivationDate',
+    api_id: 'firstActivationDate',
     disabled: false,
     value: dayjs().toDate(),
     isSelectedDate: false,

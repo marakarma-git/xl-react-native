@@ -45,6 +45,8 @@ const TableCellStatus = (props) => {
             color={
               label === 'Active'
                 ? colors.green_status
+                : label === 'Pause'
+                ? 'yellow'
                 : label === 'Deactivated'
                 ? 'red'
                 : label === 'Terminated'
