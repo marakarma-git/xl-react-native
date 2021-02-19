@@ -62,27 +62,29 @@ const DashboardPage = ({navigation}) => {
       <ScrollView
         style={{marginBottom: 130}}
         showsVerticalScrollIndicator={false}>
-        <View style={{height: '100%'}}>
+        <View style={{height: '100%', alignItems: 'center'}}>
           <OverlayBackground />
-          <Card style={[style.cardSection,{ marginTop: '5%' }]}>
-            <Card.Content style={style.cardContentWrapper}>
-              {loading ? (
-                <ActivityIndicator color="#002DBB" size="large" />
-              ) : (
-                <FlatList
-                  data={summaryDashboardData}
-                  renderItem={renderItem}
-                  keyExtractor={(item) => item.title}
-                  numColumns={2}
-                  columnWrapperStyle={style.cardContentRow}
-                />
+          <View style={style.cardWrapper}>
+            <Card style={[style.cardSection,{ marginTop: '3%' }]}>
+              <Card.Content style={style.cardContentWrapper}>
+                {loading ? (
+                  <ActivityIndicator color="#002DBB" size="large" />
+                ) : (
+                  <FlatList
+                    data={summaryDashboardData}
+                    renderItem={renderItem}
+                    keyExtractor={(item) => item.title}
+                    numColumns={2}
+                    columnWrapperStyle={style.cardContentRow}
+                  />
+                )}
+              </Card.Content>
+            </Card>
+            <View>
+              {widgetList && (
+                <WidgetStore widgetList={widgetList} />
               )}
-            </Card.Content>
-          </Card>
-          <View>
-            {widgetList && (
-              <WidgetStore widgetList={widgetList} />
-            )}
+            </View>
           </View>
         </View>
       </ScrollView>

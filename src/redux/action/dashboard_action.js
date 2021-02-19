@@ -193,6 +193,7 @@ export const requestWidgetData = (
           if (type === 'sim') {
             dispatch(setSimStatistics(data.result.dataset, filterParams));
           } else {
+            console.log(data, " top traffic")
             dispatch(
               setTopTrafficStatistics(data.result.dataset, filterParams),
             );
