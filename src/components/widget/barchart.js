@@ -32,7 +32,7 @@ const BarChartComponent = ({item, filterParams = {}}) => {
       {dataSet.length > 0 ? (
         <VictoryContainer>
           <VictoryChart
-            width={Orientation.getWidth() - (orientation === 'landscape' ? 100 : 50)}>
+            width={Orientation.getWidth() - (orientation === 'landscape' ? 120 : 70)}>
             <VictoryAxis crossAxis label="Subscriptions" tickFormat={() => ''} />
             <VictoryAxis
               dependentAxis
@@ -43,7 +43,6 @@ const BarChartComponent = ({item, filterParams = {}}) => {
             />
             <VictoryBar
               data={dataSet}
-              width={300}
               events={[{
                   target: "data",
                   eventHandlers: {
@@ -73,7 +72,7 @@ const BarChartComponent = ({item, filterParams = {}}) => {
               }}
               labelComponent={
                   <VictoryTooltip
-                    dx={-20}
+                    dx={-30}
                     dy={20}
                     orientation="top"
                     flyoutStyle={{ stroke:"#00D3A0", fill: 'white' }}

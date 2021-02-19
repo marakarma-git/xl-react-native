@@ -101,7 +101,7 @@ export default {
     borderTopColor: 'gray',
   },
   cardWrapper: {
-    width: '90%', 
+    width: '95%', 
     backgroundColor: 'white', 
     marginTop: 20,
     borderColor: '#8D8D8D',
