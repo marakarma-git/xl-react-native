@@ -49,6 +49,7 @@ const Subscription = () => {
     current_header_sort,
     current_params_applied,
   } = useSelector((state) => state.get_sim_inventory_reducer);
+  const {imageBase64} = useSelector((state) => state.enterprise_reducer);
   useEffect(() => {
     const timer = setTimeout(() => {
       if (!firstRender) {
@@ -74,7 +75,7 @@ const Subscription = () => {
     }
   }, [current_params_applied]);
   return (
-    <HeaderContainer headerTitle={'Subscription'} style={{flex: 1}}>
+    <HeaderContainer headerTitle={'Subscription'} style={{flex: 1}} companyLogo={imageBase64}>
       <View style={subscriptionStyle.containerBackground}>
         <Table
           isScrollView={true}
