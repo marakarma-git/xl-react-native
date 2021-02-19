@@ -36,7 +36,7 @@ const DashboardPage = ({navigation}) => {
           },
         ]}>
         <Title style={{fontSize: 14}}>{item.title}</Title>
-        <Headline>
+        <Headline style={{fontWeight: 'bold', color:'#1139BF'}}>
           {item.resultId === 'totalaggregatedtraffic'
             ? Helper.formatBytes(item.value)
             : Helper.numberFormat(item.value, '.')}
