@@ -85,9 +85,10 @@ const TableFooter = (props) => {
               placeholder={currentPage + ''}
               value={currentPage}
               style={tableFooter.textInputPaging}
+              maxLength={totalPage.toString().length || 0}
               onSubmitEditing={(e) => {
-                if (e >= 0 && e <= totalPage) {
-                  onChangePaging(e);
+                if (e.nativeEvent.text > 0 && e.nativeEvent.text <= totalPage) {
+                  onChangePaging(Number(e.nativeEvent.text));
                 } else {
                   Alert.alert(
                     'Warning',

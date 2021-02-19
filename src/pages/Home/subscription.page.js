@@ -75,7 +75,10 @@ const Subscription = () => {
     }
   }, [current_params_applied]);
   return (
-    <HeaderContainer headerTitle={'Subscription'} style={{flex: 1}} companyLogo={imageBase64}>
+    <HeaderContainer
+      headerTitle={'Subscription'}
+      style={{flex: 1}}
+      companyLogo={imageBase64}>
       <View style={subscriptionStyle.containerBackground}>
         <Table
           isScrollView={true}
