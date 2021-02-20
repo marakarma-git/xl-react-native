@@ -1,7 +1,13 @@
 import React, {useEffect} from 'react';
 import Helper from '../../helpers/helper';
 import {useDispatch, useSelector} from 'react-redux';
-import {ActivityIndicator, FlatList, ScrollView, View} from 'react-native';
+import {
+  ActivityIndicator,
+  FlatList,
+  ScrollView,
+  View,
+  Text,
+} from 'react-native';
 import {Card, Headline, Title} from 'react-native-paper';
 import {
   HeaderContainer,
@@ -12,6 +18,7 @@ import {
   getDashboardSummary,
   getWidgetList,
 } from '../../redux/action/dashboard_action';
+import Orientation from '../../helpers/orientation';
 
 import style from '../../style/home.style';
 
@@ -35,8 +42,13 @@ const DashboardPage = ({navigation}) => {
             borderBottomWidth: index === 0 || index === 1 ? 0.2 : 0,
           },
         ]}>
-        <Title style={{fontSize: 14}}>{item.title}</Title>
-        <Headline style={{fontWeight: 'bold', color:'#1139BF'}}>
+        <Text
+          numberOfLines={1}
+          adjustsFontSizeToFit
+          style={{fontSize: Orientation.getWidth() * 0.033, marginVertical: '5%'}}>
+          {item.title}
+        </Text>
+        <Headline style={{fontWeight: 'bold', color: '#1139BF'}}>
           {item.resultId === 'totalaggregatedtraffic'
             ? Helper.formatBytes(item.value)
             : Helper.numberFormat(item.value, '.')}
@@ -65,7 +77,7 @@ const DashboardPage = ({navigation}) => {
         <View style={{height: '100%', alignItems: 'center'}}>
           <OverlayBackground />
           <View style={style.cardWrapper}>
-            <Card style={[style.cardSection,{ marginTop: '3%' }]}>
+            <Card style={[style.cardSection, {marginTop: '3%'}]}>
               <Card.Content style={style.cardContentWrapper}>
                 {loading ? (
                   <ActivityIndicator color="#002DBB" size="large" />
@@ -80,11 +92,7 @@ const DashboardPage = ({navigation}) => {
                 )}
               </Card.Content>
             </Card>
-            <View>
-              {widgetList && (
-                <WidgetStore widgetList={widgetList} />
-              )}
-            </View>
+            <View>{widgetList && <WidgetStore widgetList={widgetList} />}</View>
           </View>
         </View>
       </ScrollView>

@@ -85,7 +85,7 @@ const BarChartComponent = ({item, filterParams = {}}) => {
           </VictoryChart>
         </VictoryContainer>
       ) : (
-        <View style={{marginTop: 30}}>
+        <View style={{marginTop: '20%'}}>
           <Text
             style={{
               textAlign: 'center',
@@ -93,7 +93,7 @@ const BarChartComponent = ({item, filterParams = {}}) => {
               fontSize: 14,
               fontWeight: 'bold',
             }}>
-            {error}
+            {error || 'No Data'}
           </Text>
         </View>
       )}
@@ -136,7 +136,7 @@ const BarChartComponent = ({item, filterParams = {}}) => {
 
     return pageLoad;
   }, [navigation]);
-
+  console.log('isinya',dataSet)
   return (
     <Card style={[style.cardSection]}>
       <Card.Content style={[style.cardContentWrapper, {flex: 1}]}>
