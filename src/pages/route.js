@@ -3,6 +3,7 @@ import Auth from './auth.page';
 import Login from './login.page';
 import Home from './home.route';
 import ForgetPassword from './forget.password';
+import TermCondition from './term.condition.page';
 import {useSelector} from 'react-redux';
 import {createStackNavigator} from '@react-navigation/stack';
 import {NavigationContainer} from '@react-navigation/native';
@@ -18,6 +19,10 @@ const RootStack = () => {
         <>
           <Stack.Screen name={'Auth'} component={Auth} />
           <Stack.Screen name={'Home'} component={Home} />
+          <Stack.Screen
+            name={'Change Password'}
+            component={ChangePasswordPage}
+          />
         </>
       );
     } else {

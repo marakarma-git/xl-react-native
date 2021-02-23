@@ -11,6 +11,7 @@ import {
 import Entypo from 'react-native-vector-icons/Entypo';
 import Feather from 'react-native-vector-icons/Feather';
 import styles from '../style/account.style';
+import { TermCondition } from '.';
 
 const passwordRulesArray = [
   {label: 'Be between 8 and 30 characters', valid: false},
@@ -183,6 +184,8 @@ const PasswordInput = ({submitHandler, requestLoading, navigation, orientation})
       {marginTop: 10, borderColor: '#8D8D8D', borderWidth: 0.8, width: orientation === 'potrait' ? '90%' : '50%', backgroundColor: 'white'}]}>
         <Text style={styles.headerText}>Password</Text>
         {generateForm()}
+        { userData?.principal?.mustChangePass 
+        && <TermCondition containerStyle={{ width: '92%', marginBottom: 25 }} />}
         <View style={styles.passwordRulesContainer}>
           <Text style={{fontSize: 12, color: '#949494', textAlign: 'left'}}>
             Follow the Password validation rules:{' '}

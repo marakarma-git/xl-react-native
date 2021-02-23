@@ -43,6 +43,10 @@ const authLogout = () => {
   };
 };
 
+const setFalseAfterLogin = () => ({
+  type: reduxString.SET_FALSE_AFTER_LOGIN
+});
+
 const authLogin = (username, password) => {
   const formData = new FormData();
 
@@ -103,4 +107,4 @@ const getTitleVersion = () => {
   };
 };
 
-export {authLogin, authFailed, authLogout, getTitleVersion, changePassword};
+export {authLogin, authFailed, authLogout, getTitleVersion, changePassword, setFalseAfterLogin};
