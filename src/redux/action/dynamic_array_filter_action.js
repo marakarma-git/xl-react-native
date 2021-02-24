@@ -65,6 +65,12 @@ const mergeDataFilter = (dataCustom = []) => {
     data: dataCustom,
   };
 };
+const mergeSpecificDataFilterIndex = (dataArray = []) => {
+  return {
+    type: reduxString.MERGE_SPECIFIC_DATA_FILTER_INDEX,
+    data: dataArray,
+  };
+};
 const updateSortBy = ({formId, orderBy, sortBy}) => {
   return {
     type: reduxString.UPDATE_SORT_BY,
@@ -226,6 +232,7 @@ export {
   setLoadingFilterTrue,
   setLoadingFilterFalse,
   mergeDataFilter,
+  mergeSpecificDataFilterIndex,
   generateArrayFilterParams,
   updateDataSearchText,
   updateSortBy,

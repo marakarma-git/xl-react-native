@@ -1,6 +1,6 @@
 import reduxString from '../reduxString';
 import {
-  mergeDataFilter,
+  mergeSpecificDataFilterIndex,
   removeAllHardCodeTrue,
   setLoadingFilterFalse,
   setLoadingFilterTrue,
@@ -75,7 +75,7 @@ const getCustomLabel = (navigation) => {
               ...rest,
             }),
           );
-          dispatch(mergeDataFilter(modifyArray));
+          dispatch(mergeSpecificDataFilterIndex(modifyArray));
         } else {
           dispatch(setLoadingFilterFalse());
         }

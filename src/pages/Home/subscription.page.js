@@ -26,12 +26,14 @@ import ModalMenuPicker from '../../components/modal/ModalMenuPicker';
 import AppliedFilter from '../../components/subscription/appliedFilter';
 import dayjs from 'dayjs';
 import {colors} from '../../constant/color';
+import ModalMapOnly from '../../components/modal/ModalMapOnly';
 
 const Subscription = () => {
   const dispatch = useDispatch();
   const navigation = useNavigation();
   const [firstRender, setFirstRender] = useState(true);
   const [showMenu, setShowMenu] = useState(false);
+  const [showMap, setShowMap] = useState(false);
   const {
     array_filter,
     loading_array_filter,
@@ -175,6 +177,13 @@ const Subscription = () => {
           onPressCheckCell={({index}) =>
             dispatch(changeCheckSimInventory(index))
           }
+          onPressCell={(e) => {
+            const {subItem} = e || {};
+            const {formId} = subItem || {};
+            if (formId === 'dummy-map-hard-code') {
+              setShowMap(true);
+            }
+          }}
         />
         <TableFooter
           totalPage={current_total_page}
@@ -216,6 +225,7 @@ const Subscription = () => {
             </View>
           ))}
       </View>
+      {showMap && <ModalMapOnly onClose={() => setShowMap(false)} />}
       {showMenu && (
         <ModalMenuPicker
           title={'Column'}

@@ -66,6 +66,13 @@ export default {
     justifyContent: 'space-between',
     marginBottom: 15,
   },
+  additionalTitleContainer: {
+    backgroundColor: colors.button_color_one,
+    borderTopLeftRadius: border_radius,
+    borderTopRightRadius: border_radius,
+    marginBottom: 0,
+    padding: 12,
+  },
   modalTitleText: {
     fontWeight: 'bold',
     color: colors.gray,
@@ -93,5 +100,8 @@ export default {
     borderRadius: border_radius,
     margin: 4,
     elevation: 3,
+  },
+  mapContainer: {
+    flex: 1,
   },
 };

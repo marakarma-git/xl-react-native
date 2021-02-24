@@ -1,5 +1,6 @@
 import reduxString from '../reduxString';
 import dayjs from 'dayjs';
+import Helper from '../../helpers/helper';
 const dynamicFilter = [
   {
     formId: 'imsi-hard-code',
@@ -334,6 +335,17 @@ const dynamicFilter = [
     },
     shown: true,
   },
+  {
+    formId: 'dummy-map-hard-code',
+    cellType: 'TableCellHeader',
+    cellRowType: 'TableCellViewMap',
+    hard_code: true,
+    config: {
+      label: 'MAP',
+      doNotShowOnFilter: true,
+    },
+    shown: true,
+  },
 ];
 const initialState = {
   searchText: '',
@@ -381,6 +393,16 @@ const dynamic_array_filter_reducer = (state = initialState, action) => {
         ...state,
         loading_array_filter: false,
         array_filter: [...state.array_filter, ...action.data],
+      };
+    case reduxString.MERGE_SPECIFIC_DATA_FILTER_INDEX:
+      return {
+        ...state,
+        loading_array_filter: false,
+        array_filter: Helper.mergeToSpecificIndex(
+          state.array_filter,
+          action.data,
+          state.array_filter.length - 1,
+        ),
       };
     case reduxString.RESET_GENERATED_PARAMS:
       return {
