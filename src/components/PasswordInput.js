@@ -7,11 +7,12 @@ import {
   TouchableOpacity,
   ActivityIndicator,
 } from 'react-native';
+import {ModalTermCondition} from '../components';
+
 
 import Entypo from 'react-native-vector-icons/Entypo';
 import Feather from 'react-native-vector-icons/Feather';
 import styles from '../style/account.style';
-import { TermCondition } from '.';
 
 const passwordRulesArray = [
   {label: 'Be between 8 and 30 characters', valid: false},
@@ -68,6 +69,7 @@ const PasswordInput = ({submitHandler, requestLoading, navigation, orientation})
     newPassword: '',
     confirmPassword: '',
   });
+  const [showModal, setShowModal] = useState(true);
 
   const inputHandler = (name, value, validation) => {
     setForm({...form, [name]: value});
@@ -185,7 +187,10 @@ const PasswordInput = ({submitHandler, requestLoading, navigation, orientation})
         <Text style={styles.headerText}>Password</Text>
         {generateForm()}
         { userData?.principal?.mustChangePass 
-        && <TermCondition containerStyle={{ width: '92%', marginBottom: 25 }} />}
+        && <ModalTermCondition 
+            showModal={showModal} 
+            closeModal={() => setShowModal(!showModal)}
+            title={'Terms of Use & Privacy Policy'}/>}
         <View style={styles.passwordRulesContainer}>
           <Text style={{fontSize: 12, color: '#949494', textAlign: 'left'}}>
             Follow the Password validation rules:{' '}
