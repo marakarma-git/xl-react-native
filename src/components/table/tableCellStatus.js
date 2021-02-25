@@ -6,15 +6,8 @@ import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityI
 import {colors} from '../../constant/color';
 const TableCellStatus = (props) => {
   const {config, onPress, otherInformation, key} = props || {};
-  const {
-    label,
-    width,
-    height,
-    isTouchable,
-    fontColor,
-    backgroundColor,
-    ballColor,
-  } = config || {};
+  const {label, width, height, isTouchable, fontColor, backgroundColor} =
+    config || {};
   const TouchView = isTouchable ? TouchableOpacity : View;
   return (
     <View
@@ -51,9 +44,9 @@ const TableCellStatus = (props) => {
                 ? 'red'
                 : label === 'Terminated'
                 ? 'gray'
-                : label === 'Yes'
+                : label === true
                 ? colors.green_status
-                : label === 'No'
+                : label === false
                 ? 'red'
                 : null
             }
@@ -64,7 +57,7 @@ const TableCellStatus = (props) => {
               color: fontColor || 'black',
               fontWeight: 'bold',
             }}>
-            {label}
+            {label === true ? 'Yes' : label === false ? 'No' : label}
           </Text>
         </View>
       </TouchView>

@@ -39,6 +39,7 @@ const Subscription = () => {
     loading_array_filter,
     searchText,
     generatedParams,
+    applied_filter,
     totalFiltered,
   } = useSelector((state) => state.dynamic_array_filter_reducer);
   const {
@@ -69,9 +70,6 @@ const Subscription = () => {
     return () => clearTimeout(timer);
   }, [current_size, dispatch, navigation, searchText, generatedParams]);
   useEffect(() => {
-    dispatch(generateArrayFilterParams());
-  }, [array_filter]);
-  useEffect(() => {
     if (current_params_applied) {
       console.log('params_ada_isi: ' + current_params_applied);
     }
@@ -96,7 +94,7 @@ const Subscription = () => {
                   onClickColumn={() => setShowMenu((state) => !state)}
                 />
                 <AppliedFilter
-                  data={array_filter}
+                  data={applied_filter}
                   onDelete={(e) => {
                     const {formId, typeInput} = e || {};
                     dispatch(
@@ -115,6 +113,7 @@ const Subscription = () => {
                         },
                       ]),
                     );
+                    dispatch(generateArrayFilterParams());
                   }}
                 />
                 <FilterActionLabel filtered={totalFiltered} />

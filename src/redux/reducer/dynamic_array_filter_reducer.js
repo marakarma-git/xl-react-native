@@ -41,6 +41,37 @@ const dynamicFilter = [
     valueOption: null,
   },
   {
+    formId: 'in-session-hard-code',
+    api_id: 'inSession',
+    disabled: false,
+    loading: false,
+    errorText: '',
+    error: '',
+    value: {},
+    data: [
+      {
+        label: 'Yes',
+        value: 'true',
+      },
+      {
+        label: 'No',
+        value: 'false',
+      },
+    ],
+    typeInput: 'DropDown',
+    params: '&inSession=',
+    hard_code: true,
+    cellType: 'TableCellHeaderAscDesc',
+    cellRowType: 'TableCellStatus',
+    config: {
+      label: 'In Session',
+      width: 130,
+      isTouchable: true,
+    },
+    shown: true,
+  },
+
+  {
     formId: 'iccid-hard-code',
     api_id: 'icc',
     disabled: false,
@@ -339,7 +370,7 @@ const dynamicFilter = [
     formId: 'dummy-map-hard-code',
     cellType: 'TableCellHeader',
     cellRowType: 'TableCellViewMap',
-    hard_code: true,
+    dummyRow: true,
     config: {
       label: 'MAP',
       doNotShowOnFilter: true,
@@ -352,7 +383,9 @@ const initialState = {
   generatedParams: '',
   totalFiltered: 0,
   array_filter: dynamicFilter,
+  applied_filter: [],
   loading_array_filter: false,
+  regenerateParams: false,
 };
 const dynamic_array_filter_reducer = (state = initialState, action) => {
   switch (action.type) {
@@ -366,6 +399,7 @@ const dynamic_array_filter_reducer = (state = initialState, action) => {
       return {
         ...state,
         searchText: action.searchText,
+        regenerateParams: false,
       };
     case reduxString.RESET_DATA_SEARCH_TEXT:
       return {
@@ -376,7 +410,16 @@ const dynamic_array_filter_reducer = (state = initialState, action) => {
       return {
         ...state,
         totalFiltered: action.totalFiltered,
+        applied_filter: action.appliedFilter,
         generatedParams: action.generatedParams,
+        regenerateParams: true,
+      };
+    case reduxString.RESET_GENERATED_PARAMS:
+      return {
+        ...state,
+        totalFiltered: 0,
+        applied_filter: [],
+        generatedParams: '',
       };
     case reduxString.SET_LOADING_FILTER_TRUE:
       return {
@@ -403,11 +446,6 @@ const dynamic_array_filter_reducer = (state = initialState, action) => {
           action.data,
           state.array_filter.length - 1,
         ),
-      };
-    case reduxString.RESET_GENERATED_PARAMS:
-      return {
-        ...state,
-        generatedParams: '',
       };
     default:
       return state;

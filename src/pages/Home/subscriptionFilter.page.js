@@ -12,6 +12,7 @@ import {subscriptionStyle} from '../../style';
 import {
   generateArrayFilterParams,
   resetDataFilter,
+  resetGeneratedParams,
   setSomethingToFilter,
 } from '../../redux/action/dynamic_array_filter_action';
 import InputHybrid from '../../components/InputHybrid';
@@ -32,7 +33,7 @@ const Container = (props) => {
 const SubscriptionFilter = () => {
   const dispatch = useDispatch();
   const navigation = useNavigation();
-  const {array_filter, loading_array_filter} = useSelector(
+  const {array_filter, loading_array_filter, generatedParams} = useSelector(
     (state) => state.dynamic_array_filter_reducer,
   );
   useEffect(() => {
@@ -40,6 +41,9 @@ const SubscriptionFilter = () => {
     dispatch(getEnterpriseCorp(navigation));
     dispatch(getStateLock(navigation));
   }, [dispatch, navigation]);
+  useEffect(() => {
+    console.log(JSON.stringify(generatedParams, null, 2));
+  }, [generatedParams]);
   return (
     <HeaderContainer navigation={navigation} headerTitle={'Subscription'}>
       <ScrollView style={{backgroundColor: 'white'}}>
@@ -149,6 +153,7 @@ const SubscriptionFilter = () => {
                 ]}
                 onPress={() => {
                   if (value === 'Clear') {
+                    dispatch(resetGeneratedParams());
                     dispatch(resetDataFilter());
                   }
                   if (value === 'Find') {

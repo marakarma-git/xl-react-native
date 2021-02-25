@@ -6,7 +6,7 @@ const initialState = {
   error: '',
   data_sim_inventory: [],
   data_sim_inventory_table: [],
-  current_page: 1,
+  current_page: 0,
   current_size: 20,
   current_total_page: 0,
   current_header_sort: {

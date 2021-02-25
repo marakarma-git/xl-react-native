@@ -62,9 +62,9 @@ const TableFooter = (props) => {
       <View style={tableFooter.row}>
         {!loading && (
           <>
-            {currentPage > 1 && (
+            {currentPage > 0 && (
               <>
-                <TouchableOpacity onPress={() => onChangePaging(1)}>
+                <TouchableOpacity onPress={() => onChangePaging(0)}>
                   <MaterialIcons
                     name={'skip-previous'}
                     color={colors.gray}
