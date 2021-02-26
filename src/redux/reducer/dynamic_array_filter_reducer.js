@@ -370,7 +370,7 @@ const dynamicFilter = [
     formId: 'dummy-map-hard-code',
     cellType: 'TableCellHeader',
     cellRowType: 'TableCellViewMap',
-    dummyRow: true,
+    hard_code: true,
     config: {
       label: 'MAP',
       doNotShowOnFilter: true,
