@@ -66,6 +66,7 @@ const ModalTermCondition = (props) => {
                         </Text>
                     </TouchableOpacity>
                     <TouchableOpacity
+                            onPress={() => props.closeModal()}
                             style={inputHybridStyle.buttonNext}>
                         <Text style={inputHybridStyle.buttonText}>
                             I agree
