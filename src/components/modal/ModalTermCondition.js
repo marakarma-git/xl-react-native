@@ -11,8 +11,17 @@ import {
 } from 'react-native';
 import {inputHybridStyle} from '../../style';
 import PropTypes from 'prop-types';
+import {useDispatch} from 'react-redux';
+import {authLogout} from '../../redux/action/auth_action';
 
 const ModalTermCondition = (props) => {
+    const dispatch = useDispatch();
+
+    const logoutHandler = () => {
+        props.closeModal();
+        dispatch(authLogout());
+    }
+
     return(
     <Modal animationType="slide" 
         transparent 
@@ -50,7 +59,7 @@ const ModalTermCondition = (props) => {
             <View style={inputHybridStyle.modalFooter}>
                 <View style={inputHybridStyle.buttonContainer}>
                     <TouchableOpacity
-                        onPress={() => navigation.goBack()} 
+                        onPress={logoutHandler} 
                         style={inputHybridStyle.buttonCancel}>
                         <Text style={[inputHybridStyle.buttonText, { color: '#8D8D8D' }]}>
                             Logout
