@@ -138,10 +138,14 @@ const LandingPage = ({navigation}) => {
           {pagination()}
         </Card>
       </ScrollView>
+      { 
+      !userData.principal?.isCustomerConsent 
+      && 
       <ModalTermCondition 
         showModal={showModal} 
         closeModal={() => setShowModal(!showModal)}
         title={'Terms of Use & Privacy Policy'}/>
+      }
     </HeaderContainer>
   );
 };

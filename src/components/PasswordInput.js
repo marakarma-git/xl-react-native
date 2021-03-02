@@ -186,7 +186,7 @@ const PasswordInput = ({submitHandler, requestLoading, navigation, orientation})
       {marginTop: 10, borderColor: '#8D8D8D', borderWidth: 0.8, width: orientation === 'potrait' ? '90%' : '50%', backgroundColor: 'white'}]}>
         <Text style={styles.headerText}>Password</Text>
         {generateForm()}
-        { userData?.principal?.mustChangePass 
+        { userData?.principal?.mustChangePass && !userData?.principal?.isCustomerConsent
         && <ModalTermCondition 
             showModal={showModal} 
             closeModal={() => setShowModal(!showModal)}

@@ -11,11 +11,17 @@ import {
 } from 'react-native';
 import {inputHybridStyle} from '../../style';
 import PropTypes from 'prop-types';
-import {useDispatch} from 'react-redux';
-import {authLogout} from '../../redux/action/auth_action';
+import {useDispatch, useSelector} from 'react-redux';
+import {authLogout, updateCustomerConsent} from '../../redux/action/auth_action';
 
 const ModalTermCondition = (props) => {
     const dispatch = useDispatch();
+    const userData = useSelector((state) => state.auth_reducer.data);
+
+    const submitHandler = () => {
+        props.closeModal();
+        dispatch(updateCustomerConsent(userData));
+    }
 
     const logoutHandler = () => {
         props.closeModal();
@@ -66,7 +72,7 @@ const ModalTermCondition = (props) => {
                         </Text>
                     </TouchableOpacity>
                     <TouchableOpacity
-                            onPress={() => props.closeModal()}
+                            onPress={submitHandler}
                             style={inputHybridStyle.buttonNext}>
                         <Text style={inputHybridStyle.buttonText}>
                             I agree
