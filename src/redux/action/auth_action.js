@@ -118,17 +118,14 @@ const getTitleVersion = () => {
 };
 
 const updateCustomerConsent = (userData) => {
-  const { userId } = userData.principal;
-
+  
   return async (dispatch) => {
     try {
-      const { data } = await Axios.post(`${base_url}/user/usr/updateCustomerConsent`, { userId }, {
+      const { data } = await Axios.post(`${base_url}/user/usr/updateCustomerConsent?userId=${userData.principal.userId}`, {}, {
         headers: {
-          Authorization: 'Bearer ' + userData.accessToken
+          Authorization: 'Bearer ' + userData.access_token
         }
       });
-
-      console.log(data,  " <<< customer consent")
 
       if(data){
           userData['principal'] = data.result;
