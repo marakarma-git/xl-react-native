@@ -48,7 +48,7 @@ const ModalTermCondition = (props) => {
                         nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in 
                         reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur
                     </Text>
-                    <Text style={{ paddingBottom: 20, fontSize: 14 }}>
+                    <Text style={{ paddingBottom: 0, fontSize: 14 }}>
                         Read more in our
                         <TouchableWithoutFeedback
                             onPress={() => Linking.openURL('https://www.xl.co.id/en/terms-and-conditions')}>

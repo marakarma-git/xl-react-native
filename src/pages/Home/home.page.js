@@ -14,6 +14,7 @@ import {Dimensions} from 'react-native';
 const LandingPage = ({navigation}) => {
   const dispatch = useDispatch();
   const userData = useSelector((state) => state.auth_reducer.data);
+  const isLoggedIn = useSelector((state) => state.auth_reducer.isLoggedIn);
   const carouselItems = useSelector(
     (state) => state.dashboard_reducer.carousel,
   );
@@ -56,6 +57,17 @@ const LandingPage = ({navigation}) => {
       />
     );
   };
+
+  const showModalTermCondition = () => {
+    if(!userData.principal.isCustomerConsent){
+      return (
+        <ModalTermCondition 
+          showModal={showModal} 
+          closeModal={() => setShowModal(!showModal)}
+          title={'Terms of Use & Privacy Policy'}/>
+      );
+    }
+  }
 
   const renderItem = ({item}) => {
     return (
@@ -138,14 +150,7 @@ const LandingPage = ({navigation}) => {
           {pagination()}
         </Card>
       </ScrollView>
-      { 
-      !userData.principal?.isCustomerConsent 
-      && 
-      <ModalTermCondition 
-        showModal={showModal} 
-        closeModal={() => setShowModal(!showModal)}
-        title={'Terms of Use & Privacy Policy'}/>
-      }
+      { isLoggedIn && showModalTermCondition() }
     </HeaderContainer>
   );
 };
