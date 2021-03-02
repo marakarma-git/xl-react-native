@@ -90,8 +90,8 @@ export default {
     flex: 1,
     marginVertical: 5,
     marginHorizontal: '3%',
-    borderWidth: 0.8, 
-    borderColor: '#8D8D8D'
+    borderWidth: 0.8,
+    borderColor: '#8D8D8D',
   },
   tradeMark: {
     paddingVertical: 2,
@@ -101,11 +101,11 @@ export default {
     borderTopColor: 'gray',
   },
   cardWrapper: {
-    width: '95%', 
-    backgroundColor: 'white', 
+    width: '95%',
+    backgroundColor: 'white',
     marginTop: 20,
     borderColor: '#8D8D8D',
-    borderWidth: 0.8
+    borderWidth: 0.8,
   },
   cardContentWrapper: {
     marginBottom: 10,

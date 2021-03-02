@@ -13,3 +13,7 @@ export {default as ChartLegend} from './widget/chartlegend';
 
 // Form Component
 export {default as PasswordInput} from './PasswordInput';
+export {default as TermCondition} from './termCondition';
+
+// Modal Component
+export {default as ModalTermCondition} from './modal/ModalTermCondition';

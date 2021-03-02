@@ -5,7 +5,7 @@ import {callEnterpriseLogo} from '../../redux/action/enterprise_action';
 import {Card, Title} from 'react-native-paper';
 import {View, Text, ScrollView, Image, ActivityIndicator} from 'react-native';
 import {useSelector, useDispatch} from 'react-redux';
-import {HeaderContainer, OverlayBackground} from '../../components';
+import {HeaderContainer, OverlayBackground, ModalTermCondition} from '../../components';
 import Orientation from '../../helpers/orientation';
 
 import style from '../../style/home.style';
@@ -20,6 +20,7 @@ const LandingPage = ({navigation}) => {
   const {imageBase64} = useSelector((state) => state.enterprise_reducer);
   const [activeIndex, setActiveIndex] = useState(0);
   const [orientation, setOrientation] = useState('potrait');
+  const [showModal, setShowModal] = useState(true);
 
   const detectOrientation = useCallback(() => {
     if (Orientation.getHeight() <= Orientation.getWidth()) {
@@ -55,11 +56,6 @@ const LandingPage = ({navigation}) => {
       />
     );
   };
-
-  const heightProportion = actualSizePercent(
-    orientation === 'potrait' ? 131 : 100,
-    'height',
-  );
 
   const renderItem = ({item}) => {
     return (
@@ -106,7 +102,6 @@ const LandingPage = ({navigation}) => {
             <View
               style={{
                 ...style.carouselWrapper,
-                // ...{ height: heightProportion }
               }}>
               <Carousel
                 style={{margin: 0, padding: 0}}
@@ -143,6 +138,10 @@ const LandingPage = ({navigation}) => {
           {pagination()}
         </Card>
       </ScrollView>
+      <ModalTermCondition 
+        showModal={showModal} 
+        closeModal={() => setShowModal(!showModal)}
+        title={'Terms of Use & Privacy Policy'}/>
     </HeaderContainer>
   );
 };

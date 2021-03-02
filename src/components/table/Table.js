@@ -38,7 +38,7 @@ const Table = (props) => {
             {dataHeader && (
               <TableCell
                 sorted={dataHeader[0].formId === formId ? sortBy : null}
-                type={dataHeader[0].cellType}
+                type={dataHeader[0].cellType || null}
                 dataOption={dataHeader[0].dataOption}
                 onPress={() =>
                   onPressHeader({

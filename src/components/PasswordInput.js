@@ -7,6 +7,8 @@ import {
   TouchableOpacity,
   ActivityIndicator,
 } from 'react-native';
+import {ModalTermCondition} from '../components';
+
 
 import Entypo from 'react-native-vector-icons/Entypo';
 import Feather from 'react-native-vector-icons/Feather';
@@ -67,6 +69,7 @@ const PasswordInput = ({submitHandler, requestLoading, navigation, orientation})
     newPassword: '',
     confirmPassword: '',
   });
+  const [showModal, setShowModal] = useState(true);
 
   const inputHandler = (name, value, validation) => {
     setForm({...form, [name]: value});
@@ -183,6 +186,11 @@ const PasswordInput = ({submitHandler, requestLoading, navigation, orientation})
       {marginTop: 10, borderColor: '#8D8D8D', borderWidth: 0.8, width: orientation === 'potrait' ? '90%' : '50%', backgroundColor: 'white'}]}>
         <Text style={styles.headerText}>Password</Text>
         {generateForm()}
+        { userData?.principal?.mustChangePass 
+        && <ModalTermCondition 
+            showModal={showModal} 
+            closeModal={() => setShowModal(!showModal)}
+            title={'Terms of Use & Privacy Policy'}/>}
         <View style={styles.passwordRulesContainer}>
           <Text style={{fontSize: 12, color: '#949494', textAlign: 'left'}}>
             Follow the Password validation rules:{' '}

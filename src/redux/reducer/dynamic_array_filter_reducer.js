@@ -1,5 +1,6 @@
 import reduxString from '../reduxString';
 import dayjs from 'dayjs';
+import Helper from '../../helpers/helper';
 const dynamicFilter = [
   {
     formId: 'imsi-hard-code',
@@ -39,6 +40,37 @@ const dynamicFilter = [
     valueCheck: false,
     valueOption: null,
   },
+  {
+    formId: 'in-session-hard-code',
+    api_id: 'inSession',
+    disabled: false,
+    loading: false,
+    errorText: '',
+    error: '',
+    value: {},
+    data: [
+      {
+        label: 'Yes',
+        value: 'true',
+      },
+      {
+        label: 'No',
+        value: 'false',
+      },
+    ],
+    typeInput: 'DropDown',
+    params: '&inSession=',
+    hard_code: true,
+    cellType: 'TableCellHeaderAscDesc',
+    cellRowType: 'TableCellStatus',
+    config: {
+      label: 'In Session',
+      width: 130,
+      isTouchable: true,
+    },
+    shown: true,
+  },
+
   {
     formId: 'iccid-hard-code',
     api_id: 'icc',
@@ -334,13 +366,26 @@ const dynamicFilter = [
     },
     shown: true,
   },
+  {
+    formId: 'dummy-map-hard-code',
+    cellType: 'TableCellHeader',
+    cellRowType: 'TableCellViewMap',
+    hard_code: true,
+    config: {
+      label: 'MAP',
+      doNotShowOnFilter: true,
+    },
+    shown: true,
+  },
 ];
 const initialState = {
   searchText: '',
   generatedParams: '',
   totalFiltered: 0,
   array_filter: dynamicFilter,
+  applied_filter: [],
   loading_array_filter: false,
+  regenerateParams: false,
 };
 const dynamic_array_filter_reducer = (state = initialState, action) => {
   switch (action.type) {
@@ -354,6 +399,7 @@ const dynamic_array_filter_reducer = (state = initialState, action) => {
       return {
         ...state,
         searchText: action.searchText,
+        regenerateParams: false,
       };
     case reduxString.RESET_DATA_SEARCH_TEXT:
       return {
@@ -364,7 +410,16 @@ const dynamic_array_filter_reducer = (state = initialState, action) => {
       return {
         ...state,
         totalFiltered: action.totalFiltered,
+        applied_filter: action.appliedFilter,
         generatedParams: action.generatedParams,
+        regenerateParams: true,
+      };
+    case reduxString.RESET_GENERATED_PARAMS:
+      return {
+        ...state,
+        totalFiltered: 0,
+        applied_filter: [],
+        generatedParams: '',
       };
     case reduxString.SET_LOADING_FILTER_TRUE:
       return {
@@ -382,10 +437,15 @@ const dynamic_array_filter_reducer = (state = initialState, action) => {
         loading_array_filter: false,
         array_filter: [...state.array_filter, ...action.data],
       };
-    case reduxString.RESET_GENERATED_PARAMS:
+    case reduxString.MERGE_SPECIFIC_DATA_FILTER_INDEX:
       return {
         ...state,
-        generatedParams: '',
+        loading_array_filter: false,
+        array_filter: Helper.mergeToSpecificIndex(
+          state.array_filter,
+          action.data,
+          state.array_filter.length - 1,
+        ),
       };
     default:
       return state;

@@ -111,6 +111,9 @@ class Helper {
 
     return arrayFormat.join();
   }
+
+  static mergeToSpecificIndex = (first_array, second_array, index = 0) =>
+    first_array.splice(index, 0, ...second_array) && first_array;
 }
 
 export default Helper;

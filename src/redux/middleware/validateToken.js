@@ -2,6 +2,7 @@ import {authLogout} from '../action/auth_action';
 import {ToastAndroid} from 'react-native';
 
 const validateTokenMiddleware = (store) => (next) => (action) => {
+
   try {
     if (action.payload) {
       if (action.payload.error) {

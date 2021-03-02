@@ -26,17 +26,20 @@ import ModalMenuPicker from '../../components/modal/ModalMenuPicker';
 import AppliedFilter from '../../components/subscription/appliedFilter';
 import dayjs from 'dayjs';
 import {colors} from '../../constant/color';
+import ModalMapOnly from '../../components/modal/ModalMapOnly';
 
 const Subscription = () => {
   const dispatch = useDispatch();
   const navigation = useNavigation();
   const [firstRender, setFirstRender] = useState(true);
   const [showMenu, setShowMenu] = useState(false);
+  const [showMap, setShowMap] = useState(false);
   const {
     array_filter,
     loading_array_filter,
     searchText,
     generatedParams,
+    applied_filter,
     totalFiltered,
   } = useSelector((state) => state.dynamic_array_filter_reducer);
   const {
@@ -67,9 +70,6 @@ const Subscription = () => {
     return () => clearTimeout(timer);
   }, [current_size, dispatch, navigation, searchText, generatedParams]);
   useEffect(() => {
-    dispatch(generateArrayFilterParams());
-  }, [array_filter]);
-  useEffect(() => {
     if (current_params_applied) {
       console.log('params_ada_isi: ' + current_params_applied);
     }
@@ -94,7 +94,7 @@ const Subscription = () => {
                   onClickColumn={() => setShowMenu((state) => !state)}
                 />
                 <AppliedFilter
-                  data={array_filter}
+                  data={applied_filter}
                   onDelete={(e) => {
                     const {formId, typeInput} = e || {};
                     dispatch(
@@ -113,6 +113,7 @@ const Subscription = () => {
                         },
                       ]),
                     );
+                    dispatch(generateArrayFilterParams());
                   }}
                 />
                 <FilterActionLabel filtered={totalFiltered} />
@@ -175,6 +176,13 @@ const Subscription = () => {
           onPressCheckCell={({index}) =>
             dispatch(changeCheckSimInventory(index))
           }
+          onPressCell={(e) => {
+            const {subItem} = e || {};
+            const {formId} = subItem || {};
+            if (formId === 'dummy-map-hard-code') {
+              setShowMap(true);
+            }
+          }}
         />
         <TableFooter
           totalPage={current_total_page}
@@ -216,6 +224,7 @@ const Subscription = () => {
             </View>
           ))}
       </View>
+      {showMap && <ModalMapOnly onClose={() => setShowMap(false)} />}
       {showMenu && (
         <ModalMenuPicker
           title={'Column'}

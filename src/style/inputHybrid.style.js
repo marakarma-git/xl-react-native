@@ -61,10 +61,29 @@ export default {
     borderRadius: border_radius,
     elevation: 4,
   },
+  newModalContainer: {
+    marginHorizontal: 40,
+    marginVertical: 150,
+    flex: 1,
+    backgroundColor: 'white',
+    elevation: 4,
+  },
   modalTitleContainer: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     marginBottom: 15,
+  },
+  additionalTitleContainer: {
+    backgroundColor: colors.button_color_one,
+    borderTopLeftRadius: border_radius,
+    borderTopRightRadius: border_radius,
+    marginBottom: 0,
+    padding: 12,
+  },
+  tcTitleContainer: {
+    backgroundColor: colors.button_color_one,
+    marginBottom: 0,
+    padding: 12,
   },
   modalTitleText: {
     fontWeight: 'bold',
@@ -93,5 +112,64 @@ export default {
     borderRadius: border_radius,
     margin: 4,
     elevation: 3,
+  },
+  mapContainer: {
+    flex: 1,
+  },
+  modalFooter: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+    width: '100%', 
+    height: 50, 
+  },
+  contentWrapper: {
+    width: '100%',
+    padding: 20,
+    height: 300,
+    justifyContent: 'space-between',
+  },
+  tcText: {
+    fontSize: 14, 
+    textAlign: 'justify', 
+    letterSpacing: 1,
+    fontFamily: 'segoeui' 
+  },
+  linkText: {
+    fontSize: 14,
+    color: '#20A8D8',
+    textAlign: 'center',
+    paddingVertical: 5,
+    fontFamily: 'segoeui' 
+  },
+  buttonContainer: {
+    width: '100%',
+    height: 50,
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center'
+  },
+  buttonCancel: {
+    width: 100,
+    alignItems: 'center',
+    justifyContent: 'center',
+    height: 30,
+    borderWidth: 1,
+    borderColor: '#8D8D8D',
+    backgroundColor: 'white',
+    marginHorizontal: 3,
+  },
+  buttonNext: {
+    width: 100,
+    alignItems: 'center',
+    justifyContent: 'center',
+    height: 30,
+    backgroundColor: colors.button_color_one,
+    marginHorizontal: 3
+  },
+  buttonText: {
+    fontSize: 16,
+    fontWeight: 'bold',
+    color: 'white',
   },
 };

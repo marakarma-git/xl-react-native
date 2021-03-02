@@ -181,7 +181,7 @@ const callSimInventory = (paginate) => {
     );
     axios
       .get(
-        `${base_url}/dcp/sim/getSimInventory?page=${getPage}&size=${getSize}&keyword=${searchText}&sort=${getOrderBy()}&order=${getSortBy()}`,
+        `${base_url}/dcp/sim/getSimInventory?page=${getPage}&size=${getSize}&keyword=${searchText}&sort=${getOrderBy()}&order=${getSortBy()}${generatedParams}`,
         {
           headers: {
             Authorization: `Bearer ${access_token}`,
