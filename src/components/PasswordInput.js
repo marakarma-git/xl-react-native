@@ -7,12 +7,14 @@ import {
   TouchableOpacity,
   ActivityIndicator,
 } from 'react-native';
+import {useDispatch} from 'react-redux';
 import {ModalTermCondition} from '../components';
 
 
 import Entypo from 'react-native-vector-icons/Entypo';
 import Feather from 'react-native-vector-icons/Feather';
 import styles from '../style/account.style';
+import { authLogout } from '../redux/action/auth_action';
 
 const passwordRulesArray = [
   {label: 'Be between 8 and 30 characters', valid: false},
@@ -60,6 +62,7 @@ const passwordFormArray = [
 ];
 
 const PasswordInput = ({submitHandler, requestLoading, navigation, orientation}) => {
+  const dispatch = useDispatch();
   const userData = useSelector((state) => state.auth_reducer.data);
   const [passwordForm, setPasswordForm] = useState(passwordFormArray);
   const [passwordRules, setPasswordRules] = useState(passwordRulesArray);
@@ -80,6 +83,14 @@ const PasswordInput = ({submitHandler, requestLoading, navigation, orientation})
       validation && matchConfirmPassword();
     }
   };
+
+  const goBack = () => {
+    if(userData.principal.mustChangePass){
+      dispatch(authLogout());
+    }else{
+      navigation.goBack();
+    }
+  }
 
   const passwordValidator = (value) => {
     let isEmpty = value == 0;
@@ -186,7 +197,7 @@ const PasswordInput = ({submitHandler, requestLoading, navigation, orientation})
       {marginTop: 10, borderColor: '#8D8D8D', borderWidth: 0.8, width: orientation === 'potrait' ? '90%' : '50%', backgroundColor: 'white'}]}>
         <Text style={styles.headerText}>Password</Text>
         {generateForm()}
-        { userData?.principal?.mustChangePass && !userData?.principal?.isCustomerConsent
+        { !userData?.principal?.mustChangePass && userData?.principal?.isCustomerConsent
         && <ModalTermCondition 
             showModal={showModal} 
             closeModal={() => setShowModal(!showModal)}
@@ -200,7 +211,7 @@ const PasswordInput = ({submitHandler, requestLoading, navigation, orientation})
       </View>
         <View style={[styles.buttonGroupContainer, { width: orientation === 'potrait' ? '80%' : '40%' }]}>
           <TouchableOpacity
-            onPress={() => navigation.goBack()}
+            onPress={goBack}
             style={[styles.buttonGroup, {backgroundColor: '#AFAFAF'}]}>
             <Text style={styles.buttonText}>Cancel</Text>
           </TouchableOpacity>
