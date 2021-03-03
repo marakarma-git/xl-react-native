@@ -127,7 +127,7 @@ export default {
     width: '100%',
     padding: 20,
     height: 300,
-    justifyContent: 'space-between',
+    justifyContent: 'space-between'
   },
   tcText: {
     fontSize: 14, 

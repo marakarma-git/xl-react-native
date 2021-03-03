@@ -54,6 +54,16 @@ const auth_reducers = (state = initialState, action) => {
         ...state,
         error: action.payload,
       };
+    case reduxString.UPDATE_CUSTOMER_CONSENT_FAIL:
+      return {
+        ...state,
+        error: action.payload,
+      };
+    case reduxString.UPDATE_CUSTOMER_CONSENT:
+      return {
+        ...state,
+        data: payload,
+      };
     default:
       return state;
   }

@@ -87,6 +87,16 @@ const getTitleVersionFail = (error) => ({
   payload: error,
 });
 
+const updateCustomerConsentSuccess = (data) => ({
+  type: reduxString.UPDATE_CUSTOMER_CONSENT,
+  payload: data
+});
+
+const updateCustomerConsentFail = (error) => ({
+  type: reduxString.UPDATE_CUSTOMER_CONSENT_FAIL,
+  payload: error
+});
+
 const getTitleVersion = () => {
   return async (dispatch) => {
     try {
@@ -107,4 +117,26 @@ const getTitleVersion = () => {
   };
 };
 
-export {authLogin, authFailed, authLogout, getTitleVersion, changePassword, setFalseAfterLogin};
+const updateCustomerConsent = (userData) => {
+  
+  return async (dispatch) => {
+    try {
+      const { data } = await Axios.post(`${base_url}/user/usr/updateCustomerConsent?userId=${userData.principal.userId}`, {}, {
+        headers: {
+          Authorization: 'Bearer ' + userData.access_token
+        }
+      });
+
+      if(data){
+          userData['principal'] = data.result;
+
+          dispatch(updateCustomerConsentSuccess(userData));
+      }
+
+    } catch (error) {
+      dispatch(updateCustomerConsentFail(error.response.data));
+    }
+  }
+}
+
+export {authLogin, authFailed, authLogout, getTitleVersion, changePassword, setFalseAfterLogin, updateCustomerConsent};
