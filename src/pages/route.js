@@ -51,7 +51,7 @@ const RootStack = () => {
 };
 const Route = () => {
   return (
-    <NavigationContainer>
+    <NavigationContainer linking={{prefixes: ["dcp4.adlsandbox.com://app"],}}>
       <RootStack />
     </NavigationContainer>
   );
