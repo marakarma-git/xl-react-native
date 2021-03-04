@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import {useDispatch, useSelector} from 'react-redux';
-import {ActivityIndicator, View} from 'react-native';
+import {ActivityIndicator, View, Linking} from 'react-native';
 import {useNavigation} from '@react-navigation/native';
 import {inputHybridStyle, subscriptionStyle} from '../../style';
 import Table from '../../components/table/Table';
@@ -34,6 +34,7 @@ const Subscription = () => {
   const [firstRender, setFirstRender] = useState(true);
   const [showMenu, setShowMenu] = useState(false);
   const [showMap, setShowMap] = useState(false);
+  const {data} = useSelector((state) => state.auth_reducer);
   const {
     array_filter,
     loading_array_filter,
@@ -177,10 +178,14 @@ const Subscription = () => {
             dispatch(changeCheckSimInventory(index))
           }
           onPressCell={(e) => {
-            const {subItem} = e || {};
-            const {formId} = subItem || {};
+            const {subItem, item} = e || {};
+            const {imsi} = item || '';
+            const {formId} = subItem || '';
             if (formId === 'dummy-map-hard-code') {
               setShowMap(true);
+            } else if (formId === 'imsi-hard-code') {
+              const createLink = `https://xl.dcp.ericsson.net/portal/#/en/${data.customerNo}/subscription-inventory/${imsi}`;
+              Linking.openURL(createLink);
             }
           }}
         />

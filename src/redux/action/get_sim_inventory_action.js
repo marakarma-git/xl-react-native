@@ -5,7 +5,6 @@ import {base_url} from '../../constant/connection';
 import {authFailed} from './auth_action';
 import dayjs from 'dayjs';
 import Helper from '../../helpers/helper';
-import lod from 'lodash';
 const getSimInventoryLoading = () => {
   return {
     type: reduxString.GET_SIM_INVENTORY_LOADING,
@@ -106,9 +105,13 @@ const dataMatcherArray2D = (listData = [], headerData = []) => {
               formId === 'imsi-hard-code' &&
               subItem.cellRowType === 'TableCellCheckBox' &&
               colors.imsi_blue,
+            isTouchable:
+              formId === 'imsi-hard-code' &&
+              subItem.cellRowType === 'TableCellCheckBox',
           },
           item: {...item},
           subItem: {
+            formId: formId,
             ...rest,
           },
         };
