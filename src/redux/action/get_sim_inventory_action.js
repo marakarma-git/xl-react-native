@@ -83,7 +83,7 @@ const dataMatcherArray2D = (listData = [], headerData = []) => {
   listData.map((item, index) => {
     const subGenerated = [];
     headerData.map((subItem) => {
-      const {shown, api_id, config, ...rest} = subItem || {};
+      const {shown, api_id, config, formId, ...rest} = subItem || {};
       const {width, superType} = config || {};
       if (shown) {
         const createObject = (superType, labelValue) => {
@@ -102,6 +102,10 @@ const dataMatcherArray2D = (listData = [], headerData = []) => {
             superType: superType,
             label: createObject(superType, item[`${api_id}`]),
             backgroundColor: index % 2 ? colors.gray_table : 'white',
+            fontColor:
+              formId === 'imsi-hard-code' &&
+              subItem.cellRowType === 'TableCellCheckBox' &&
+              colors.imsi_blue,
           },
           item: {...item},
           subItem: {

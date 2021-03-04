@@ -16,6 +16,7 @@ export const colors = {
   border_color: '#eaeaea',
   background_color: '#fafafa',
   button_color_one: '#002DBB',
+  imsi_blue: '#40a9ff',
   background_overlay: '#00D3A0',
   yellow_bell: '#F9DD25',
   black: '',

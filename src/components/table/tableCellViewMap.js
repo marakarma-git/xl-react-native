@@ -46,8 +46,7 @@ const TableCellViewMap = (props) => {
           />
           <Text
             style={{
-              color: fontColor || 'black',
-              fontWeight: 'bold',
+              color: fontColor || 'white',
             }}>
             View
           </Text>

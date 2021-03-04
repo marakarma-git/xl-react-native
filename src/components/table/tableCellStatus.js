@@ -55,7 +55,6 @@ const TableCellStatus = (props) => {
           <Text
             style={{
               color: fontColor || 'black',
-              fontWeight: 'bold',
             }}>
             {label === true ? 'Yes' : label === false ? 'No' : label}
           </Text>
