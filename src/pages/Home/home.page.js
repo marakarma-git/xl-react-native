@@ -64,7 +64,7 @@ const LandingPage = ({navigation}) => {
         <ModalTermCondition 
           showModal={showModal} 
           closeModal={() => setShowModal(!showModal)}
-          title={'Terms of Use & Privacy Policy'}/>
+          title={`Terms of Use & Privacy Policy`}/>
       );
     }
   }

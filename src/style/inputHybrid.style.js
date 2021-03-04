@@ -62,9 +62,8 @@ export default {
     elevation: 4,
   },
   newModalContainer: {
-    marginHorizontal: 40,
-    marginVertical: 150,
-    flex: 1,
+    width: '80%',
+    height: '55%',
     backgroundColor: 'white',
     elevation: 4,
   },
