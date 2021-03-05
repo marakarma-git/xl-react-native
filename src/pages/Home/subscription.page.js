@@ -50,6 +50,7 @@ const Subscription = () => {
     current_size,
     current_page,
     current_total_page,
+    current_total_elements,
     current_header_sort,
     current_params_applied,
   } = useSelector((state) => state.get_sim_inventory_reducer);
@@ -117,7 +118,10 @@ const Subscription = () => {
                     dispatch(generateArrayFilterParams());
                   }}
                 />
-                <FilterActionLabel filtered={totalFiltered} />
+                <FilterActionLabel
+                  filtered={totalFiltered}
+                  total={current_total_elements}
+                />
               </>
             );
           }}

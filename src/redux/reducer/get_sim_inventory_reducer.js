@@ -9,6 +9,7 @@ const initialState = {
   current_page: 0,
   current_size: 20,
   current_total_page: 0,
+  current_total_elements: 0,
   current_header_sort: {
     formId: '',
     orderBy: '',
@@ -44,6 +45,8 @@ const get_sim_inventory_reducer = (state = initialState, action) => {
         data_sim_inventory_table: action.data_sim_inventory_table,
         current_page: action.currentPage,
         current_total_page: action.currentTotalPage,
+        current_total_elements:
+          action.currentTotalElement || state.current_total_elements,
         current_size: action.currentSize,
         current_header_sort: action.selectedHeaderSort || {
           formId: '',

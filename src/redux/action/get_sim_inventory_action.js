@@ -27,6 +27,7 @@ const getSimInventorySuccess = (data) => {
     dataSimInventoryTable,
     currentPage,
     currentTotalPage,
+    currentTotalElement,
     currentSize,
     selectedHeaderSort,
   } = data || {};
@@ -36,6 +37,7 @@ const getSimInventorySuccess = (data) => {
     data_sim_inventory_table: dataSimInventoryTable,
     currentPage: currentPage,
     currentTotalPage: currentTotalPage,
+    currentTotalElement: currentTotalElement,
     currentSize: currentSize,
     selectedHeaderSort: selectedHeaderSort,
   };
@@ -197,7 +199,8 @@ const callSimInventory = (paginate) => {
       )
       .then(({data}) => {
         const {result, statusCode} = data || {};
-        const {content, pageable, totalPages, size} = result || {};
+        const {content, pageable, totalPages, totalElements, size} =
+          result || {};
         const {pageNumber} = pageable || {};
         if (statusCode === 0) {
           const generated = dataMatcherArray2D(content, array_filter);
@@ -207,6 +210,7 @@ const callSimInventory = (paginate) => {
               dataSimInventoryTable: generated,
               currentPage: pageNumber,
               currentTotalPage: totalPages,
+              currentTotalElement: totalElements,
               currentSize: size,
               selectedHeaderSort:
                 selectedHeaderSortPaginate || selectedHeaderSort,
