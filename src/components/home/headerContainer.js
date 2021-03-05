@@ -40,7 +40,6 @@ const HomePageContainer = (props) => {
 };
 HomePageContainer.propTypes = {
   orientation: PropTypes.string,
-  navigation: PropTypes.any.isRequired,
   companyLogo: PropTypes.string,
   headerTitle: PropTypes.string,
 };
