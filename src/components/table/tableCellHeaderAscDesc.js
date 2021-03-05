@@ -5,8 +5,15 @@ import {defaultHeightCell, defaultWidthCell} from '../../constant/config';
 import PropTypes from 'prop-types';
 const TableCellHeaderAscDesc = (props) => {
   const {config, onPress, sorted, key} = props || {};
-  const {label, width, height, isTouchable, fontColor, backgroundColor} =
-    config || {};
+  const {
+    label,
+    width,
+    height,
+    isTouchable,
+    fontColor,
+    backgroundColor,
+    flexStart,
+  } = config || {};
   const TouchView = isTouchable ? TouchableOpacity : View;
   return (
     <View
@@ -20,7 +27,8 @@ const TableCellHeaderAscDesc = (props) => {
       <TouchView
         style={{
           flex: 1,
-          justifyContent: 'center',
+          paddingLeft: flexStart ? 8 : 0,
+          justifyContent: flexStart ? 'flex-start' : 'center',
           alignItems: 'center',
           flexDirection: 'row',
         }}
@@ -36,9 +44,9 @@ const TableCellHeaderAscDesc = (props) => {
         <FontAwesome
           style={{marginLeft: 5}}
           name={
-            sorted === 'ASC'
+            sorted === 'DESC'
               ? 'sort-asc'
-              : sorted === 'DESC'
+              : sorted === 'ASC'
               ? 'sort-desc'
               : 'unsorted'
           }
@@ -51,6 +59,7 @@ const TableCellHeaderAscDesc = (props) => {
 };
 TableCellHeaderAscDesc.propTypes = {
   config: PropTypes.objectOf({
+    flexStart: PropTypes.bool,
     label: PropTypes.string,
     width: PropTypes.number,
     height: PropTypes.number,

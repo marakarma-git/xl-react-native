@@ -48,6 +48,7 @@ TableCell.propTypes = {
     fontSize: PropTypes.number,
     isTouchable: PropTypes.bool,
     superType: PropTypes.oneOf(['DATE', 'BYTE']),
+    flexStart: PropTypes.bool,
   },
   onPress: PropTypes.func,
   onChangeCheck: PropTypes.func,

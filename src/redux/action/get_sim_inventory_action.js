@@ -85,7 +85,7 @@ const dataMatcherArray2D = (listData = [], headerData = []) => {
     const subGenerated = [];
     headerData.map((subItem) => {
       const {shown, api_id, config, formId, ...rest} = subItem || {};
-      const {width, superType} = config || {};
+      const {width, superType, flexStart} = config || {};
       if (shown) {
         const createObject = (superType, labelValue) => {
           if (superType === 'DATE') {
@@ -99,6 +99,7 @@ const dataMatcherArray2D = (listData = [], headerData = []) => {
         const generateObject = {
           cellType: subItem.cellRowType,
           config: {
+            flexStart: flexStart,
             width: width,
             superType: superType,
             label: createObject(superType, item[`${api_id}`]),

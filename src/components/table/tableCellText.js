@@ -12,7 +12,7 @@ const TableCellText = (props) => {
     fontColor,
     backgroundColor,
     key,
-    superType,
+    flexStart,
   } = config || {};
   const TouchView = isTouchable ? TouchableOpacity : View;
   return (
@@ -34,7 +34,8 @@ const TableCellText = (props) => {
         <View
           style={{
             flex: 1,
-            justifyContent: 'center',
+            paddingLeft: flexStart ? 8 : 0,
+            justifyContent: flexStart ? 'flex-start' : 'center',
             alignItems: 'center',
             flexDirection: 'row',
           }}>
