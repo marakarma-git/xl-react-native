@@ -1,3 +1,5 @@
+import { DRAWER_MENU_PRIVILEDGE } from '../constant/priviledge';
+
 class Helper {
   static numberFormat(value, symbol, type = 'number') {
     const result = value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, symbol);
@@ -82,6 +84,43 @@ class Helper {
     } else {
       return data;
     }
+  }
+
+  static findAndReturnPriviledge = (privId, userPriviledge) => {
+    const isHasPriviledge = userPriviledge.find((priv) => priv.priviledgeId == privId);
+
+    if(isHasPriviledge){
+      return true;
+    }else {
+      return false;
+    }
+  }
+
+  static addDrawerMenu = (userPriviledge, type = 'drawer') => {
+    const drawerMenu = [];
+
+    if(userPriviledge){
+      DRAWER_MENU_PRIVILEDGE.map((drawer) => {
+        for(let i = 0; i < userPriviledge.length; i++){
+          if(type === 'drawer'){
+            if(drawer.type == 'drawer'){
+              if(drawer.priviledgeId == userPriviledge[i].priviledgeId || drawer.priviledgeId == ''){
+                drawerMenu.push(drawer);
+                break;
+              }
+            }
+          }else{
+            if(drawer.priviledgeId == userPriviledge[i].priviledgeId || drawer.priviledgeId == ''){
+              drawerMenu.push(drawer);
+              break;
+            }
+          }
+        }
+      });
+    }
+
+    return drawerMenu;
+
   }
 
   static sortDescending(data, key) {

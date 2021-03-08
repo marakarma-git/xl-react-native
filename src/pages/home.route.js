@@ -1,32 +1,36 @@
 import React from 'react';
 import {
   LandingPage,
-  DashboardPage,
-  SubscriptionPage,
-  MyAccountPage,
-  ChangePasswordPage,
-  SubscriptionFilter,
 } from './Home/index';
 import {CustomDrawerContent} from '../components/index';
 import {createDrawerNavigator} from '@react-navigation/drawer';
+import {useSelector} from 'react-redux';
+import Helper from '../helpers/helper';
 
 const Drawer = createDrawerNavigator();
 
 const Home = () => {
+  const { authority } = useSelector((state) => state.auth_reducer.data);
+
+  const generateHomeScreen = () => {
+    const availableMenu = Helper.addDrawerMenu(authority, 'all');
+    return(
+      availableMenu.map((menu, i) => (
+        <Drawer.Screen key={i} name={menu.name} component={menu.components} />
+      ))
+    );
+  }
+
   return (
     <Drawer.Navigator
       initialRouteName="Home"
       drawerStyle={{backgroundColor: '#002DBB'}}
       drawerContent={(props) => <CustomDrawerContent {...props} />}>
-      <Drawer.Screen name="Home" component={LandingPage} />
-      <Drawer.Screen name="Dashboard" component={DashboardPage} />
-      <Drawer.Screen name="Subscription" component={SubscriptionPage} />
-      <Drawer.Screen
-        name={'SubscriptionFilter'}
-        component={SubscriptionFilter}
-      />
-      <Drawer.Screen name="Account" component={MyAccountPage} />
-      <Drawer.Screen name="Change Password" component={ChangePasswordPage} />
+      { 
+        authority 
+        ? generateHomeScreen()
+        : <Drawer.Screen name={'Home'} component={LandingPage} />
+      }
     </Drawer.Navigator>
   );
 };

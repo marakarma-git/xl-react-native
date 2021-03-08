@@ -1,11 +1,8 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { View, Image, Text, Alert } from 'react-native';
 import { DrawerContentScrollView, DrawerItem } from '@react-navigation/drawer';
 import {
-  iconHome,
-  iconComponents,
-  iconGrids,
   iconLogout,
 } from '../../assets/images/index';
 import { useSelector, useDispatch } from 'react-redux';
@@ -13,25 +10,12 @@ import { authLogout } from '../../redux/action/auth_action';
 import styles from '../../style/drawer.style';
 import { removeEnterPriseLogo } from '../../redux/action/enterprise_action';
 import { TouchableOpacity } from 'react-native';
-
-const drawerData = [
-  {
-    name: 'Home',
-    icon: iconHome,
-  },
-  {
-    name: 'Dashboard',
-    icon: iconGrids,
-  },
-  {
-    name: 'Subscription',
-    icon: iconComponents,
-  },
-];
+import Helper from '../../helpers/helper';
 
 const CustomDrawerContent = (props) => {
   const dispatch = useDispatch();
   const userData = useSelector((state) => state.auth_reducer.data);
+  const [drawerData, setDrawerData] = useState([]);
   const confirmLogout = () => {
     Alert.alert(
       'Logout',
@@ -53,6 +37,14 @@ const CustomDrawerContent = (props) => {
       { cancelable: false },
     );
   };
+
+  useEffect(() => {
+    const drawerLoad = props.navigation.addListener('focus', () => {
+      setDrawerData(Helper.addDrawerMenu(userData.authority));
+    });
+
+    return drawerLoad;
+  });
 
   return (
     <DrawerContentScrollView {...props} style={{ padding: 0 }}>
@@ -81,7 +73,7 @@ const CustomDrawerContent = (props) => {
         <DrawerItem
           key={`drawer_item-${idx + 1}`}
           label={() => (
-            <View style={styles.menuLabelFlex}>
+            <View style={[styles.menuLabelFlex]}>
               <Image style={{ width: 20, height: 20 }} source={item.icon} />
               <Text style={styles.menuTitle}>{item.name}</Text>
             </View>

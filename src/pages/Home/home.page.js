@@ -10,6 +10,7 @@ import Orientation from '../../helpers/orientation';
 
 import style from '../../style/home.style';
 import {Dimensions} from 'react-native';
+import Helper from '../../helpers/helper';
 
 const LandingPage = ({navigation}) => {
   const dispatch = useDispatch();

@@ -11,8 +11,7 @@ const activityLogMiddleware = (store) => (next) => (action) => {
   for (let i = 0; i < activityMatrix.length; i++) {
     if (activityMatrix[i].actionType === action.type) {
       isHitApi = true;
-      dataRaw.moduleName = activityMatrix[i].moduleName;
-      dataRaw.activityType = activityMatrix[i].activityType;
+      dataRaw.privId = activityMatrix[i].priviledgeId;
       dataRaw.description = descriptionParser(
         action.type,
         activityMatrix[i].initDescription,
