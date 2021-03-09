@@ -1,4 +1,4 @@
-import { DRAWER_MENU_PRIVILEDGE } from '../constant/priviledge';
+import {DRAWER_MENU_PRIVILEDGE} from '../constant/priviledge';
 
 class Helper {
   static numberFormat(value, symbol, type = 'number') {
@@ -87,30 +87,38 @@ class Helper {
   }
 
   static findAndReturnPriviledge = (privId, userPriviledge) => {
-    const isHasPriviledge = userPriviledge.find((priv) => priv.priviledgeId == privId);
+    const isHasPriviledge = userPriviledge.find(
+      (priv) => priv.priviledgeId == privId,
+    );
 
     if(isHasPriviledge){
       return isHasPriviledge.priviledgeId;
     }else {
       return "";
     }
-  }
+  };
 
   static addDrawerMenu = (userPriviledge, type = 'drawer') => {
     const drawerMenu = [];
 
-    if(userPriviledge){
+    if (userPriviledge) {
       DRAWER_MENU_PRIVILEDGE.map((drawer) => {
-        for(let i = 0; i < userPriviledge.length; i++){
-          if(type === 'drawer'){
-            if(drawer.type == 'drawer'){
-              if(drawer.priviledgeId == userPriviledge[i].priviledgeId || drawer.priviledgeId == ''){
+        for (let i = 0; i < userPriviledge.length; i++) {
+          if (type === 'drawer') {
+            if (drawer.type == 'drawer') {
+              if (
+                drawer.priviledgeId == userPriviledge[i].priviledgeId ||
+                drawer.priviledgeId == ''
+              ) {
                 drawerMenu.push(drawer);
                 break;
               }
             }
-          }else{
-            if(drawer.priviledgeId == userPriviledge[i].priviledgeId || drawer.priviledgeId == ''){
+          } else {
+            if (
+              drawer.priviledgeId == userPriviledge[i].priviledgeId ||
+              drawer.priviledgeId == ''
+            ) {
               drawerMenu.push(drawer);
               break;
             }
@@ -120,8 +128,7 @@ class Helper {
     }
 
     return drawerMenu;
-
-  }
+  };
 
   static sortDescending(data, key) {
     if (typeof data === 'object') {
@@ -153,6 +160,27 @@ class Helper {
 
   static mergeToSpecificIndex = (first_array, second_array, index = 0) =>
     first_array.splice(index, 0, ...second_array) && first_array;
+
+  static numberWithCommas(x) {
+    if (x) {
+      return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+    }
+  }
+
+  static numberWithDot(x) {
+    if (x || x == 0) {
+      return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+    }
+  }
+
+  static numberFromBE(labelValue) {
+    if (labelValue) {
+      return labelValue
+        .toString()
+        .replace('.', ',')
+        .replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+    }
+  }
 }
 
 export default Helper;

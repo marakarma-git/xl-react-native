@@ -8,6 +8,7 @@ import {
   ActivityIndicator,
 } from 'react-native';
 import PropTypes from 'prop-types';
+import Helper from '../../helpers/helper';
 import {colors} from '../../constant/color';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
@@ -97,7 +98,10 @@ const TableFooter = (props) => {
                 }
               }}
             />
-            <Text style={{color: colors.font_gray}}> of {totalPage}</Text>
+            <Text style={{color: colors.font_gray}}>
+              {' '}
+              of {Helper.numberWithDot(totalPage)}
+            </Text>
             {currentPage < totalPage && (
               <>
                 <TouchableOpacity
