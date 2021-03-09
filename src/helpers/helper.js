@@ -90,9 +90,9 @@ class Helper {
     const isHasPriviledge = userPriviledge.find((priv) => priv.priviledgeId == privId);
 
     if(isHasPriviledge){
-      return true;
+      return isHasPriviledge.priviledgeId;
     }else {
-      return false;
+      return "";
     }
   }
 

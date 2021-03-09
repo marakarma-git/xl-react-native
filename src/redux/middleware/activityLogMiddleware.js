@@ -6,12 +6,12 @@ import {base_url} from '../../constant/connection';
 const activityLogMiddleware = (store) => (next) => (action) => {
   let isHitApi = false;
   const authReducer = store.getState().auth_reducer;
-  const dataRaw = {channel: 'Mobile'};
+  const dataRaw = {channel: 'Web Portal'};
 
   for (let i = 0; i < activityMatrix.length; i++) {
     if (activityMatrix[i].actionType === action.type) {
       isHitApi = true;
-      dataRaw.privId = activityMatrix[i].priviledgeId;
+      dataRaw.privId = Helper.findAndReturnPriviledge(activityMatrix[i].priviledgeId, authReducer.data.authority || action.privId);
       dataRaw.description = descriptionParser(
         action.type,
         activityMatrix[i].initDescription,
