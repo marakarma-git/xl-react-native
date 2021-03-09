@@ -11,7 +11,7 @@ import MapView, {PROVIDER_GOOGLE, Circle} from 'react-native-maps';
 import {inputHybridStyle} from '../../style';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 const ModalMapOnly = (props) => {
-  const {onClose} = props || {};
+  const {onClose, mapId} = props || {};
   return (
     <Modal animationType="slide" transparent onRequestClose={onClose}>
       <View style={inputHybridStyle.modalBackdrop} />
@@ -26,7 +26,7 @@ const ModalMapOnly = (props) => {
           <Text
             style={[inputHybridStyle.modalTitleText, {color: 'white'}]}
             numberOfLines={1}>
-            MSIDN: STILL_DUMMY_ID_123
+            MSIDN: {mapId || ''}
           </Text>
           <TouchableOpacity onPress={onClose}>
             <MaterialCommunityIcons
@@ -64,6 +64,7 @@ const ModalMapOnly = (props) => {
 };
 ModalMapOnly.propTypes = {
   onClose: PropTypes.bool,
+  mapId: PropTypes.string,
 };
 ModalMapOnly.defaultProps = {
   onClose: () => {},

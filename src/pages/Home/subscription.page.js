@@ -9,6 +9,7 @@ import SearchHeader from '../../components/subscription/searchHeader';
 import {HeaderContainer, OverlayBackground} from '../../components/index';
 import {getCustomLabel} from '../../redux/action/get_custom_label_action';
 import FilterActionLabel from '../../components/subscription/filterActionLabel';
+import Helper from '../../helpers/helper';
 import callSimInventory, {
   changeCheckSimInventory,
   changeCheckSimInventoryAllTrue,
@@ -34,6 +35,7 @@ const Subscription = () => {
   const [firstRender, setFirstRender] = useState(true);
   const [showMenu, setShowMenu] = useState(false);
   const [showMap, setShowMap] = useState(false);
+  const [mapId, setMapId] = useState(null);
   const {data} = useSelector((state) => state.auth_reducer);
   const {
     array_filter,
@@ -120,7 +122,7 @@ const Subscription = () => {
                 />
                 <FilterActionLabel
                   filtered={totalFiltered}
-                  total={current_total_elements}
+                  total={Helper.numberWithDot(current_total_elements)}
                 />
               </>
             );
@@ -183,10 +185,11 @@ const Subscription = () => {
           }
           onPressCell={(e) => {
             const {subItem, item} = e || {};
-            const {imsi} = item || '';
+            const {imsi, msisdn} = item || '';
             const {formId} = subItem || '';
             if (formId === 'dummy-map-hard-code') {
               setShowMap(true);
+              setMapId(msisdn);
             } else if (formId === 'imsi-hard-code') {
               const createLink = `https://xl.dcp.ericsson.net/portal/#/en/${data.customerNo}/subscription-inventory/${imsi}`;
               Linking.openURL(createLink);
@@ -233,7 +236,9 @@ const Subscription = () => {
             </View>
           ))}
       </View>
-      {showMap && <ModalMapOnly onClose={() => setShowMap(false)} />}
+      {showMap && mapId && (
+        <ModalMapOnly onClose={() => setShowMap(false)} mapId={mapId} />
+      )}
       {showMenu && (
         <ModalMenuPicker
           title={'Column'}
