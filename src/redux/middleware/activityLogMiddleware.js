@@ -21,15 +21,15 @@ const activityLogMiddleware = (store) => (next) => (action) => {
     }
   }
 
-  // if (isHitApi) {
-  //   if (authReducer.isLoggedIn) {
-  //     saveActivity(dataRaw, authReducer.data.access_token);
-  //   } else {
-  //     if (action.payload.access_token) {
-  //       saveActivity(dataRaw, action.payload.access_token);
-  //     }
-  //   }
-  // }
+  if (isHitApi) {
+    if (authReducer.isLoggedIn) {
+      saveActivity(dataRaw, authReducer.data.access_token);
+    } else {
+      if (action.payload.access_token) {
+        saveActivity(dataRaw, action.payload.access_token);
+      }
+    }
+  }
 
   next(action);
 };
@@ -93,11 +93,11 @@ const saveActivity = async (dataRaw, accessToken) => {
 
     if (data) {
       if (data.statusCode === 0) {
-        // console.log("Success save activity");
+        console.log("Success save activity");
       }
     }
   } catch (error) {
-    // console.log(JSON.stringify(error));
+    console.log(JSON.stringify(error));
   }
 };
 

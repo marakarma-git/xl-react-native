@@ -23,7 +23,7 @@ export default ActivityMatrix = [
   {
     actionType: 'SET_CAROUSEL',
     activityType: 'Generate Banner list',
-    initDescription: 'Success generate banner list',
+    initDescription: 'Generate Banner List',
     moduleName: 'Home',
     priviledgeId: "ee1a4b4e-6439-11eb-ae93-0242ac130002"
   },
