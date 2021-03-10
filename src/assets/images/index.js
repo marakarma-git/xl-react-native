@@ -19,7 +19,9 @@ import iconComponents from './drawer/components.png';
 import iconLogout from './drawer/logout.png';
 
 // Banner Assets
-import framerBanner from './banners/farmer-banner.png'
+import framerBanner from './banners/farmer-banner.png';
+
+import locationNotFound from './404/location-not-found.png';
 
 export {
   logoCompany,
@@ -36,5 +38,6 @@ export {
   iconGrids,
   iconComponents,
   iconLogout,
-  framerBanner
-}
+  framerBanner,
+  locationNotFound,
+};

@@ -114,39 +114,41 @@ export default {
   },
   mapContainer: {
     flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   modalFooter: {
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
-    width: '100%', 
-    height: 50, 
+    width: '100%',
+    height: 50,
   },
   contentWrapper: {
     width: '100%',
     padding: 20,
     height: 300,
-    justifyContent: 'space-between'
+    justifyContent: 'space-between',
   },
   tcText: {
-    fontSize: 14, 
-    textAlign: 'justify', 
+    fontSize: 14,
+    textAlign: 'justify',
     letterSpacing: 1,
-    fontFamily: 'segoeui' 
+    fontFamily: 'segoeui',
   },
   linkText: {
     fontSize: 14,
     color: '#20A8D8',
     textAlign: 'center',
     paddingVertical: 5,
-    fontFamily: 'segoeui' 
+    fontFamily: 'segoeui',
   },
   buttonContainer: {
     width: '100%',
     height: 50,
     flexDirection: 'row',
     justifyContent: 'center',
-    alignItems: 'center'
+    alignItems: 'center',
   },
   buttonCancel: {
     width: 100,
@@ -164,7 +166,7 @@ export default {
     justifyContent: 'center',
     height: 30,
     backgroundColor: colors.button_color_one,
-    marginHorizontal: 3
+    marginHorizontal: 3,
   },
   buttonText: {
     fontSize: 16,

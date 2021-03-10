@@ -28,6 +28,7 @@ import AppliedFilter from '../../components/subscription/appliedFilter';
 import dayjs from 'dayjs';
 import {colors} from '../../constant/color';
 import ModalMapOnly from '../../components/modal/ModalMapOnly';
+import lod from 'lodash';
 
 const Subscription = () => {
   const dispatch = useDispatch();
@@ -35,7 +36,7 @@ const Subscription = () => {
   const [firstRender, setFirstRender] = useState(true);
   const [showMenu, setShowMenu] = useState(false);
   const [showMap, setShowMap] = useState(false);
-  const [mapId, setMapId] = useState(null);
+  const [mapData, setMapData] = useState({});
   const {data} = useSelector((state) => state.auth_reducer);
   const {
     array_filter,
@@ -185,11 +186,14 @@ const Subscription = () => {
           }
           onPressCell={(e) => {
             const {subItem, item} = e || {};
-            const {imsi, msisdn} = item || '';
+            const {imsi, msisdn, inventoryId} = item || '';
             const {formId} = subItem || '';
             if (formId === 'dummy-map-hard-code') {
               setShowMap(true);
-              setMapId(msisdn);
+              setMapData({
+                inventoryId: inventoryId,
+                msisdn: msisdn,
+              });
             } else if (formId === 'imsi-hard-code') {
               const createLink = `https://xl.dcp.ericsson.net/portal/#/en/${data.customerNo}/subscription-inventory/${imsi}`;
               Linking.openURL(createLink);
@@ -236,8 +240,8 @@ const Subscription = () => {
             </View>
           ))}
       </View>
-      {showMap && mapId && (
-        <ModalMapOnly onClose={() => setShowMap(false)} mapId={mapId} />
+      {showMap && !lod.isEmpty(mapData) && (
+        <ModalMapOnly onClose={() => setShowMap(false)} mapData={mapData} />
       )}
       {showMenu && (
         <ModalMenuPicker
