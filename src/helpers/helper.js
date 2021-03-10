@@ -91,10 +91,10 @@ class Helper {
       (priv) => priv.priviledgeId == privId,
     );
 
-    if (isHasPriviledge) {
-      return true;
-    } else {
-      return false;
+    if(isHasPriviledge){
+      return isHasPriviledge.priviledgeId;
+    }else {
+      return "";
     }
   };
 

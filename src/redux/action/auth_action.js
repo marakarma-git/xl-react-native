@@ -21,6 +21,7 @@ const authSuccess = (data, params) => {
     type: reduxString.AUTH_SUCCESS,
     payload: data,
     params,
+    privId: data.authority
   };
 };
 

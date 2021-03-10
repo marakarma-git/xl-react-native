@@ -6,12 +6,12 @@ import {base_url} from '../../constant/connection';
 const activityLogMiddleware = (store) => (next) => (action) => {
   let isHitApi = false;
   const authReducer = store.getState().auth_reducer;
-  const dataRaw = {channel: 'Mobile'};
+  const dataRaw = {channel: 'Web Portal'};
 
   for (let i = 0; i < activityMatrix.length; i++) {
     if (activityMatrix[i].actionType === action.type) {
       isHitApi = true;
-      dataRaw.privId = activityMatrix[i].priviledgeId;
+      dataRaw.privId = Helper.findAndReturnPriviledge(activityMatrix[i].priviledgeId, authReducer.data.authority || action.privId);
       dataRaw.description = descriptionParser(
         action.type,
         activityMatrix[i].initDescription,
@@ -21,15 +21,15 @@ const activityLogMiddleware = (store) => (next) => (action) => {
     }
   }
 
-  // if (isHitApi) {
-  //   if (authReducer.isLoggedIn) {
-  //     saveActivity(dataRaw, authReducer.data.access_token);
-  //   } else {
-  //     if (action.payload.access_token) {
-  //       saveActivity(dataRaw, action.payload.access_token);
-  //     }
-  //   }
-  // }
+  if (isHitApi) {
+    if (authReducer.isLoggedIn) {
+      saveActivity(dataRaw, authReducer.data.access_token);
+    } else {
+      if (action.payload.access_token) {
+        saveActivity(dataRaw, action.payload.access_token);
+      }
+    }
+  }
 
   next(action);
 };
@@ -93,11 +93,11 @@ const saveActivity = async (dataRaw, accessToken) => {
 
     if (data) {
       if (data.statusCode === 0) {
-        // console.log("Success save activity");
+        console.log("Success save activity");
       }
     }
   } catch (error) {
-    // console.log(JSON.stringify(error));
+    console.log(JSON.stringify(error));
   }
 };
 
