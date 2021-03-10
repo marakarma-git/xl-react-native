@@ -14,9 +14,10 @@ import magnifyingGlass from './icons/magnifying-glass.png';
 import burgerMenu from './drawer/burger-menu.png';
 import iconUser from './drawer/user.png';
 import iconHome from './drawer/home.png';
-import iconGrids from './drawer/grids.png';
-import iconComponents from './drawer/components.png';
-import iconLogout from './drawer/logout.png';
+import iconGrids from './drawer/grids2.png';
+import iconComponents from './drawer/components2.png';
+import iconLogout from './drawer/logout2.png';
+import iconAboutus from './drawer/aboutus.png';
 
 // Banner Assets
 import framerBanner from './banners/farmer-banner.png'
@@ -36,5 +37,6 @@ export {
   iconGrids,
   iconComponents,
   iconLogout,
-  framerBanner
+  framerBanner,
+  iconAboutus
 }

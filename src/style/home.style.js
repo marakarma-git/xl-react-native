@@ -173,4 +173,15 @@ export default {
     alignItems: 'center',
     justifyContent: 'center',
   },
+  aboutTitle: {
+    fontSize: 18, 
+    fontWeight: 'bold', 
+    textAlign: 'center', 
+    paddingVertical: 5
+  },
+  aboutText: {
+    textAlign: 'center', 
+    paddingVertical: 10,
+    fontFamily: 'segoeui' 
+  }
 };

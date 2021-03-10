@@ -4,6 +4,7 @@ import { View, Image, Text, Alert } from 'react-native';
 import { DrawerContentScrollView, DrawerItem } from '@react-navigation/drawer';
 import {
   iconLogout,
+  iconAboutus
 } from '../../assets/images/index';
 import { useSelector, useDispatch } from 'react-redux';
 import { authLogout } from '../../redux/action/auth_action';
@@ -74,7 +75,7 @@ const CustomDrawerContent = (props) => {
           key={`drawer_item-${idx + 1}`}
           label={() => (
             <View style={[styles.menuLabelFlex]}>
-              <Image style={{ width: 20, height: 20 }} source={item.icon} />
+              <Image style={{ width: 20, height: 20, resizeMode: 'contain' }} source={item.icon} />
               <Text style={styles.menuTitle}>{item.name}</Text>
             </View>
           )}
@@ -86,7 +87,20 @@ const CustomDrawerContent = (props) => {
         label={() => (
           <View style={styles.menuLabelFlex}>
             <Image
-              style={{ width: 15, height: 15, marginTop: 3, marginLeft: 6 }}
+              style={{ width: 20, height: 20, resizeMode: 'contain' }}
+              source={iconAboutus}
+            />
+            <Text style={styles.menuTitle}>About us</Text>
+          </View>
+        )}
+        onPress={() => props.navigation.navigate('About')}
+      />
+      <View style={styles.divider} />
+      <DrawerItem
+        label={() => (
+          <View style={styles.menuLabelFlex}>
+            <Image
+              style={{ width: 23, height: 23, resizeMode: 'contain' }}
               source={iconLogout}
             />
             <Text style={styles.menuTitle}>Logout</Text>
