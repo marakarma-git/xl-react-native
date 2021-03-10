@@ -6,6 +6,7 @@ import {
     MyAccountPage,
     ChangePasswordPage,
     SubscriptionFilter,
+    AboutPage
   } from '../pages/Home/index';
 
 export const DRAWER_MENU_PRIVILEDGE = [
@@ -42,6 +43,8 @@ export const DRAWER_MENU_PRIVILEDGE = [
         name: 'Account', 
         icon: iconGrids, 
         type: 'non-drawer', 
+        width: 25,
+        height: 25,
         components: MyAccountPage 
     },
     { 
@@ -49,6 +52,17 @@ export const DRAWER_MENU_PRIVILEDGE = [
         name: 'Change Password', 
         icon: iconComponents, 
         type: 'non-drawer', 
+        width: 25,
+        height: 25,
         components: ChangePasswordPage 
+    },
+    { 
+        priviledgeId: "",
+        name: 'About', 
+        icon: iconComponents, 
+        type: 'non-drawer', 
+        width: 25,
+        height: 25,
+        components: AboutPage 
     },
 ];

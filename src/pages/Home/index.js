@@ -4,3 +4,4 @@ export {default as SubscriptionPage} from './subscription.page';
 export {default as SubscriptionFilter} from './subscriptionFilter.page';
 export {default as MyAccountPage} from './account.page';
 export {default as ChangePasswordPage} from './changepassword.page';
+export {default as AboutPage} from './about.page';
