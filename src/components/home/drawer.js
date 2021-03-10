@@ -90,7 +90,7 @@ const CustomDrawerContent = (props) => {
               style={{ width: 20, height: 20, resizeMode: 'contain' }}
               source={iconAboutus}
             />
-            <Text style={styles.menuTitle}>About us</Text>
+            <Text style={styles.menuTitle}>About</Text>
           </View>
         )}
         onPress={() => props.navigation.navigate('About')}
