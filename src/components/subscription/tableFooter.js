@@ -83,8 +83,8 @@ const TableFooter = (props) => {
               </>
             )}
             <TextInput
-              placeholder={currentPage + ''}
-              value={currentPage}
+              placeholder={currentPage + 1 + ''}
+              value={currentPage + 1}
               style={tableFooter.textInputPaging}
               maxLength={totalPage.toString().length || 0}
               onSubmitEditing={(e) => {

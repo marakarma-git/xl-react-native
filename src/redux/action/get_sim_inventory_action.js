@@ -162,7 +162,17 @@ const callSimInventory = (paginate) => {
       selectedHeaderSortPaginate || {};
     const {orderBy, sortBy} = selectedHeaderSort || {};
     const {access_token} = data || {};
-    const getPage = page_value || current_page;
+    const getPage = () => {
+      if (page_value === 0) {
+        return 0;
+      } else {
+        if (page_value) {
+          return page_value;
+        } else {
+          return current_page;
+        }
+      }
+    };
     const getSize = size_value || current_size;
     const getOrderBy = () => {
       if (sortByPaginate === 'RESET') {
@@ -187,11 +197,11 @@ const callSimInventory = (paginate) => {
       }
     };
     console.log(
-      `${base_url}/dcp/sim/getSimInventory?page=${getPage}&size=${getSize}&keyword=${searchText}&sort=${getOrderBy()}&order=${getSortBy()}${generatedParams}`,
+      `${base_url}/dcp/sim/getSimInventory?page=${getPage()}&size=${getSize}&keyword=${searchText}&sort=${getOrderBy()}&order=${getSortBy()}${generatedParams}`,
     );
     axios
       .get(
-        `${base_url}/dcp/sim/getSimInventory?page=${getPage}&size=${getSize}&keyword=${searchText}&sort=${getOrderBy()}&order=${getSortBy()}${generatedParams}`,
+        `${base_url}/dcp/sim/getSimInventory?page=${getPage()}&size=${getSize}&keyword=${searchText}&sort=${getOrderBy()}&order=${getSortBy()}${generatedParams}`,
         {
           headers: {
             Authorization: `Bearer ${access_token}`,
