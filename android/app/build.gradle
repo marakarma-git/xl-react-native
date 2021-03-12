@@ -135,6 +135,7 @@ android {
         versionCode 1
         versionName "1.0"
         multiDexEnabled false
+        manifestPlaceholders = [API_KEY_GOOGLE_MAP: "$System.env.API_KEY_GOOGLE_MAP"]
     }
     splits {
         abi {
