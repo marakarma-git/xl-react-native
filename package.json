@@ -3,11 +3,24 @@
   "version": "0.0.1",
   "private": true,
   "scripts": {
+    "env:staging": "node scripts/set-environment.js staging",
+    "env:development": "node scripts/set-environment.js development",
+    "env:production": "node scripts/set-environment.js production",
+
     "android": "react-native run-android",
     "clean": "cd android && ./gradlew clean && cd .. && react-native run-android",
     "android-release": "cd android && ./gradlew clean && cd .. && react-native run-android --variant=release",
     "android-build": "cd android && ./gradlew clean && ./gradlew assembleRelease && cd ..",
+
+    "android:development": "npm run env:development && npm run android",
+    "android:staging": "npm run env:staging && npm run android",
+    "android:production": "npm run env:production && npm run android",
+
     "ios": "react-native run-ios",
+    "ios:development": "npm run env:development && npm run ios",
+    "ios:staging": "npm run env:staging && npm run ios",
+    "ios:production": "npm run env:production && npm run ios",
+
     "start": "react-native start",
     "test": "jest",
     "lint": "eslint ."
