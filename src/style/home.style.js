@@ -182,6 +182,6 @@ export default {
   aboutText: {
     textAlign: 'center', 
     paddingVertical: 10,
-    fontFamily: 'segoeui' 
+    // fontFamily: 'segoeui' 
   }
 };

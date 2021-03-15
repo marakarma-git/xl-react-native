@@ -134,14 +134,14 @@ export default {
     fontSize: 14,
     textAlign: 'justify',
     letterSpacing: 1,
-    fontFamily: 'segoeui',
+    // fontFamily: 'segoeui',
   },
   linkText: {
     fontSize: 14,
     color: '#20A8D8',
     textAlign: 'center',
     paddingVertical: 5,
-    fontFamily: 'segoeui',
+    // fontFamily: 'segoeui',
   },
   buttonContainer: {
     width: '100%',
