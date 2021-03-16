@@ -46,7 +46,9 @@ const get_sim_inventory_reducer = (state = initialState, action) => {
         current_page: action.currentPage,
         current_total_page: action.currentTotalPage,
         current_total_elements:
-          action.currentTotalElement || state.current_total_elements,
+          state.current_total_elements === 0
+            ? action.currentTotalElement
+            : state.current_total_elements,
         current_size: action.currentSize,
         current_header_sort: action.selectedHeaderSort || {
           formId: '',

@@ -59,20 +59,21 @@ const Subscription = () => {
   } = useSelector((state) => state.get_sim_inventory_reducer);
   const {imageBase64} = useSelector((state) => state.enterprise_reducer);
   useEffect(() => {
-    const timer = setTimeout(() => {
-      if (!firstRender) {
-        dispatch(
-          callSimInventory({
-            page_value: 0,
-          }),
-        );
-      } else {
-        dispatch(getCustomLabel(navigation));
-        dispatch(callSimInventory());
-        setFirstRender(false);
-      }
-    }, 500);
-    return () => clearTimeout(timer);
+    // const timer = setTimeout(() => {
+    //
+    // }, 500);
+    if (!firstRender) {
+      dispatch(
+        callSimInventory({
+          page_value: 0,
+        }),
+      );
+    } else {
+      dispatch(getCustomLabel(navigation));
+      dispatch(callSimInventory());
+      setFirstRender(false);
+    }
+    // return () => clearTimeout(timer);
   }, [current_size, dispatch, navigation, searchText, generatedParams]);
   useEffect(() => {
     if (current_params_applied) {
@@ -94,7 +95,7 @@ const Subscription = () => {
                 <OverlayBackground />
                 <SearchHeader
                   value={searchText}
-                  onChangeText={(e) => dispatch(updateDataSearchText(e))}
+                  onSubmitEditing={(e) => dispatch(updateDataSearchText(e))}
                   showMenu={showMenu}
                   onClickColumn={() => setShowMenu((state) => !state)}
                 />

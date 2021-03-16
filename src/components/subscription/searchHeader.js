@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {
   View,
   TextInput,
@@ -15,7 +15,9 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import {useNavigation} from '@react-navigation/native';
 const SearchHeader = (props) => {
   const navigation = useNavigation();
-  const {value, onChangeText, loading, onClickColumn} = props || {};
+  const [changeText, setChangeText] = useState('');
+  const {value, onChangeText, onSubmitEditing, loading, onClickColumn} =
+    props || {};
   return (
     <Container style={subscriptionStyle.containerMargin}>
       <View style={subscriptionStyle.containerTextInput2}>
@@ -31,11 +33,14 @@ const SearchHeader = (props) => {
             size={15}
           />
           <TextInput
-            value={value}
+            value={changeText}
             editable={!loading}
-            onChangeText={onChangeText}
+            onChangeText={(e) => setChangeText(e)}
+            onSubmitEditing={() => onSubmitEditing(changeText)}
             style={{flex: 1, fontSize: 11}}
-            placeholder={'Search with IMSI, MSISDN, ICCID, Detected IMEI'}
+            placeholder={
+              value || 'Search with IMSI, MSISDN, ICCID, Detected IMEI'
+            }
           />
         </View>
         {loading ? (
@@ -67,10 +72,12 @@ SearchHeader.propTypes = {
   onChangeText: PropTypes.func,
   loading: PropTypes.bool,
   onClickColumn: PropTypes.func,
+  onSubmitEditing: PropTypes.func,
 };
 SearchHeader.defaultProps = {
   showMenu: false,
   onChangeText: () => {},
   onClickColumn: () => {},
+  onSubmitEditing: () => {},
 };
 export default SearchHeader;

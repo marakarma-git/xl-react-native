@@ -39,6 +39,7 @@ const dynamicFilter = [
     shown: true,
     valueCheck: false,
     valueOption: null,
+    sort_by_filter: 0,
   },
   {
     formId: 'in-session-hard-code',
@@ -70,6 +71,7 @@ const dynamicFilter = [
       flexStart: true,
     },
     shown: true,
+    sort_by_filter: 2,
   },
   {
     formId: 'label-hard-code',
@@ -87,6 +89,7 @@ const dynamicFilter = [
       isTouchable: true,
     },
     shown: true,
+    sort_by_filter: 2,
   },
   {
     formId: 'iccid-hard-code',
@@ -105,6 +108,7 @@ const dynamicFilter = [
       flexStart: true,
     },
     shown: true,
+    sort_by_filter: 3,
   },
   {
     formId: 'msisdn-hard-code',
@@ -122,6 +126,7 @@ const dynamicFilter = [
       flexStart: true,
     },
     shown: true,
+    sort_by_filter: 1,
   },
   {
     formId: 'state-hard-code',
@@ -143,6 +148,7 @@ const dynamicFilter = [
       flexStart: true,
     },
     shown: true,
+    sort_by_filter: 4,
   },
   {
     formId: 'state-lock-hard-code',
@@ -163,6 +169,7 @@ const dynamicFilter = [
       isTouchable: true,
     },
     shown: true,
+    sort_by_filter: 6,
   },
   {
     formId: 'fixed-ip-hard-code',
@@ -180,6 +187,7 @@ const dynamicFilter = [
       isTouchable: true,
     },
     shown: true,
+    sort_by_filter: 14,
   },
   {
     formId: 'specification-id-hard-code',
@@ -198,6 +206,7 @@ const dynamicFilter = [
       flexStart: true,
     },
     shown: true,
+    sort_by_filter: 9,
   },
   {
     formId: 'subscription-package-id-hard-code',
@@ -214,6 +223,7 @@ const dynamicFilter = [
       flexStart: true,
     },
     shown: true,
+    sort_by_filter: 7,
   },
   {
     formId: 'subscription-package-name-hard-code',
@@ -235,6 +245,7 @@ const dynamicFilter = [
       flexStart: true,
     },
     shown: true,
+    sort_by_filter: 8,
   },
   {
     formId: 'enterprise-hard-code',
@@ -257,6 +268,7 @@ const dynamicFilter = [
       flexStart: true,
     },
     shown: true,
+    sort_by_filter: 11,
   },
   {
     formId: 'detected-imei-hard-code',
@@ -275,6 +287,7 @@ const dynamicFilter = [
       isTouchable: true,
     },
     shown: true,
+    sort_by_filter: 5,
   },
   {
     formId: 'monthly-data-hard-code',
@@ -329,6 +342,7 @@ const dynamicFilter = [
       superType: 'BYTE',
     },
     shown: true,
+    sort_by_filter: 13,
   },
   {
     formId: 'monthly-sms-hard-code',
@@ -346,6 +360,7 @@ const dynamicFilter = [
       isTouchable: true,
     },
     shown: true,
+    sort_by_filter: 10,
   },
   {
     formId: 'first-activation-date-hard-code',
@@ -366,6 +381,7 @@ const dynamicFilter = [
       superType: 'DATE',
     },
     shown: true,
+    sort_by_filter: 11,
   },
   {
     formId: 'pbr-exit-date-hard-code',
@@ -386,6 +402,7 @@ const dynamicFilter = [
       superType: 'DATE',
     },
     shown: true,
+    sort_by_filter: 12,
   },
   {
     formId: 'last-network-activity-hard-code',
@@ -402,6 +419,7 @@ const dynamicFilter = [
       isTouchable: true,
     },
     shown: true,
+    sort_by_filter: 17,
   },
   {
     formId: 'apn-hard-code',
@@ -420,6 +438,7 @@ const dynamicFilter = [
       doNotShowOnFilter: true,
     },
     shown: false,
+    sort_by_filter: 15,
   },
   {
     formId: 'dummy-map-hard-code',
@@ -431,6 +450,7 @@ const dynamicFilter = [
       doNotShowOnFilter: true,
     },
     shown: true,
+    sort_by_filter: 19,
   },
 ];
 const initialState = {

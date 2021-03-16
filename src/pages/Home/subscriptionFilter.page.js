@@ -23,6 +23,7 @@ import {getEnterpriseCorp} from '../../redux/action/get_enterprise_corp_action';
 import {getEnterprisePackageName} from '../../redux/action/get_enterprise_package_name_action';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import {useNavigation} from '@react-navigation/native';
+import lod from 'lodash';
 
 const Container = (props) => {
   const {style, children} = props;
@@ -44,6 +45,7 @@ const SubscriptionFilter = () => {
   useEffect(() => {
     console.log(JSON.stringify(generatedParams, null, 2));
   }, [generatedParams]);
+  let array = lod.orderBy(array_filter, ['sort_by_filter', 'asc']) || [];
   return (
     <HeaderContainer navigation={navigation} headerTitle={'Subscription'}>
       <ScrollView style={{backgroundColor: 'white'}}>
@@ -60,50 +62,38 @@ const SubscriptionFilter = () => {
             </TouchableOpacity>
           </View>
           <View style={subscriptionStyle.containerWrap}>
-            {array_filter.length > 0 &&
-              array_filter.map((e) => {
-                const {
-                  formId,
-                  typeInput,
-                  value,
-                  config,
-                  loading,
-                  data,
-                  selectedValue,
-                  disabled,
-                  errorText,
-                  isSelected,
-                } = e || {};
-                const {label} = config || {};
-                return (
-                  <InputHybrid
-                    isSelected={isSelected}
-                    onChange2={(e) =>
-                      dispatch(
-                        setSomethingToFilter([
-                          {
-                            formId: formId,
-                            needs: `OnChange${typeInput}`,
-                            value: value,
-                            selectedValue: e,
-                          },
-                        ]),
-                      )
-                    }
-                    onChange={(e) => {
-                      if (formId === 'enterprise-hard-code') {
-                        dispatch(getEnterprisePackageName(e.value));
-                        dispatch(
-                          setSomethingToFilter([
-                            {
-                              formId: formId,
-                              needs: `OnChange${typeInput}`,
-                              value: e,
-                              selectedValue: selectedValue,
-                            },
-                          ]),
-                        );
-                      }
+            {array.map((e) => {
+              const {
+                formId,
+                typeInput,
+                value,
+                config,
+                loading,
+                data,
+                selectedValue,
+                disabled,
+                errorText,
+                isSelected,
+              } = e || {};
+              const {label} = config || {};
+              return (
+                <InputHybrid
+                  isSelected={isSelected}
+                  onChange2={(e) =>
+                    dispatch(
+                      setSomethingToFilter([
+                        {
+                          formId: formId,
+                          needs: `OnChange${typeInput}`,
+                          value: value,
+                          selectedValue: e,
+                        },
+                      ]),
+                    )
+                  }
+                  onChange={(e) => {
+                    if (formId === 'enterprise-hard-code') {
+                      dispatch(getEnterprisePackageName(e.value));
                       dispatch(
                         setSomethingToFilter([
                           {
@@ -114,18 +104,29 @@ const SubscriptionFilter = () => {
                           },
                         ]),
                       );
-                    }}
-                    errorText={errorText}
-                    disabled={disabled}
-                    type={typeInput}
-                    label={label}
-                    value={value}
-                    loading={loading}
-                    data={data}
-                    selectedValue={selectedValue}
-                  />
-                );
-              })}
+                    }
+                    dispatch(
+                      setSomethingToFilter([
+                        {
+                          formId: formId,
+                          needs: `OnChange${typeInput}`,
+                          value: e,
+                          selectedValue: selectedValue,
+                        },
+                      ]),
+                    );
+                  }}
+                  errorText={errorText}
+                  disabled={disabled}
+                  type={typeInput}
+                  label={label}
+                  value={value}
+                  loading={loading}
+                  data={data}
+                  selectedValue={selectedValue}
+                />
+              );
+            })}
           </View>
           {loading_array_filter && (
             <View
