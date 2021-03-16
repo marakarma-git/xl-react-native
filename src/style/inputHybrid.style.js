@@ -132,7 +132,6 @@ export default {
   },
   tcText: {
     fontSize: 14,
-    textAlign: 'justify',
     letterSpacing: 1,
     // fontFamily: 'segoeui',
   },

@@ -64,7 +64,7 @@ const ModalTermCondition = (props) => {
                             Read more in our
                             <TouchableWithoutFeedback
                                 onPress={() => Linking.openURL('https://www.xl.co.id/en/terms-and-conditions')}>
-                                <Text style={inputHybridStyle.linkText}> Terms of use </Text>
+                                <Text style={inputHybridStyle.linkText}> Terms of Use </Text>
                             </TouchableWithoutFeedback>
                                 and &nbsp;
                             <TouchableWithoutFeedback
