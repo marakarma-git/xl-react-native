@@ -11,10 +11,12 @@ import {
 } from 'react-native';
 import {inputHybridStyle} from '../../style';
 import PropTypes from 'prop-types';
+import {useNavigation} from '@react-navigation/native';
 import {useDispatch, useSelector} from 'react-redux';
 import {authLogout, updateCustomerConsent} from '../../redux/action/auth_action';
 
 const ModalTermCondition = (props) => {
+    const navigation = useNavigation()
     const dispatch = useDispatch();
     const userData = useSelector((state) => state.auth_reducer.data);
 
@@ -26,6 +28,9 @@ const ModalTermCondition = (props) => {
     const logoutHandler = () => {
         props.closeModal();
         dispatch(authLogout());
+        // if(props.afterLogin){
+            navigation.replace('Auth')
+        // }
     }
 
     return(
