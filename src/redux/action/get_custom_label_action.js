@@ -80,12 +80,13 @@ const getCustomLabel = (navigation) => {
           dispatch(setLoadingFilterFalse());
         }
       })
-      .catch((e) => {
-        if (e.response.data) {
-          dispatch(authFailed(e.response.data));
-        } else {
-          alert('Something went wrong went fetching data');
-        }
+      .catch((error) => {
+        dispatch(authFailed(error.response.data));
+        // if (e.response.data) {
+        //
+        // } else {
+        //   alert('Something went wrong went fetching data');
+        // }
       });
   };
 };

@@ -218,7 +218,6 @@ const callSimInventory = (paginate) => {
           result || {};
         const {pageNumber} = pageable || {};
         if (statusCode === 0) {
-          console.log('butuh: ' + JSON.stringify(data, null, 2));
           const generated = dataMatcherArray2D(content, array_filter);
           dispatch(
             getSimInventorySuccess({
@@ -237,16 +236,17 @@ const callSimInventory = (paginate) => {
           dispatch(getSimInventoryFailed(data));
         }
       })
-      .catch((e) => {
-        if (e.response.data) {
-          dispatch(authFailed(e.response.data));
-        } else {
-          dispatch(getSimInventoryLoadingFalse());
-          alert('Something went wrong went fetching data');
-          console.log(
-            'error_api_call_sim_inventory: ' + JSON.stringify(e, null, 2),
-          );
-        }
+      .catch((error) => {
+        dispatch(authFailed(error.response.data));
+        // if (e.response.data) {
+        //   dispatch(authFailed(e.response.data));
+        // } else {
+        //   dispatch(getSimInventoryLoadingFalse());
+        //   alert('Something went wrong went fetching data');
+        //   console.log(
+        //     'error_api_call_sim_inventory: ' + JSON.stringify(e, null, 2),
+        //   );
+        // }
       });
   };
 };
