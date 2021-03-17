@@ -65,7 +65,7 @@ const ModalMapOnly = (props) => {
           <Text
             style={[inputHybridStyle.modalTitleText, {color: 'white'}]}
             numberOfLines={1}>
-            MSIDN: {msisdn || ''}
+            MSISDN: {msisdn || ''}
           </Text>
           <TouchableOpacity onPress={onClose}>
             <MaterialCommunityIcons

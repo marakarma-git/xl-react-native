@@ -30,9 +30,9 @@ const FilterActionLabel = (props) => {
           </View>
         </TouchableOpacity>
         <Text style={subscriptionStyle.textMenuTotal}>
-          {`Total: ${total || 0} | Filtered: ${filtered || 0} | Selected: ${
-            selected || 0
-          }`}
+          {`${total ? `Total: ${total}` : ''} ${
+            filtered ? `| Filtered: ${filtered}` : ''
+          } ${selected ? `| Selected: ${selected}` : ''}`}
         </Text>
       </View>
       {showAction && (

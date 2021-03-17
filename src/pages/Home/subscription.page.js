@@ -54,6 +54,7 @@ const Subscription = () => {
     current_page,
     current_total_page,
     current_total_elements,
+    current_dynamic_total_elements,
     current_header_sort,
     current_params_applied,
   } = useSelector((state) => state.get_sim_inventory_reducer);
@@ -123,7 +124,11 @@ const Subscription = () => {
                   }}
                 />
                 <FilterActionLabel
-                  filtered={totalFiltered}
+                  filtered={
+                    totalFiltered &&
+                    !loading &&
+                    Helper.numberWithDot(current_dynamic_total_elements)
+                  }
                   total={Helper.numberWithDot(current_total_elements)}
                 />
               </>
