@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   View,
   ScrollView,
@@ -15,6 +15,7 @@ import {
   resetGeneratedParams,
   setSomethingToFilter,
 } from '../../redux/action/dynamic_array_filter_action';
+import {device_width} from '../../constant/config';
 import InputHybrid from '../../components/InputHybrid';
 import {getStateCorp} from '../../redux/action/get_state_action';
 import {getStateLock} from '../../redux/action/get_state_lock_action';
@@ -34,6 +35,7 @@ const Container = (props) => {
 const SubscriptionFilter = () => {
   const dispatch = useDispatch();
   const navigation = useNavigation();
+  const [testWidth, setWidth] = useState(device_width * 0.41 - 1);
   const {array_filter, loading_array_filter, generatedParams} = useSelector(
     (state) => state.dynamic_array_filter_reducer,
   );
@@ -43,12 +45,20 @@ const SubscriptionFilter = () => {
     dispatch(getStateLock(navigation));
   }, [dispatch, navigation]);
   useEffect(() => {
+    const timer = setTimeout(() => {
+      setWidth(device_width * 0.41);
+    }, 100);
+    return () => timer;
+  });
+  useEffect(() => {
     console.log(JSON.stringify(generatedParams, null, 2));
   }, [generatedParams]);
   let array = lod.orderBy(array_filter, ['sort_by_filter', 'asc']) || [];
   return (
     <HeaderContainer navigation={navigation} headerTitle={'Subscription'}>
-      <ScrollView style={{backgroundColor: 'white'}}>
+      <ScrollView
+        style={{backgroundColor: 'white'}}
+        removeClippedSubviews={false}>
         <OverlayBackground />
         <Container style={{marginTop: 16}}>
           <View style={subscriptionStyle.containerTitle}>
@@ -61,7 +71,9 @@ const SubscriptionFilter = () => {
               />
             </TouchableOpacity>
           </View>
-          <View style={subscriptionStyle.containerWrap}>
+          <View
+            style={subscriptionStyle.containerWrap}
+            removeClippedSubviews={false}>
             {array.map((e) => {
               const {
                 formId,
@@ -78,6 +90,7 @@ const SubscriptionFilter = () => {
               const {label} = config || {};
               return (
                 <InputHybrid
+                  customStyle={{width: testWidth}}
                   isSelected={isSelected}
                   onChange2={(e) =>
                     dispatch(

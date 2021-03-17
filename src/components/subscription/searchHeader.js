@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import {
   View,
   TextInput,
@@ -15,9 +15,16 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import {useNavigation} from '@react-navigation/native';
 const SearchHeader = (props) => {
   const navigation = useNavigation();
+  const [refreshWidth, setRefreshWidth] = useState('99%');
   const [changeText, setChangeText] = useState('');
   const {value, onChangeText, onSubmitEditing, loading, onClickColumn} =
     props || {};
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setRefreshWidth('100%');
+    }, 100);
+    return () => timer;
+  });
   return (
     <Container style={subscriptionStyle.containerMargin}>
       <View style={subscriptionStyle.containerTextInput2}>
@@ -37,7 +44,7 @@ const SearchHeader = (props) => {
             editable={!loading}
             onChangeText={(e) => setChangeText(e)}
             onSubmitEditing={() => onSubmitEditing(changeText)}
-            style={{flex: 1, fontSize: 11}}
+            style={{fontSize: 11, width: refreshWidth}}
             placeholder={
               value || 'Search with IMSI, MSISDN, ICCID, Detected IMEI'
             }

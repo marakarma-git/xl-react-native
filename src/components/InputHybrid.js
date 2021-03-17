@@ -60,10 +60,11 @@ const ContainerInput = (props) => {
     disableText,
     customTouchProps,
     errorText,
+    customStyle,
   } = props;
   const CustomTouch = isTouchable ? TouchableOpacity : View;
   return (
-    <View style={inputHybridStyle.containerInput}>
+    <View style={[inputHybridStyle.containerInput, customStyle]}>
       <Text style={inputHybridStyle.titleInput}>{label}</Text>
       <CustomTouch
         style={inputHybridStyle.innerContainerInput}
