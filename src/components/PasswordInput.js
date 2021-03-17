@@ -87,6 +87,7 @@ const PasswordInput = ({submitHandler, requestLoading, navigation, orientation})
   const goBack = () => {
     if(userData.principal.mustChangePass){
       dispatch(authLogout());
+      navigation.replace("Auth");
     }else{
       navigation.goBack();
     }
