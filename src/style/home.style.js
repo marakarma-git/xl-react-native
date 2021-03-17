@@ -47,7 +47,6 @@ export default {
     top: 0,
     right: 0,
     left: 0,
-    width: '100%',
     height: 100,
     backgroundColor: colors.background_overlay,
   },
@@ -174,14 +173,14 @@ export default {
     justifyContent: 'center',
   },
   aboutTitle: {
-    fontSize: 18, 
-    fontWeight: 'bold', 
-    textAlign: 'center', 
-    paddingVertical: 5
+    fontSize: 18,
+    fontWeight: 'bold',
+    textAlign: 'center',
+    paddingVertical: 5,
   },
   aboutText: {
-    textAlign: 'center', 
+    textAlign: 'center',
     paddingVertical: 10,
-    // fontFamily: 'segoeui' 
-  }
+    // fontFamily: 'segoeui'
+  },
 };

@@ -92,28 +92,29 @@ const getStateCorp = (navigation) => {
           );
         }
       })
-      .catch((e) => {
-        if (e.response.data) {
-          dispatch(authFailed(e.response.data));
-        } else {
-          alert('Something went wrong went fetching data');
-          console.log(
-            'error_api_get_custom_label: ' + JSON.stringify(e, null, 2),
-          );
-          dispatch(
-            setSomethingToFilter([
-              {
-                formId: 'enterprise-hard-code',
-                needs: 'FilterLoadingFalse',
-              },
-              {
-                formId: 'enterprise-hard-code',
-                needs: 'SetFilterErrorText',
-                errorText: 'failed to load list',
-              },
-            ]),
-          );
-        }
+      .catch((error) => {
+        dispatch(authFailed(error.response.data));
+        // if (e.response.data) {
+        //   dispatch(authFailed(e.response.data));
+        // } else {
+        //   alert('Something went wrong went fetching data');
+        //   console.log(
+        //     'error_api_get_custom_label: ' + JSON.stringify(e, null, 2),
+        //   );
+        //   dispatch(
+        //     setSomethingToFilter([
+        //       {
+        //         formId: 'enterprise-hard-code',
+        //         needs: 'FilterLoadingFalse',
+        //       },
+        //       {
+        //         formId: 'enterprise-hard-code',
+        //         needs: 'SetFilterErrorText',
+        //         errorText: 'failed to load list',
+        //       },
+        //     ]),
+        //   );
+        // }
       });
   };
 };

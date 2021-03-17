@@ -88,28 +88,29 @@ const getEnterprisePackageName = (enterpriseName, navigation) => {
           );
         }
       })
-      .catch((e) => {
-        if (e.response.data) {
-          dispatch(authFailed(e.response.data));
-        } else {
-          alert('Something went wrong went fetching data');
-          console.log(
-            'error_api_call_sim_inventory: ' + JSON.stringify(e, null, 2),
-          );
-          dispatch(
-            setSomethingToFilter([
-              {
-                formId: 'subscription-package-name-hard-code',
-                needs: 'FilterLoadingFalse',
-              },
-              {
-                formId: 'subscription-package-name-hard-code',
-                needs: 'SetFilterErrorText',
-                errorText: 'catch failed to load list',
-              },
-            ]),
-          );
-        }
+      .catch((error) => {
+        dispatch(authFailed(error.response.data));
+        // if (e.response.data) {
+        //
+        // } else {
+        //   alert('Something went wrong went fetching data');
+        //   console.log(
+        //     'error_api_call_sim_inventory: ' + JSON.stringify(e, null, 2),
+        //   );
+        //   dispatch(
+        //     setSomethingToFilter([
+        //       {
+        //         formId: 'subscription-package-name-hard-code',
+        //         needs: 'FilterLoadingFalse',
+        //       },
+        //       {
+        //         formId: 'subscription-package-name-hard-code',
+        //         needs: 'SetFilterErrorText',
+        //         errorText: 'catch failed to load list',
+        //       },
+        //     ]),
+        //   );
+        // }
       });
   };
 };

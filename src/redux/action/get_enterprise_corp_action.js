@@ -91,21 +91,21 @@ const getEnterpriseCorp = (navigation) => {
           );
         }
       })
-      .catch((e) => {
-        dispatch(getEnterpriseCropFailed(e));
-        dispatch(
-          setSomethingToFilter([
-            {
-              formId: 'enterprise-hard-code',
-              needs: 'FilterLoadingFalse',
-            },
-            {
-              formId: 'enterprise-hard-code',
-              needs: 'SetFilterErrorText',
-              errorText: 'failed to load list',
-            },
-          ]),
-        );
+      .catch((error) => {
+        dispatch(getEnterpriseCropFailed(error.response.data));
+        // dispatch(
+        //   setSomethingToFilter([
+        //     {
+        //       formId: 'enterprise-hard-code',
+        //       needs: 'FilterLoadingFalse',
+        //     },
+        //     {
+        //       formId: 'enterprise-hard-code',
+        //       needs: 'SetFilterErrorText',
+        //       errorText: 'failed to load list',
+        //     },
+        //   ]),
+        // );
       });
   };
 };

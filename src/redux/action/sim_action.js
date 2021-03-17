@@ -32,7 +32,7 @@ const getSimInventory = (parameter) => {
   return async (dispatch) => {
     Axios.get(`${base_url}`)
       .then((value) => dispatch(value))
-      .catch((e) => dispatch(getFilterFailed(e)));
+      .catch((error) => dispatch(getFilterFailed(error.response.data)));
   };
 };
 export default getSimInventory;
