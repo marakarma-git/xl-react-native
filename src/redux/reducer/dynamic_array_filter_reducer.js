@@ -159,7 +159,7 @@ const dynamicFilter = [
     value: {},
     data: [],
     typeInput: 'DropDown',
-    params: '&stateLock=',
+    params: '&stateLockStatus=',
     hard_code: true,
     cellType: 'TableCellHeaderAscDesc',
     cellRowType: 'TableCellStatus',

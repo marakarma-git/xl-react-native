@@ -29,6 +29,7 @@ import dayjs from 'dayjs';
 import {colors} from '../../constant/color';
 import ModalMapOnly from '../../components/modal/ModalMapOnly';
 import lod from 'lodash';
+import {Text} from 'react-native';
 
 const Subscription = () => {
   const dispatch = useDispatch();
@@ -55,14 +56,12 @@ const Subscription = () => {
     current_total_page,
     current_total_elements,
     current_dynamic_total_elements,
+    current_applied_filter,
     current_header_sort,
     current_params_applied,
   } = useSelector((state) => state.get_sim_inventory_reducer);
   const {imageBase64} = useSelector((state) => state.enterprise_reducer);
   useEffect(() => {
-    // const timer = setTimeout(() => {
-    //
-    // }, 500);
     if (!firstRender) {
       dispatch(
         callSimInventory({
@@ -125,8 +124,9 @@ const Subscription = () => {
                 />
                 <FilterActionLabel
                   filtered={
-                    totalFiltered &&
+                    current_applied_filter &&
                     !loading &&
+                    data_sim_inventory_table.length > 0 &&
                     Helper.numberWithDot(current_dynamic_total_elements)
                   }
                   total={Helper.numberWithDot(current_total_elements)}

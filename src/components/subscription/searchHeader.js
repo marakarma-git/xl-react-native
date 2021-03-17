@@ -39,16 +39,18 @@ const SearchHeader = (props) => {
             color={colors.gray_0}
             size={15}
           />
-          <TextInput
-            value={changeText}
-            editable={!loading}
-            onChangeText={(e) => setChangeText(e)}
-            onSubmitEditing={() => onSubmitEditing(changeText)}
-            style={{fontSize: 11, width: refreshWidth}}
-            placeholder={
-              value || 'Search with IMSI, MSISDN, ICCID, Detected IMEI'
-            }
-          />
+          <View style={{flex: 1}}>
+            <TextInput
+              value={changeText}
+              editable={!loading}
+              onChangeText={(e) => setChangeText(e)}
+              onSubmitEditing={() => onSubmitEditing(changeText)}
+              style={{fontSize: 11, width: refreshWidth}}
+              placeholder={
+                value || 'Search with IMSI, MSISDN, ICCID, Detected IMEI'
+              }
+            />
+          </View>
         </View>
         {loading ? (
           <ActivityIndicator size={26} color={colors.button_color_one} />

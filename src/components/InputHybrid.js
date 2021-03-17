@@ -106,7 +106,7 @@ const SelectInput = (props) => {
         label={label}
         isTouchable
         customTouchProps={{onPress: () => setVisible(true)}}>
-        <Text style={{paddingVertical: 8, flex: 1}}>
+        <Text style={{paddingVertical: 8, flex: 1}} numberOfLines={2}>
           {value.label || 'Please Select'}
         </Text>
         <MaterialCommunityIcons

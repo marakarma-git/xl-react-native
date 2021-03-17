@@ -28,6 +28,7 @@ const getSimInventorySuccess = (data) => {
     currentPage,
     currentTotalPage,
     currentTotalElement,
+    currentAppliedFilter,
     currentSize,
     selectedHeaderSort,
   } = data || {};
@@ -38,6 +39,7 @@ const getSimInventorySuccess = (data) => {
     currentPage: currentPage,
     currentTotalPage: currentTotalPage,
     currentTotalElement: currentTotalElement,
+    currentAppliedFilter: currentAppliedFilter,
     currentSize: currentSize,
     selectedHeaderSort: selectedHeaderSort,
   };
@@ -197,13 +199,17 @@ const callSimInventory = (paginate) => {
       }
     };
     console.log(
-      `${base_url}/dcp/sim/getSimInventory?page=${getPage()}&size=${getSize}&keyword=${searchText}&sort=${getOrderBy()}&order=${getSortBy()}${generatedParams}`
+      `${base_url}/dcp/sim/getSimInventory?page=${getPage()}&size=${getSize}&keyword=${searchText}&sort=${getOrderBy()}&order=${getSortBy()}${generatedParams}${
+        generatedParams ? '&filterOpen=false' : ''
+      }`
         .split(' ')
         .join('+'),
     );
     axios
       .get(
-        `${base_url}/dcp/sim/getSimInventory?page=${getPage()}&size=${getSize}&keyword=${searchText}&sort=${getOrderBy()}&order=${getSortBy()}${generatedParams}`
+        `${base_url}/dcp/sim/getSimInventory?page=${getPage()}&size=${getSize}&keyword=${searchText}&sort=${getOrderBy()}&order=${getSortBy()}${generatedParams}${
+          generatedParams ? '&filterOpen=false' : ''
+        }`
           .split(' ')
           .join('+'),
         {
@@ -218,6 +224,8 @@ const callSimInventory = (paginate) => {
           result || {};
         const {pageNumber} = pageable || {};
         if (statusCode === 0) {
+          const isAppliedFilter = () => !!(searchText || generatedParams);
+          console.log('applied: ' + JSON.stringify(isAppliedFilter()));
           const generated = dataMatcherArray2D(content, array_filter);
           dispatch(
             getSimInventorySuccess({
@@ -226,6 +234,7 @@ const callSimInventory = (paginate) => {
               currentPage: pageNumber,
               currentTotalPage: totalPages,
               currentTotalElement: totalElements,
+              currentAppliedFilter: isAppliedFilter(),
               currentSize: size,
               selectedHeaderSort:
                 selectedHeaderSortPaginate || selectedHeaderSort,

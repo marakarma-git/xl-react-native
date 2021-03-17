@@ -11,6 +11,7 @@ const initialState = {
   current_total_page: 0,
   current_total_elements: 0,
   current_dynamic_total_elements: 0,
+  current_applied_filter: false,
   current_header_sort: {
     formId: '',
     orderBy: '',
@@ -51,6 +52,7 @@ const get_sim_inventory_reducer = (state = initialState, action) => {
             ? action.currentTotalElement
             : state.current_total_elements,
         current_dynamic_total_elements: action.currentTotalElement,
+        current_applied_filter: action.currentAppliedFilter,
         current_size: action.currentSize,
         current_header_sort: action.selectedHeaderSort || {
           formId: '',
