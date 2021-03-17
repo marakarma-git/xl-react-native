@@ -199,17 +199,13 @@ const callSimInventory = (paginate) => {
       }
     };
     console.log(
-      `${base_url}/dcp/sim/getSimInventory?page=${getPage()}&size=${getSize}&keyword=${searchText}&sort=${getOrderBy()}&order=${getSortBy()}${generatedParams}${
-        generatedParams ? '&filterOpen=false' : ''
-      }`
+      `${base_url}/dcp/sim/getSimInventory?page=${getPage()}&size=${getSize}&keyword=${searchText}&sort=${getOrderBy()}&order=${getSortBy()}${generatedParams}`
         .split(' ')
         .join('+'),
     );
     axios
       .get(
-        `${base_url}/dcp/sim/getSimInventory?page=${getPage()}&size=${getSize}&keyword=${searchText}&sort=${getOrderBy()}&order=${getSortBy()}${generatedParams}${
-          generatedParams ? '&filterOpen=false' : ''
-        }`
+        `${base_url}/dcp/sim/getSimInventory?page=${getPage()}&size=${getSize}&keyword=${searchText}&sort=${getOrderBy()}&order=${getSortBy()}${generatedParams}`
           .split(' ')
           .join('+'),
         {
@@ -225,7 +221,6 @@ const callSimInventory = (paginate) => {
         const {pageNumber} = pageable || {};
         if (statusCode === 0) {
           const isAppliedFilter = () => !!(searchText || generatedParams);
-          console.log('applied: ' + JSON.stringify(isAppliedFilter()));
           const generated = dataMatcherArray2D(content, array_filter);
           dispatch(
             getSimInventorySuccess({
