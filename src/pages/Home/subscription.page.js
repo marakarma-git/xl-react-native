@@ -29,6 +29,7 @@ import dayjs from 'dayjs';
 import {colors} from '../../constant/color';
 import ModalMapOnly from '../../components/modal/ModalMapOnly';
 import lod from 'lodash';
+import {Text} from 'react-native';
 
 const Subscription = () => {
   const dispatch = useDispatch();
@@ -54,25 +55,25 @@ const Subscription = () => {
     current_page,
     current_total_page,
     current_total_elements,
+    current_dynamic_total_elements,
+    current_applied_filter,
     current_header_sort,
     current_params_applied,
   } = useSelector((state) => state.get_sim_inventory_reducer);
   const {imageBase64} = useSelector((state) => state.enterprise_reducer);
   useEffect(() => {
-    const timer = setTimeout(() => {
-      if (!firstRender) {
-        dispatch(
-          callSimInventory({
-            page_value: 0,
-          }),
-        );
-      } else {
-        dispatch(getCustomLabel(navigation));
-        dispatch(callSimInventory());
-        setFirstRender(false);
-      }
-    }, 500);
-    return () => clearTimeout(timer);
+    if (!firstRender) {
+      dispatch(
+        callSimInventory({
+          page_value: 0,
+        }),
+      );
+    } else {
+      dispatch(getCustomLabel(navigation));
+      dispatch(callSimInventory());
+      setFirstRender(false);
+    }
+    // return () => clearTimeout(timer);
   }, [current_size, dispatch, navigation, searchText, generatedParams]);
   useEffect(() => {
     if (current_params_applied) {
@@ -94,7 +95,7 @@ const Subscription = () => {
                 <OverlayBackground />
                 <SearchHeader
                   value={searchText}
-                  onChangeText={(e) => dispatch(updateDataSearchText(e))}
+                  onSubmitEditing={(e) => dispatch(updateDataSearchText(e))}
                   showMenu={showMenu}
                   onClickColumn={() => setShowMenu((state) => !state)}
                 />
@@ -122,7 +123,12 @@ const Subscription = () => {
                   }}
                 />
                 <FilterActionLabel
-                  filtered={totalFiltered}
+                  filtered={
+                    current_applied_filter &&
+                    !loading &&
+                    data_sim_inventory_table.length > 0 &&
+                    Helper.numberWithDot(current_dynamic_total_elements)
+                  }
                   total={Helper.numberWithDot(current_total_elements)}
                 />
               </>

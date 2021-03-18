@@ -40,6 +40,7 @@ const TableCellText = (props) => {
             flexDirection: 'row',
           }}>
           <Text
+            numberOfLines={1}
             style={{
               color: fontColor || 'black',
             }}>

@@ -20,13 +20,13 @@ const LocalComponent = (props) => {
         alignItems: 'center',
       }}>
       <Text style={{flex: 1, color: 'white'}}>{`${type}: ${title}`}</Text>
-      {/*<TouchableOpacity onPress={onDelete} style={{paddingLeft: 6}}>*/}
-      {/*  <MaterialCommunityIcons*/}
-      {/*    name={'close-circle'}*/}
-      {/*    color={colors.gray}*/}
-      {/*    size={18}*/}
-      {/*  />*/}
-      {/*</TouchableOpacity>*/}
+      <TouchableOpacity onPress={onDelete} style={{paddingLeft: 6}}>
+        <MaterialCommunityIcons
+          name={'close-circle'}
+          color={'white'}
+          size={18}
+        />
+      </TouchableOpacity>
     </View>
   );
 };

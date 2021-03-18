@@ -28,6 +28,7 @@ const getSimInventorySuccess = (data) => {
     currentPage,
     currentTotalPage,
     currentTotalElement,
+    currentAppliedFilter,
     currentSize,
     selectedHeaderSort,
   } = data || {};
@@ -38,6 +39,7 @@ const getSimInventorySuccess = (data) => {
     currentPage: currentPage,
     currentTotalPage: currentTotalPage,
     currentTotalElement: currentTotalElement,
+    currentAppliedFilter: currentAppliedFilter,
     currentSize: currentSize,
     selectedHeaderSort: selectedHeaderSort,
   };
@@ -85,8 +87,8 @@ const dataMatcherArray2D = (listData = [], headerData = []) => {
     const subGenerated = [];
     headerData.map((subItem) => {
       const {shown, api_id, config, formId, ...rest} = subItem || {};
-      const {width, superType, flexStart} = config || {};
-      if (shown) {
+      const {width, superType, flexStart, doNotShowOnTable} = config || {};
+      if (shown && !doNotShowOnTable) {
         const createObject = (superType, labelValue) => {
           if (superType === 'DATE') {
             return labelValue ? dayjs(labelValue).format('DD-MM-YYYY') : '';
@@ -197,11 +199,15 @@ const callSimInventory = (paginate) => {
       }
     };
     console.log(
-      `${base_url}/dcp/sim/getSimInventory?page=${getPage()}&size=${getSize}&keyword=${searchText}&sort=${getOrderBy()}&order=${getSortBy()}${generatedParams}`,
+      `${base_url}/dcp/sim/getSimInventory?page=${getPage()}&size=${getSize}&keyword=${searchText}&sort=${getOrderBy()}&order=${getSortBy()}${generatedParams}`
+        .split(' ')
+        .join('+'),
     );
     axios
       .get(
-        `${base_url}/dcp/sim/getSimInventory?page=${getPage()}&size=${getSize}&keyword=${searchText}&sort=${getOrderBy()}&order=${getSortBy()}${generatedParams}`,
+        `${base_url}/dcp/sim/getSimInventory?page=${getPage()}&size=${getSize}&keyword=${searchText}&sort=${getOrderBy()}&order=${getSortBy()}${generatedParams}`
+          .split(' ')
+          .join('+'),
         {
           headers: {
             Authorization: `Bearer ${access_token}`,
@@ -214,6 +220,7 @@ const callSimInventory = (paginate) => {
           result || {};
         const {pageNumber} = pageable || {};
         if (statusCode === 0) {
+          const isAppliedFilter = () => !!(searchText || generatedParams);
           const generated = dataMatcherArray2D(content, array_filter);
           dispatch(
             getSimInventorySuccess({
@@ -222,6 +229,7 @@ const callSimInventory = (paginate) => {
               currentPage: pageNumber,
               currentTotalPage: totalPages,
               currentTotalElement: totalElements,
+              currentAppliedFilter: isAppliedFilter(),
               currentSize: size,
               selectedHeaderSort:
                 selectedHeaderSortPaginate || selectedHeaderSort,
@@ -232,16 +240,17 @@ const callSimInventory = (paginate) => {
           dispatch(getSimInventoryFailed(data));
         }
       })
-      .catch((e) => {
-        if (e.response.data) {
-          dispatch(authFailed(e.response.data));
-        } else {
-          dispatch(getSimInventoryLoadingFalse());
-          alert('Something went wrong went fetching data');
-          console.log(
-            'error_api_call_sim_inventory: ' + JSON.stringify(e, null, 2),
-          );
-        }
+      .catch((error) => {
+        dispatch(authFailed(error.response.data));
+        // if (e.response.data) {
+        //   dispatch(authFailed(e.response.data));
+        // } else {
+        //   dispatch(getSimInventoryLoadingFalse());
+        //   alert('Something went wrong went fetching data');
+        //   console.log(
+        //     'error_api_call_sim_inventory: ' + JSON.stringify(e, null, 2),
+        //   );
+        // }
       });
   };
 };

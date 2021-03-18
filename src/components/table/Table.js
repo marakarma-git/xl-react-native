@@ -71,7 +71,7 @@ const Table = (props) => {
               {dataHeader &&
                 dataHeader.map((item, index) => {
                   const {cellType, shown, formId: inFormId} = item || {};
-                  if (index > 0 && shown) {
+                  if (index > 0 && shown && !item.config.doNotShowOnTable) {
                     return (
                       <TableCell
                         key={index}

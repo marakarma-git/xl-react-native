@@ -10,6 +10,8 @@ const initialState = {
   current_size: 20,
   current_total_page: 0,
   current_total_elements: 0,
+  current_dynamic_total_elements: 0,
+  current_applied_filter: false,
   current_header_sort: {
     formId: '',
     orderBy: '',
@@ -46,7 +48,11 @@ const get_sim_inventory_reducer = (state = initialState, action) => {
         current_page: action.currentPage,
         current_total_page: action.currentTotalPage,
         current_total_elements:
-          action.currentTotalElement || state.current_total_elements,
+          state.current_total_elements === 0
+            ? action.currentTotalElement
+            : state.current_total_elements,
+        current_dynamic_total_elements: action.currentTotalElement,
+        current_applied_filter: action.currentAppliedFilter,
         current_size: action.currentSize,
         current_header_sort: action.selectedHeaderSort || {
           formId: '',

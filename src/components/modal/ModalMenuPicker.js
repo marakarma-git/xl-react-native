@@ -34,8 +34,8 @@ const ModalMenuPicker = (props) => {
           <View style={[subscriptionStyle.containerWrap]}>
             {localData.map((value, index) => {
               const {shown, config} = value || {};
-              const {label, doNotShowOnFilter} = config || {};
-              if (!doNotShowOnFilter) {
+              const {label, doNotShowOnFilter, doNotShowOnTable} = config || {};
+              if (!doNotShowOnFilter && !doNotShowOnTable) {
                 return (
                   <TouchableOpacity
                     key={`${index}${label}`}

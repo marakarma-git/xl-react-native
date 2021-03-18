@@ -100,7 +100,7 @@ const TableFooter = (props) => {
             />
             <Text style={{color: colors.font_gray}}>
               {' '}
-              of {Helper.numberWithDot(totalPage)}
+              of {Helper.numberWithDot(totalPage + 1)}
             </Text>
             {currentPage < totalPage && (
               <>
