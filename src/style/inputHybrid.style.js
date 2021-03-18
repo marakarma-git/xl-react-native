@@ -132,7 +132,7 @@ export default {
   },
   tcText: {
     fontSize: 14,
-    letterSpacing: 1,
+    // letterSpacing: 1,
     // fontFamily: 'segoeui',
   },
   linkText: {
