@@ -28,8 +28,8 @@
           <category android:name="android.intent.category.BROWSABLE" />
 
           <data
-            android:host="app"
-            android:scheme="dcp4.adlsandbox.com" />
+            android:host="dcp4.adlsandbox.com"
+            android:scheme="http" />
       </intent-filter>
       </activity>
       <activity android:name="com.facebook.react.devsupport.DevSettingsActivity" />
