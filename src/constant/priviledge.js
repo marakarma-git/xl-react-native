@@ -14,7 +14,7 @@ export const DRAWER_MENU_PRIVILEDGE = [
         priviledgeId: "",
         name: 'Home', 
         icon: iconHome, 
-        type: 'drawer', 
+        type: 'initialRoute', 
         components: LandingPage 
     },
     { 

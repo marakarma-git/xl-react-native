@@ -22,11 +22,9 @@ const Home = () => {
       initialRouteName="Home"
       drawerStyle={{backgroundColor: '#002DBB'}}
       drawerContent={(props) => <CustomDrawerContent {...props} />}>
-      {authority ? (
+      {
         generateHomeScreen()
-      ) : (
-        <Drawer.Screen name={'Home'} component={LandingPage} />
-      )}
+      }
     </Drawer.Navigator>
   );
 };

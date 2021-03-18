@@ -77,7 +77,7 @@ const AboutPage = ({navigation}) => {
                         />
                         </View>
                     <Text style={style.aboutTitle}>Application Version</Text>
-                    <Text style={[style.aboutTitle, { fontSize: 14 }]}>{titleVersion || "-"}</Text>
+                    <Text style={style.aboutTitle}>{titleVersion || "-"}</Text>
                 </Card.Content>
             </Card>
         </ScrollView>

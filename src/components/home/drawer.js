@@ -69,7 +69,7 @@ const CustomDrawerContent = (props) => {
           </Text>
         </TouchableOpacity>
       </View>
-      <View style={styles.divider} />
+      {drawerData.length > 0 && <View style={styles.divider} />}
       {drawerData.map((item, idx) => (
         <DrawerItem
           key={`drawer_item-${idx + 1}`}

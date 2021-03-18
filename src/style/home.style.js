@@ -167,7 +167,6 @@ export default {
   },
   carouselWrapper: {
     flex: 1,
-    // height: device_height - 100,
     backgroundColor: '#002DBB',
     alignItems: 'center',
     justifyContent: 'center',
@@ -180,7 +179,8 @@ export default {
   },
   aboutText: {
     textAlign: 'center',
-    paddingVertical: 10,
-    // fontFamily: 'segoeui'
+    paddingTop: 10,
+    paddingBottom: 30,
+    fontSize: 14
   },
 };
