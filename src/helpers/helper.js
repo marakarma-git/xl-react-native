@@ -101,9 +101,7 @@ class Helper {
   static addDrawerMenu = (userPriviledge, type = 'drawer') => {
     const drawerMenu = [];
 
-    console.log(userPriviledge.length, userPriviledge, " <<< user ")
-
-    if (userPriviledge.length > 0) {
+    if (userPriviledge) {
       DRAWER_MENU_PRIVILEDGE.map((drawer) => {
         for (let i = 0; i < userPriviledge.length; i++) {
           if (type === 'drawer') {
@@ -128,13 +126,11 @@ class Helper {
         }
       });
     }else{
-      if(type !== 'drawer'){
         DRAWER_MENU_PRIVILEDGE.map((drawer) => {
-          if(drawer.type === "non-drawer" || drawer.type == 'initialRoute'){
+          if(drawer.type == "non-drawer" || drawer.type == 'initialRoute'){
             drawerMenu.push(drawer);
           }
         });
-      }
     }
 
     return drawerMenu;
