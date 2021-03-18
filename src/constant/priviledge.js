@@ -6,7 +6,9 @@ import {
     MyAccountPage,
     ChangePasswordPage,
     SubscriptionFilter,
-    AboutPage
+    AboutPage,
+    AutomationPage,
+    AutomationCreatePage
   } from '../pages/Home/index';
 
 export const DRAWER_MENU_PRIVILEDGE = [
@@ -64,5 +66,23 @@ export const DRAWER_MENU_PRIVILEDGE = [
         width: 25,
         height: 25,
         components: AboutPage 
+    },
+    { 
+        priviledgeId: "",
+        name: 'Automation', 
+        icon: iconComponents, 
+        type: 'drawer', 
+        width: 25,
+        height: 25,
+        components: AutomationPage 
+    },
+    { 
+        priviledgeId: "",
+        name: 'Automation Create', 
+        icon: iconComponents, 
+        type: 'non-drawer', 
+        width: 25,
+        height: 25,
+        components: AutomationCreatePage 
     },
 ];
