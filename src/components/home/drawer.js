@@ -8,15 +8,17 @@ import {
 } from '../../assets/images/index';
 import { useSelector, useDispatch } from 'react-redux';
 import { authLogout } from '../../redux/action/auth_action';
-import styles from '../../style/drawer.style';
 import { removeEnterPriseLogo } from '../../redux/action/enterprise_action';
 import { TouchableOpacity } from 'react-native';
+
 import Helper from '../../helpers/helper';
+import styles from '../../style/drawer.style';
 
 const CustomDrawerContent = (props) => {
   const dispatch = useDispatch();
   const userData = useSelector((state) => state.auth_reducer.data);
   const [drawerData, setDrawerData] = useState([]);
+  const [activeMenu, setActiveMenu] = useState("Home");
   const confirmLogout = () => {
     Alert.alert(
       'Logout',
@@ -39,6 +41,40 @@ const CustomDrawerContent = (props) => {
     );
   };
 
+  const drawerOnPress = (menuName, subMenu) => {
+    if(subMenu){
+      if(activeMenu != menuName){
+        setActiveMenu(menuName);
+      }else{
+        setActiveMenu("");
+      }
+    }else{
+      props.navigation.navigate(menuName);
+      setActiveMenu(menuName);
+    }
+  }
+
+  const generateDrawerMenu = (listDrawer, type = "menu") => (
+    listDrawer.map((item, index) => (
+      <React.Fragment>
+        <CustomMenu
+          type={type}
+          key={index+1}
+          style={{backgroundColor: type == 'submenu' ? '#122b86' : 'transparent' }}
+          index={index}
+          item={item}
+          activeMenu={activeMenu}
+          submitEvent={() => drawerOnPress(item.name, item.subMenu)}
+        />
+        {
+          item.subMenu && activeMenu == item.name
+          &&
+          generateDrawerMenu(item.subMenu, "submenu")
+        }
+      </React.Fragment>
+    ))  
+  );
+
   useEffect(() => {
     const drawerLoad = props.navigation.addListener('focus', () => {
       setDrawerData(Helper.addDrawerMenu(userData.authority));
@@ -50,7 +86,6 @@ const CustomDrawerContent = (props) => {
   return (
     <DrawerContentScrollView {...props} style={{ padding: 0 }}>
       <View style={styles.avatarContainer}>
-        {/* To-do Avatar Icon jika API sudah ada */}
         <TouchableOpacity
           onPress={() => props.navigation.navigate('Account')}
           style={styles.userImageContainer}>
@@ -70,46 +105,48 @@ const CustomDrawerContent = (props) => {
         </TouchableOpacity>
       </View>
       {drawerData.length > 0 && <View style={styles.divider} />}
-      {drawerData.map((item, idx) => (
-        <DrawerItem
-          key={`drawer_item-${idx + 1}`}
-          label={() => (
-            <View style={[styles.menuLabelFlex]}>
-              <Image style={{ width: 20, height: 20, resizeMode: 'contain' }} source={item.icon} />
-              <Text style={styles.menuTitle}>{item.name}</Text>
-            </View>
-          )}
-          onPress={() => props.navigation.navigate(item.name)}
-        />
-      ))}
+      { generateDrawerMenu(drawerData) }
       <View style={styles.divider} />
-      <DrawerItem
-        label={() => (
-          <View style={styles.menuLabelFlex}>
-            <Image
-              style={{ width: 20, height: 20, resizeMode: 'contain' }}
-              source={iconAboutus}
-            />
-            <Text style={styles.menuTitle}>About</Text>
-          </View>
-        )}
-        onPress={() => props.navigation.navigate('About')}
+      <CustomMenu
+        item={{ name: "About", icon: iconAboutus }}
+        activeMenu={activeMenu}
+        submitEvent={() => drawerOnPress('About', '')}
       />
       <View style={styles.divider} />
-      <DrawerItem
-        label={() => (
-          <View style={styles.menuLabelFlex}>
-            <Image
-              style={{ width: 23, height: 23, resizeMode: 'contain' }}
-              source={iconLogout}
-            />
-            <Text style={styles.menuTitle}>Logout</Text>
-          </View>
-        )}
-        onPress={confirmLogout}
+      <CustomMenu
+        item={{ name: "Logout", icon: iconLogout }}
+        activeMenu={activeMenu}
+        submitEvent={() => confirmLogout()}
       />
     </DrawerContentScrollView>
   );
 };
+
+const CustomMenu = ({ item, style, activeMenu, submitEvent, type = "menu" }) => {
+  return(
+    <View style={[style, activeMenu == item.name && { backgroundColor: '#122b86' }]}>
+      <DrawerItem
+        label={() => (
+          <View style={[styles.menuLabelFlex, type != 'menu' && { paddingLeft: 20 }]}>
+            { 
+              type == 'menu' 
+              &&
+              <Image style={styles.iconDrawer} source={item.icon} />
+            }
+            <Text style={[styles.menuTitle, activeMenu == item.name && { fontWeight: 'bold' }]}>{item.name}</Text>
+            {
+              item.subMenu &&
+              <Ionicons 
+                name={activeMenu == item.name ? 'caret-down' : 'caret-back'} 
+                color={"white"} 
+                style={styles.caretMenu} />
+            }
+          </View>
+        )}
+        onPress={submitEvent}
+      />
+    </View>
+  );
+}
 
 export default CustomDrawerContent;

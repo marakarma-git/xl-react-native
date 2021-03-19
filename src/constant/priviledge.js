@@ -8,7 +8,19 @@ import {
     SubscriptionFilter,
     AboutPage,
     AutomationPage,
-    AutomationCreatePage
+    AutomationCreatePage,
+    UserAdministrationPage,
+    RoleAdministrationPage,
+    EnterpriseManagementPage,
+    SubscriptionPackagePage,
+    BannerManagementPage,
+    UserAdministrationCreatePage,
+    RoleAdministrationCreatePage,
+    RoleAdministrationFilterPage,
+    EnterpriseManagementFilterPage,
+    EnterpriseManagementOnBoardPage,
+    SubscriptionPackageFilterPage,
+    BannerManagementCreatePage
   } from '../pages/Home/index';
 
 export const DRAWER_MENU_PRIVILEDGE = [
@@ -32,6 +44,57 @@ export const DRAWER_MENU_PRIVILEDGE = [
         icon: iconComponents, 
         type: 'drawer', 
         components: SubscriptionPage 
+    },
+    { 
+        priviledgeId: "",
+        name: 'Administration', 
+        icon: iconGrids, 
+        type: 'drawer', 
+        width: 25,
+        height: 25,
+        components: '',
+        subMenu: [
+            {
+                priviledgeId: "",
+                name: 'User Administration', 
+                type: 'drawer', 
+                width: 25,
+                height: 25,
+                components: UserAdministrationPage
+            },
+            { 
+                priviledgeId: "",
+                name: 'Role Administration', 
+                type: 'drawer', 
+                width: 25,
+                height: 25,
+                components: RoleAdministrationPage 
+            },
+            { 
+                priviledgeId: "",
+                name: 'Enterprise Management', 
+                type: 'drawer', 
+                width: 25,
+                height: 25,
+                components: EnterpriseManagementPage 
+            },       
+            { 
+                priviledgeId: "",
+                name: 'Subscription Package', 
+                type: 'drawer', 
+                width: 25,
+                height: 25,
+                components: SubscriptionPackagePage 
+            },       
+            { 
+                priviledgeId: "",
+                name: 'Banner Management', 
+                type: 'drawer', 
+                width: 25,
+                height: 25,
+                components: BannerManagementPage 
+            },       
+        ] 
     },
     { 
         priviledgeId: "",
@@ -69,20 +132,65 @@ export const DRAWER_MENU_PRIVILEDGE = [
     },
     { 
         priviledgeId: "",
-        name: 'Automation', 
-        icon: iconComponents, 
-        type: 'drawer', 
-        width: 25,
-        height: 25,
-        components: AutomationPage 
-    },
-    { 
-        priviledgeId: "",
-        name: 'Automation Create', 
+        name: 'User Administration Create', 
         icon: iconComponents, 
         type: 'non-drawer', 
         width: 25,
         height: 25,
-        components: AutomationCreatePage 
+        components: UserAdministrationCreatePage 
     },
-];
+    { 
+        priviledgeId: "",
+        name: 'Role Administration Create', 
+        icon: iconComponents, 
+        type: 'non-drawer', 
+        width: 25,
+        height: 25,
+        components: RoleAdministrationCreatePage 
+    },
+    { 
+        priviledgeId: "",
+        name: 'Role Administration Filter', 
+        icon: iconComponents, 
+        type: 'non-drawer', 
+        width: 25,
+        height: 25,
+        components: RoleAdministrationFilterPage 
+    },
+    { 
+        priviledgeId: "",
+        name: 'Enterprise Management Filter', 
+        icon: iconComponents, 
+        type: 'non-drawer', 
+        width: 25,
+        height: 25,
+        components: EnterpriseManagementFilterPage 
+    },
+    { 
+        priviledgeId: "",
+        name: 'Enterprise Management Onboard', 
+        icon: iconComponents, 
+        type: 'non-drawer', 
+        width: 25,
+        height: 25,
+        components: EnterpriseManagementOnBoardPage 
+    },
+    { 
+        priviledgeId: "",
+        name: 'Subscription Package Management Filter', 
+        icon: iconComponents, 
+        type: 'non-drawer', 
+        width: 25,
+        height: 25,
+        components: SubscriptionPackageFilterPage 
+    },
+    { 
+        priviledgeId: "",
+        name: 'Banner Management Create', 
+        icon: iconComponents, 
+        type: 'non-drawer', 
+        width: 25,
+        height: 25,
+        components: BannerManagementCreatePage 
+    },
+]; 
