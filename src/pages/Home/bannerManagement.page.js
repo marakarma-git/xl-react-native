@@ -5,7 +5,7 @@ import Table from '../../components/table/Table';
 const BannerManagementPage = () => {
   return (
     <View style={{flex: 1}}>
-      <Table dataTable={myTableName} />
+      <Table dataTable={myTableName} isDragNSort />
     </View>
   );
 };
