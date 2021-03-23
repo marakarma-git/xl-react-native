@@ -29,7 +29,6 @@ import dayjs from 'dayjs';
 import {colors} from '../../constant/color';
 import ModalMapOnly from '../../components/modal/ModalMapOnly';
 import lod from 'lodash';
-import {Text} from 'react-native';
 
 const Subscription = () => {
   const dispatch = useDispatch();
@@ -98,6 +97,8 @@ const Subscription = () => {
                   onSubmitEditing={(e) => dispatch(updateDataSearchText(e))}
                   showMenu={showMenu}
                   onClickColumn={() => setShowMenu((state) => !state)}
+                  navigateTo={'SubscriptionFilter'}
+                  placeholder={'Search with IMSI, MSISDN, ICCID, Detected IMEI'}
                 />
                 <AppliedFilter
                   data={applied_filter}

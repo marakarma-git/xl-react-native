@@ -2,7 +2,8 @@ import React, {useState} from 'react';
 import {Card} from 'react-native-paper';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import AntDesign from 'react-native-vector-icons/AntDesign';
-import {View, Text, ScrollView, TouchableOpacity, Alert} from 'react-native';
+import {View, ScrollView, TouchableOpacity, Alert} from 'react-native';
+import Text from '../../components/global/text';
 import {useSelector, useDispatch} from 'react-redux';
 import {
   HeaderContainer,

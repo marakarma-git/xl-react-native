@@ -19,3 +19,4 @@ export {default as SubscriptionPackagePage} from './subscriptionPackage.page';
 export {default as SubscriptionPackageFilterPage} from './subscriptionPackageFilter.page';
 export {default as UserAdministrationPage} from './userAdministration.page';
 export {default as UserAdministrationCreatePage} from './userAdministrationCreate.page';
+export {default as UserAdministrationFilterPage} from './userAdministrationFilter.page';

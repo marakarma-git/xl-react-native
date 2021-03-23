@@ -1,5 +1,6 @@
 import React from 'react';
-import {View, Image, TouchableOpacity, Text} from 'react-native';
+import {View, Image, TouchableOpacity} from 'react-native';
+import Text from '../global/text';
 import PropTypes from 'prop-types';
 import {homeStyle} from '../../style/index';
 import {burgerMenu} from '../../assets/images/index';
@@ -10,13 +11,18 @@ const NavbarComponent = (props) => {
   return (
     <View style={[homeStyle.navbarContainer, props.customStyle]}>
       <TouchableOpacity onPress={() => props.navigation.toggleDrawer()}>
-        <Image source={burgerMenu} 
-        style={[homeStyle.navbarButton, 
-        { width:
-          orientation === 'landscape' 
-          ? Orientation.getWidth() * 0.03 
-          : Orientation.getWidth() * 0.05
-        }]} />
+        <Image
+          source={burgerMenu}
+          style={[
+            homeStyle.navbarButton,
+            {
+              width:
+                orientation === 'landscape'
+                  ? Orientation.getWidth() * 0.03
+                  : Orientation.getWidth() * 0.05,
+            },
+          ]}
+        />
       </TouchableOpacity>
       {headerTitle && (
         <Text

@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import {Text, View} from 'react-native';
+import {View} from 'react-native';
+import Text from '../global/text';
 import {defaultHeightCell, defaultWidthCell} from '../../constant/config';
 const TableCellHeader = (props) => {
   const {config, key} = props || {};
@@ -22,9 +23,9 @@ const TableCellHeader = (props) => {
           flexDirection: 'row',
         }}>
         <Text
+          fontType={'bold'}
           style={{
             color: fontColor || 'white',
-            fontWeight: 'bold',
             fontSize: 18,
           }}>
           {label}

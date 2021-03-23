@@ -1,11 +1,11 @@
 import React, {useState} from 'react';
 import {
   View,
-  Text,
   TouchableOpacity,
   TextInput,
   ActivityIndicator,
 } from 'react-native';
+import Text from './global/text';
 import dayjs from 'dayjs';
 import PropTypes from 'prop-types';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';

@@ -1,5 +1,6 @@
 import React from 'react';
-import {Text, TouchableOpacity, View} from 'react-native';
+import {TouchableOpacity, View} from 'react-native';
+import Text from '../global/text';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import {defaultHeightCell, defaultWidthCell} from '../../constant/config';
 import PropTypes from 'prop-types';
@@ -35,9 +36,9 @@ const TableCellHeaderAscDesc = (props) => {
         }}
         onPress={onPress}>
         <Text
+          fontType={'bold'}
           style={{
             color: fontColor || 'white',
-            fontWeight: 'bold',
             fontSize: 18,
           }}>
           {label}

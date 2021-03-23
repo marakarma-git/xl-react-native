@@ -91,10 +91,10 @@ class Helper {
       (priv) => priv.priviledgeId == privId,
     );
 
-    if(isHasPriviledge){
+    if (isHasPriviledge) {
       return isHasPriviledge.priviledgeId;
-    }else {
-      return "";
+    } else {
+      return '';
     }
   };
 
@@ -119,13 +119,13 @@ class Helper {
               drawer.priviledgeId == userPriviledge[i].priviledgeId ||
               drawer.priviledgeId == ''
             ) {
-              if(drawer.components){
+              if (drawer.components) {
                 drawerMenu.push(drawer);
                 break;
-              }else{
-                if(drawer.subMenu){
-                  for(let i = 0; i < drawer.subMenu.length; i++){
-                    console.log(drawer.subMenu[i], " sub menu i")
+              } else {
+                if (drawer.subMenu) {
+                  for (let i = 0; i < drawer.subMenu.length; i++) {
+                    console.log(drawer.subMenu[i], ' sub menu i');
                     drawerMenu.push(drawer.subMenu[i]);
                   }
                 }
@@ -135,12 +135,12 @@ class Helper {
           }
         }
       });
-    }else{
-        DRAWER_MENU_PRIVILEDGE.map((drawer) => {
-          if(drawer.type == "non-drawer" || drawer.type == 'initialRoute'){
-            drawerMenu.push(drawer);
-          }
-        });
+    } else {
+      DRAWER_MENU_PRIVILEDGE.map((drawer) => {
+        if (drawer.type == 'non-drawer' || drawer.type == 'initialRoute') {
+          drawerMenu.push(drawer);
+        }
+      });
     }
 
     return drawerMenu;

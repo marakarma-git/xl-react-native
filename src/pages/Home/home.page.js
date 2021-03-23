@@ -2,15 +2,24 @@ import React, {useState, useEffect, useCallback} from 'react';
 import Carousel, {Pagination} from 'react-native-snap-carousel';
 import {getCarousel} from '../../redux/action/dashboard_action';
 import {callEnterpriseLogo} from '../../redux/action/enterprise_action';
-import {Card, Title} from 'react-native-paper';
-import {View, Text, ScrollView, Image, ActivityIndicator} from 'react-native';
+import {Card} from 'react-native-paper';
+import {
+  View,
+  ScrollView,
+  Image,
+  ActivityIndicator,
+  Dimensions,
+} from 'react-native';
 import {useSelector, useDispatch} from 'react-redux';
-import {HeaderContainer, OverlayBackground, ModalTermCondition} from '../../components';
+import {
+  HeaderContainer,
+  OverlayBackground,
+  ModalTermCondition,
+} from '../../components';
 import Orientation from '../../helpers/orientation';
 
 import style from '../../style/home.style';
-import {Dimensions} from 'react-native';
-import Helper from '../../helpers/helper';
+import Text from '../../components/global/text';
 
 const LandingPage = ({navigation}) => {
   const dispatch = useDispatch();
@@ -60,15 +69,16 @@ const LandingPage = ({navigation}) => {
   };
 
   const showModalTermCondition = () => {
-    if(!userData.principal.isCustomerConsent){
+    if (!userData.principal.isCustomerConsent) {
       return (
-        <ModalTermCondition 
-          showModal={showModal} 
+        <ModalTermCondition
+          showModal={showModal}
           closeModal={() => setShowModal(!showModal)}
-          title={`Terms of Use & Privacy Policy`}/>
+          title={'Terms of Use & Privacy Policy'}
+        />
       );
     }
-  }
+  };
 
   const renderItem = ({item}) => {
     return (
@@ -107,9 +117,12 @@ const LandingPage = ({navigation}) => {
       headerTitle={'Home'}>
       <ScrollView>
         <OverlayBackground />
-        <Card style={[style.cardSection, { marginTop: '5%', borderWidth: 0 }]}>
+        <Card style={[style.cardSection, {marginTop: '5%', borderWidth: 0}]}>
           <Card.Content style={{marginBottom: 20}}>
-            <Title>Hi! {firstName + ' ' + lastName}</Title>
+            <Text style={{fontSize: 20}}>
+              {' '}
+              Hi! {firstName + ' ' + lastName}
+            </Text>
           </Card.Content>
           {carouselItems.length > 0 ? (
             <View
@@ -151,7 +164,7 @@ const LandingPage = ({navigation}) => {
           {pagination()}
         </Card>
       </ScrollView>
-      { isLoggedIn && showModalTermCondition() }
+      {isLoggedIn && showModalTermCondition()}
     </HeaderContainer>
   );
 };
