@@ -98,6 +98,8 @@ const Subscription = () => {
                   onSubmitEditing={(e) => dispatch(updateDataSearchText(e))}
                   showMenu={showMenu}
                   onClickColumn={() => setShowMenu((state) => !state)}
+                  navigateTo={'SubscriptionFilter'}
+                  placeholder={'Search with IMSI, MSISDN, ICCID, Detected IMEI'}
                 />
                 <AppliedFilter
                   data={applied_filter}
