@@ -1,5 +1,6 @@
 import React from 'react';
-import {Text, TouchableOpacity, View} from 'react-native';
+import {TouchableOpacity, View} from 'react-native';
+import Text from '../global/text';
 import {defaultHeightCell, defaultWidthCell} from '../../constant/config';
 import CustomCheckBox from '../customCheckBox';
 import PropTypes from 'prop-types';

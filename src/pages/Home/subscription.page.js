@@ -29,7 +29,6 @@ import dayjs from 'dayjs';
 import {colors} from '../../constant/color';
 import ModalMapOnly from '../../components/modal/ModalMapOnly';
 import lod from 'lodash';
-import {Text} from 'react-native';
 
 const Subscription = () => {
   const dispatch = useDispatch();

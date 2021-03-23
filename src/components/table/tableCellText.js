@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import {Text, TouchableOpacity, View} from 'react-native';
+import {TouchableOpacity, View} from 'react-native';
+import Text from '../global/text';
 import {defaultHeightCell, defaultWidthCell} from '../../constant/config';
 const TableCellText = (props) => {
   const {config, onPress, otherInformation} = props || {};

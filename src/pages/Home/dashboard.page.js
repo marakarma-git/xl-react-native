@@ -1,14 +1,9 @@
 import React, {useEffect} from 'react';
 import Helper from '../../helpers/helper';
 import {useDispatch, useSelector} from 'react-redux';
-import {
-  ActivityIndicator,
-  FlatList,
-  ScrollView,
-  View,
-  Text,
-} from 'react-native';
-import {Card, Headline, Title} from 'react-native-paper';
+import {ActivityIndicator, FlatList, ScrollView, View} from 'react-native';
+import Text from '../../components/global/text';
+import {Card, Headline} from 'react-native-paper';
 import {
   HeaderContainer,
   OverlayBackground,
@@ -45,7 +40,10 @@ const DashboardPage = ({navigation}) => {
         <Text
           numberOfLines={1}
           adjustsFontSizeToFit
-          style={{fontSize: Orientation.getWidth() * 0.033, marginVertical: '5%'}}>
+          style={{
+            fontSize: Orientation.getWidth() * 0.033,
+            marginVertical: '5%',
+          }}>
           {item.title}
         </Text>
         <Headline style={{fontWeight: 'bold', color: '#1139BF'}}>
