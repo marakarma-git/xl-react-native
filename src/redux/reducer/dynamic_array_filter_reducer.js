@@ -218,7 +218,7 @@ const dynamicFilter = [
     hard_code: true,
     config: {
       label: 'Subscription Package ID',
-      width: 220,
+      width: 260,
       doNotShowOnFilter: true,
       isTouchable: true,
       flexStart: true,
@@ -414,7 +414,7 @@ const dynamicFilter = [
     params: '&lastActivity=',
     config: {
       label: 'Last Network Activities',
-      width: 220,
+      width: 240,
       superType: 'DATE',
       doNotShowOnFilter: true,
       isTouchable: true,
