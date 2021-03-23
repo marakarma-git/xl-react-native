@@ -17,3 +17,6 @@ export {default as TermCondition} from './termCondition';
 
 // Modal Component
 export {default as ModalTermCondition} from './modal/ModalTermCondition';
+
+//Global Text
+export { default as Text } from './global/text';

@@ -1,4 +1,4 @@
-import { iconComponents, iconGrids, iconHome } from "../assets/images";
+import { iconComponents, iconGrids, iconHome, iconAdmin } from "../assets/images";
 import {
     LandingPage,
     DashboardPage,
@@ -7,8 +7,6 @@ import {
     ChangePasswordPage,
     SubscriptionFilter,
     AboutPage,
-    AutomationPage,
-    AutomationCreatePage,
     UserAdministrationPage,
     RoleAdministrationPage,
     EnterpriseManagementPage,
@@ -48,7 +46,7 @@ export const DRAWER_MENU_PRIVILEDGE = [
     { 
         priviledgeId: "",
         name: 'Administration', 
-        icon: iconGrids, 
+        icon: iconAdmin, 
         type: 'drawer', 
         width: 25,
         height: 25,

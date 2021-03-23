@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import { View, Image, Text, Alert } from 'react-native';
+import { View, Image, Alert } from 'react-native';
+import { Text } from '../../components';
 import { DrawerContentScrollView, DrawerItem } from '@react-navigation/drawer';
 import {
   iconLogout,
@@ -94,7 +95,7 @@ const CustomDrawerContent = (props) => {
         <TouchableOpacity
           onPress={() => props.navigation.navigate('Account')}
           style={{ paddingLeft: 15 }}>
-          <Text style={styles.userName}>
+          <Text fontType="regular" style={styles.userName}>
             {userData.principal
               ? userData.principal.firstName + ' ' + userData.principal.lastName
               : ''}
