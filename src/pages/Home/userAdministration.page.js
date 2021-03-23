@@ -27,7 +27,7 @@ const UserAdministrationPage = () => {
                 <SearchHeader
                   value={''}
                   onSubmitEditing={(e) => {}}
-                  navigateTo={'UserAdministrationFilter'}
+                  navigateTo={'User Administration Filter'}
                   placeholder={'Search with user ID, name or organization'}
                 />
                 <AppliedFilter data={[]} onDelete={(e) => {}} />
