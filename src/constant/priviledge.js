@@ -131,7 +131,7 @@ export const DRAWER_MENU_PRIVILEDGE = [
     },
     { 
         priviledgeId: "",
-        name: 'User Administration Create', 
+        name: 'UserAdministrationCreate', 
         icon: iconComponents, 
         type: 'non-drawer', 
         width: 25,
@@ -140,7 +140,7 @@ export const DRAWER_MENU_PRIVILEDGE = [
     },
     { 
         priviledgeId: "",
-        name: 'User Administration Filter', 
+        name: 'UserAdministrationFilter', 
         icon: iconComponents, 
         type: 'non-drawer', 
         width: 25,
@@ -149,7 +149,7 @@ export const DRAWER_MENU_PRIVILEDGE = [
     },
     { 
         priviledgeId: "",
-        name: 'Role Administration Create', 
+        name: 'RoleAdministrationCreate', 
         icon: iconComponents, 
         type: 'non-drawer', 
         width: 25,
@@ -158,7 +158,7 @@ export const DRAWER_MENU_PRIVILEDGE = [
     },
     { 
         priviledgeId: "",
-        name: 'Role Administration Filter', 
+        name: 'RoleAdministrationFilter', 
         icon: iconComponents, 
         type: 'non-drawer', 
         width: 25,
@@ -167,7 +167,7 @@ export const DRAWER_MENU_PRIVILEDGE = [
     },
     { 
         priviledgeId: "",
-        name: 'Enterprise Management Filter', 
+        name: 'EnterpriseManagementFilter', 
         icon: iconComponents, 
         type: 'non-drawer', 
         width: 25,
@@ -176,7 +176,7 @@ export const DRAWER_MENU_PRIVILEDGE = [
     },
     { 
         priviledgeId: "",
-        name: 'Enterprise Management Onboard', 
+        name: 'EnterpriseManagementOnboard', 
         icon: iconComponents, 
         type: 'non-drawer', 
         width: 25,
@@ -185,7 +185,7 @@ export const DRAWER_MENU_PRIVILEDGE = [
     },
     { 
         priviledgeId: "",
-        name: 'Subscription Package Management Filter', 
+        name: 'SubscriptionPackageManagementFilter', 
         icon: iconComponents, 
         type: 'non-drawer', 
         width: 25,
@@ -194,7 +194,7 @@ export const DRAWER_MENU_PRIVILEDGE = [
     },
     { 
         priviledgeId: "",
-        name: 'Banner Management Create', 
+        name: 'BannerManagementCreate', 
         icon: iconComponents, 
         type: 'non-drawer', 
         width: 25,

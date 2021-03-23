@@ -20,7 +20,6 @@ import Orientation from '../../helpers/orientation';
 
 import style from '../../style/home.style';
 import Text from '../../components/global/text';
-import Helper from '../../helpers/helper';
 
 const LandingPage = ({navigation}) => {
   const dispatch = useDispatch();
