@@ -1,7 +1,7 @@
 import React from 'react';
 import {View, Text} from 'react-native';
 
-const SubscriptionPackageFilterPage = () => {
+const UserAdministrationFilterPage = () => {
   return (
     <View>
       <Text>User Administration Filter</Text>
@@ -9,4 +9,4 @@ const SubscriptionPackageFilterPage = () => {
   );
 };
 
-export default SubscriptionPackageFilterPage;
+export default UserAdministrationFilterPage;
