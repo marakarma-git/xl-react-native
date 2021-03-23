@@ -18,6 +18,7 @@ import iconGrids from './drawer/grids2.png';
 import iconComponents from './drawer/components2.png';
 import iconLogout from './drawer/logout2.png';
 import iconAboutus from './drawer/aboutus.png';
+import iconAdmin from './drawer/admin.png';
 
 // Banner Assets
 import framerBanner from './banners/farmer-banner.png';
@@ -42,4 +43,5 @@ export {
   framerBanner,
   locationNotFound,
   iconAboutus,
+  iconAdmin
 };
