@@ -119,8 +119,18 @@ class Helper {
               drawer.priviledgeId == userPriviledge[i].priviledgeId ||
               drawer.priviledgeId == ''
             ) {
-              drawerMenu.push(drawer);
-              break;
+              if(drawer.components){
+                drawerMenu.push(drawer);
+                break;
+              }else{
+                if(drawer.subMenu){
+                  for(let i = 0; i < drawer.subMenu.length; i++){
+                    console.log(drawer.subMenu[i], " sub menu i")
+                    drawerMenu.push(drawer.subMenu[i]);
+                  }
+                }
+                break;
+              }
             }
           }
         }
