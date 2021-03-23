@@ -61,7 +61,9 @@ const AboutPage = ({navigation}) => {
               nulla pariatur. Excepteur sint occaecat cupidatat non proident,
               sunt in culpa qui officia deserunt mollit anim id est laborum.
             </Text>
-            <Text style={style.aboutTitle}>Powered by:</Text>
+            <Text fontType={'bold'} style={style.aboutTitle}>
+              Powered by:
+            </Text>
             <View
               style={[
                 styles.imageContainer,
@@ -80,8 +82,12 @@ const AboutPage = ({navigation}) => {
                 source={xlBusolInverted}
               />
             </View>
-            <Text style={style.aboutTitle}>Application Version</Text>
-            <Text style={style.aboutTitle}>{titleVersion || '-'}</Text>
+            <Text fontType={'bold'} style={style.aboutTitle}>
+              Application version
+            </Text>
+            <Text fontType={'bold'} style={style.aboutTitle}>
+              {titleVersion || '-'}
+            </Text>
           </Card.Content>
         </Card>
       </ScrollView>
