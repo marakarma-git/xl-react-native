@@ -75,7 +75,11 @@ const TableCellHeaderOptionCheckBox = (props) => {
                 ? 'sort-desc'
                 : 'unsorted'
             }
-            color={'white'}
+            color={
+              sorted === 'RESET' || !sorted
+                ? 'white'
+                : colors.white_header_asc_desc
+            }
             size={18}
           />
         </View>

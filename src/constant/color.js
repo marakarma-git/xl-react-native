@@ -21,4 +21,5 @@ export const colors = {
   yellow_bell: '#F9DD25',
   black: '',
   white: '',
+  white_header_asc_desc: '#2392FF',
 };
