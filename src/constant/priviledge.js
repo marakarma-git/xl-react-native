@@ -18,7 +18,8 @@ import {
     EnterpriseManagementFilterPage,
     EnterpriseManagementOnBoardPage,
     SubscriptionPackageFilterPage,
-    BannerManagementCreatePage
+    BannerManagementCreatePage,
+    UserAdministrationFilterPage
   } from '../pages/Home/index';
 
 export const DRAWER_MENU_PRIVILEDGE = [
@@ -136,6 +137,15 @@ export const DRAWER_MENU_PRIVILEDGE = [
         width: 25,
         height: 25,
         components: UserAdministrationCreatePage 
+    },
+    { 
+        priviledgeId: "",
+        name: 'User Administration Filter', 
+        icon: iconComponents, 
+        type: 'non-drawer', 
+        width: 25,
+        height: 25,
+        components: UserAdministrationFilterPage 
     },
     { 
         priviledgeId: "",
