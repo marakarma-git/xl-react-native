@@ -7,12 +7,15 @@ import TableCellCheckBox from './tableCellCheckBox';
 import TableCellStatus from './tableCellStatus';
 import TableCellText from './tableCellText';
 import TableCellViewMap from './tableCellViewMap';
+import TableCellHeaderCheckBox from './tableCellHeaderCheckBox';
 
 const TableCell = (props) => {
   const {type} = props || {};
   switch (type) {
     case 'TableCellHeaderOptionCheckBox':
       return <TableCellHeaderOptionCheckBox {...props} />;
+    case 'TableCellHeaderCheckBox':
+      return <TableCellHeaderCheckBox {...props} />;
     case 'TableCellHeaderAscDesc':
       return <TableCellHeaderAscDesc {...props} />;
     case 'TableCellHeader':
@@ -32,6 +35,7 @@ const TableCell = (props) => {
 TableCell.propTypes = {
   type: PropTypes.oneOf([
     'TableCellHeaderOptionCheckBox',
+    'TableCellHeaderCheckBox',
     'TableCellHeaderAscDesc',
     'TableCellHeader',
     'TableCellCheckBox',
