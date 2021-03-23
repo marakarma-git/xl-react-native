@@ -20,6 +20,7 @@ import Orientation from '../../helpers/orientation';
 
 import style from '../../style/home.style';
 import Text from '../../components/global/text';
+import privHelper from '../../helpers/privHelper';
 
 const LandingPage = ({navigation}) => {
   const dispatch = useDispatch();
@@ -164,7 +165,7 @@ const LandingPage = ({navigation}) => {
           {pagination()}
         </Card>
       </ScrollView>
-      {isLoggedIn && showModalTermCondition()}
+      {isLoggedIn && showModalTermCondition() && privHelper.isHasPriviledge('CC', userData.authority)}
     </HeaderContainer>
   );
 };

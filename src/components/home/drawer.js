@@ -10,6 +10,7 @@ import {removeEnterPriseLogo} from '../../redux/action/enterprise_action';
 import {TouchableOpacity} from 'react-native';
 
 import Helper from '../../helpers/helper';
+import privHelper from '../../helpers/privHelper';
 import styles from '../../style/drawer.style';
 
 const CustomDrawerContent = (props) => {
@@ -84,11 +85,13 @@ const CustomDrawerContent = (props) => {
     <DrawerContentScrollView {...props} style={{padding: 0}}>
       <View style={styles.avatarContainer}>
         <TouchableOpacity
+          disabled={!privHelper.isHasPriviledge("MA", userData.authority)}
           onPress={() => props.navigation.navigate('Account')}
           style={styles.userImageContainer}>
           <Ionicons name={'md-person'} color={'white'} size={24} />
         </TouchableOpacity>
         <TouchableOpacity
+          disabled={!privHelper.isHasPriviledge("MA", userData.authority)}
           onPress={() => props.navigation.navigate('Account')}
           style={{paddingLeft: 15}}>
           <Text fontType="regular" style={styles.userName}>

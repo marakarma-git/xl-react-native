@@ -12,6 +12,8 @@ import {
 } from '../../components/index';
 import {authLogout} from '../../redux/action/auth_action';
 import {removeEnterPriseLogo} from '../../redux/action/enterprise_action';
+// import privHelper from './../../helpers/helper';
+import privHelper from '../../helpers/privHelper';
 
 import styles from '../../style/account.style';
 
@@ -76,10 +78,7 @@ const MyAccountPage = (props) => {
           }}>
           <OverlayBackground />
           <TouchableOpacity style={styles.avatarContainer}>
-            {/* To-do Jadiin Image Pas API udah ada */}
             <Ionicons name={'md-person'} color={'white'} size={108} />
-            {/* To-do Edit Gambar */}
-            {/* <MaterialCommunityIcons name={'square-edit-outline'} size={38} style={styles.editIcon} /> */}
           </TouchableOpacity>
           {userData.principal && (
             <Card style={styles.accountPlaceholder}>
@@ -95,11 +94,6 @@ const MyAccountPage = (props) => {
           <Card style={styles.basicContainer}>
             <View style={styles.cardTitleWrapper}>
               <Text style={styles.nameText}>Basic Information</Text>
-              {/* To-do Edit User */}
-              {/* <TouchableOpacity
-              onPress={() => setEditable(!editable)}>
-              <MaterialCommunityIcons name={editable ? 'cancel' : 'square-edit-outline'} size={32} style={styles.editIconCard} />
-            </TouchableOpacity> */}
             </View>
             <AccountForm
               value={form}
@@ -107,8 +101,8 @@ const MyAccountPage = (props) => {
               editable={editable}
               inputHandler={inputHandler}
             />
-            {/* Todo Change Password */}
             <TouchableOpacity
+              disabled={!privHelper.isHasPriviledge("CP",userData.authority)}
               onPress={() => props.navigation.navigate('Change Password')}>
               <Text style={styles.linkText}>Change Password</Text>
             </TouchableOpacity>
