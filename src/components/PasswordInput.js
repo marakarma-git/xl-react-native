@@ -3,10 +3,10 @@ import {useSelector} from 'react-redux';
 import {
   View,
   TextInput,
-  Text,
   TouchableOpacity,
   ActivityIndicator,
 } from 'react-native';
+import {Text} from '../components';
 import {useDispatch} from 'react-redux';
 import {ModalTermCondition} from '../components';
 
