@@ -33,8 +33,6 @@ const Text = (props) => {
   return (
     <MyText
       style={[props.style, fontWeight()]}
-      ellipsizeMode="tail"
-      numberOfLines={1}
       {...props}>
       {props.children}
     </MyText>
