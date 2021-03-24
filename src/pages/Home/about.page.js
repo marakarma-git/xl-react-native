@@ -83,7 +83,7 @@ const AboutPage = ({navigation}) => {
               />
             </View>
             <Text fontType={'bold'} style={style.aboutTitle}>
-              Application version
+              Application Version
             </Text>
             <Text fontType={'bold'} style={style.aboutTitle}>
               {titleVersion || '-'}
