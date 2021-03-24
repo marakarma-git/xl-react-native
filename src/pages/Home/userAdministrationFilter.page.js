@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React, {useEffect, useState} from 'react';
 import {ScrollView, TouchableOpacity, View} from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
 import Text from '../../components/global/text';
@@ -18,16 +18,22 @@ import {Container} from './subscriptionFilter.page';
 import {useNavigation} from '@react-navigation/native';
 import InputHybrid from '../../components/InputHybrid';
 import lod from 'lodash';
+import {device_width} from '../../constant/config';
 
 const UserAdministrationFilterPage = () => {
   const dispatch = useDispatch();
   const navigation = useNavigation();
+  const [testWidth, setTestWidth] = useState(device_width * 0.41 - 1);
   const {dataHeader} = useSelector(
     (state) => state.user_administration_array_header_reducer,
   );
   useEffect(() => {
     dispatch(getActiveRole());
     dispatch(getActiveEnterprise());
+    const timer = setTimeout(() => {
+      setTestWidth(device_width * 0.41);
+    }, 100);
+    return () => timer;
   }, [dispatch]);
   const sortedArray = lod.orderBy(dataHeader, ['sort_by_filter', 'asc']) || [];
   return (
@@ -59,6 +65,7 @@ const UserAdministrationFilterPage = () => {
               const {label} = config || {};
               return (
                 <InputHybrid
+                  customStyle={{width: testWidth}}
                   type={typeInput}
                   value={value}
                   loading={loading}
@@ -82,9 +89,10 @@ const UserAdministrationFilterPage = () => {
                         }),
                       );
                       if (formId === 'organizations-hard-code') {
+                        const {value} = e || {};
                         dispatch(
                           getActiveRole({
-                            formId: formId,
+                            thisEnterprise: value,
                           }),
                         );
                       }
@@ -114,6 +122,7 @@ const UserAdministrationFilterPage = () => {
                   }
                   if (value === 'Find') {
                     dispatch(userAdministrationGenerateParams());
+                    // navigation.goBack()
                   }
                 }}>
                 <Text
