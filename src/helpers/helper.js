@@ -1,4 +1,5 @@
 import {DRAWER_MENU_PRIVILEDGE} from '../constant/priviledge';
+import dayjs from 'dayjs';
 
 class Helper {
   static numberFormat(value, symbol, type = 'number') {
@@ -195,6 +196,89 @@ class Helper {
         .replace('.', ',')
         .replace(/\B(?=(\d{3})+(?!\d))/g, '.');
     }
+  }
+
+  static dynamicResetForm = (data) => {
+    const {typeInput, formId, ...value} = data || {};
+    switch (typeInput) {
+      case 'DropDown':
+        return {
+          ...value,
+          formId: formId,
+          typeInput: typeInput,
+          value: {},
+        };
+      case 'DropDownType2':
+        return {
+          ...value,
+          formId: formId,
+          value: '',
+          typeInput: typeInput,
+          selectedValue: {},
+        };
+      case 'TextInput':
+        return {
+          ...value,
+          formId: formId,
+          typeInput: typeInput,
+          value: '',
+        };
+      case 'DateTimePicker':
+        return {
+          ...value,
+          isSelected: false,
+          formId: formId,
+          typeInput: typeInput,
+          value: dayjs().toDate(),
+        };
+      default:
+        return {
+          formId,
+          ...value,
+        };
+    }
+  };
+
+  static resetAllForm(data = []) {
+    return data.map(({formId, typeInput, ...value}) => {
+      switch (typeInput) {
+        case 'DropDown':
+          return {
+            ...value,
+            formId: formId,
+            typeInput: typeInput,
+            value: {},
+          };
+        case 'DropDownType2':
+          return {
+            ...value,
+            formId: formId,
+            value: '',
+            typeInput: typeInput,
+            selectedValue: {},
+          };
+        case 'TextInput':
+          return {
+            ...value,
+            formId: formId,
+            typeInput: typeInput,
+            value: '',
+          };
+        case 'DateTimePicker':
+          return {
+            ...value,
+            isSelected: false,
+            formId: formId,
+            typeInput: typeInput,
+            value: dayjs().toDate(),
+          };
+        default:
+          return {
+            formId,
+            ...value,
+          };
+      }
+    });
   }
 }
 

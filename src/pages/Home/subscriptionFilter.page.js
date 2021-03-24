@@ -54,7 +54,7 @@ const SubscriptionFilter = () => {
   }, [generatedParams]);
   let array = lod.orderBy(array_filter, ['sort_by_filter', 'asc']) || [];
   return (
-    <HeaderContainer navigation={navigation} headerTitle={'Subscription'}>
+    <HeaderContainer headerTitle={'Subscription'}>
       <ScrollView
         style={{backgroundColor: 'white'}}
         removeClippedSubviews={false}>
@@ -191,3 +191,4 @@ const SubscriptionFilter = () => {
 };
 
 export default SubscriptionFilter;
+export {Container};

@@ -12,6 +12,7 @@ import get_state_reducer from './get_state_reducer';
 import get_state_lock_reducer from './get_state_lock_reducer';
 import get_custom_label_reducer from './get_custom_label_reducer';
 import get_sim_inventory_reducer from './get_sim_inventory_reducer';
+import user_administration_array_header_reducer from './user_administration_array_header_reducer';
 const RootReducers = combineReducers({
   dummy_reducer,
   auth_reducer,
@@ -26,5 +27,6 @@ const RootReducers = combineReducers({
   get_state_lock_reducer,
   get_custom_label_reducer,
   get_sim_inventory_reducer,
+  user_administration_array_header_reducer,
 });
 export default RootReducers;
