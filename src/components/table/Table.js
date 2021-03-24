@@ -1,5 +1,6 @@
 import React, {useState, useRef} from 'react';
-import {View, ScrollView, ActivityIndicator, Text} from 'react-native';
+import {View, ScrollView, ActivityIndicator} from 'react-native';
+import Text from '../global/text';
 import {DragSortableView} from 'react-native-drag-sort';
 import PropTypes from 'prop-types';
 import TableCell from './tableCell';

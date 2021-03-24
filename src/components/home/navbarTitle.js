@@ -1,6 +1,6 @@
 import React from 'react';
-import {View, Text} from 'react-native';
-
+import {View} from 'react-native';
+import {Text} from '../index';
 import styles from '../../style/home.style';
 
 const NavbarTitleComponent = ({title, type = 'forget'}) => {

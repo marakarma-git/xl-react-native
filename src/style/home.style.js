@@ -173,7 +173,6 @@ export default {
   },
   aboutTitle: {
     fontSize: 18,
-    fontWeight: 'bold',
     textAlign: 'center',
     paddingVertical: 5,
   },
@@ -181,6 +180,6 @@ export default {
     textAlign: 'center',
     paddingTop: 10,
     paddingBottom: 30,
-    fontSize: 14
+    fontSize: 14,
   },
 };

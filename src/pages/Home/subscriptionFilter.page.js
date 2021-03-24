@@ -2,7 +2,6 @@ import React, {useEffect, useState} from 'react';
 import {
   View,
   ScrollView,
-  Text,
   TouchableOpacity,
   ActivityIndicator,
 } from 'react-native';
@@ -25,7 +24,7 @@ import {getEnterprisePackageName} from '../../redux/action/get_enterprise_packag
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import {useNavigation} from '@react-navigation/native';
 import lod from 'lodash';
-
+import Text from '../../components/global/text';
 const Container = (props) => {
   const {style, children} = props;
   return (
@@ -176,9 +175,9 @@ const SubscriptionFilter = () => {
                   }
                 }}>
                 <Text
+                  fontType={'bold'}
                   style={{
                     color: value === 'Clear' ? 'black' : 'white',
-                    fontWeight: 'bold',
                   }}>
                   {value}
                 </Text>

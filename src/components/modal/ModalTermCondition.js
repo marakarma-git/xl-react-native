@@ -2,7 +2,6 @@ import React from 'react';
 import {
   Modal,
   ScrollView,
-  Text,
   TouchableOpacity,
   TouchableWithoutFeedback,
   Linking,
@@ -10,6 +9,7 @@ import {
   KeyboardAvoidingView
 } from 'react-native';
 import {inputHybridStyle} from '../../style';
+import {Text} from '../index';
 import PropTypes from 'prop-types';
 import {useNavigation} from '@react-navigation/native';
 import {useDispatch, useSelector} from 'react-redux';

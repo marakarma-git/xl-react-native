@@ -17,8 +17,15 @@ const SearchHeader = (props) => {
   const navigation = useNavigation();
   const [refreshWidth, setRefreshWidth] = useState('99%');
   const [changeText, setChangeText] = useState('');
-  const {value, onChangeText, onSubmitEditing, loading, onClickColumn} =
-    props || {};
+  const {
+    value,
+    placeholder,
+    onChangeText,
+    onSubmitEditing,
+    loading,
+    onClickColumn,
+    navigateTo,
+  } = props || {};
   useEffect(() => {
     const timer = setTimeout(() => {
       setRefreshWidth('100%');
@@ -45,18 +52,15 @@ const SearchHeader = (props) => {
               editable={!loading}
               onChangeText={(e) => setChangeText(e)}
               onSubmitEditing={() => onSubmitEditing(changeText)}
-              style={{fontSize: 11, width: refreshWidth}}
-              placeholder={
-                value || 'Search with IMSI, MSISDN, ICCID, Detected IMEI'
-              }
+              style={{fontSize: 12, width: refreshWidth}}
+              placeholder={value || placeholder || ''}
             />
           </View>
         </View>
         {loading ? (
           <ActivityIndicator size={26} color={colors.button_color_one} />
         ) : (
-          <TouchableOpacity
-            onPress={() => navigation.navigate('SubscriptionFilter')}>
+          <TouchableOpacity onPress={() => navigation.navigate(navigateTo)}>
             <MaterialCommunityIcon
               name={'filter'}
               size={26}
@@ -82,11 +86,14 @@ SearchHeader.propTypes = {
   loading: PropTypes.bool,
   onClickColumn: PropTypes.func,
   onSubmitEditing: PropTypes.func,
+  placeholder: PropTypes.string,
+  navigateTo: PropTypes.string.isRequired,
 };
 SearchHeader.defaultProps = {
   showMenu: false,
   onChangeText: () => {},
   onClickColumn: () => {},
   onSubmitEditing: () => {},
+  navigateTo: '',
 };
 export default SearchHeader;

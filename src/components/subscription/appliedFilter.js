@@ -1,5 +1,6 @@
 import React from 'react';
-import {View, Text, ScrollView, TouchableOpacity} from 'react-native';
+import {View, ScrollView, TouchableOpacity} from 'react-native';
+import Text from '../global/text';
 import PropTypes from 'prop-types';
 import {colors} from '../../constant/color';
 import {border_radius} from '../../constant/config';

@@ -3,10 +3,10 @@ import {useSelector} from 'react-redux';
 import {
   View,
   TextInput,
-  Text,
   TouchableOpacity,
   ActivityIndicator,
 } from 'react-native';
+import {Text} from '../components';
 import {useDispatch} from 'react-redux';
 import {ModalTermCondition} from '../components';
 
@@ -14,6 +14,7 @@ import {ModalTermCondition} from '../components';
 import Entypo from 'react-native-vector-icons/Entypo';
 import Feather from 'react-native-vector-icons/Feather';
 import styles from '../style/account.style';
+import privHelper from '../helpers/privHelper';
 import { authLogout } from '../redux/action/auth_action';
 
 const passwordRulesArray = [
@@ -198,7 +199,7 @@ const PasswordInput = ({submitHandler, requestLoading, navigation, orientation})
       {marginTop: 10, borderColor: '#8D8D8D', borderWidth: 0.8, width: orientation === 'potrait' ? '90%' : '50%', backgroundColor: 'white'}]}>
         <Text style={styles.headerText}>Password</Text>
         {generateForm()}
-        { userData?.principal?.mustChangePass && !userData?.principal?.isCustomerConsent
+        { userData?.principal?.mustChangePass && !userData?.principal?.isCustomerConsent && privHelper.isHasPriviledge('CC', userData.authority)
         && <ModalTermCondition 
             showModal={showModal} 
             closeModal={() => setShowModal(!showModal)}
@@ -218,7 +219,7 @@ const PasswordInput = ({submitHandler, requestLoading, navigation, orientation})
           </TouchableOpacity>
           <TouchableOpacity
             onPress={() => submitHandler(form)}
-            disabled={!formComplete ? true : false}
+            disabled={!formComplete && !privHelper.isHasPriviledge('CP', userData.authority) ? true : false}
             style={[
               styles.buttonGroup,
               {backgroundColor: '#002DBB'},

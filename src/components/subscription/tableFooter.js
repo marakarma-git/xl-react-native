@@ -1,12 +1,12 @@
 import React, {useState} from 'react';
 import {
   View,
-  Text,
   TouchableOpacity,
   TextInput,
   Alert,
   ActivityIndicator,
 } from 'react-native';
+import Text from '../global/text';
 import PropTypes from 'prop-types';
 import Helper from '../../helpers/helper';
 import {colors} from '../../constant/color';

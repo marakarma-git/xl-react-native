@@ -7,11 +7,11 @@ import {
   TextInput,
   Keyboard,
   TouchableWithoutFeedback,
-  Text,
   TouchableOpacity,
   Linking,
   Dimensions,
 } from 'react-native';
+import Text from '../components/global/text';
 import lod from 'lodash';
 import styles from '../style/login.style';
 import {authLogin} from '../redux/action/auth_action';
@@ -121,16 +121,21 @@ const Login = ({navigation}) => {
                 ? {justifyContent: 'center'}
                 : {marginTop: 10},
             ]}>
-            <View style={[styles.imageContainer, 
-              { height: 100, justifyContent: 'center', alignItems: 'center' }]}>
+            <View
+              style={[
+                styles.imageContainer,
+                {height: 100, justifyContent: 'center', alignItems: 'center'},
+              ]}>
               <Image
                 resizeMode="contain"
-                style={
-                  { 
-                    width: Orientation.getWidth() * (orientation === 'potrait' ? 0.5 : 0.4), 
-                    height: Orientation.getHeight() * (orientation === 'potrait' ? 0.2 : 0.15) 
-                  }
-                }
+                style={{
+                  width:
+                    Orientation.getWidth() *
+                    (orientation === 'potrait' ? 0.5 : 0.4),
+                  height:
+                    Orientation.getHeight() *
+                    (orientation === 'potrait' ? 0.2 : 0.15),
+                }}
                 source={busolLogo}
               />
             </View>
