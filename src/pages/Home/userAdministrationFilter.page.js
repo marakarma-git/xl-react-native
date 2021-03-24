@@ -17,6 +17,7 @@ import {colors} from '../../constant/color';
 import {Container} from './subscriptionFilter.page';
 import {useNavigation} from '@react-navigation/native';
 import InputHybrid from '../../components/InputHybrid';
+import lod from 'lodash';
 
 const UserAdministrationFilterPage = () => {
   const dispatch = useDispatch();
@@ -28,6 +29,7 @@ const UserAdministrationFilterPage = () => {
     dispatch(getActiveRole());
     dispatch(getActiveEnterprise());
   }, [dispatch]);
+  const sortedArray = lod.orderBy(dataHeader, ['sort_by_filter', 'asc']) || [];
   return (
     <HeaderContainer headerTitle={'User Administration'}>
       <ScrollView style={{backgroundColor: 'white'}}>
@@ -44,7 +46,7 @@ const UserAdministrationFilterPage = () => {
             </TouchableOpacity>
           </View>
           <View style={subscriptionStyle.containerWrap}>
-            {dataHeader.map((e) => {
+            {sortedArray.map((e) => {
               const {
                 formId,
                 typeInput,

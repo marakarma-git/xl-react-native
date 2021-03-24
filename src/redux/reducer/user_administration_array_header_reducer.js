@@ -1,4 +1,3 @@
-import lod from 'lodash';
 import reduxString from '../reduxString';
 import Helper from '../../helpers/helper';
 import generateLink from '../../helpers/generateLink';
