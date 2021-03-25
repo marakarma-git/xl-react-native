@@ -30,7 +30,8 @@ const NavbarComponent = (props) => {
             flex: 1,
             paddingLeft: 20,
             fontSize: 20,
-          }}>
+          }}
+          fontType="bold">
           {headerTitle}
         </Text>
       )}
