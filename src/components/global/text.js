@@ -32,8 +32,9 @@ const Text = (props) => {
 
   return (
     <MyText
+      {...props}
       style={[props.style, fontWeight()]}
-      {...props}>
+      >
       {props.children}
     </MyText>
   );
