@@ -14,6 +14,7 @@ const dataHeaderFilter = [
       label: 'User ID',
       doNotShowOnFilter: true,
     },
+    shown: true,
     sort_by_filter: 0,
   },
   {
@@ -27,6 +28,7 @@ const dataHeaderFilter = [
     config: {
       label: 'Name',
     },
+    shown: true,
     sort_by_filter: 1,
   },
   {
@@ -50,6 +52,7 @@ const dataHeaderFilter = [
     config: {
       label: 'Status',
     },
+    shown: true,
     sort_by_filter: 5,
   },
   {
@@ -64,6 +67,7 @@ const dataHeaderFilter = [
     config: {
       label: 'Role',
     },
+    shown: true,
     sort_by_filter: 2,
   },
   {
@@ -78,6 +82,7 @@ const dataHeaderFilter = [
     config: {
       label: 'Organizations',
     },
+    shown: true,
     sort_by_filter: 4,
   },
   {
@@ -91,6 +96,7 @@ const dataHeaderFilter = [
     config: {
       label: 'Email',
     },
+    shown: true,
     sort_by_filter: 3,
   },
 ];

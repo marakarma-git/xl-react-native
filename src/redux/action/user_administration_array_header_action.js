@@ -191,6 +191,10 @@ export {
   userAdministrationDynamicOnchangeDropDown,
   userAdministrationResetAllValue,
   userAdministrationGenerateParams,
+  userAdministrationSetSearchText,
+  userAdministrationResetSearchText,
+  userAdministrationUpdateBundleArray,
+  userAdministrationDynamicReset,
   getActiveRole,
   getActiveEnterprise,
 };
