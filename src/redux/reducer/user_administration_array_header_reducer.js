@@ -4,7 +4,7 @@ import generateLink from '../../helpers/generateLink';
 const dataHeaderFilter = [
   {
     formId: 'user-id-hard-code',
-    api_id: 'userId',
+    api_id: 'username',
     value: '',
     typeInput: 'TextInput',
     params: '&userId=',
@@ -19,7 +19,7 @@ const dataHeaderFilter = [
   },
   {
     formId: 'user-name-hard-coded',
-    api_id: 'userName',
+    api_id: 'firstName',
     value: '',
     typeInput: 'TextInput',
     params: '&userName=',
@@ -78,7 +78,7 @@ const dataHeaderFilter = [
     data: [],
     params: '&enterpriseName=',
     cellType: 'TableCellHeaderAscDesc',
-    cellRowType: '',
+    cellRowType: 'TableCellText',
     config: {
       label: 'Organizations',
     },

@@ -5,68 +5,68 @@ import {dataMatcherArray2D} from './get_sim_inventory_action';
 
 const userAdministrationGetUserLoading = () => {
   return {
-    action: reduxString.USER_ADMINISTRATION_GET_USER_LOADING,
+    type: reduxString.USER_ADMINISTRATION_GET_USER_LOADING,
   };
 };
 const userAdministrationGetUserSuccess = (data) => {
   return {
-    action: reduxString.USER_ADMINISTRATION_GET_USER_SUCCESS,
+    type: reduxString.USER_ADMINISTRATION_GET_USER_SUCCESS,
     ...data,
   };
 };
 const userAdministrationGetUserFailed = (error) => {
   return {
-    action: reduxString.USER_ADMINISTRATION_GET_USER_FAILED,
+    type: reduxString.USER_ADMINISTRATION_GET_USER_FAILED,
     errorText: error,
   };
 };
 const userAdministrationGetUserReset = () => {
   return {
-    action: reduxString.USER_ADMINISTRATION_GET_USER_RESET,
+    type: reduxString.USER_ADMINISTRATION_GET_USER_RESET,
   };
 };
 const userAdministrationSetDataUserGenerated = (data) => {
   return {
-    action: reduxString.USER_ADMINISTRATION_SET_DATA_USER_GENERATED,
+    type: reduxString.USER_ADMINISTRATION_SET_DATA_USER_GENERATED,
     dataUserGenerated: data,
   };
 };
 const userAdministrationResetDataUserGenerated = () => {
   return {
-    action: reduxString.USER_ADMINISTRATION_RESET_DATA_USER_GENERATED,
+    type: reduxString.USER_ADMINISTRATION_RESET_DATA_USER_GENERATED,
   };
 };
 const userAdministrationDynamicCheckDataUser = (index) => {
   return {
-    action: reduxString.USER_ADMINISTRATION_DYNAMIC_CHECK_DATA_USER,
+    type: reduxString.USER_ADMINISTRATION_DYNAMIC_CHECK_DATA_USER,
     index,
   };
 };
 const userAdministrationDynamicUnCheckDataUser = (index) => {
   return {
-    action: reduxString.USER_ADMINISTRATION_DYNAMIC_UNCHECK_DATA_USER,
+    type: reduxString.USER_ADMINISTRATION_DYNAMIC_UNCHECK_DATA_USER,
     index,
   };
 };
 const userAdministrationCheckAllDataUser = () => {
   return {
-    action: reduxString.USER_ADMINISTRATION_CHECK_ALL_DATA_USER,
+    type: reduxString.USER_ADMINISTRATION_CHECK_ALL_DATA_USER,
   };
 };
 const userAdministrationUnCheckAllDataUser = () => {
   return {
-    action: reduxString.USER_ADMINISTRATION_UNCHECK_ALL_DATA_USER,
+    type: reduxString.USER_ADMINISTRATION_UNCHECK_ALL_DATA_USER,
   };
 };
 const userAdministrationSetAppliedHeaderSort = (data) => {
   return {
-    action: reduxString.USER_ADMINISTRATION_SET_APPLIED_HEADER_SORT,
+    type: reduxString.USER_ADMINISTRATION_SET_APPLIED_HEADER_SORT,
     appliedHeaderSort: data,
   };
 };
 const userAdministrationResetAppliedHeaderSort = () => {
   return {
-    action: reduxString.USER_ADMINISTRATION_RESET_APPLIED_HEADER_SORT,
+    type: reduxString.USER_ADMINISTRATION_RESET_APPLIED_HEADER_SORT,
   };
 };
 const callUserAdministrationGetUser = (paginate) => {
@@ -100,13 +100,17 @@ const callUserAdministrationGetUser = (paginate) => {
       }
     };
     console.log(
-      `${base_url}/user/usr/getUserList?=page${getPage}&size${getSize}&keyword=${searchText}&order=${getOrderBy()}&sort=${getSortBy()}${generatedParams}`
+      `${base_url}/user/usr/getUserList?page=${getPage}&size=${getSize}&keyword=${searchText}&order=${getOrderBy()}&sort=${getSortBy()}${generatedParams}`
         .split(' ')
         .join('+'),
     );
     axios
       .get(
-        `${base_url}/user/usr/getUserList?=page${getPage}&size${getSize}&keyword=${searchText}&order=${getOrderBy()}&sort=${getSortBy()}${generatedParams}`
+        `${base_url}/user/usr/getUserList?page=${getPage}&size=${getSize}${
+          searchText ? `$keyword=${searchText}"` : ''
+        }${getOrderBy() ? `&order=${getOrderBy()}` : ''}${
+          getSortBy() ? `&sort=${getOrderBy()}` : ''
+        }${generatedParams}`
           .split(' ')
           .join('+'),
         {
@@ -119,6 +123,7 @@ const callUserAdministrationGetUser = (paginate) => {
         const {result, statusCode} = data || {};
         const {content, pageable, totalPages, totalElements, size} =
           result || {};
+        console.log(JSON.stringify(content, null, 2));
         const {pageNumber} = pageable || {};
         if (statusCode === 0) {
           const isAppliedFilter = () => !!(searchText || generatedParams);
@@ -137,6 +142,7 @@ const callUserAdministrationGetUser = (paginate) => {
             }),
           );
         } else {
+          alert(JSON.stringify(data, null, 2));
           dispatch(
             userAdministrationGetUserFailed({
               errorText: 'Failed, to get user list',
