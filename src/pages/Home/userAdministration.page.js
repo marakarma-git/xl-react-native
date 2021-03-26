@@ -16,6 +16,9 @@ import {
 } from '../../redux/action/user_administration_array_header_action';
 import callUserAdministrationGetUser, {
   userAdministrationSetDataUserGenerated,
+  userAdministrationDynamicCheckDataUser,
+  userAdministrationCheckAllDataUser,
+  userAdministrationChangeCheckHeader,
 } from '../../redux/action/user_administration_get_user_action';
 import ModalMenuPicker from '../../components/modal/ModalMenuPicker';
 import {dataMatcherArray2D} from '../../redux/action/get_sim_inventory_action';
@@ -31,18 +34,21 @@ const UserAdministrationPage = () => {
   );
   const {
     loading,
+    errorText,
     data_user,
     data_user_generated,
     page_pagination,
     total_size_pagination,
     total_page_pagination,
     total_elements_pagination,
+    total_dynamic_elements_pagination,
     applied_filter,
     applied_header_sort,
     params_applied_activity_log,
   } = useSelector((state) => state.user_administration_get_user_reducer);
   useEffect(() => {
     if (!firstRender) {
+      console.log('panggil');
       dispatch(
         callUserAdministrationGetUser({
           paginate_page: 0,
@@ -68,16 +74,21 @@ const UserAdministrationPage = () => {
                 <OverlayBackground />
                 <SearchHeader
                   value={''}
-                  onSubmitEditing={(e) =>
-                    dispatch(userAdministrationSetSearchText(e))
-                  }
+                  onSubmitEditing={(e) => {
+                    console.log(e);
+                    dispatch(
+                      userAdministrationSetSearchText({
+                        searchText: e,
+                      }),
+                    );
+                  }}
                   showMenu={showMenu}
                   onClickColumn={() => setShowMenu((state) => !state)}
                   navigateTo={'UserAdministrationFilter'}
                   placeholder={'Search with user ID, name or organization'}
                 />
                 <AppliedFilter
-                  data={applied_filter}
+                  data={appliedFilter}
                   onDelete={(e) => {
                     const {formId} = e || {};
                     dispatch(userAdministrationDynamicReset({formId}));
@@ -85,16 +96,25 @@ const UserAdministrationPage = () => {
                   }}
                 />
                 <FilterActionLabel
+                  total={Helper.numberWithDot(total_elements_pagination)}
                   filtered={
-                    appliedFilter &&
+                    applied_filter &&
                     !loading &&
                     data_user_generated.length > 0 &&
-                    Helper.numberWithDot(total_elements_pagination)
+                    !errorText &&
+                    Helper.numberWithDot(total_dynamic_elements_pagination)
                   }
-                  total={Helper.numberWithDot(total_elements_pagination)}
                 />
               </>
             );
+          }}
+          onPressCheckHeader={(e) => {
+            const {valueCheck} = e || {};
+            dispatch(userAdministrationChangeCheckHeader());
+            dispatch(userAdministrationCheckAllDataUser(valueCheck));
+          }}
+          onPressCheckCell={({index}) => {
+            dispatch(userAdministrationDynamicCheckDataUser(index));
           }}
           selectedHeaderOrderSort={applied_header_sort}
           dataHeader={dataHeader}
@@ -143,7 +163,7 @@ const UserAdministrationPage = () => {
           onApply={(e) => {
             const {result} = data_user || {};
             const {content} = result || {};
-            dispatch(userAdministrationUpdateBundleArray(e));
+            dispatch(userAdministrationUpdateBundleArray({data: e}));
             const reGenerated = dataMatcherArray2D(content, e);
             dispatch(userAdministrationSetDataUserGenerated(reGenerated));
             setShowMenu((state) => !state);

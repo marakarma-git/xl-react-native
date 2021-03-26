@@ -1,4 +1,5 @@
 import reduxString from '../reduxString';
+import lod from 'lodash';
 
 const initialState = {
   loading: false,
@@ -9,6 +10,7 @@ const initialState = {
   total_size_pagination: 20,
   total_page_pagination: 0,
   total_elements_pagination: 0,
+  total_dynamic_elements_pagination: 0,
   applied_filter: false,
   applied_header_sort: {
     formId: '',
@@ -35,7 +37,11 @@ const user_administration_get_user_reducer = (state = initialState, action) => {
         page_pagination: action.pagePagination,
         total_size_pagination: action.totalSizePagination,
         total_page_pagination: action.totalPagePagination,
-        total_elements_pagination: action.totalElementsPagination,
+        total_elements_pagination:
+          state.total_elements_pagination === 0
+            ? action.totalElementsPagination
+            : state.total_elements_pagination,
+        total_dynamic_elements_pagination: action.totalElementsPagination,
         applied_filter: action.appliedFilter,
         applied_header_sort:
           action.appliedHeaderSort || initialState.applied_header_sort,
@@ -52,7 +58,7 @@ const user_administration_get_user_reducer = (state = initialState, action) => {
     case reduxString.USER_ADMINISTRATION_SET_DATA_USER_GENERATED:
       return {
         ...state,
-        data_user_generated: action.dataUserGenerated,
+        data_user_generated: [...action.dataUserGenerated],
       };
     case reduxString.USER_ADMINISTRATION_RESET_DATA_USER_GENERATED:
       return {
@@ -60,10 +66,12 @@ const user_administration_get_user_reducer = (state = initialState, action) => {
         data_user_generated: [],
       };
     case reduxString.USER_ADMINISTRATION_DYNAMIC_CHECK_DATA_USER:
-      initialState.data_user_generated[action.index].is_checked_root = true;
+      // let copyArray = lod.cloneDeep(state.data_user_generated);
+      state.data_user_generated[action.index].is_checked_root = !state
+        .data_user_generated[action.index].is_checked_root;
       return {
         ...state,
-        data_user_generated: initialState.data_user_generated,
+        data_user_generated: state.data_user_generated,
       };
     case reduxString.USER_ADMINISTRATION_DYNAMIC_UNCHECK_DATA_USER:
       initialState.data_user_generated[action.index].is_checked_root = false;
@@ -73,8 +81,8 @@ const user_administration_get_user_reducer = (state = initialState, action) => {
       };
     case reduxString.USER_ADMINISTRATION_CHECK_ALL_DATA_USER:
       const generateCheckAll =
-        initialState.data_user_generated.map(({is_checked_root, ...rest}) => ({
-          is_checked_root: true,
+        state.data_user_generated.map(({is_checked_root, ...rest}) => ({
+          is_checked_root: !action.valueCheck,
           ...rest,
         })) || state.data_user_generated;
       return {
@@ -83,8 +91,8 @@ const user_administration_get_user_reducer = (state = initialState, action) => {
       };
     case reduxString.USER_ADMINISTRATION_UNCHECK_ALL_DATA_USER:
       const generatedUnCheckAll =
-        initialState.data_user_generated.map(({is_checked_root, ...rest}) => ({
-          is_checked_root: false,
+        state.data_user_generated.map(({is_checked_root, ...rest}) => ({
+          is_checked_root: !action.valueCheck,
           ...rest,
         })) || state.data_user_generated;
       return {

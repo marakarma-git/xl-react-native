@@ -54,12 +54,12 @@ const Table = (props) => {
                     item: dataHeader[0],
                   })
                 }
-                onChangeCheck={(value) =>
+                onChangeCheck={(value) => {
                   onPressCheckHeader({
                     selectedValue: value,
                     ...dataHeader[0],
-                  })
-                }
+                  });
+                }}
                 {...dataHeader[0]}
               />
             )}

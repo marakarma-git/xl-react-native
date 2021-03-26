@@ -8,6 +8,11 @@ const userAdministrationGetUserLoading = () => {
     type: reduxString.USER_ADMINISTRATION_GET_USER_LOADING,
   };
 };
+const userAdministrationChangeCheckHeader = () => {
+  return {
+    type: reduxString.USER_ADMINISTRATION_CHANGE_CHECK_HEADER,
+  };
+};
 const userAdministrationGetUserSuccess = (data) => {
   return {
     type: reduxString.USER_ADMINISTRATION_GET_USER_SUCCESS,
@@ -48,9 +53,10 @@ const userAdministrationDynamicUnCheckDataUser = (index) => {
     index,
   };
 };
-const userAdministrationCheckAllDataUser = () => {
+const userAdministrationCheckAllDataUser = (value) => {
   return {
     type: reduxString.USER_ADMINISTRATION_CHECK_ALL_DATA_USER,
+    valueCheck: value,
   };
 };
 const userAdministrationUnCheckAllDataUser = () => {
@@ -100,14 +106,18 @@ const callUserAdministrationGetUser = (paginate) => {
       }
     };
     console.log(
-      `${base_url}/user/usr/getUserList?page=${getPage}&size=${getSize}&keyword=${searchText}&order=${getOrderBy()}&sort=${getSortBy()}${generatedParams}`
+      `${base_url}/user/usr/getUserList?page=${getPage}&size=${getSize}${
+        searchText ? `&keyword=${searchText}"` : ''
+      }${getOrderBy() ? `&order=${getOrderBy()}` : ''}${
+        getSortBy() ? `&sort=${getOrderBy()}` : ''
+      }${generatedParams}`
         .split(' ')
         .join('+'),
     );
     axios
       .get(
         `${base_url}/user/usr/getUserList?page=${getPage}&size=${getSize}${
-          searchText ? `$keyword=${searchText}"` : ''
+          searchText ? `&keyword=${searchText}` : ''
         }${getOrderBy() ? `&order=${getOrderBy()}` : ''}${
           getSortBy() ? `&sort=${getOrderBy()}` : ''
         }${generatedParams}`
@@ -121,10 +131,7 @@ const callUserAdministrationGetUser = (paginate) => {
       )
       .then(({data}) => {
         const {result, statusCode} = data || {};
-        const {content, pageable, totalPages, totalElements, size} =
-          result || {};
-        console.log(JSON.stringify(content, null, 2));
-        const {pageNumber} = pageable || {};
+        const {content, totalPages, totalElements} = result || {};
         if (statusCode === 0) {
           const isAppliedFilter = () => !!(searchText || generatedParams);
           const generateTable = dataMatcherArray2D(content, dataHeader);
@@ -132,8 +139,8 @@ const callUserAdministrationGetUser = (paginate) => {
             userAdministrationGetUserSuccess({
               dataUser: data,
               dataUserGenerated: generateTable,
-              pagePagination: pageNumber,
-              totalSizePagination: size,
+              pagePagination: getPage,
+              totalSizePagination: getSize,
               totalPagePagination: totalPages,
               totalElementsPagination: totalElements,
               appliedFilter: isAppliedFilter(),
@@ -142,7 +149,6 @@ const callUserAdministrationGetUser = (paginate) => {
             }),
           );
         } else {
-          alert(JSON.stringify(data, null, 2));
           dispatch(
             userAdministrationGetUserFailed({
               errorText: 'Failed, to get user list',
@@ -163,6 +169,7 @@ const callUserAdministrationGetUser = (paginate) => {
 export default callUserAdministrationGetUser;
 export {
   userAdministrationGetUserReset,
+  userAdministrationChangeCheckHeader,
   userAdministrationSetDataUserGenerated,
   userAdministrationResetDataUserGenerated,
   userAdministrationDynamicCheckDataUser,

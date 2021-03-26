@@ -13,7 +13,9 @@ const dataHeaderFilter = [
     config: {
       label: 'User ID',
       doNotShowOnFilter: true,
+      isTouchable: true,
     },
+    valueCheck: false,
     shown: true,
     sort_by_filter: 0,
   },
@@ -27,6 +29,7 @@ const dataHeaderFilter = [
     cellRowType: 'TableCellText',
     config: {
       label: 'Name',
+      isTouchable: true,
     },
     shown: true,
     sort_by_filter: 1,
@@ -51,6 +54,7 @@ const dataHeaderFilter = [
     cellRowType: 'TableCellText',
     config: {
       label: 'Status',
+      isTouchable: true,
     },
     shown: true,
     sort_by_filter: 5,
@@ -66,6 +70,7 @@ const dataHeaderFilter = [
     cellRowType: 'TableCellText',
     config: {
       label: 'Role',
+      isTouchable: true,
     },
     shown: true,
     sort_by_filter: 2,
@@ -81,6 +86,7 @@ const dataHeaderFilter = [
     cellRowType: 'TableCellText',
     config: {
       label: 'Organizations',
+      isTouchable: true,
     },
     shown: true,
     sort_by_filter: 4,
@@ -95,6 +101,7 @@ const dataHeaderFilter = [
     cellRowType: 'TableCellText',
     config: {
       label: 'Email',
+      isTouchable: true,
     },
     shown: true,
     sort_by_filter: 3,
@@ -115,6 +122,12 @@ const user_administration_array_header_reducer = (
       const getIndex =
         state.dataHeader.findIndex((f) => f.formId === action.formId) || 0;
       state.dataHeader[getIndex].value = action.textInput;
+      return {
+        ...state,
+        dataHeader: state.dataHeader,
+      };
+    case reduxString.USER_ADMINISTRATION_CHANGE_CHECK_HEADER:
+      state.dataHeader[0].valueCheck = !state.dataHeader[0].valueCheck;
       return {
         ...state,
         dataHeader: state.dataHeader,

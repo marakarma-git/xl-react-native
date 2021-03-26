@@ -128,6 +128,7 @@ const dataMatcherArray2D = (listData = [], headerData = []) => {
     generated.push({
       is_checked_root: false,
       dataCell: subGenerated,
+      is_edit: false,
     });
   });
   return generated;

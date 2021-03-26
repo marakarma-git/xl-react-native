@@ -61,6 +61,7 @@ const userAdministrationUpdateBundleArray = (value) => {
 };
 const userAdministrationSetSearchText = (value) => {
   const {searchText} = value || '';
+  console.log(searchText);
   return {
     type: reduxString.USER_ADMINISTRATION_SET_SEARCH_TEXT,
     searchText: searchText,
