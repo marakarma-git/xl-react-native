@@ -21,7 +21,9 @@ import callUserAdministrationGetUser, {
   userAdministrationChangeCheckHeader,
 } from '../../redux/action/user_administration_get_user_action';
 import ModalMenuPicker from '../../components/modal/ModalMenuPicker';
-import {dataMatcherArray2D} from '../../redux/action/get_sim_inventory_action';
+import callSimInventory, {
+  dataMatcherArray2D,
+} from '../../redux/action/get_sim_inventory_action';
 import Helper from '../../helpers/helper';
 import {colors} from '../../constant/color';
 const UserAdministrationPage = () => {
@@ -107,6 +109,45 @@ const UserAdministrationPage = () => {
                 />
               </>
             );
+          }}
+          onPressHeader={(e) => {
+            const {dataSort, item} = e || {};
+            const {sortBy, formId: currentFormId} = dataSort || {};
+            const {formId, api_id} = item || {};
+            const getOrder = () => {
+              if (formId !== currentFormId) {
+                return 'ASC';
+              }
+              if (formId === currentFormId) {
+                if (sortBy === '' || sortBy === 'RESET') {
+                  return 'ASC';
+                }
+                if (sortBy === 'ASC') {
+                  return 'DESC';
+                }
+                if (sortBy === 'DESC') {
+                  return 'RESET';
+                }
+              }
+            };
+            if (getOrder()) {
+              dispatch(
+                callUserAdministrationGetUser({
+                  paginate_page: 0,
+                  data_to_sort: {
+                    formId: formId,
+                    order_by: api_id,
+                    sort_by: getOrder(),
+                  },
+                }),
+              );
+            } else {
+              dispatch(
+                callUserAdministrationGetUser({
+                  paginate_page: 0,
+                }),
+              );
+            }
           }}
           onPressCheckHeader={(e) => {
             const {valueCheck} = e || {};

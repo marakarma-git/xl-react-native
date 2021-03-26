@@ -147,7 +147,7 @@ const Subscription = () => {
                 return 'ASC';
               }
               if (formId === currentFormId) {
-                if (sortBy === '') {
+                if (sortBy === '' || sortBy === 'RESET') {
                   return 'ASC';
                 }
                 if (sortBy === 'ASC') {

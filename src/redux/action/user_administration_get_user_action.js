@@ -2,6 +2,7 @@ import axios from 'axios';
 import reduxString from '../reduxString';
 import {base_url} from '../../constant/connection';
 import {dataMatcherArray2D} from './get_sim_inventory_action';
+import {get} from 'react-native/Libraries/TurboModule/TurboModuleRegistry';
 
 const userAdministrationGetUserLoading = () => {
   return {
@@ -95,32 +96,36 @@ const callUserAdministrationGetUser = (paginate) => {
       if (order_by === 'RESET') {
         return '';
       } else {
-        return order_by ?? orderBy;
+        if (order_by) {
+          return order_by;
+        } else {
+          return orderBy;
+        }
       }
     };
     const getSortBy = () => {
       if (sort_by === 'RESET') {
         return '';
       } else {
-        return sort_by ?? sortBy;
+        if (sort_by) {
+          return sort_by;
+        } else {
+          return sortBy;
+        }
       }
     };
     console.log(
-      `${base_url}/user/usr/getUserList?page=${getPage}&size=${getSize}${
-        searchText ? `&keyword=${searchText}` : ''
-      }${getOrderBy() ? `&order=${getOrderBy()}` : ''}${
-        getSortBy() ? `&sort=${getOrderBy()}` : ''
-      }${generatedParams}`
+      `${base_url}/user/usr/getUserList?page=${getPage}&size=${getSize}&keyword=${searchText}${
+        getSortBy() ? `&order=${getSortBy()}` : ''
+      }${getSortBy() ? `&sort=${getOrderBy()}` : ''}${generatedParams}`
         .split(' ')
         .join('+'),
     );
     axios
       .get(
-        `${base_url}/user/usr/getUserList?page=${getPage}&size=${getSize}${
-          searchText ? `&keyword=${searchText}` : ''
-        }${getOrderBy() ? `&order=${getOrderBy()}` : ''}${
-          getSortBy() ? `&sort=${getOrderBy()}` : ''
-        }${generatedParams}`
+        `${base_url}/user/usr/getUserList?page=${getPage}&size=${getSize}&keyword=${searchText}${
+          getSortBy() ? `&order=${getSortBy()}` : ''
+        }${getSortBy() ? `&sort=${getOrderBy()}` : ''}${generatedParams}`
           .split(' ')
           .join('+'),
         {
@@ -144,7 +149,13 @@ const callUserAdministrationGetUser = (paginate) => {
               totalPagePagination: totalPages,
               totalElementsPagination: totalElements,
               appliedFilter: isAppliedFilter(),
-              appliedHeaderSort: data_to_sort || applied_header_sort,
+              appliedHeaderSort: data_to_sort
+                ? {
+                    formId: data_to_sort.formId,
+                    sortBy: sort_by,
+                    orderBy: order_by,
+                  }
+                : applied_header_sort,
               paramsAppliedActivityLog: generatedParams || null,
             }),
           );
