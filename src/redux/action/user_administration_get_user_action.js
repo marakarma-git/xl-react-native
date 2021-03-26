@@ -107,7 +107,7 @@ const callUserAdministrationGetUser = (paginate) => {
     };
     console.log(
       `${base_url}/user/usr/getUserList?page=${getPage}&size=${getSize}${
-        searchText ? `&keyword=${searchText}"` : ''
+        searchText ? `&keyword=${searchText}` : ''
       }${getOrderBy() ? `&order=${getOrderBy()}` : ''}${
         getSortBy() ? `&sort=${getOrderBy()}` : ''
       }${generatedParams}`
