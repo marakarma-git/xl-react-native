@@ -138,6 +138,13 @@ const getActiveRole = (data) => {
       });
   };
 };
+const callActiveEnterprise = ({access_token}) => {
+  return axios.get(`${base_url}/user/corp/getActiveEnterprise`, {
+    headers: {
+      Authorization: `Bearer ${access_token}`,
+    },
+  });
+};
 const getActiveEnterprise = () => {
   return async (dispatch, getState) => {
     dispatch(
@@ -146,12 +153,7 @@ const getActiveEnterprise = () => {
       }),
     );
     const {access_token} = (await getState().auth_reducer.data) || {};
-    axios
-      .get(`${base_url}/user/corp/getActiveEnterprise`, {
-        headers: {
-          Authorization: `Bearer ${access_token}`,
-        },
-      })
+    callActiveEnterprise(access_token)
       .then(({data}) => {
         const {result, statusCode} = data || {};
         if (statusCode === 0) {
@@ -196,6 +198,7 @@ export {
   userAdministrationResetSearchText,
   userAdministrationUpdateBundleArray,
   userAdministrationDynamicReset,
+  callActiveEnterprise,
   getActiveRole,
   getActiveEnterprise,
 };
