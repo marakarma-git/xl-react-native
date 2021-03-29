@@ -5,7 +5,6 @@ import {base_url} from '../../constant/connection';
 import {authFailed} from './auth_action';
 import dayjs from 'dayjs';
 import Helper from '../../helpers/helper';
-import lod from 'lodash';
 const getSimInventoryLoading = () => {
   return {
     type: reduxString.GET_SIM_INVENTORY_LOADING,
@@ -28,6 +27,8 @@ const getSimInventorySuccess = (data) => {
     dataSimInventoryTable,
     currentPage,
     currentTotalPage,
+    currentTotalElement,
+    currentAppliedFilter,
     currentSize,
     selectedHeaderSort,
   } = data || {};
@@ -37,6 +38,8 @@ const getSimInventorySuccess = (data) => {
     data_sim_inventory_table: dataSimInventoryTable,
     currentPage: currentPage,
     currentTotalPage: currentTotalPage,
+    currentTotalElement: currentTotalElement,
+    currentAppliedFilter: currentAppliedFilter,
     currentSize: currentSize,
     selectedHeaderSort: selectedHeaderSort,
   };
@@ -83,9 +86,9 @@ const dataMatcherArray2D = (listData = [], headerData = []) => {
   listData.map((item, index) => {
     const subGenerated = [];
     headerData.map((subItem) => {
-      const {shown, api_id, config, ...rest} = subItem || {};
-      const {width, superType} = config || {};
-      if (shown) {
+      const {shown, api_id, config, formId, ...rest} = subItem || {};
+      const {width, superType, flexStart, doNotShowOnTable} = config || {};
+      if (shown && !doNotShowOnTable) {
         const createObject = (superType, labelValue) => {
           if (superType === 'DATE') {
             return labelValue ? dayjs(labelValue).format('DD-MM-YYYY') : '';
@@ -98,13 +101,22 @@ const dataMatcherArray2D = (listData = [], headerData = []) => {
         const generateObject = {
           cellType: subItem.cellRowType,
           config: {
+            flexStart: flexStart,
             width: width,
             superType: superType,
             label: createObject(superType, item[`${api_id}`]),
             backgroundColor: index % 2 ? colors.gray_table : 'white',
+            fontColor:
+              formId === 'imsi-hard-code' &&
+              subItem.cellRowType === 'TableCellCheckBox' &&
+              colors.imsi_blue,
+            isTouchable:
+              formId === 'imsi-hard-code' &&
+              subItem.cellRowType === 'TableCellCheckBox',
           },
           item: {...item},
           subItem: {
+            formId: formId,
             ...rest,
           },
         };
@@ -152,7 +164,17 @@ const callSimInventory = (paginate) => {
       selectedHeaderSortPaginate || {};
     const {orderBy, sortBy} = selectedHeaderSort || {};
     const {access_token} = data || {};
-    const getPage = page_value || current_page;
+    const getPage = () => {
+      if (page_value === 0) {
+        return 0;
+      } else {
+        if (page_value) {
+          return page_value;
+        } else {
+          return current_page;
+        }
+      }
+    };
     const getSize = size_value || current_size;
     const getOrderBy = () => {
       if (sortByPaginate === 'RESET') {
@@ -177,11 +199,15 @@ const callSimInventory = (paginate) => {
       }
     };
     console.log(
-      `${base_url}/dcp/sim/getSimInventory?page=${getPage}&size=${getSize}&keyword=${searchText}&sort=${getOrderBy()}&order=${getSortBy()}${generatedParams}`,
+      `${base_url}/dcp/sim/getSimInventory?page=${getPage()}&size=${getSize}&keyword=${searchText}&sort=${getOrderBy()}&order=${getSortBy()}${generatedParams}`
+        .split(' ')
+        .join('+'),
     );
     axios
       .get(
-        `${base_url}/dcp/sim/getSimInventory?page=${getPage}&size=${getSize}&keyword=${searchText}&sort=${getOrderBy()}&order=${getSortBy()}`,
+        `${base_url}/dcp/sim/getSimInventory?page=${getPage()}&size=${getSize}&keyword=${searchText}&sort=${getOrderBy()}&order=${getSortBy()}${generatedParams}`
+          .split(' ')
+          .join('+'),
         {
           headers: {
             Authorization: `Bearer ${access_token}`,
@@ -190,9 +216,11 @@ const callSimInventory = (paginate) => {
       )
       .then(({data}) => {
         const {result, statusCode} = data || {};
-        const {content, pageable, totalPages, size} = result || {};
+        const {content, pageable, totalPages, totalElements, size} =
+          result || {};
         const {pageNumber} = pageable || {};
         if (statusCode === 0) {
+          const isAppliedFilter = () => !!(searchText || generatedParams);
           const generated = dataMatcherArray2D(content, array_filter);
           dispatch(
             getSimInventorySuccess({
@@ -200,25 +228,29 @@ const callSimInventory = (paginate) => {
               dataSimInventoryTable: generated,
               currentPage: pageNumber,
               currentTotalPage: totalPages,
+              currentTotalElement: totalElements,
+              currentAppliedFilter: isAppliedFilter(),
               currentSize: size,
               selectedHeaderSort:
                 selectedHeaderSortPaginate || selectedHeaderSort,
+              paramsApplied: generatedParams || null,
             }),
           );
         } else {
           dispatch(getSimInventoryFailed(data));
         }
       })
-      .catch((e) => {
-        if (e.response.data) {
-          dispatch(authFailed(e.response.data));
-        } else {
-          dispatch(getSimInventoryLoadingFalse());
-          alert('Something went wrong went fetching data');
-          console.log(
-            'error_api_call_sim_inventory: ' + JSON.stringify(e, null, 2),
-          );
-        }
+      .catch((error) => {
+        dispatch(authFailed(error.response.data));
+        // if (e.response.data) {
+        //   dispatch(authFailed(e.response.data));
+        // } else {
+        //   dispatch(getSimInventoryLoadingFalse());
+        //   alert('Something went wrong went fetching data');
+        //   console.log(
+        //     'error_api_call_sim_inventory: ' + JSON.stringify(e, null, 2),
+        //   );
+        // }
       });
   };
 };

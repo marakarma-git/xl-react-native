@@ -47,7 +47,6 @@ export default {
     top: 0,
     right: 0,
     left: 0,
-    width: '100%',
     height: 100,
     backgroundColor: colors.background_overlay,
   },
@@ -89,7 +88,9 @@ export default {
   cardSection: {
     flex: 1,
     marginVertical: 5,
-    marginHorizontal: '2%'
+    marginHorizontal: '3%',
+    borderWidth: 0.8,
+    borderColor: '#8D8D8D',
   },
   tradeMark: {
     paddingVertical: 2,
@@ -97,6 +98,13 @@ export default {
     alignItems: 'center',
     borderTopWidth: 0.3,
     borderTopColor: 'gray',
+  },
+  cardWrapper: {
+    width: '95%',
+    backgroundColor: 'white',
+    marginTop: 20,
+    borderColor: '#8D8D8D',
+    borderWidth: 0.8,
   },
   cardContentWrapper: {
     marginBottom: 10,
@@ -159,9 +167,19 @@ export default {
   },
   carouselWrapper: {
     flex: 1,
-    // height: device_height - 100,
     backgroundColor: '#002DBB',
     alignItems: 'center',
     justifyContent: 'center',
+  },
+  aboutTitle: {
+    fontSize: 18,
+    textAlign: 'center',
+    paddingVertical: 5,
+  },
+  aboutText: {
+    textAlign: 'center',
+    paddingTop: 10,
+    paddingBottom: 30,
+    fontSize: 14,
   },
 };

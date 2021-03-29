@@ -32,7 +32,7 @@ const BarChartComponent = ({item, filterParams = {}}) => {
       {dataSet.length > 0 ? (
         <VictoryContainer>
           <VictoryChart
-            width={Orientation.getWidth() - (orientation === 'landscape' ? 100 : 50)}>
+            width={Orientation.getWidth() - (orientation === 'landscape' ? 120 : 70)}>
             <VictoryAxis crossAxis label="Subscriptions" tickFormat={() => ''} />
             <VictoryAxis
               dependentAxis
@@ -43,7 +43,6 @@ const BarChartComponent = ({item, filterParams = {}}) => {
             />
             <VictoryBar
               data={dataSet}
-              width={300}
               events={[{
                   target: "data",
                   eventHandlers: {
@@ -73,7 +72,7 @@ const BarChartComponent = ({item, filterParams = {}}) => {
               }}
               labelComponent={
                   <VictoryTooltip
-                    dx={-20}
+                    dx={-30}
                     dy={20}
                     orientation="top"
                     flyoutStyle={{ stroke:"#00D3A0", fill: 'white' }}
@@ -86,7 +85,7 @@ const BarChartComponent = ({item, filterParams = {}}) => {
           </VictoryChart>
         </VictoryContainer>
       ) : (
-        <View style={{marginTop: 30}}>
+        <View style={{marginTop: '20%'}}>
           <Text
             style={{
               textAlign: 'center',
@@ -94,7 +93,7 @@ const BarChartComponent = ({item, filterParams = {}}) => {
               fontSize: 14,
               fontWeight: 'bold',
             }}>
-            {error}
+            {error || 'No Data'}
           </Text>
         </View>
       )}
@@ -137,7 +136,7 @@ const BarChartComponent = ({item, filterParams = {}}) => {
 
     return pageLoad;
   }, [navigation]);
-
+  console.log('isinya',dataSet)
   return (
     <Card style={[style.cardSection]}>
       <Card.Content style={[style.cardContentWrapper, {flex: 1}]}>

@@ -7,11 +7,11 @@ import {
   TextInput,
   Keyboard,
   TouchableWithoutFeedback,
-  Text,
   TouchableOpacity,
   Linking,
   Dimensions,
 } from 'react-native';
+import Text from '../components/global/text';
 import lod from 'lodash';
 import styles from '../style/login.style';
 import {authLogin} from '../redux/action/auth_action';
@@ -121,16 +121,21 @@ const Login = ({navigation}) => {
                 ? {justifyContent: 'center'}
                 : {marginTop: 10},
             ]}>
-            <View style={[styles.imageContainer, 
-              { height: 100, justifyContent: 'center', alignItems: 'center' }]}>
+            <View
+              style={[
+                styles.imageContainer,
+                {height: 100, justifyContent: 'center', alignItems: 'center'},
+              ]}>
               <Image
                 resizeMode="contain"
-                style={
-                  { 
-                    width: Orientation.getWidth() * (orientation === 'potrait' ? 0.5 : 0.4), 
-                    height: Orientation.getHeight() * (orientation === 'potrait' ? 0.2 : 0.15) 
-                  }
-                }
+                style={{
+                  width:
+                    Orientation.getWidth() *
+                    (orientation === 'potrait' ? 0.5 : 0.4),
+                  height:
+                    Orientation.getHeight() *
+                    (orientation === 'potrait' ? 0.2 : 0.15),
+                }}
                 source={busolLogo}
               />
             </View>
@@ -231,23 +236,33 @@ const Login = ({navigation}) => {
                   </Text>
                 </TouchableWithoutFeedback>
               </View>
-              {/* To-do */}
-              <View style={styles.loginSettingWrapper}>
-                    <View style={styles.loginSetting}>
-                      <CheckBox disabled={false} onCheckColor="#002DBB"/>
-                      <Text style={{ fontSize: 11 }}>I aggree to the&nbsp;
-                      <TouchableWithoutFeedback
-                        onPress={() => Linking.openURL('https://www.xl.co.id/en/terms-and-conditions')}>
-                        <Text style={styles.linkText}>Terms of use </Text>
-                      </TouchableWithoutFeedback>
-                       and the&nbsp;
-                       <TouchableWithoutFeedback
-                        onPress={() => Linking.openURL('https://www.xl.co.id/en/privacy-policy')}>
-                        <Text style={styles.linkText}>Privacy Policy </Text>
-                      </TouchableWithoutFeedback>
-                       </Text>
-                    </View>
+              {/* <View style={styles.loginSettingWrapper}>
+                <View style={styles.loginSetting}>
+                  <CheckBox
+                    lineWidth={0.1}
+                    disabled={false}
+                    value={rememberMe}
+                    onCheckColor="#002DBB"
+                    onValueChange={(value) => setRememberMe(value)}
+                  />
+                  <Text
+                    style={{
+                      fontSize: 11,
+                      color: '#747474',
+                      fontWeight: '200',
+                      letterSpacing: 0.5,
+                    }}>
+                    Delete soon
+                  </Text>
                 </View>
+                <TouchableWithoutFeedback
+                  onPress={() => navigation.navigate('TC')}>
+                  <Text
+                    style={(styles.linkText, {color: '#3552C6', fontSize: 11})}>
+                    Mockup T&C
+                  </Text>
+                </TouchableWithoutFeedback>
+              </View> */}
               {localLoading ? (
                 <Text style={styles.labelLoading}>Loading ...</Text>
               ) : (

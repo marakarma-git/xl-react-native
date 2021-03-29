@@ -1,11 +1,11 @@
-import React, {useState, useEffect, useCallback}  from 'react';
+import React, {useState, useEffect, useCallback} from 'react';
 import {Header, Navbar} from '../index';
 import PropTypes from 'prop-types';
 import {useNavigation} from '@react-navigation/native';
 import Orientation from '../../helpers/orientation';
 import {Dimensions} from 'react-native';
 
-const homePageContainer = (props) => {
+const HomePageContainer = (props) => {
   const navigation = useNavigation();
   const [orientation, setOrientation] = useState('potrait');
   const {companyLogo, headerTitle, children} = props || null;
@@ -18,7 +18,7 @@ const homePageContainer = (props) => {
       setOrientation(Orientation.isPortrait() ? 'potrait' : 'landscape');
     });
   }, [Dimensions]);
-  
+
   useEffect(() => {
     const pageLoad = navigation.addListener('focus', () => {
       detectOrientation();
@@ -27,10 +27,7 @@ const homePageContainer = (props) => {
   }, [navigation]);
   return (
     <>
-      <Header 
-        notifications={true}
-        orientation={orientation}
-        />
+      <Header notifications={true} />
       <Navbar
         orientation={orientation}
         navigation={navigation}
@@ -41,10 +38,9 @@ const homePageContainer = (props) => {
     </>
   );
 };
-homePageContainer.propTypes = {
+HomePageContainer.propTypes = {
   orientation: PropTypes.string,
-  navigation: PropTypes.any.isRequired,
   companyLogo: PropTypes.string,
   headerTitle: PropTypes.string,
 };
-export default homePageContainer;
+export default HomePageContainer;

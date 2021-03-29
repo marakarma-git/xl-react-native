@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import {Text, TouchableOpacity, View} from 'react-native';
+import {TouchableOpacity, View} from 'react-native';
+import Text from '../global/text';
 import {defaultHeightCell, defaultWidthCell} from '../../constant/config';
 const TableCellText = (props) => {
   const {config, onPress, otherInformation} = props || {};
@@ -12,7 +13,7 @@ const TableCellText = (props) => {
     fontColor,
     backgroundColor,
     key,
-    superType,
+    flexStart,
   } = config || {};
   const TouchView = isTouchable ? TouchableOpacity : View;
   return (
@@ -34,14 +35,15 @@ const TableCellText = (props) => {
         <View
           style={{
             flex: 1,
-            justifyContent: 'center',
+            paddingLeft: flexStart ? 8 : 0,
+            justifyContent: flexStart ? 'flex-start' : 'center',
             alignItems: 'center',
             flexDirection: 'row',
           }}>
           <Text
+            numberOfLines={1}
             style={{
               color: fontColor || 'black',
-              fontWeight: 'bold',
             }}>
             {label}
           </Text>

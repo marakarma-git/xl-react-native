@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState, useEffect} from 'react';
 import {
   View,
   TextInput,
@@ -15,7 +15,23 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import {useNavigation} from '@react-navigation/native';
 const SearchHeader = (props) => {
   const navigation = useNavigation();
-  const {value, onChangeText, loading, onClickColumn} = props || {};
+  const [refreshWidth, setRefreshWidth] = useState('99%');
+  const [changeText, setChangeText] = useState('');
+  const {
+    value,
+    placeholder,
+    onChangeText,
+    onSubmitEditing,
+    loading,
+    onClickColumn,
+    navigateTo,
+  } = props || {};
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setRefreshWidth('100%');
+    }, 100);
+    return () => timer;
+  });
   return (
     <Container style={subscriptionStyle.containerMargin}>
       <View style={subscriptionStyle.containerTextInput2}>
@@ -30,19 +46,21 @@ const SearchHeader = (props) => {
             color={colors.gray_0}
             size={15}
           />
-          <TextInput
-            value={value}
-            editable={!loading}
-            onChangeText={onChangeText}
-            style={{flex: 1, fontSize: 11}}
-            placeholder={'Search with IMSI, MSISDN, ICCID, Detected IMEI'}
-          />
+          <View style={{flex: 1}}>
+            <TextInput
+              value={changeText}
+              editable={!loading}
+              onChangeText={(e) => setChangeText(e)}
+              onSubmitEditing={() => onSubmitEditing(changeText)}
+              style={{fontSize: 12, width: refreshWidth}}
+              placeholder={value || placeholder || ''}
+            />
+          </View>
         </View>
         {loading ? (
           <ActivityIndicator size={26} color={colors.button_color_one} />
         ) : (
-          <TouchableOpacity
-            onPress={() => navigation.navigate('SubscriptionFilter')}>
+          <TouchableOpacity onPress={() => navigation.navigate(navigateTo)}>
             <MaterialCommunityIcon
               name={'filter'}
               size={26}
@@ -67,10 +85,15 @@ SearchHeader.propTypes = {
   onChangeText: PropTypes.func,
   loading: PropTypes.bool,
   onClickColumn: PropTypes.func,
+  onSubmitEditing: PropTypes.func,
+  placeholder: PropTypes.string,
+  navigateTo: PropTypes.string.isRequired,
 };
 SearchHeader.defaultProps = {
   showMenu: false,
   onChangeText: () => {},
   onClickColumn: () => {},
+  onSubmitEditing: () => {},
+  navigateTo: '',
 };
 export default SearchHeader;

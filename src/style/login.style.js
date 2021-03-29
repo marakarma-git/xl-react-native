@@ -161,5 +161,47 @@ export default {
     justifyContent: 'center',
     alignItems: 'center',
     height: 40,
+  },
+  tcText: {
+    fontSize: 12, 
+    position: 'relative', 
+    top: 3, 
+    color: '#949494'
+  },
+  tcBox: {
+    width: '80%',
+    paddingVertical: 15,
+    borderWidth: 0.8,
+    borderColor: '#8D8D8D',
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginVertical: 20
+  },
+  buttonContainer: {
+    width: '80%',
+    height: 50,
+    flexDirection: 'row',
+    justifyContent: 'flex-end',
+    alignItems: 'center'
+  },
+  buttonCancel: {
+    width: 100,
+    alignItems: 'center',
+    justifyContent: 'center',
+    height: 30,
+    borderWidth: 1,
+    borderColor: '#8D8D8D',
+    borderRadius: 5,
+    backgroundColor: 'white',
+    marginHorizontal: 3
+  },
+  buttonNext: {
+    width: 100,
+    alignItems: 'center',
+    justifyContent: 'center',
+    height: 30,
+    borderRadius: 5,
+    backgroundColor: colors.button_color_one,
+    marginHorizontal: 3
   }
 };

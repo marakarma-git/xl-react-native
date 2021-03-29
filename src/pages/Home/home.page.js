@@ -2,24 +2,37 @@ import React, {useState, useEffect, useCallback} from 'react';
 import Carousel, {Pagination} from 'react-native-snap-carousel';
 import {getCarousel} from '../../redux/action/dashboard_action';
 import {callEnterpriseLogo} from '../../redux/action/enterprise_action';
-import {Card, Title} from 'react-native-paper';
-import {View, Text, ScrollView, Image, ActivityIndicator} from 'react-native';
+import {Card} from 'react-native-paper';
+import {
+  View,
+  ScrollView,
+  Image,
+  ActivityIndicator,
+  Dimensions,
+} from 'react-native';
 import {useSelector, useDispatch} from 'react-redux';
-import {HeaderContainer, OverlayBackground} from '../../components';
+import {
+  HeaderContainer,
+  OverlayBackground,
+  ModalTermCondition,
+} from '../../components';
 import Orientation from '../../helpers/orientation';
 
 import style from '../../style/home.style';
-import {Dimensions} from 'react-native';
+import Text from '../../components/global/text';
+import privHelper from '../../helpers/privHelper';
 
 const LandingPage = ({navigation}) => {
   const dispatch = useDispatch();
   const userData = useSelector((state) => state.auth_reducer.data);
+  const isLoggedIn = useSelector((state) => state.auth_reducer.isLoggedIn);
   const carouselItems = useSelector(
     (state) => state.dashboard_reducer.carousel,
   );
   const {imageBase64} = useSelector((state) => state.enterprise_reducer);
   const [activeIndex, setActiveIndex] = useState(0);
   const [orientation, setOrientation] = useState('potrait');
+  const [showModal, setShowModal] = useState(true);
 
   const detectOrientation = useCallback(() => {
     if (Orientation.getHeight() <= Orientation.getWidth()) {
@@ -56,10 +69,17 @@ const LandingPage = ({navigation}) => {
     );
   };
 
-  const heightProportion = actualSizePercent(
-    orientation === 'potrait' ? 131 : 100,
-    'height',
-  );
+  const showModalTermCondition = () => {
+    if (!userData.principal.isCustomerConsent) {
+      return (
+        <ModalTermCondition
+          showModal={showModal}
+          closeModal={() => setShowModal(!showModal)}
+          title={'Terms of Use & Privacy Policy'}
+        />
+      );
+    }
+  };
 
   const renderItem = ({item}) => {
     return (
@@ -98,15 +118,17 @@ const LandingPage = ({navigation}) => {
       headerTitle={'Home'}>
       <ScrollView>
         <OverlayBackground />
-        <Card style={[style.cardSection, { marginTop: '5%' }]}>
+        <Card style={[style.cardSection, {marginTop: '5%', borderWidth: 0}]}>
           <Card.Content style={{marginBottom: 20}}>
-            <Title>Hi! {firstName + ' ' + lastName}</Title>
+            <Text style={{fontSize: 20}}>
+              {' '}
+              Hi! {firstName + ' ' + lastName}
+            </Text>
           </Card.Content>
           {carouselItems.length > 0 ? (
             <View
               style={{
                 ...style.carouselWrapper,
-                // ...{ height: heightProportion }
               }}>
               <Carousel
                 style={{margin: 0, padding: 0}}
@@ -143,6 +165,7 @@ const LandingPage = ({navigation}) => {
           {pagination()}
         </Card>
       </ScrollView>
+      {isLoggedIn && showModalTermCondition() && privHelper.isHasPriviledge('CC', userData.authority)}
     </HeaderContainer>
   );
 };

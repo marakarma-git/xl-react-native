@@ -6,14 +6,18 @@ const initialState = {
   error: '',
   data_sim_inventory: [],
   data_sim_inventory_table: [],
-  current_page: 1,
+  current_page: 0,
   current_size: 20,
   current_total_page: 0,
+  current_total_elements: 0,
+  current_dynamic_total_elements: 0,
+  current_applied_filter: false,
   current_header_sort: {
     formId: '',
     orderBy: '',
     sortBy: '',
   },
+  current_params_applied: null,
 };
 const get_sim_inventory_reducer = (state = initialState, action) => {
   switch (action.type) {
@@ -43,12 +47,19 @@ const get_sim_inventory_reducer = (state = initialState, action) => {
         data_sim_inventory_table: action.data_sim_inventory_table,
         current_page: action.currentPage,
         current_total_page: action.currentTotalPage,
+        current_total_elements:
+          state.current_total_elements === 0
+            ? action.currentTotalElement
+            : state.current_total_elements,
+        current_dynamic_total_elements: action.currentTotalElement,
+        current_applied_filter: action.currentAppliedFilter,
         current_size: action.currentSize,
         current_header_sort: action.selectedHeaderSort || {
           formId: '',
           orderBy: '',
           sortBy: '',
         },
+        current_params_applied: action.paramsApplied,
       };
     case reduxString.GET_SIM_INVENTORY_RESET:
       return state;

@@ -1,5 +1,6 @@
 import React from 'react';
-import {View, Text, ScrollView, TouchableOpacity} from 'react-native';
+import {View, ScrollView, TouchableOpacity} from 'react-native';
+import Text from '../global/text';
 import PropTypes from 'prop-types';
 import {colors} from '../../constant/color';
 import {border_radius} from '../../constant/config';
@@ -20,13 +21,13 @@ const LocalComponent = (props) => {
         alignItems: 'center',
       }}>
       <Text style={{flex: 1, color: 'white'}}>{`${type}: ${title}`}</Text>
-      {/*<TouchableOpacity onPress={onDelete} style={{paddingLeft: 6}}>*/}
-      {/*  <MaterialCommunityIcons*/}
-      {/*    name={'close-circle'}*/}
-      {/*    color={colors.gray}*/}
-      {/*    size={18}*/}
-      {/*  />*/}
-      {/*</TouchableOpacity>*/}
+      <TouchableOpacity onPress={onDelete} style={{paddingLeft: 6}}>
+        <MaterialCommunityIcons
+          name={'close-circle'}
+          color={'white'}
+          size={18}
+        />
+      </TouchableOpacity>
     </View>
   );
 };

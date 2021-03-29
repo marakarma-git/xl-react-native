@@ -1,4 +1,5 @@
-import {Text, TouchableOpacity, View} from 'react-native';
+import {TouchableOpacity, View} from 'react-native';
+import Text from '../global/text';
 import CustomCheckBox from '../customCheckBox';
 import {colors} from '../../constant/color';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
@@ -59,9 +60,9 @@ const TableCellHeaderOptionCheckBox = (props) => {
             flexDirection: 'row',
           }}>
           <Text
+            fontType={'bold'}
             style={{
               color: fontColor || 'white',
-              fontWeight: 'bold',
               fontSize: 18,
             }}>
             {label}
@@ -75,7 +76,11 @@ const TableCellHeaderOptionCheckBox = (props) => {
                 ? 'sort-desc'
                 : 'unsorted'
             }
-            color={'white'}
+            color={
+              sorted === 'RESET' || !sorted
+                ? 'white'
+                : colors.white_header_asc_desc
+            }
             size={18}
           />
         </View>

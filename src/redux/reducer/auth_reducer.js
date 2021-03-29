@@ -6,6 +6,7 @@ const initialState = {
   titleVersion: null,
   alreadyRequest: false,
   isLoggedIn: false,
+  afterLogin: false
 };
 const auth_reducers = (state = initialState, action) => {
   switch (action.type) {
@@ -29,7 +30,13 @@ const auth_reducers = (state = initialState, action) => {
         error: '',
         alreadyRequest: false,
         isLoggedIn: true,
+        afterLogin: true
       };
+    case reduxString.SET_FALSE_AFTER_LOGIN: 
+      return {
+        ...state,
+        afterLogin: false
+      }
     case reduxString.AUTH_LOGOUT:
       return {
         ...state,
@@ -46,6 +53,16 @@ const auth_reducers = (state = initialState, action) => {
       return {
         ...state,
         error: action.payload,
+      };
+    case reduxString.UPDATE_CUSTOMER_CONSENT_FAIL:
+      return {
+        ...state,
+        error: action.payload,
+      };
+    case reduxString.UPDATE_CUSTOMER_CONSENT:
+      return {
+        ...state,
+        data: payload,
       };
     default:
       return state;

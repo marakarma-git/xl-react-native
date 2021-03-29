@@ -1,11 +1,11 @@
 import React, {useState} from 'react';
 import {
   View,
-  Text,
   TouchableOpacity,
   TextInput,
   ActivityIndicator,
 } from 'react-native';
+import Text from './global/text';
 import dayjs from 'dayjs';
 import PropTypes from 'prop-types';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
@@ -60,10 +60,11 @@ const ContainerInput = (props) => {
     disableText,
     customTouchProps,
     errorText,
+    customStyle,
   } = props;
   const CustomTouch = isTouchable ? TouchableOpacity : View;
   return (
-    <View style={inputHybridStyle.containerInput}>
+    <View style={[inputHybridStyle.containerInput, customStyle]}>
       <Text style={inputHybridStyle.titleInput}>{label}</Text>
       <CustomTouch
         style={inputHybridStyle.innerContainerInput}
@@ -105,7 +106,7 @@ const SelectInput = (props) => {
         label={label}
         isTouchable
         customTouchProps={{onPress: () => setVisible(true)}}>
-        <Text style={{paddingVertical: 8, flex: 1}}>
+        <Text style={{paddingVertical: 8, flex: 1}} numberOfLines={2}>
           {value.label || 'Please Select'}
         </Text>
         <MaterialCommunityIcons

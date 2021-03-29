@@ -3,14 +3,19 @@ import {useSelector} from 'react-redux';
 import {
   View,
   TextInput,
-  Text,
   TouchableOpacity,
   ActivityIndicator,
 } from 'react-native';
+import {Text} from '../components';
+import {useDispatch} from 'react-redux';
+import {ModalTermCondition} from '../components';
+
 
 import Entypo from 'react-native-vector-icons/Entypo';
 import Feather from 'react-native-vector-icons/Feather';
 import styles from '../style/account.style';
+import privHelper from '../helpers/privHelper';
+import { authLogout } from '../redux/action/auth_action';
 
 const passwordRulesArray = [
   {label: 'Be between 8 and 30 characters', valid: false},
@@ -57,7 +62,8 @@ const passwordFormArray = [
   },
 ];
 
-const PasswordInput = ({submitHandler, requestLoading, navigation}) => {
+const PasswordInput = ({submitHandler, requestLoading, navigation, orientation}) => {
+  const dispatch = useDispatch();
   const userData = useSelector((state) => state.auth_reducer.data);
   const [passwordForm, setPasswordForm] = useState(passwordFormArray);
   const [passwordRules, setPasswordRules] = useState(passwordRulesArray);
@@ -67,6 +73,7 @@ const PasswordInput = ({submitHandler, requestLoading, navigation}) => {
     newPassword: '',
     confirmPassword: '',
   });
+  const [showModal, setShowModal] = useState(true);
 
   const inputHandler = (name, value, validation) => {
     setForm({...form, [name]: value});
@@ -77,6 +84,15 @@ const PasswordInput = ({submitHandler, requestLoading, navigation}) => {
       validation && matchConfirmPassword();
     }
   };
+
+  const goBack = () => {
+    if(userData.principal.mustChangePass){
+      dispatch(authLogout());
+      navigation.replace("Auth");
+    }else{
+      navigation.goBack();
+    }
+  }
 
   const passwordValidator = (value) => {
     let isEmpty = value == 0;
@@ -178,35 +194,44 @@ const PasswordInput = ({submitHandler, requestLoading, navigation}) => {
   }, [form]);
 
   return (
-    <View style={[styles.formContainer, {marginTop: 10}]}>
-      {generateForm()}
-      <View style={styles.passwordRulesContainer}>
-        <Text style={{fontSize: 12, color: '#949494', textAlign: 'left'}}>
-          Follow the Password validation rules:{' '}
-        </Text>
-        {generatePasswordRules()}
+    <View style={{ alignItems: 'center', position: 'relative', top: -60 }}>
+      <View style={[styles.formContainer, 
+      {marginTop: 10, borderColor: '#8D8D8D', borderWidth: 0.8, width: orientation === 'potrait' ? '90%' : '50%', backgroundColor: 'white'}]}>
+        <Text style={styles.headerText}>Password</Text>
+        {generateForm()}
+        { userData?.principal?.mustChangePass && !userData?.principal?.isCustomerConsent && privHelper.isHasPriviledge('CC', userData.authority)
+        && <ModalTermCondition 
+            showModal={showModal} 
+            closeModal={() => setShowModal(!showModal)}
+            title={'Terms of Use & Privacy Policy'}/>}
+        <View style={styles.passwordRulesContainer}>
+          <Text style={{fontSize: 12, color: '#949494', textAlign: 'left'}}>
+            Follow the Password validation rules:{' '}
+          </Text>
+          {generatePasswordRules()}
+        </View>
       </View>
-      <View style={styles.buttonGroupContainer}>
-        <TouchableOpacity
-          onPress={() => navigation.goBack()}
-          style={[styles.buttonGroup, {backgroundColor: '#AFAFAF'}]}>
-          <Text style={styles.buttonText}>Cancel</Text>
-        </TouchableOpacity>
-        <TouchableOpacity
-          onPress={() => submitHandler(form)}
-          disabled={!formComplete ? true : false}
-          style={[
-            styles.buttonGroup,
-            {backgroundColor: !formComplete ? '#949494' : '#002DBB'},
-          ]}>
-          {requestLoading ? (
-            <ActivityIndicator color={'#fff'} style={styles.buttonText} />
-          ) : (
-            <Text style={styles.buttonText}>Save Changes</Text>
-          )}
-        </TouchableOpacity>
+        <View style={[styles.buttonGroupContainer, { width: orientation === 'potrait' ? '80%' : '40%' }]}>
+          <TouchableOpacity
+            onPress={goBack}
+            style={[styles.buttonGroup, {backgroundColor: '#AFAFAF'}]}>
+            <Text style={styles.buttonText}>Cancel</Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            onPress={() => submitHandler(form)}
+            disabled={!formComplete && !privHelper.isHasPriviledge('CP', userData.authority) ? true : false}
+            style={[
+              styles.buttonGroup,
+              {backgroundColor: '#002DBB'},
+            ]}>
+            {requestLoading ? (
+              <ActivityIndicator color={'#fff'} style={styles.buttonText} />
+            ) : (
+              <Text style={styles.buttonText}>Submit</Text>
+            )}
+          </TouchableOpacity>
+        </View>
       </View>
-    </View>
   );
 };
 

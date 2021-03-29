@@ -3,11 +3,11 @@ import SplashScreen from 'react-native-splash-screen';
 import React, {useEffect} from 'react';
 import {View, ActivityIndicator} from 'react-native';
 import {useSelector, useDispatch} from 'react-redux';
-import {authLogout} from '../redux/action/auth_action';
+import {authLogout, setFalseAfterLogin} from '../redux/action/auth_action';
 
 const Auth = ({navigation}) => {
   const dispatch = useDispatch();
-  const {data, error, isLoggedIn} = useSelector((state) => state.auth_reducer);
+  const {data, error, isLoggedIn, afterLogin} = useSelector((state) => state.auth_reducer);
 
   useEffect(() => {
     setTimeout(() => {
@@ -16,8 +16,11 @@ const Auth = ({navigation}) => {
     if (isLoggedIn) {
       if (!lod.isEmpty(data)) {
         if (data.principal.mustChangePass) {
-          dispatch(authLogout());
-          navigation.replace('Login');
+          if(!afterLogin){
+            dispatch(authLogout());
+          }else{
+            dispatch(setFalseAfterLogin())
+          }
         } else {
           navigation.replace('Home');
         }

@@ -1,6 +1,6 @@
 import reduxString from '../reduxString';
 import {
-  mergeDataFilter,
+  mergeSpecificDataFilterIndex,
   removeAllHardCodeTrue,
   setLoadingFilterFalse,
   setLoadingFilterTrue,
@@ -75,17 +75,18 @@ const getCustomLabel = (navigation) => {
               ...rest,
             }),
           );
-          dispatch(mergeDataFilter(modifyArray));
+          dispatch(mergeSpecificDataFilterIndex(modifyArray));
         } else {
           dispatch(setLoadingFilterFalse());
         }
       })
-      .catch((e) => {
-        if (e.response.data) {
-          dispatch(authFailed(e.response.data));
-        } else {
-          alert('Something went wrong went fetching data');
-        }
+      .catch((error) => {
+        dispatch(authFailed(error.response.data));
+        // if (e.response.data) {
+        //
+        // } else {
+        //   alert('Something went wrong went fetching data');
+        // }
       });
   };
 };

@@ -1,8 +1,11 @@
 import React, {useState, useRef} from 'react';
-import {View, ScrollView, ActivityIndicator, Text} from 'react-native';
+import {View, ScrollView, ActivityIndicator} from 'react-native';
+import Text from '../global/text';
+import {DragSortableView} from 'react-native-drag-sort';
 import PropTypes from 'prop-types';
 import TableCell from './tableCell';
 import {colors} from '../../constant/color';
+import {device_width, defaultHeightCell} from '../../constant/config';
 const Table = (props) => {
   const {
     dataHeader,
@@ -16,9 +19,14 @@ const Table = (props) => {
     isScrollView,
     headerOtherLayout,
     stickHeaderIndices,
+    hideStickySide,
+    onRight,
+    isDragNSort,
+    onDataChange,
   } = props || {};
   const headerScrollView = useRef(ScrollView);
   const rowsScrollView = useRef(ScrollView);
+  const [rowWidth, setRowWidth] = useState(device_width);
   const [borderWidth, setBorderWidth] = useState(false);
   const [headerIsScrolling, setHeaderIsScrolling] = useState(false);
   const [rightIsScrolling, setRightIsScrolling] = useState(false);
@@ -35,10 +43,10 @@ const Table = (props) => {
             style={{
               flexDirection: 'row',
             }}>
-            {dataHeader && (
+            {dataHeader && dataHeader.length > 0 && !onRight && (
               <TableCell
                 sorted={dataHeader[0].formId === formId ? sortBy : null}
-                type={dataHeader[0].cellType}
+                type={dataHeader[0].cellType || null}
                 dataOption={dataHeader[0].dataOption}
                 onPress={() =>
                   onPressHeader({
@@ -71,7 +79,7 @@ const Table = (props) => {
               {dataHeader &&
                 dataHeader.map((item, index) => {
                   const {cellType, shown, formId: inFormId} = item || {};
-                  if (index > 0 && shown) {
+                  if (index > 0 && shown && !item.config.doNotShowOnTable) {
                     return (
                       <TableCell
                         key={index}
@@ -103,6 +111,26 @@ const Table = (props) => {
                 }}
               />
             )}
+            {dataHeader && dataHeader.length > 0 && onRight && (
+              <TableCell
+                sorted={dataHeader[0].formId === formId ? sortBy : null}
+                type={dataHeader[0].cellType || null}
+                dataOption={dataHeader[0].dataOption}
+                onPress={() =>
+                  onPressHeader({
+                    dataSort: selectedHeaderOrderSort,
+                    item: dataHeader[0],
+                  })
+                }
+                onChangeCheck={(value) =>
+                  onPressCheckHeader({
+                    selectedValue: value,
+                    ...dataHeader[0],
+                  })
+                }
+                {...dataHeader[0]}
+              />
+            )}
           </View>
         </ScrollView>
       </View>
@@ -110,29 +138,14 @@ const Table = (props) => {
         {dataTable.length > 0 ? (
           <ScrollView>
             <View style={{flexDirection: 'row'}}>
-              <View
-                style={{
-                  elevation: borderWidth ? 5 : 0,
-                  borderRightWidth: borderWidth ? 1 : 0,
-                  borderColor: 'white',
-                }}>
-                {dataTable &&
-                  dataTable.map((value, index) => {
-                    const {dataCell, is_checked_root} = value || {};
-                    return (
-                      <TableCell
-                        value={is_checked_root}
-                        key={index}
-                        type={'TableCellCheckBox'}
-                        onPress={() => onPressCell(dataCell[0])}
-                        onChangeCheck={() =>
-                          onPressCheckCell({item: dataCell[0], index: index})
-                        }
-                        {...dataCell[0]}
-                      />
-                    );
-                  })}
-              </View>
+              {!onRight && !hideStickySide && (
+                <StickyComponent
+                  dataTable={dataTable}
+                  onPressCell={onPressCell}
+                  onPressCheckCell={onPressCheckCell}
+                  borderWidth={borderWidth}
+                />
+              )}
               <ScrollView
                 horizontal={true}
                 scrollEventThrottle={16}
@@ -145,22 +158,33 @@ const Table = (props) => {
                     headerScrollView.current.scrollTo({x: offsetX});
                   }
                   setRightIsScrolling(false);
-                  if (offsetX >= 10) {
-                    setBorderWidth(true);
-                  }
-                  if (offsetX < 10) {
-                    setBorderWidth(false);
+                  if (!onRight) {
+                    if (offsetX >= 10) {
+                      setBorderWidth(true);
+                    }
+                    if (offsetX < 10) {
+                      setBorderWidth(false);
+                    }
                   }
                 }}>
                 <View style={{flexDirection: 'column'}}>
                   {dataTable &&
+                    dataTable.length > 0 &&
+                    !isDragNSort &&
                     dataTable.map((value, index) => {
                       const {dataCell} = value || [];
                       return (
-                        <View style={{flexDirection: 'row'}} key={index}>
+                        <View
+                          onLayout={({nativeEvent}) => {
+                            const {layout} = nativeEvent || {};
+                            const {width} = layout || {};
+                            setRowWidth(width);
+                          }}
+                          style={{flexDirection: 'row'}}
+                          key={index}>
                           {dataCell.map((subValue, index2) => {
                             const {cellType} = subValue || {};
-                            if (index2 > 0) {
+                            if (index2 > (hideStickySide ? -1 : 0)) {
                               return (
                                 <TableCell
                                   key={index2}
@@ -180,7 +204,59 @@ const Table = (props) => {
                       );
                     })}
                 </View>
+                {isDragNSort && dataTable.length > 0 && (
+                  <DragSortableView
+                    dataSource={dataTable}
+                    maxScale={1}
+                    delayLongPress={100}
+                    parentWidth={rowWidth}
+                    childrenHeight={defaultHeightCell}
+                    childrenWidth={device_width}
+                    onDataChange={onDataChange}
+                    renderItem={(value, index) => {
+                      const {dataCell} = value || [];
+                      return (
+                        <View
+                          onLayout={({nativeEvent}) => {
+                            const {layout} = nativeEvent || {};
+                            const {width} = layout || {};
+                            setRowWidth(width);
+                          }}
+                          style={{flexDirection: 'row'}}
+                          key={index}>
+                          {dataCell.map((subValue, index2) => {
+                            const {cellType} = subValue || {};
+                            if (index2 > (hideStickySide ? -1 : 0)) {
+                              return (
+                                <TableCell
+                                  key={index2}
+                                  type={cellType}
+                                  onPress={() => onPressCell(subValue)}
+                                  onChangeCheck={() =>
+                                    onPressCheckCell(subValue)
+                                  }
+                                  {...subValue}
+                                />
+                              );
+                            } else {
+                              return null;
+                            }
+                          })}
+                        </View>
+                      );
+                    }}
+                  />
+                )}
               </ScrollView>
+              {onRight && !hideStickySide && (
+                <StickyComponent
+                  dataTable={dataTable}
+                  onPressCell={onPressCell}
+                  onPressCheckCell={onPressCheckCell}
+                  borderWidth={borderWidth}
+                  onRight={true}
+                />
+              )}
             </View>
           </ScrollView>
         ) : (
@@ -228,6 +304,10 @@ Table.propTypes = {
   isScrollView: PropTypes.bool,
   stickyHeaderIndices: PropTypes.arrayOf([PropTypes.number]),
   headerOtherLayout: PropTypes.func,
+  hideStickySide: PropTypes.bool,
+  onRight: PropTypes.bool,
+  isDragNSort: PropTypes.bool,
+  onDataChange: PropTypes.func,
 };
 Table.defaultProps = {
   dataHeader: [],
@@ -237,5 +317,48 @@ Table.defaultProps = {
   onPressCheckHeader: () => {},
   onPressCheckCell: () => {},
   headerOtherLayout: () => <></>,
+  onDataChange: () => {},
+};
+const StickyComponent = (props) => {
+  const {borderWidth, dataTable, onPressCell, onPressCheckCell, onRight} =
+    props || {};
+  return (
+    <View
+      style={{
+        elevation: borderWidth ? 5 : 0,
+        borderRightWidth: !onRight && borderWidth ? 1 : 0,
+        borderColor: 'white',
+      }}>
+      {dataTable &&
+        dataTable.map((value, index) => {
+          const {dataCell, is_checked_root} = value || {};
+          return (
+            <TableCell
+              value={is_checked_root}
+              key={index}
+              type={dataCell[0].cellType || 'TableCellCheckBox'}
+              onPress={() => onPressCell(dataCell[0])}
+              onChangeCheck={() =>
+                onPressCheckCell({item: dataCell[0], index: index})
+              }
+              {...dataCell[0]}
+            />
+          );
+        })}
+    </View>
+  );
+};
+StickyComponent.propTypes = {
+  setLeftRowWidth: PropTypes.number,
+  borderWidth: PropTypes.number,
+  dataTable: PropTypes.number,
+  onPressCell: PropTypes.func,
+  onPressCheckCell: PropTypes.func,
+  onRight: PropTypes.bool,
+};
+StickyComponent.defaultProps = {
+  borderWidth: 1,
+  onPressCell: () => {},
+  onPressCheckCell: () => {},
 };
 export default Table;

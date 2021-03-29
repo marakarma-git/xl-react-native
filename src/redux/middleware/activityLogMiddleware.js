@@ -6,13 +6,12 @@ import {base_url} from '../../constant/connection';
 const activityLogMiddleware = (store) => (next) => (action) => {
   let isHitApi = false;
   const authReducer = store.getState().auth_reducer;
-  const dataRaw = {channel: 'Mobile'};
+  const dataRaw = {channel: 'Web Portal'};
 
   for (let i = 0; i < activityMatrix.length; i++) {
     if (activityMatrix[i].actionType === action.type) {
       isHitApi = true;
-      dataRaw.moduleName = activityMatrix[i].moduleName;
-      dataRaw.activityType = activityMatrix[i].activityType;
+      dataRaw.privId = Helper.findAndReturnPriviledge(activityMatrix[i].priviledgeId, authReducer.data.authority || action.privId);
       dataRaw.description = descriptionParser(
         action.type,
         activityMatrix[i].initDescription,
@@ -94,11 +93,11 @@ const saveActivity = async (dataRaw, accessToken) => {
 
     if (data) {
       if (data.statusCode === 0) {
-        // console.log("Success save activity");
+        console.log("Success save activity");
       }
     }
   } catch (error) {
-    // console.log(JSON.stringify(error));
+    console.log(JSON.stringify(error));
   }
 };
 

@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import {Text, TouchableOpacity, View} from 'react-native';
+import {TouchableOpacity, View} from 'react-native';
+import Text from '../global/text';
 import {defaultHeightCell, defaultWidthCell} from '../../constant/config';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import {colors} from '../../constant/color';
@@ -13,7 +14,7 @@ const TableCellStatus = (props) => {
     isTouchable,
     fontColor,
     backgroundColor,
-    ballColor,
+    flexStart,
   } = config || {};
   const TouchView = isTouchable ? TouchableOpacity : View;
   return (
@@ -35,7 +36,8 @@ const TableCellStatus = (props) => {
         <View
           style={{
             flex: 1,
-            justifyContent: 'center',
+            paddingLeft: flexStart ? 8 : 0,
+            justifyContent: flexStart ? 'flex-start' : 'center',
             alignItems: 'center',
             flexDirection: 'row',
           }}>
@@ -45,13 +47,15 @@ const TableCellStatus = (props) => {
             color={
               label === 'Active'
                 ? colors.green_status
+                : label === 'Pause'
+                ? 'yellow'
                 : label === 'Deactivated'
                 ? 'red'
                 : label === 'Terminated'
                 ? 'gray'
-                : label === 'Yes'
+                : label === true
                 ? colors.green_status
-                : label === 'No'
+                : label === false
                 ? 'red'
                 : null
             }
@@ -60,9 +64,8 @@ const TableCellStatus = (props) => {
           <Text
             style={{
               color: fontColor || 'black',
-              fontWeight: 'bold',
             }}>
-            {label}
+            {label === true ? 'Yes' : label === false ? 'No' : label}
           </Text>
         </View>
       </TouchView>
@@ -71,6 +74,7 @@ const TableCellStatus = (props) => {
 };
 TableCellStatus.propTypes = {
   config: PropTypes.objectOf({
+    flexStart: PropTypes.bool,
     label: PropTypes.string,
     width: PropTypes.number,
     height: PropTypes.number,

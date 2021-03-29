@@ -1,12 +1,21 @@
 import React from 'react';
-import {Text, TouchableOpacity, View} from 'react-native';
+import {TouchableOpacity, View} from 'react-native';
+import Text from '../global/text';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import {defaultHeightCell, defaultWidthCell} from '../../constant/config';
 import PropTypes from 'prop-types';
+import {colors} from '../../constant/color';
 const TableCellHeaderAscDesc = (props) => {
   const {config, onPress, sorted, key} = props || {};
-  const {label, width, height, isTouchable, fontColor, backgroundColor} =
-    config || {};
+  const {
+    label,
+    width,
+    height,
+    isTouchable,
+    fontColor,
+    backgroundColor,
+    flexStart,
+  } = config || {};
   const TouchView = isTouchable ? TouchableOpacity : View;
   return (
     <View
@@ -20,15 +29,16 @@ const TableCellHeaderAscDesc = (props) => {
       <TouchView
         style={{
           flex: 1,
-          justifyContent: 'center',
+          paddingLeft: flexStart ? 8 : 0,
+          justifyContent: flexStart ? 'flex-start' : 'center',
           alignItems: 'center',
           flexDirection: 'row',
         }}
         onPress={onPress}>
         <Text
+          fontType={'bold'}
           style={{
             color: fontColor || 'white',
-            fontWeight: 'bold',
             fontSize: 18,
           }}>
           {label}
@@ -42,7 +52,11 @@ const TableCellHeaderAscDesc = (props) => {
               ? 'sort-desc'
               : 'unsorted'
           }
-          color={'white'}
+          color={
+            sorted === 'RESET' || !sorted
+              ? 'white'
+              : colors.white_header_asc_desc
+          }
           size={18}
         />
       </TouchView>
@@ -51,6 +65,7 @@ const TableCellHeaderAscDesc = (props) => {
 };
 TableCellHeaderAscDesc.propTypes = {
   config: PropTypes.objectOf({
+    flexStart: PropTypes.bool,
     label: PropTypes.string,
     width: PropTypes.number,
     height: PropTypes.number,

@@ -1,13 +1,14 @@
 import React, {useState} from 'react';
 import {
   View,
-  Text,
   TouchableOpacity,
   TextInput,
   Alert,
   ActivityIndicator,
 } from 'react-native';
+import Text from '../global/text';
 import PropTypes from 'prop-types';
+import Helper from '../../helpers/helper';
 import {colors} from '../../constant/color';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
@@ -62,9 +63,9 @@ const TableFooter = (props) => {
       <View style={tableFooter.row}>
         {!loading && (
           <>
-            {currentPage > 1 && (
+            {currentPage > 0 && (
               <>
-                <TouchableOpacity onPress={() => onChangePaging(1)}>
+                <TouchableOpacity onPress={() => onChangePaging(0)}>
                   <MaterialIcons
                     name={'skip-previous'}
                     color={colors.gray}
@@ -82,12 +83,13 @@ const TableFooter = (props) => {
               </>
             )}
             <TextInput
-              placeholder={currentPage + ''}
-              value={currentPage}
+              placeholder={currentPage + 1 + ''}
+              value={currentPage + 1}
               style={tableFooter.textInputPaging}
+              maxLength={totalPage.toString().length || 0}
               onSubmitEditing={(e) => {
-                if (e >= 0 && e <= totalPage) {
-                  onChangePaging(e);
+                if (e.nativeEvent.text > 0 && e.nativeEvent.text <= totalPage) {
+                  onChangePaging(Number(e.nativeEvent.text));
                 } else {
                   Alert.alert(
                     'Warning',
@@ -96,7 +98,10 @@ const TableFooter = (props) => {
                 }
               }}
             />
-            <Text style={{color: colors.font_gray}}> of {totalPage}</Text>
+            <Text style={{color: colors.font_gray}}>
+              {' '}
+              of {Helper.numberWithDot(totalPage + 1)}
+            </Text>
             {currentPage < totalPage && (
               <>
                 <TouchableOpacity

@@ -11,6 +11,7 @@
       android:allowBackup="false"
       android:theme="@style/AppTheme"
       android:usesCleartextTraffic="true">
+      <meta-data android:name="com.google.android.geo.API_KEY" android:value="AIzaSyD0Lx9zVQGHt4l0mTkkoQXfSsYHSZSuCRc"/>
       <activity
         android:name=".MainActivity"
         android:label="@string/app_name"
@@ -21,6 +22,15 @@
             <action android:name="android.intent.action.MAIN" />
             <category android:name="android.intent.category.LAUNCHER" />
         </intent-filter>
+        <intent-filter>
+          <action android:name="android.intent.action.VIEW" />
+          <category android:name="android.intent.category.DEFAULT" />
+          <category android:name="android.intent.category.BROWSABLE" />
+
+          <data
+            android:host="dcp4.adlsandbox.com"
+            android:scheme="http" />
+      </intent-filter>
       </activity>
       <activity android:name="com.facebook.react.devsupport.DevSettingsActivity" />
     </application>

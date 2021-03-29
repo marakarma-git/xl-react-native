@@ -20,10 +20,11 @@ const resetDataSearchText = () => {
   };
 };
 const updateGeneratedParams = (generatedParams) => {
-  const {count, linkParams} = generatedParams || '';
+  const {count, linkParams, containerData} = generatedParams || '';
   return {
     type: reduxString.UPDATE_GENERATED_PARAMS,
     generatedParams: linkParams,
+    appliedFilter: containerData,
     totalFiltered: count,
   };
 };
@@ -63,6 +64,12 @@ const mergeDataFilter = (dataCustom = []) => {
   return {
     type: reduxString.MERGE_DATA_FILTER,
     data: dataCustom,
+  };
+};
+const mergeSpecificDataFilterIndex = (dataArray = []) => {
+  return {
+    type: reduxString.MERGE_SPECIFIC_DATA_FILTER_INDEX,
+    data: dataArray,
   };
 };
 const updateSortBy = ({formId, orderBy, sortBy}) => {
@@ -166,7 +173,6 @@ const setSomethingToFilter = (dataObject = []) => {
 };
 const resetDataFilter = () => {
   return (dispatch, getState) => {
-    dispatch(resetGeneratedParams());
     const {dynamic_array_filter_reducer} = getState();
     const {array_filter} = dynamic_array_filter_reducer;
     const resetArray = array_filter.map(({formId, typeInput, ...value}) => {
@@ -211,7 +217,10 @@ const resetDataFilter = () => {
               value: dayjs().toDate(),
             };
           default:
-            return null;
+            return {
+              formId,
+              ...value,
+            };
         }
       }
     });
@@ -224,8 +233,10 @@ export {
   setSomethingToFilter,
   removeAllHardCodeTrue,
   setLoadingFilterTrue,
+  resetGeneratedParams,
   setLoadingFilterFalse,
   mergeDataFilter,
+  mergeSpecificDataFilterIndex,
   generateArrayFilterParams,
   updateDataSearchText,
   updateSortBy,

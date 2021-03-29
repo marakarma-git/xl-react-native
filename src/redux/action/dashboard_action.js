@@ -3,7 +3,6 @@ import Helper from '../../helpers/helper';
 import reduxString from '../reduxString';
 import {base_url} from '../../constant/connection';
 import {dashboardHeaderAuth} from '../../constant/headers';
-import {filter} from '../../assets/images';
 
 const setDashboardSummary = (data) => ({
   type: reduxString.SET_DASHBOARD_SUMMARY,
@@ -193,6 +192,7 @@ export const requestWidgetData = (
           if (type === 'sim') {
             dispatch(setSimStatistics(data.result.dataset, filterParams));
           } else {
+            console.log(data, " top traffic")
             dispatch(
               setTopTrafficStatistics(data.result.dataset, filterParams),
             );

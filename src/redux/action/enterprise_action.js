@@ -42,7 +42,7 @@ const callEnterpriseLogo = (enterpriseId, token) => {
           dispatch(getEnterpriseLogoFailed(response));
         }
       })
-      .catch((e) => dispatch(getEnterpriseLogoFailed(e.response.data)));
+      .catch((error) => dispatch(getEnterpriseLogoFailed(error.response.data)));
   };
 };
 
