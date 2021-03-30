@@ -24,7 +24,7 @@ const UserAdministrationFilterPage = () => {
   const dispatch = useDispatch();
   const navigation = useNavigation();
   const [testWidth, setTestWidth] = useState(device_width * 0.41 - 1);
-  const {dataHeader, generatedParams} = useSelector(
+  const {dataHeader} = useSelector(
     (state) => state.user_administration_array_header_reducer,
   );
   useEffect(() => {
@@ -40,7 +40,6 @@ const UserAdministrationFilterPage = () => {
     <HeaderContainer headerTitle={'User Administration'}>
       <ScrollView style={{backgroundColor: 'white'}}>
         <OverlayBackground />
-        <Text>{JSON.stringify(generatedParams)}</Text>
         <Container style={{marginTop: 16}}>
           <View style={subscriptionStyle.containerTitle}>
             <Text style={{fontSize: 16}}>Filter</Text>
@@ -123,7 +122,7 @@ const UserAdministrationFilterPage = () => {
                   }
                   if (value === 'Find') {
                     dispatch(userAdministrationGenerateParams());
-                    // navigation.goBack();
+                    navigation.goBack();
                   }
                 }}>
                 <Text

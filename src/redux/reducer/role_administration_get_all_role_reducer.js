@@ -42,9 +42,9 @@ const role_administration_get_all_role_reducer = (
         role_total_size: action.roleTotalSize,
         role_elements_static:
           state.role_elements_static === 0
-            ? state.role_elements_static
-            : action.role_elements,
-        role_elements_dynamic: action.role_elements,
+            ? action.roleElements
+            : state.role_elements_static,
+        role_elements_dynamic: action.roleElements,
         role_applied_filter: action.roleAppliedFilter,
         role_applied_header_sort:
           action.roleAppliedHeaderSort || initialState.role_applied_header_sort,

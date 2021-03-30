@@ -178,7 +178,7 @@ const callSimInventory = (paginate) => {
     };
     const getSize = size_value || current_size;
     const getOrderBy = () => {
-      if (sortByPaginate === 'RESET') {
+      if (sortByPaginate === 'RESET' || orderBy === 'RESET') {
         return '';
       } else {
         if (orderByPaginate) {
@@ -189,7 +189,7 @@ const callSimInventory = (paginate) => {
       }
     };
     const getSortBy = () => {
-      if (sortByPaginate === 'RESET') {
+      if (sortByPaginate === 'RESET' || sortBy === 'RESET') {
         return '';
       } else {
         if (sortByPaginate) {

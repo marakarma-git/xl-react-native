@@ -9,6 +9,7 @@ const dataRoleHeader = [
     value: '',
     loading: false,
     params: '&roleName=',
+    typeInput: 'TextInput',
     cellType: 'TableCellHeaderCheckBox',
     cellRowType: 'TableCellCheckBox',
     valueCheck: false,
@@ -105,7 +106,6 @@ const role_administration_array_header_reducer = (
     case reduxString.ROLE_ADMINISTRATION_DYNAMIC_ONCHANGE_DROP_DOWN: {
       const getIndex =
         state.dataRoleHeader.findIndex((f) => f.formId === action.formId) || 0;
-      state.dataRoleHeader[getIndex].value = action.textInput;
       state.dataRoleHeader[getIndex].value = action.dropDown;
       return {
         ...state,
@@ -135,7 +135,7 @@ const role_administration_array_header_reducer = (
       const getIndex =
         state.dataRoleHeader.findIndex((f) => f.formId === action.formId) || 0;
       state.dataRoleHeader[getIndex].loading = false;
-      state.dataRoleHeader[getIndex].errorText = action.error;
+      state.dataRoleHeader[getIndex].errorText = action.errorText;
       state.dataRoleHeader[getIndex].disabled = true;
       return {
         ...state,

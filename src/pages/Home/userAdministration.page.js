@@ -21,9 +21,7 @@ import callUserAdministrationGetUser, {
   userAdministrationChangeCheckHeader,
 } from '../../redux/action/user_administration_get_user_action';
 import ModalMenuPicker from '../../components/modal/ModalMenuPicker';
-import callSimInventory, {
-  dataMatcherArray2D,
-} from '../../redux/action/get_sim_inventory_action';
+import {dataMatcherArray2D} from '../../redux/action/get_sim_inventory_action';
 import Helper from '../../helpers/helper';
 import {colors} from '../../constant/color';
 const UserAdministrationPage = () => {

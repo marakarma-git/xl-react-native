@@ -93,7 +93,7 @@ const callUserAdministrationGetUser = (paginate) => {
     const getPage = paginate_page ?? page_pagination;
     const getSize = paginate_size || total_size_pagination;
     const getOrderBy = () => {
-      if (order_by === 'RESET') {
+      if (order_by === 'RESET' || orderBy === 'RESET') {
         return '';
       } else {
         if (order_by) {
@@ -104,7 +104,7 @@ const callUserAdministrationGetUser = (paginate) => {
       }
     };
     const getSortBy = () => {
-      if (sort_by === 'RESET') {
+      if (sort_by === 'RESET' || sortBy === 'RESET') {
         return '';
       } else {
         if (sort_by) {

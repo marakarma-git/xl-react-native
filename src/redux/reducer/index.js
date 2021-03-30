@@ -14,6 +14,8 @@ import get_custom_label_reducer from './get_custom_label_reducer';
 import get_sim_inventory_reducer from './get_sim_inventory_reducer';
 import user_administration_array_header_reducer from './user_administration_array_header_reducer';
 import user_administration_get_user_reducer from './user_administration_get_user_reducer';
+import role_administration_array_header_reducer from './role_administration_array_header_reducer';
+import role_administration_get_all_role_reducer from './role_administration_get_all_role_reducer';
 const RootReducers = combineReducers({
   dummy_reducer,
   auth_reducer,
@@ -30,5 +32,7 @@ const RootReducers = combineReducers({
   get_sim_inventory_reducer,
   user_administration_array_header_reducer,
   user_administration_get_user_reducer,
+  role_administration_array_header_reducer,
+  role_administration_get_all_role_reducer,
 });
 export default RootReducers;
