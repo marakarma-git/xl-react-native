@@ -14,13 +14,16 @@ class Notification {
             onNotification: function (notification) {
                 console.log("NOTIFICATION:", notification);
 
-                const notificationObject = {
-                    title: notification.title,
-                    message: notification.message,
-                    status: "unread"
+                if(!notification.userInteraction){
+                    const notificationObject = {
+                        title: notification.title,
+                        message: notification.message,
+                        status: "unread"
+                    }
+    
+                    dispatch(addNotification(notificationObject));
                 }
 
-                dispatch(addNotification(notificationObject));
             },
             onAction: function (notification) {
                 console.log("ACTION:", notification.action);
