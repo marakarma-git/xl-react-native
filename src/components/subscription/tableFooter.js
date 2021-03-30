@@ -100,9 +100,9 @@ const TableFooter = (props) => {
             />
             <Text style={{color: colors.font_gray}}>
               {' '}
-              of {Helper.numberWithDot(totalPage + 1)}
+              of {Helper.numberWithDot(totalPage)}
             </Text>
-            {currentPage < totalPage && (
+            {currentPage + 1 < totalPage && (
               <>
                 <TouchableOpacity
                   onPress={() => onChangePaging(currentPage + 1)}>
