@@ -11,6 +11,7 @@ import {
   Dimensions,
 } from 'react-native';
 import {useSelector, useDispatch} from 'react-redux';
+import Notification from '../../notification/controller';
 import {
   HeaderContainer,
   OverlayBackground,
@@ -104,6 +105,8 @@ const LandingPage = ({navigation}) => {
           userData.access_token,
         ),
       );
+
+      Notification.configure(dispatch);
 
       detectOrientation();
     });

@@ -182,4 +182,18 @@ export default {
     paddingBottom: 30,
     fontSize: 14,
   },
+  notifCircle: {
+    height: 15, 
+    width: 15, 
+    borderRadius: 50, 
+    position: 'absolute', 
+    right: 3, 
+    backgroundColor: 'red', 
+    justifyContent: 'center', 
+    alignItems: 'center'
+  },
+  notifText: {
+    fontSize: 10, 
+    color: 'white'
+  }
 };

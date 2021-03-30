@@ -14,6 +14,7 @@ import get_custom_label_reducer from './get_custom_label_reducer';
 import get_sim_inventory_reducer from './get_sim_inventory_reducer';
 import user_administration_array_header_reducer from './user_administration_array_header_reducer';
 import user_administration_get_user_reducer from './user_administration_get_user_reducer';
+import notification_reducer from './notification_reducer';
 const RootReducers = combineReducers({
   dummy_reducer,
   auth_reducer,
@@ -30,5 +31,6 @@ const RootReducers = combineReducers({
   get_sim_inventory_reducer,
   user_administration_array_header_reducer,
   user_administration_get_user_reducer,
+  notification_reducer
 });
 export default RootReducers;

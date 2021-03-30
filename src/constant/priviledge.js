@@ -20,6 +20,7 @@ import {
   SubscriptionPackageFilterPage,
   BannerManagementCreatePage,
   UserAdministrationFilterPage,
+  NotificationPage,
 } from '../pages/Home/index';
 
 export const DRAWER_MENU_PRIVILEDGE = [
@@ -110,6 +111,15 @@ export const DRAWER_MENU_PRIVILEDGE = [
     width: 25,
     height: 25,
     components: MyAccountPage,
+  },
+  {
+    priviledgeId: '',
+    name: 'Notification',
+    icon: iconGrids,
+    type: 'non-drawer',
+    width: 25,
+    height: 25,
+    components: NotificationPage,
   },
   {
     priviledgeId: '711111aa-643a-11ea-bc55-0242ac130003',
