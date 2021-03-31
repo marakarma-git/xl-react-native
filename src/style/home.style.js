@@ -195,5 +195,11 @@ export default {
   notifText: {
     fontSize: 10, 
     color: 'white'
+  },
+  notifCardHeader: {
+    flexDirection: 'row', 
+    justifyContent: 'space-between', 
+    paddingHorizontal: 5, 
+    paddingBottom: 10
   }
 };

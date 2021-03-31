@@ -18,6 +18,7 @@ class Notification {
                     const notificationObject = {
                         title: notification.title,
                         message: notification.message,
+                        time: new Date().toString(),
                         status: "unread"
                     }
     

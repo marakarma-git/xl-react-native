@@ -19,7 +19,7 @@ import RootReducers from './redux/reducer';
 const persistConfig = {
   key: 'root',
   storage: AsyncStorage,
-  whitelist: ['auth_reducer'],
+  whitelist: ['auth_reducer', 'notification_reducer'],
   transforms: [
     encryptTransform({
       secretKey: headerAuth,
