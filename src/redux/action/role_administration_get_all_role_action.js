@@ -2,7 +2,6 @@ import reduxString from '../reduxString';
 import axios from 'axios';
 import {base_url} from '../../constant/connection';
 import {dataMatcherArray2D} from './get_sim_inventory_action';
-import lod from 'lodash';
 const roleAdministrationGetRoleLoading = () => {
   return {
     type: reduxString.ROLE_ADMINISTRATION_GET_ROLE_LOADING,

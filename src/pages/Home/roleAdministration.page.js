@@ -70,7 +70,7 @@ const RoleAdministrationPage = () => {
       <View style={subscriptionStyle.containerBackground}>
         <Table
           isScrollView={true}
-          stickyHeaderIndices={[1]}
+          stickHeaderIndices={[1]}
           headerOtherLayout={() => {
             return (
               <>
