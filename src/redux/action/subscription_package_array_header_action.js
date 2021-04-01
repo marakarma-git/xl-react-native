@@ -144,7 +144,7 @@ const getActiveEnterpriseSubscription = () => {
       }),
     );
     const {access_token} = (await getState().auth_reducer.data) || {};
-    callActiveEnterprise(access_token)
+    callActiveEnterprise({access_token})
       .then(({data}) => {
         const {result, statusCode} = data || {};
         if (statusCode === 0) {
