@@ -60,11 +60,13 @@ const SubscriptionPackageFilterPage = () => {
                 loading,
                 data,
                 errorText,
+                disabled,
               } = e || {};
               const {label} = config || {};
               return (
                 <InputHybrid
                   customStyle={{width: testWidth}}
+                  disabled={disabled}
                   type={typeInput}
                   value={value}
                   loading={loading}

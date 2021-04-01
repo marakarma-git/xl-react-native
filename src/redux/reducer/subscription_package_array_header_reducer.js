@@ -38,6 +38,7 @@ const dataHeaderFilter = [
     data: [],
     typeInput: 'DropDown',
     disabled: true,
+    loading: false,
     cellType: 'TableCellHeaderAscDesc',
     cellRowType: 'TableCellText',
     params: '&packageDescription=',
