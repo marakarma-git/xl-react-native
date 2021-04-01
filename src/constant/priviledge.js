@@ -195,7 +195,7 @@ export const DRAWER_MENU_PRIVILEDGE = [
   },
   {
     priviledgeId: '',
-    name: 'SubscriptionPackageManagementFilter',
+    name: 'SubscriptionPackageFilter',
     icon: iconComponents,
     type: 'non-drawer',
     width: 25,
