@@ -89,6 +89,7 @@ const Table = (props) => {
                           onPressHeader({
                             dataSort: selectedHeaderOrderSort,
                             item: dataHeader[index],
+                            indexHeader: index,
                           })
                         }
                         onChangeCheck={() => onPressCheckHeader(dataHeader[0])}
@@ -183,7 +184,7 @@ const Table = (props) => {
                           style={{flexDirection: 'row'}}
                           key={index}>
                           {dataCell.map((subValue, index2) => {
-                            const {cellType} = subValue || {};
+                            const {cellType, valueCheck} = subValue || {};
                             if (index2 > (hideStickySide ? -1 : 0)) {
                               return (
                                 <TableCell
@@ -191,7 +192,15 @@ const Table = (props) => {
                                   type={cellType}
                                   onPress={() => onPressCell(subValue)}
                                   onChangeCheck={() =>
-                                    onPressCheckCell(subValue)
+                                    onPressCheckCell({
+                                      ...subValue,
+                                      firstIndex: index,
+                                      secondIndex: index2,
+                                    })
+                                  }
+                                  value={
+                                    cellType === 'TableCellCheckBox' &&
+                                    valueCheck
                                   }
                                   {...subValue}
                                 />
@@ -327,6 +336,7 @@ const StickyComponent = (props) => {
       style={{
         elevation: borderWidth ? 5 : 0,
         borderRightWidth: !onRight && borderWidth ? 1 : 0,
+        borderLeftWidth: onRight ? 1 : 0,
         borderColor: 'white',
       }}>
       {dataTable &&

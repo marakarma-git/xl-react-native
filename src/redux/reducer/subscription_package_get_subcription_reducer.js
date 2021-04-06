@@ -76,8 +76,11 @@ const subscription_package_get_subscription_reducer = (
       };
     }
     case reduxString.SUBSCRIPTION_PACKAGE_DYNAMIC_CHECK_DATA_SUBSCRIPTION: {
-      state.data_subscription_generated[action.index].is_checked_root = !state
-        .data_subscription_generated[action.index].is_checked_root;
+      state.data_subscription_generated[action.index].dataCell[
+        action.index2
+      ].valueCheck = !state.data_subscription_generated[action.index].dataCell[
+        action.index2
+      ].valueCheck;
       return {
         ...state,
         data_subscription_generated: state.data_subscription_generated,
@@ -85,8 +88,8 @@ const subscription_package_get_subscription_reducer = (
     }
     case reduxString.SUBSCRIPTION_PACKAGE_CHECK_ALL_DATA_SUBSCRIPTION: {
       const generatedRoleCheck = state.data_subscription_generated.map(
-        ({is_checked_root, ...rest}) => ({
-          is_checked_root: !action.valueCheck,
+        ({is_checked_root, index, ...rest}) => ({
+          dataCell: ![index][action.index].valueCheck,
           ...rest,
         }),
       );
