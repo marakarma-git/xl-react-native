@@ -1,9 +1,9 @@
 import PushNotification from "react-native-push-notification";
-import { addNotification } from "../redux/action/notification_action";
+import { receivePushNotification } from "../redux/action/notification_action";
 
 class Notification {
 
-    static configure = (dispatch) => {
+    static configure = (dispatch, navigation) => {
         PushNotification.configure({
             largeIcon: "ic_launcher",
             smallIcon: "ic_launcher",
@@ -14,16 +14,7 @@ class Notification {
             onNotification: function (notification) {
                 console.log("NOTIFICATION:", notification);
 
-                if(!notification.userInteraction){
-                    const notificationObject = {
-                        title: notification.title,
-                        message: notification.message,
-                        time: new Date().toString(),
-                        status: "unread"
-                    }
-    
-                    dispatch(addNotification(notificationObject));
-                }
+                dispatch(receivePushNotification(notification, navigation));
 
             },
             onAction: function (notification) {
@@ -43,6 +34,10 @@ class Notification {
             popInitialNotification: true,
             requestPermissions: true,
         });
+    }
+
+    static pushNotifLinking = (navigation, screenName, parameter) => {
+
     }
 
 }

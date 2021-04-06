@@ -106,7 +106,8 @@ const LandingPage = ({navigation}) => {
         ),
       );
 
-      Notification.configure(dispatch);
+      // Configure Push Notification
+      Notification.configure(dispatch, navigation);
 
       detectOrientation();
     });
