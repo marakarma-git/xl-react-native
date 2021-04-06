@@ -33,15 +33,17 @@ const subscriptionPackageSetDataSubscriptionGenerated = ({
     dataSubscriptionGenerated,
   };
 };
-const subscriptionPackageDynamicCheckDataSubscription = ({index}) => {
+const subscriptionPackageDynamicCheckDataSubscription = ({index, index2}) => {
   return {
     type: reduxString.SUBSCRIPTION_PACKAGE_DYNAMIC_CHECK_DATA_SUBSCRIPTION,
     index,
+    index2,
   };
 };
-const subscriptionPackageCheckAlDataSubscription = ({valueCheck}) => {
+const subscriptionPackageCheckAlDataSubscription = ({valueCheck, index}) => {
   return {
     type: reduxString.SUBSCRIPTION_PACKAGE_CHECK_ALL_DATA_SUBSCRIPTION,
+    index,
     valueCheck,
   };
 };

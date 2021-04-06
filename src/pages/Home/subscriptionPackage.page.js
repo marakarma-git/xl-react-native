@@ -72,6 +72,7 @@ const SubscriptionPackagePage = () => {
         <Table
           isScrollView={true}
           stickHeaderIndices={[1]}
+          onRight
           headerOtherLayout={() => {
             return (
               <>
@@ -146,12 +147,24 @@ const SubscriptionPackagePage = () => {
             }
           }}
           onPressCheckHeader={(e) => {
-            const {valueCheck} = e || {};
+            const {valueCheck, indexHeader} = e || {};
             dispatch(subscriptionPackageChangeCheckHeader());
-            dispatch(subscriptionPackageCheckAlDataSubscription({valueCheck}));
+            dispatch(
+              subscriptionPackageCheckAlDataSubscription({
+                valueCheck,
+                index: indexHeader,
+              }),
+            );
           }}
-          onPressCheckCell={({index}) => {
-            dispatch(subscriptionPackageDynamicCheckDataSubscription({index}));
+          onPressCheckCell={({firstIndex, secondIndex, ...rest}) => {
+            console.log(JSON.stringify(rest, null, 2));
+            alert(firstIndex.toString() + secondIndex);
+            dispatch(
+              subscriptionPackageDynamicCheckDataSubscription({
+                index: firstIndex,
+                index2: secondIndex,
+              }),
+            );
           }}
           selectedHeaderOrderSort={subscription_applied_header_sort}
           dataHeader={dataSubscriptionHeader}
