@@ -18,6 +18,8 @@ import role_administration_array_header_reducer from './role_administration_arra
 import role_administration_get_all_role_reducer from './role_administration_get_all_role_reducer';
 import subscription_package_array_header_reducer from './subscription_package_array_header_reducer';
 import subscription_package_get_subscription_reducer from './subscription_package_get_subcription_reducer';
+import banner_management_array_header_reducer from './banner_management_array_header_reducer';
+import banner_management_get_banner_reducer from './banner_management_get_banner_reducer';
 import notification_reducer from './notification_reducer';
 const RootReducers = combineReducers({
   dummy_reducer,
@@ -39,6 +41,8 @@ const RootReducers = combineReducers({
   role_administration_get_all_role_reducer,
   subscription_package_array_header_reducer,
   subscription_package_get_subscription_reducer,
+  banner_management_array_header_reducer,
+  banner_management_get_banner_reducer,
   notification_reducer,
 });
 export default RootReducers;

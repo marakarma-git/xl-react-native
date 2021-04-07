@@ -1,8 +1,8 @@
 import React, {useEffect, useState} from 'react';
 import {useDispatch, useSelector} from 'react-redux';
-import {ActivityIndicator, View, Linking} from 'react-native';
+import {View, Linking} from 'react-native';
 import {useNavigation} from '@react-navigation/native';
-import {inputHybridStyle, subscriptionStyle} from '../../style';
+import {subscriptionStyle} from '../../style';
 import Table from '../../components/table/Table';
 import TableFooter from '../../components/subscription/tableFooter';
 import SearchHeader from '../../components/subscription/searchHeader';
@@ -26,9 +26,9 @@ import {
 import ModalMenuPicker from '../../components/modal/ModalMenuPicker';
 import AppliedFilter from '../../components/subscription/appliedFilter';
 import dayjs from 'dayjs';
-import {colors} from '../../constant/color';
 import ModalMapOnly from '../../components/modal/ModalMapOnly';
 import lod from 'lodash';
+import Loading from '../../components/loading';
 
 const Subscription = () => {
   const dispatch = useDispatch();
@@ -227,25 +227,7 @@ const Subscription = () => {
             );
           }}
         />
-        {loading_array_filter ||
-          (loading && (
-            <View
-              style={{
-                position: 'absolute',
-                top: 0,
-                bottom: 0,
-                right: 0,
-                left: 0,
-                justifyContent: 'center',
-                alignItems: 'center',
-              }}>
-              <View style={inputHybridStyle.modalBackdrop} />
-              <ActivityIndicator
-                size={'large'}
-                color={colors.button_color_one}
-              />
-            </View>
-          ))}
+        {loading_array_filter || (loading && <Loading />)}
       </View>
       {showMap && !lod.isEmpty(mapData) && (
         <ModalMapOnly onClose={() => setShowMap(false)} mapData={mapData} />

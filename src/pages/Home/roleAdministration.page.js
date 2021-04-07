@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {View, ActivityIndicator} from 'react-native';
+import {View} from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
 import callRoleAction, {
   roleAdministrationCheckAlDataRole,
@@ -7,7 +7,7 @@ import callRoleAction, {
   roleAdministrationSetDataRoleGenerated,
 } from '../../redux/action/role_administration_get_all_role_action';
 import {HeaderContainer, OverlayBackground} from '../../components';
-import {inputHybridStyle, subscriptionStyle} from '../../style';
+import {subscriptionStyle} from '../../style';
 import ModalMenuPicker from '../../components/modal/ModalMenuPicker';
 import {dataMatcherArray2D} from '../../redux/action/get_sim_inventory_action';
 import {
@@ -23,7 +23,7 @@ import AppliedFilter from '../../components/subscription/appliedFilter';
 import FilterActionLabel from '../../components/subscription/filterActionLabel';
 import Helper from '../../helpers/helper';
 import TableFooter from '../../components/subscription/tableFooter';
-import {colors} from '../../constant/color';
+import Loading from '../../components/loading';
 
 const RoleAdministrationPage = () => {
   const dispatch = useDispatch();
@@ -183,21 +183,7 @@ const RoleAdministrationPage = () => {
             );
           }}
         />
-        {loading && (
-          <View
-            style={{
-              position: 'absolute',
-              top: 0,
-              bottom: 0,
-              right: 0,
-              left: 0,
-              justifyContent: 'center',
-              alignItems: 'center',
-            }}>
-            <View style={inputHybridStyle.modalBackdrop} />
-            <ActivityIndicator size={'large'} color={colors.button_color_one} />
-          </View>
-        )}
+        {loading && <Loading />}
       </View>
       {showMenu && (
         <ModalMenuPicker

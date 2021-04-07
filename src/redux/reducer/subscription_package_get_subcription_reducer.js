@@ -57,7 +57,7 @@ const subscription_package_get_subscription_reducer = (
       return {
         ...state,
         loading: initialState.loading,
-        errorText: initialState.errorText,
+        errorText: action.errorText,
       };
     }
     case reduxString.SUBSCRIPTION_PACKAGE_GET_SUBSCRIPTION_RESET: {

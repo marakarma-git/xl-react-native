@@ -1,8 +1,8 @@
 import React, {useEffect, useState} from 'react';
-import {ActivityIndicator, View} from 'react-native';
+import {View} from 'react-native';
 import {HeaderContainer, OverlayBackground} from '../../components';
 import {useDispatch, useSelector} from 'react-redux';
-import {inputHybridStyle, subscriptionStyle} from '../../style';
+import {subscriptionStyle} from '../../style';
 import TableFooter from '../../components/subscription/tableFooter';
 import Table from '../../components/table/Table';
 import SearchHeader from '../../components/subscription/searchHeader';
@@ -23,7 +23,7 @@ import callUserAdministrationGetUser, {
 import ModalMenuPicker from '../../components/modal/ModalMenuPicker';
 import {dataMatcherArray2D} from '../../redux/action/get_sim_inventory_action';
 import Helper from '../../helpers/helper';
-import {colors} from '../../constant/color';
+import Loading from '../../components/loading';
 const UserAdministrationPage = () => {
   const dispatch = useDispatch();
   const [firstRender, setFirstRender] = useState(true);
@@ -179,21 +179,7 @@ const UserAdministrationPage = () => {
             );
           }}
         />
-        {loading && (
-          <View
-            style={{
-              position: 'absolute',
-              top: 0,
-              bottom: 0,
-              right: 0,
-              left: 0,
-              justifyContent: 'center',
-              alignItems: 'center',
-            }}>
-            <View style={inputHybridStyle.modalBackdrop} />
-            <ActivityIndicator size={'large'} color={colors.button_color_one} />
-          </View>
-        )}
+        {loading && <Loading />}
       </View>
       {showMenu && (
         <ModalMenuPicker

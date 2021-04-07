@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {ActivityIndicator, View} from 'react-native';
+import {View} from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
 import callSubscriptionPackage, {
   subscriptionPackageCheckAlDataSubscription,
@@ -7,7 +7,7 @@ import callSubscriptionPackage, {
   subscriptionPackageSetDataSubscriptionGenerated,
 } from '../../redux/action/subscription_package_get_subscription_action';
 import {HeaderContainer, OverlayBackground} from '../../components';
-import {inputHybridStyle, subscriptionStyle} from '../../style';
+import {subscriptionStyle} from '../../style';
 import ModalMenuPicker from '../../components/modal/ModalMenuPicker';
 import {dataMatcherArray2D} from '../../redux/action/get_sim_inventory_action';
 import {
@@ -20,9 +20,9 @@ import Table from '../../components/table/Table';
 import AppliedFilter from '../../components/subscription/appliedFilter';
 import FilterActionLabel from '../../components/subscription/filterActionLabel';
 import Helper from '../../helpers/helper';
-import {colors} from '../../constant/color';
 import TableFooter from '../../components/subscription/tableFooter';
 import SearchHeader from '../../components/subscription/searchHeader';
+import Loading from '../../components/loading';
 
 const SubscriptionPackagePage = () => {
   const dispatch = useDispatch();
@@ -190,21 +190,7 @@ const SubscriptionPackagePage = () => {
             );
           }}
         />
-        {loading && (
-          <View
-            style={{
-              position: 'absolute',
-              top: 0,
-              bottom: 0,
-              right: 0,
-              left: 0,
-              justifyContent: 'center',
-              alignItems: 'center',
-            }}>
-            <View style={inputHybridStyle.modalBackdrop} />
-            <ActivityIndicator size={'large'} color={colors.button_color_one} />
-          </View>
-        )}
+        {loading && <Loading />}
       </View>
       {showMenu && (
         <ModalMenuPicker
