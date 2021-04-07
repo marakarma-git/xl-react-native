@@ -43,26 +43,29 @@ const Table = (props) => {
             style={{
               flexDirection: 'row',
             }}>
-            {dataHeader && dataHeader.length > 0 && !onRight && (
-              <TableCell
-                sorted={dataHeader[0].formId === formId ? sortBy : null}
-                type={dataHeader[0].cellType || null}
-                dataOption={dataHeader[0].dataOption}
-                onPress={() =>
-                  onPressHeader({
-                    dataSort: selectedHeaderOrderSort,
-                    item: dataHeader[0],
-                  })
-                }
-                onChangeCheck={(value) => {
-                  onPressCheckHeader({
-                    selectedValue: value,
-                    ...dataHeader[0],
-                  });
-                }}
-                {...dataHeader[0]}
-              />
-            )}
+            {dataHeader &&
+              dataHeader.length > 0 &&
+              !onRight &&
+              !hideStickySide && (
+                <TableCell
+                  sorted={dataHeader[0].formId === formId ? sortBy : null}
+                  type={dataHeader[0].cellType || null}
+                  dataOption={dataHeader[0].dataOption}
+                  onPress={() =>
+                    onPressHeader({
+                      dataSort: selectedHeaderOrderSort,
+                      item: dataHeader[0],
+                    })
+                  }
+                  onChangeCheck={(value) => {
+                    onPressCheckHeader({
+                      selectedValue: value,
+                      ...dataHeader[0],
+                    });
+                  }}
+                  {...dataHeader[0]}
+                />
+              )}
             <ScrollView
               horizontal={true}
               scrollEnabled={false}
