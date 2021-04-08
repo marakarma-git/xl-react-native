@@ -87,7 +87,15 @@ const dataMatcherArray2D = (listData = [], headerData = []) => {
     const subGenerated = [];
     headerData.map((subItem) => {
       const {shown, api_id, config, formId, ...rest} = subItem || {};
-      const {width, superType, flexStart, doNotShowOnTable} = config || {};
+      const {
+        width,
+        superType,
+        flexStart,
+        doNotShowOnTable,
+        showIcon,
+        isTouchable,
+        isTreeView,
+      } = config || {};
       if (shown && !doNotShowOnTable) {
         const createObject = (superType, labelValue) => {
           if (superType === 'DATE') {
@@ -113,6 +121,11 @@ const dataMatcherArray2D = (listData = [], headerData = []) => {
             isTouchable:
               formId === 'imsi-hard-code' &&
               subItem.cellRowType === 'TableCellCheckBox',
+            visibility: item.visibility == undefined ? true : item.visibility,
+            icon: item.icon || null,
+            showIcon: showIcon,
+            isTreeView: isTreeView,
+            treeLevel: item.level || 0,
           },
           item: {...item},
           subItem: {

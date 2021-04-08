@@ -53,8 +53,14 @@ TableCell.propTypes = {
     isTouchable: PropTypes.bool,
     superType: PropTypes.oneOf(['DATE', 'BYTE']),
     flexStart: PropTypes.bool,
+    visibility: PropTypes.bool,
+    icon: PropTypes.string,
+    showIcon: PropTypes.bool,
+    isTreeView: PropTypes.bool,
+    treeLevel: PropTypes.number,
   },
   onPress: PropTypes.func,
+  onPressArrow: PropTypes.func,
   onChangeCheck: PropTypes.func,
   dataOption: PropTypes.arrayOf([
     PropTypes.objectOf({

@@ -14,6 +14,7 @@ const Table = (props) => {
     onPressCell,
     onPressCheckHeader,
     onPressCheckCell,
+    onPressTreeArrow,
     loading,
     selectedHeaderOrderSort,
     isScrollView,
@@ -146,6 +147,7 @@ const Table = (props) => {
                 <StickyComponent
                   dataTable={dataTable}
                   onPressCell={onPressCell}
+                  onPressTreeArrow={onPressTreeArrow}
                   onPressCheckCell={onPressCheckCell}
                   borderWidth={borderWidth}
                 />
@@ -194,6 +196,9 @@ const Table = (props) => {
                                   key={index2}
                                   type={cellType}
                                   onPress={() => onPressCell(subValue)}
+                                  onPressArrow={() =>
+                                    onPressTreeArrow(subValue)
+                                  }
                                   onChangeCheck={() =>
                                     onPressCheckCell({
                                       ...subValue,
@@ -244,6 +249,9 @@ const Table = (props) => {
                                   key={index2}
                                   type={cellType}
                                   onPress={() => onPressCell(subValue)}
+                                  onPressArrow={() =>
+                                    onPressTreeArrow(subValue)
+                                  }
                                   onChangeCheck={() =>
                                     onPressCheckCell(subValue)
                                   }
@@ -264,6 +272,7 @@ const Table = (props) => {
                 <StickyComponent
                   dataTable={dataTable}
                   onPressCell={onPressCell}
+                  onPressTreeArrow={onPressTreeArrow}
                   onPressCheckCell={onPressCheckCell}
                   borderWidth={borderWidth}
                   onRight={true}
@@ -307,6 +316,7 @@ Table.propTypes = {
   onPressCell: PropTypes.func,
   onPressCheckHeader: PropTypes.func,
   onPressCheckCell: PropTypes.func,
+  onPressTreeArrow: PropTypes.func,
   loading: PropTypes.bool,
   selectedHeaderOrderSort: PropTypes.objectOf({
     formId: PropTypes.string,
@@ -328,12 +338,19 @@ Table.defaultProps = {
   onPressCell: () => {},
   onPressCheckHeader: () => {},
   onPressCheckCell: () => {},
+  onPressTreeArrow: () => {},
   headerOtherLayout: () => <></>,
   onDataChange: () => {},
 };
 const StickyComponent = (props) => {
-  const {borderWidth, dataTable, onPressCell, onPressCheckCell, onRight} =
-    props || {};
+  const {
+    borderWidth,
+    dataTable,
+    onPressCell,
+    onPressCheckCell,
+    onRight,
+    onPressTreeArrow,
+  } = props || {};
   return (
     <View
       style={{
@@ -351,6 +368,7 @@ const StickyComponent = (props) => {
               key={index}
               type={dataCell[0].cellType || 'TableCellCheckBox'}
               onPress={() => onPressCell(dataCell[0])}
+              onPressArrow={() => onPressTreeArrow(dataCell[0])}
               onChangeCheck={() =>
                 onPressCheckCell({item: dataCell[0], index: index})
               }
@@ -367,6 +385,7 @@ StickyComponent.propTypes = {
   dataTable: PropTypes.number,
   onPressCell: PropTypes.func,
   onPressCheckCell: PropTypes.func,
+  onPressTreeArrow: PropTypes.func,
   onRight: PropTypes.bool,
 };
 StickyComponent.defaultProps = {

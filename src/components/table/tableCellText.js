@@ -3,8 +3,11 @@ import PropTypes from 'prop-types';
 import {TouchableOpacity, View} from 'react-native';
 import Text from '../global/text';
 import {defaultHeightCell, defaultWidthCell} from '../../constant/config';
+import Ionicons from 'react-native-vector-icons/Ionicons';
+import styles from '../../style/drawer.style';
+
 const TableCellText = (props) => {
-  const {config, onPress, otherInformation} = props || {};
+  const {config, onPress, otherInformation, onPressArrow} = props || {};
   const {
     label,
     width,
@@ -14,42 +17,68 @@ const TableCellText = (props) => {
     backgroundColor,
     key,
     flexStart,
+    visibility,
+    icon,
+    showIcon,
+    isTreeView,
+    treeLevel,
   } = config || {};
+
   const TouchView = isTouchable ? TouchableOpacity : View;
   return (
-    <View
-      key={key}
-      style={{
-        width: width || defaultWidthCell,
-        height: height || defaultHeightCell,
-        flexDirection: 'row',
-        alignItems: 'center',
-        backgroundColor: backgroundColor || 'white',
-      }}>
-      <TouchView
-        style={{
-          flex: 1,
-          flexDirection: 'row',
-        }}
-        onPress={() => onPress(otherInformation)}>
+    <React.Fragment>
+      {visibility && (
         <View
+          key={key}
           style={{
-            flex: 1,
-            paddingLeft: flexStart ? 8 : 0,
-            justifyContent: flexStart ? 'flex-start' : 'center',
-            alignItems: 'center',
+            width: width || defaultWidthCell,
+            height: height || defaultHeightCell,
             flexDirection: 'row',
+            alignItems: 'center',
+            backgroundColor: backgroundColor || 'white',
           }}>
-          <Text
-            numberOfLines={1}
+          <TouchView
             style={{
-              color: fontColor || 'black',
-            }}>
-            {label}
-          </Text>
+              flex: 1,
+              flexDirection: 'row',
+            }}
+            onPress={() => onPress(otherInformation)}>
+            <View
+              style={{
+                flex: 1,
+                paddingLeft: flexStart ? 8 : 0,
+                justifyContent: flexStart ? 'flex-start' : 'center',
+                alignItems: 'center',
+                flexDirection: 'row',
+              }}>
+              <TouchableOpacity
+                disabled={!isTreeView}
+                onPress={() => onPressArrow(otherInformation)}>
+                <Text
+                  numberOfLines={1}
+                  style={{
+                    paddingLeft:
+                      isTreeView && (treeLevel + (!icon ? 1.6 : 0)) * 10,
+                    color: fontColor || 'black',
+                  }}>
+                  {showIcon && icon && (
+                    <React.Fragment>
+                      <Ionicons
+                        name={icon}
+                        color={'black'}
+                        style={styles.caretMenu}
+                      />
+                      &nbsp;
+                    </React.Fragment>
+                  )}
+                  {label}
+                </Text>
+              </TouchableOpacity>
+            </View>
+          </TouchView>
         </View>
-      </TouchView>
-    </View>
+      )}
+    </React.Fragment>
   );
 };
 TableCellText.proptTypes = {
@@ -61,6 +90,8 @@ TableCellText.proptTypes = {
     backgroundColor: PropTypes.string,
     fontSize: PropTypes.number,
     isTouchable: PropTypes.bool,
+    visibility: PropTypes.bool,
+    icon: PropTypes.string,
   }),
   onPress: PropTypes.func,
   otherInformation: PropTypes.any,

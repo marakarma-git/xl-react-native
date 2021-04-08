@@ -280,6 +280,40 @@ class Helper {
       }
     });
   }
+
+  static makeMultiDimensionalArrayTo2DArray(
+    data,
+    newData = [],
+    currentLevel = 0,
+  ) {
+    // Kalo mau buat lebih dinamis lagi tinggal tambahin key yang mau dijadikan acuan
+
+    data.map((value, index) => {
+      value.level = currentLevel;
+      value.visibility = true;
+      Object.keys(value).map((objValue, index) => {
+        if (typeof value[objValue] === 'object' && value[objValue] != null) {
+          currentLevel++;
+          value.icon = value[objValue].length > 0 && 'caret-down';
+          newData.push(value);
+          if (value[objValue].length > 0) {
+            return Helper.makeMultiDimensionalArrayTo2DArray(
+              value[objValue],
+              newData,
+              currentLevel,
+            );
+          }
+        }
+      });
+      currentLevel--;
+    });
+
+    newData.map((data, index) => {
+      data.index = index;
+    });
+
+    return newData;
+  }
 }
 
 export default Helper;
