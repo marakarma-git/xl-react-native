@@ -140,6 +140,7 @@ const getEnterpriseList = (paginate) => {
             Helper.makeMultiDimensionalArrayTo2DArray(content),
             dataHeaderEnterprise,
           );
+
           dispatch(
             enterpriseManagementGetDataSuccess({
               dataEnterprise: Helper.makeMultiDimensionalArrayTo2DArray(

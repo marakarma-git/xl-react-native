@@ -286,8 +286,6 @@ class Helper {
     newData = [],
     currentLevel = 0,
   ) {
-    // Kalo mau buat lebih dinamis lagi tinggal tambahin key yang mau dijadikan acuan
-
     data.map((value, index) => {
       value.level = currentLevel;
       value.visibility = true;
@@ -295,6 +293,13 @@ class Helper {
         if (typeof value[objValue] === 'object' && value[objValue] != null) {
           currentLevel++;
           value.icon = value[objValue].length > 0 && 'caret-down';
+
+          // Refactor soon, only for demo sake
+          value.activeStatus = value.activeStatus
+            ? 'Ready for use'
+            : 'Obsolete';
+          value.onboarded = value.onboarded.substring(0, 10);
+
           newData.push(value);
           if (value[objValue].length > 0) {
             return Helper.makeMultiDimensionalArrayTo2DArray(
