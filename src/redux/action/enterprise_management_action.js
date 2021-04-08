@@ -29,6 +29,24 @@ const enterpriseManagementGetDataFail = (payload) => ({
   payload,
 });
 
+const treeViewToggle = (
+  enterpriseId,
+  data_enterprise,
+  parentVisibility = null,
+) => {
+  data_enterprise.map((data) => {
+    if (data.enterpriseParentId == enterpriseId) {
+      if (parentVisibility == null) {
+        data.visibility = !data.visibility;
+      } else {
+        data.visibility = false;
+      }
+
+      treeViewToggle(data.enterpriseId, data_enterprise, data.visibility);
+    }
+  });
+};
+
 const enterpriseManagementHideShow = (enterpriseId) => {
   return async (dispatch, getState) => {
     const {data_enterprise} =
@@ -36,35 +54,22 @@ const enterpriseManagementHideShow = (enterpriseId) => {
     const {dataHeaderEnterprise} =
       getState().enterprise_management_header_array_reducer || {};
 
-    let rootTree = false;
-
     await data_enterprise.map((data) => {
       if (data.enterpriseId == enterpriseId) {
         if (data.icon) {
           data.icon = data.icon == 'caret-down' ? 'caret-up' : 'caret-down';
         }
-        if (!data.enterpriseParentId) {
-          rootTree = true;
-        }
-      }
-
-      if (rootTree) {
-        if (data.enterpriseId != enterpriseId) {
-          data.visibility = !data.visibility;
-        }
-      } else if (data.enterpriseParentId == enterpriseId) {
-        data.visibility = !data.visibility;
       }
     });
+
+    treeViewToggle(enterpriseId, data_enterprise);
 
     const generateDataTable = dataMatcherArray2D(
       data_enterprise,
       dataHeaderEnterprise,
     );
 
-    dispatch(
-      enterpriseManagementGetDataSuccess(data_enterprise, generateDataTable),
-    );
+    dispatch(updateEnterpriseData(data_enterprise, generateDataTable));
   };
 };
 
@@ -88,7 +93,7 @@ const getEnterpriseList = (paginate) => {
     const getSize = size_params || enterprise_total_size;
 
     const getOrderBy = () => {
-      if (order_by_params === 'RESET' || orderBy === 'RESEt') {
+      if (order_by_params === 'RESET' || orderBy === 'RESET') {
         return '';
       } else {
         if (order_by_params) {
@@ -140,7 +145,6 @@ const getEnterpriseList = (paginate) => {
             Helper.makeMultiDimensionalArrayTo2DArray(content),
             dataHeaderEnterprise,
           );
-
           dispatch(
             enterpriseManagementGetDataSuccess({
               dataEnterprise: Helper.makeMultiDimensionalArrayTo2DArray(
