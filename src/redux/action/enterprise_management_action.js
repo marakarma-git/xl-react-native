@@ -39,7 +39,9 @@ const treeViewToggle = (
       if (parentVisibility == null) {
         data.visibility = !data.visibility;
       } else {
-        data.visibility = false;
+        if(data.visibility){
+          data.visibility = parentVisibility;
+        }
       }
 
       treeViewToggle(data.enterpriseId, data_enterprise, data.visibility);
