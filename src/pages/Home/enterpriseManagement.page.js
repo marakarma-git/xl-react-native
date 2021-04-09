@@ -192,7 +192,7 @@ const EnterpriseManagement = () => {
             dispatch(enterpriseManagementUpdateBundleArray({data: e}));
             const reGenerated = dataMatcherArray2D(
               Helper.makeMultiDimensionalArrayTo2DArray(data_enterprise),
-              e,
+              dataHeaderEnterprise,
             );
             dispatch(
               enterpriseManagementSetDataGenerated({
