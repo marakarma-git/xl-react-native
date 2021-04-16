@@ -8,6 +8,7 @@ import TableCellStatus from './tableCellStatus';
 import TableCellText from './tableCellText';
 import TableCellViewMap from './tableCellViewMap';
 import TableCellHeaderCheckBox from './tableCellHeaderCheckBox';
+import TableCellCheckBoxTreeView from './tableCellCheckBoxTreeView';
 
 const TableCell = (props) => {
   const {type} = props || {};
@@ -28,6 +29,8 @@ const TableCell = (props) => {
       return <TableCellText {...props} />;
     case 'TableCellViewMap':
       return <TableCellViewMap {...props} />;
+    case 'TableCellCheckBoxTreeView':
+      return <TableCellCheckBoxTreeView {...props} />;
     default:
       return <React.Fragment />;
   }
@@ -42,6 +45,7 @@ TableCell.propTypes = {
     'TableCellStatus',
     'TableCellText',
     'TableCellViewMap',
+    'TableCellCheckBoxTreeView',
   ]).isRequired,
   config: {
     label: PropTypes.string,
@@ -58,6 +62,7 @@ TableCell.propTypes = {
     showIcon: PropTypes.bool,
     isTreeView: PropTypes.bool,
     treeLevel: PropTypes.number,
+    treeCheck: PropTypes.bool,
   },
   onPress: PropTypes.func,
   onPressArrow: PropTypes.func,

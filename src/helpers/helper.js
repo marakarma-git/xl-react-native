@@ -293,8 +293,7 @@ class Helper {
         if (typeof value[objValue] === 'object' && value[objValue] != null) {
           currentLevel++;
           value.icon = value[objValue].length > 0 && 'caret-down';
-
-          // Refactor soon, only for demo sake
+          value.treeCheck = false;
           value.activeStatus = value.activeStatus
             ? 'Ready for use'
             : 'Obsolete';

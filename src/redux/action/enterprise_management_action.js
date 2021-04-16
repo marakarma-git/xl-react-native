@@ -32,19 +32,44 @@ const enterpriseManagementGetDataFail = (payload) => ({
 const treeViewToggle = (
   enterpriseId,
   data_enterprise,
-  parentVisibility = null,
+  parentCondition = null,
+  key = 'visibility',
 ) => {
   data_enterprise.map((data) => {
     if (data.enterpriseParentId == enterpriseId) {
-      if (parentVisibility == null) {
-        data.visibility = !data.visibility;
+      if (parentCondition == null) {
+        data[key] = !data[key];
       } else {
-        data.visibility = parentVisibility;
+        data[key] = parentCondition;
       }
 
-      treeViewToggle(data.enterpriseId, data_enterprise, data.visibility);
+      treeViewToggle(data.enterpriseId, data_enterprise, data[key], key);
     }
   });
+};
+
+const enterpriseManagementCheckBoxToggle = (enterpriseId) => {
+  return async (dispatch, getState) => {
+    const {data_enterprise} =
+      getState().enterprise_management_get_enterprise_reducer || {};
+    const {dataHeaderEnterprise} =
+      getState().enterprise_management_header_array_reducer || {};
+
+    data_enterprise.map((data) => {
+      if (data.enterpriseId == enterpriseId) {
+        data.treeCheck = !data.treeCheck;
+      }
+    });
+
+    treeViewToggle(enterpriseId, data_enterprise, null, 'treeCheck');
+
+    const generateDataTable = dataMatcherArray2D(
+      data_enterprise,
+      dataHeaderEnterprise,
+    );
+
+    dispatch(updateEnterpriseData(data_enterprise, generateDataTable));
+  };
 };
 
 const enterpriseManagementHideShow = (enterpriseId) => {
@@ -62,7 +87,7 @@ const enterpriseManagementHideShow = (enterpriseId) => {
       }
     });
 
-    treeViewToggle(enterpriseId, data_enterprise);
+    treeViewToggle(enterpriseId, data_enterprise, null, 'visibility');
 
     const generateDataTable = dataMatcherArray2D(
       data_enterprise,
@@ -171,7 +196,6 @@ const getEnterpriseList = (paginate) => {
         }
       }
     } catch (error) {
-      console.log(error);
       dispatch(
         enterpriseManagementGetDataFail({
           errorText: 'Failed, to get enterprise list',
@@ -186,4 +210,5 @@ export {
   getEnterpriseList,
   enterpriseManagementHideShow,
   enterpriseManagementSetDataGenerated,
+  enterpriseManagementCheckBoxToggle,
 };

@@ -32,7 +32,6 @@ const enterprise_management_get_enterprise_reducer = (
       };
     }
     case reduxString.ENTERPRISE_UPDATE_DATA: {
-      console.log(action);
       return {
         ...state,
         loading: false,

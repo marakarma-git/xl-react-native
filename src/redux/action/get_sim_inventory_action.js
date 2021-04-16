@@ -126,6 +126,7 @@ const dataMatcherArray2D = (listData = [], headerData = []) => {
             showIcon: showIcon,
             isTreeView: isTreeView,
             treeLevel: item.level || 0,
+            treeCheck: item.treeCheck == undefined ? false : item.treeCheck,
           },
           item: {...item},
           subItem: {

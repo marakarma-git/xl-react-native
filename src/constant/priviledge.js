@@ -21,6 +21,8 @@ import {
   BannerManagementCreatePage,
   UserAdministrationFilterPage,
   NotificationPage,
+  AutomationPage,
+  AutomationFilterPage,
 } from '../pages/Home/index';
 
 export const DRAWER_MENU_PRIVILEDGE = [
@@ -95,6 +97,20 @@ export const DRAWER_MENU_PRIVILEDGE = [
         components: BannerManagementPage,
       },
     ],
+  },
+  {
+    priviledgeId: '',
+    name: 'Automation',
+    icon: iconHome,
+    type: 'drawer',
+    components: AutomationPage,
+  },
+  {
+    priviledgeId: '',
+    name: 'AutomationFilter',
+    icon: iconHome,
+    type: 'non-drawer',
+    components: AutomationFilterPage,
   },
   {
     priviledgeId: '',

@@ -7,7 +7,7 @@ const dataHeaderEnterprise = [
     formId: 'name-hard-code',
     api_id: 'enterpriseName',
     cellType: 'TableCellHeaderAscDesc',
-    cellRowType: 'TableCellText',
+    cellRowType: 'TableCellCheckBoxTreeView',
     params: '&enterpriseName=',
     typeInput: 'TextInput',
     value: '',
@@ -28,16 +28,6 @@ const dataHeaderEnterprise = [
     cellRowType: 'TableCellText',
     params: '&activeStatus=',
     typeInput: 'DropDown',
-    data: [
-      {
-        value: true,
-        label: 'Ready for use',
-      },
-      {
-        value: false,
-        label: 'Obsolete',
-      },
-    ],
     value: {},
     config: {
       label: 'Status',

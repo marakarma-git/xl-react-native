@@ -8,6 +8,7 @@ import {subscriptionStyle} from '../../style';
 import {
   getEnterpriseList,
   enterpriseManagementHideShow,
+  enterpriseManagementCheckBoxToggle,
   enterpriseManagementSetDataGenerated,
 } from '../../redux/action/enterprise_management_action';
 import SearchHeader from '../../components/subscription/searchHeader';
@@ -157,6 +158,11 @@ const EnterpriseManagement = () => {
           }}
           dataHeader={dataHeaderEnterprise}
           dataTable={data_enterprise_generated}
+          onPressCheckCell={(e) =>
+            dispatch(
+              enterpriseManagementCheckBoxToggle(e.item.item.enterpriseId),
+            )
+          }
           onPressTreeArrow={(e) =>
             dispatch(enterpriseManagementHideShow(e.item.enterpriseId))
           }

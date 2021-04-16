@@ -20,4 +20,5 @@ export {default as SubscriptionPackageFilterPage} from './subscriptionPackageFil
 export {default as UserAdministrationPage} from './userAdministration.page';
 export {default as UserAdministrationCreatePage} from './userAdministrationCreate.page';
 export {default as UserAdministrationFilterPage} from './userAdministrationFilter.page';
-export {default as NotificationPage } from './notification.page';
+export {default as NotificationPage} from './notification.page';
+export {default as AutomationFilterPage} from './automationFilter.page';
