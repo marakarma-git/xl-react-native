@@ -62,6 +62,7 @@ const subscriptionPackageResetAppliedHeaderSort = () => {
 };
 const callSubscriptionPackage = (paginate) => {
   return async (dispatch, getState) => {
+    dispatch(subscriptionPackageGetSubscriptionLoading());
     const {page_params, size_params, header_sort_params} = paginate || {};
     const {orderBy: order_by_params, sortBy: sort_by_params} =
       header_sort_params || {};

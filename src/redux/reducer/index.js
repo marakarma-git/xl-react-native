@@ -22,6 +22,8 @@ import banner_management_array_header_reducer from './banner_management_array_he
 import banner_management_get_banner_reducer from './banner_management_get_banner_reducer';
 import enterprise_management_header_array_reducer from './enterprise_management_header_array_reducer';
 import enterprise_management_get_enterprise_reducer from './enterprise_management_get_enterprise_reducer';
+import automation_array_header_reducer from './automation_array_header_reducer';
+import automation_get_automation_reducer from './automation_get_automation_reducer';
 import notification_reducer from './notification_reducer';
 const RootReducers = combineReducers({
   dummy_reducer,
@@ -47,6 +49,8 @@ const RootReducers = combineReducers({
   banner_management_get_banner_reducer,
   notification_reducer,
   enterprise_management_header_array_reducer,
-  enterprise_management_get_enterprise_reducer
+  enterprise_management_get_enterprise_reducer,
+  automation_array_header_reducer,
+  automation_get_automation_reducer,
 });
 export default RootReducers;

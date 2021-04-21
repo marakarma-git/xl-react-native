@@ -69,7 +69,7 @@ const callRoleAction = (paginate) => {
     const getPage = page_params ?? role_page;
     const getSize = size_params || role_total_size;
     const getOrderBy = () => {
-      if (order_by_params === 'RESET' || orderBy === 'RESEt') {
+      if (order_by_params === 'RESET' || orderBy === 'RESET') {
         return '';
       } else {
         if (order_by_params) {
