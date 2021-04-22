@@ -34,11 +34,7 @@ const Text = (props) => {
     <MyText
       {...props}
       style={[props.style, fontWeight()]}
-<<<<<<< HEAD
-    >
-=======
       >
->>>>>>> d6d5352f7dcc794a19354726b75b94ef25284799
       {props.children}
     </MyText>
   );
