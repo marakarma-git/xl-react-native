@@ -14,7 +14,6 @@ import {ModalTermCondition} from '../components';
 import Entypo from 'react-native-vector-icons/Entypo';
 import Feather from 'react-native-vector-icons/Feather';
 import styles from '../style/account.style';
-import privHelper from '../helpers/privHelper';
 import { authLogout } from '../redux/action/auth_action';
 
 const passwordRulesArray = [
@@ -62,7 +61,7 @@ const passwordFormArray = [
   },
 ];
 
-const PasswordInput = ({submitHandler, requestLoading, navigation, orientation}) => {
+const PasswordInput = ({submitHandler, requestLoading, navigation, orientation, isCreate = false}) => {
   const dispatch = useDispatch();
   const userData = useSelector((state) => state.auth_reducer.data);
   const [passwordForm, setPasswordForm] = useState(passwordFormArray);
@@ -199,7 +198,7 @@ const PasswordInput = ({submitHandler, requestLoading, navigation, orientation})
       {marginTop: 10, borderColor: '#8D8D8D', borderWidth: 0.8, width: orientation === 'potrait' ? '90%' : '50%', backgroundColor: 'white'}]}>
         <Text style={styles.headerText}>Password</Text>
         {generateForm()}
-        { userData?.principal?.mustChangePass && !userData?.principal?.isCustomerConsent && privHelper.isHasPriviledge('CC', userData.authority)
+        { userData?.principal?.mustChangePass && !userData?.principal?.isCustomerConsent
         && <ModalTermCondition 
             showModal={showModal} 
             closeModal={() => setShowModal(!showModal)}
@@ -211,6 +210,8 @@ const PasswordInput = ({submitHandler, requestLoading, navigation, orientation})
           {generatePasswordRules()}
         </View>
       </View>
+      {
+        !isCreate &&
         <View style={[styles.buttonGroupContainer, { width: orientation === 'potrait' ? '80%' : '40%' }]}>
           <TouchableOpacity
             onPress={goBack}
@@ -219,7 +220,7 @@ const PasswordInput = ({submitHandler, requestLoading, navigation, orientation})
           </TouchableOpacity>
           <TouchableOpacity
             onPress={() => submitHandler(form)}
-            disabled={!formComplete && !privHelper.isHasPriviledge('CP', userData.authority) ? true : false}
+            disabled={!formComplete ? true : false}
             style={[
               styles.buttonGroup,
               {backgroundColor: '#002DBB'},
@@ -231,6 +232,7 @@ const PasswordInput = ({submitHandler, requestLoading, navigation, orientation})
             )}
           </TouchableOpacity>
         </View>
+      }
       </View>
   );
 };

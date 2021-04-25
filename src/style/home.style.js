@@ -201,5 +201,41 @@ export default {
     justifyContent: 'space-between', 
     paddingHorizontal: 5, 
     paddingBottom: 10
+  },
+  formStepContainer: {
+    flex: 1
+  },
+  cancelButtonFormStep: { 
+    paddingVertical: 5, 
+    width: 100, 
+    backgroundColor: '#CbC9C9', 
+    justifyContent: 'center', 
+    alignItems: 'center',
+    borderRadius: 5 
+  } ,
+  navigationButtonFormStep: {
+    paddingVertical: 5, 
+    paddingHorizontal: 10,
+    marginHorizontal: 3,
+    backgroundColor: '#002DBB', 
+    justifyContent: 'center', 
+    alignItems: 'center',
+    borderRadius: 5 
+  },
+  formStepHeader: {
+    flexDirection: 'row', 
+  },
+  formStepHeaderText: {
+    flexDirection: 'column',
+    marginHorizontal: 20
+  },
+  formStepHeaderTextTitle: {
+    fontSize: 18, 
+    paddingBottom: 5
+  },
+  formStepHeaderTextBody: {
+    fontSize: 12, 
+    color: "#707070", 
+    width: '90%'
   }
 };

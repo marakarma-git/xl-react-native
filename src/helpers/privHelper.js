@@ -35,8 +35,8 @@ export default priviledgeHelper = {
                 }
             });
         }
-        
-        return hasPriviledge;
+
+        return hasPriviledge ? true : false;
 
     }
 }

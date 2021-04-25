@@ -20,3 +20,6 @@ export {default as ModalTermCondition} from './modal/ModalTermCondition';
 
 //Global Text
 export { default as Text } from './global/text';
+
+export { default as FormStepComponent } from './form/formStep';
+export { default as CircularProgress } from './form/CircularProgress';

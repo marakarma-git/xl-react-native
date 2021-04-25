@@ -22,3 +22,4 @@ export {default as UserAdministrationCreatePage} from './userAdministrationCreat
 export {default as UserAdministrationFilterPage} from './userAdministrationFilter.page';
 export {default as NotificationPage} from './notification.page';
 export {default as AutomationFilterPage} from './automationFilter.page';
+export {default as FormStepPage} from './formstep.page';

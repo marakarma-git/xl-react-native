@@ -23,6 +23,7 @@ import {
   NotificationPage,
   AutomationPage,
   AutomationFilterPage,
+  FormStepPage,
 } from '../pages/Home/index';
 
 export const DRAWER_MENU_PRIVILEDGE = [
@@ -105,6 +106,13 @@ export const DRAWER_MENU_PRIVILEDGE = [
     type: 'drawer',
     components: AutomationPage,
   },
+  // {
+  //   priviledgeId: '',
+  //   name: 'Dev Form Step',
+  //   icon: iconHome,
+  //   type: 'drawer',
+  //   components: FormStepPage,
+  // },
   {
     priviledgeId: '',
     name: 'AutomationFilter',
