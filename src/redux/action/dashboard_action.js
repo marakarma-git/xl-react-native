@@ -41,7 +41,6 @@ export const getDashboardSummary = (accessToken) => {
               resultId: 'totalaggregatedtraffic',
             },
           ];
-
           Object.keys(data.result).map((keys) => {
             summaryData.map((sumData, index) => {
               if (keys === sumData.resultId) {

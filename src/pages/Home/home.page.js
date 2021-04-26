@@ -1,5 +1,6 @@
 import React, {useState, useEffect, useCallback} from 'react';
 import Carousel, {Pagination} from 'react-native-snap-carousel';
+import {setHomeLogin} from '../../redux/action/auth_action';
 import {getCarousel} from '../../redux/action/dashboard_action';
 import {callEnterpriseLogo} from '../../redux/action/enterprise_action';
 import {Card} from 'react-native-paper';
@@ -98,6 +99,7 @@ const LandingPage = ({navigation}) => {
 
   useEffect(() => {
     const pageLoad = navigation.addListener('focus', () => {
+      dispatch(setHomeLogin());
       dispatch(getCarousel(userData.access_token));
       dispatch(
         callEnterpriseLogo(

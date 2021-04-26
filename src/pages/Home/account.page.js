@@ -102,6 +102,7 @@ const MyAccountPage = (props) => {
               inputHandler={inputHandler}
             />
             <TouchableOpacity
+              // disabled={privHelper.isHasPriviledge("CP",userData.authority)}
               onPress={() => props.navigation.navigate('Change Password')}>
               <Text style={styles.linkText}>Change Password</Text>
             </TouchableOpacity>

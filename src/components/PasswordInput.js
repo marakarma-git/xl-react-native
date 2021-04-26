@@ -64,6 +64,7 @@ const passwordFormArray = [
 const PasswordInput = ({submitHandler, requestLoading, navigation, orientation, isCreate = false}) => {
   const dispatch = useDispatch();
   const userData = useSelector((state) => state.auth_reducer.data);
+  const homeLogin = useSelector((state) => state.auth_reducer.homeLogin);
   const [passwordForm, setPasswordForm] = useState(passwordFormArray);
   const [passwordRules, setPasswordRules] = useState(passwordRulesArray);
   const [formComplete, setFormComplete] = useState(false);
@@ -85,7 +86,7 @@ const PasswordInput = ({submitHandler, requestLoading, navigation, orientation, 
   };
 
   const goBack = () => {
-    if(userData.principal.mustChangePass){
+    if(userData.principal.mustChangePass && !homeLogin){
       dispatch(authLogout());
       navigation.replace("Auth");
     }else{
@@ -192,6 +193,56 @@ const PasswordInput = ({submitHandler, requestLoading, navigation, orientation, 
     checkFormComplete();
   }, [form]);
 
+  useEffect(() => {
+    const pageLoad = navigation.addListener("focus", () => {
+      setPasswordForm([
+        {
+          name: 'oldPassword',
+          label: 'Current Password',
+          required: true,
+          visible: false,
+          validation: false,
+        },
+        {
+          name: 'newPassword',
+          label: 'New Password',
+          required: true,
+          visible: false,
+          validation: true,
+        },
+        {
+          name: 'confirmPassword',
+          label: 'Confirm Password',
+          required: true,
+          visible: false,
+          validation: false,
+        },
+      ]);
+      setPasswordRules([
+        {label: 'Be between 8 and 30 characters', valid: false},
+        {label: 'contain at least 1 number 0-9', valid: false},
+        {label: 'contain at least 1 lower case letter (a-z)', valid: false},
+        {label: 'contain at least 1 upper case letter (A-Z)', valid: false},
+        {
+          label: 'not contain more than 3 consecutives identical characters',
+          valid: true,
+        },
+        {
+          label: 'not contain more than 3 consecutives lower-case characters',
+          valid: true,
+        },
+        {
+          label:
+            'contain only the following characters a-z, A-Z, 0-9, #, -, !, @, %, &, /, (, ), ?, + *',
+          valid: true,
+        },
+        {label: "match the entry in 'Confrim Password'", valid: true},
+      ]);
+    });
+
+    return pageLoad;
+  }, [navigation]);
+
   return (
     <View style={{ alignItems: 'center', position: 'relative', top: -60 }}>
       <View style={[styles.formContainer, 
@@ -238,6 +289,7 @@ const PasswordInput = ({submitHandler, requestLoading, navigation, orientation, 
 };
 
 const ButtonShowHide = ({visible, position, passwordForm, setPasswordForm}) => {
+
   const showHide = () => {
     const newForm = [...passwordForm];
     newForm[position].visible = !passwordForm[position].visible;
