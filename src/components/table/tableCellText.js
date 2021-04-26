@@ -1,12 +1,23 @@
-import React from 'react';
+import React, {useState} from 'react';
 import PropTypes from 'prop-types';
-import {TouchableOpacity, View} from 'react-native';
+import {
+  KeyboardAvoidingView,
+  Modal,
+  ScrollView,
+  TouchableOpacity,
+  View,
+} from 'react-native';
 import Text from '../global/text';
 import {defaultHeightCell, defaultWidthCell} from '../../constant/config';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import styles from '../../style/drawer.style';
+import lod from 'lodash';
+import {inputHybridStyle} from '../../style';
+import {colors} from '../../constant/color';
 
 const TableCellText = (props) => {
+  const [moreText, setMoreText] = useState(false);
+  const [showMore, setShowMore] = useState(false);
   const {config, onPress, otherInformation, onPressArrow} = props || {};
   const {
     label,
@@ -56,6 +67,14 @@ const TableCellText = (props) => {
                 onPress={() => onPressArrow(otherInformation)}>
                 <Text
                   numberOfLines={1}
+                  onTextLayout={(e) =>
+                    setMoreText(lod.size(e.nativeEvent.lines) > 1)
+                  }
+                  onPress={() => {
+                    if (moreText) {
+                      setShowMore(true);
+                    }
+                  }}
                   style={{
                     paddingLeft:
                       isTreeView && (treeLevel + (!icon ? 1.6 : 0)) * 10,
@@ -77,6 +96,39 @@ const TableCellText = (props) => {
             </View>
           </TouchView>
         </View>
+      )}
+      {showMore && (
+        <Modal
+          animationType="slide"
+          transparent
+          onRequestClose={() => setShowMore(false)}>
+          <View style={inputHybridStyle.modalBackdrop} />
+          <KeyboardAvoidingView
+            enabled={false}
+            style={inputHybridStyle.modalContainer}>
+            <View style={inputHybridStyle.modalTitleContainer}>
+              <Text style={inputHybridStyle.modalTitleText}>Detail</Text>
+            </View>
+            <ScrollView style={{flex: 1}}>
+              <Text>{label}</Text>
+            </ScrollView>
+            <View
+              style={{
+                alignItems: 'center',
+                justifyContent: 'center',
+                flexDirection: 'row',
+              }}>
+              <TouchableOpacity
+                style={[
+                  inputHybridStyle.buttonStyle,
+                  {backgroundColor: colors.gray_button_cancel},
+                ]}
+                onPress={() => setShowMore(false)}>
+                <Text style={{color: 'black'}}>Close</Text>
+              </TouchableOpacity>
+            </View>
+          </KeyboardAvoidingView>
+        </Modal>
       )}
     </React.Fragment>
   );
