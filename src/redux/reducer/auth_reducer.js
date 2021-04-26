@@ -6,7 +6,8 @@ const initialState = {
   titleVersion: null,
   alreadyRequest: false,
   isLoggedIn: false,
-  afterLogin: false
+  afterLogin: false,
+  homeLogin: false
 };
 const auth_reducers = (state = initialState, action) => {
   switch (action.type) {
@@ -64,6 +65,11 @@ const auth_reducers = (state = initialState, action) => {
         ...state,
         data: payload,
       };
+    case reduxString.HOME_LOGIN:
+      return{
+        ...state,
+        homeLogin: true
+      }
     default:
       return state;
   }

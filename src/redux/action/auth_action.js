@@ -9,6 +9,13 @@ const authRequest = () => {
     type: reduxString.AUTH_REQUEST,
   };
 };
+
+const setHomeLogin = () => {
+  return{
+    type: reduxString.HOME_LOGIN
+  }
+}
+
 const authFailed = (error) => {
   return {
     type: reduxString.AUTH_FAILED,
@@ -140,4 +147,4 @@ const updateCustomerConsent = (userData) => {
   }
 }
 
-export {authLogin, authFailed, authLogout, getTitleVersion, changePassword, setFalseAfterLogin, updateCustomerConsent};
+export {authLogin, authFailed, authLogout, getTitleVersion, changePassword, setFalseAfterLogin, updateCustomerConsent, setHomeLogin};

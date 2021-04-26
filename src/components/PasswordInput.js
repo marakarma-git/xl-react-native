@@ -64,6 +64,7 @@ const passwordFormArray = [
 const PasswordInput = ({submitHandler, requestLoading, navigation, orientation, isCreate = false}) => {
   const dispatch = useDispatch();
   const userData = useSelector((state) => state.auth_reducer.data);
+  const homeLogin = useSelector((state) => state.auth_reducer.homeLogin);
   const [passwordForm, setPasswordForm] = useState(passwordFormArray);
   const [passwordRules, setPasswordRules] = useState(passwordRulesArray);
   const [formComplete, setFormComplete] = useState(false);
@@ -85,7 +86,7 @@ const PasswordInput = ({submitHandler, requestLoading, navigation, orientation, 
   };
 
   const goBack = () => {
-    if(userData.principal.mustChangePass){
+    if(userData.principal.mustChangePass && !homeLogin){
       dispatch(authLogout());
       navigation.replace("Auth");
     }else{
