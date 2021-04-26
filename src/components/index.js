@@ -23,3 +23,4 @@ export { default as Text } from './global/text';
 
 export { default as FormStepComponent } from './form/formStep';
 export { default as CircularProgress } from './form/CircularProgress';
+export { default as FormPassword } from './form/formPassword';
