@@ -55,6 +55,11 @@ const dataHeaderFilter = [
     config: {
       label: 'Status',
       isTouchable: true,
+      superType: 'BOOL',
+      labelBool: {
+        true: 'Active',
+        false: 'Locked',
+      },
     },
     shown: true,
     sort_by_filter: 5,

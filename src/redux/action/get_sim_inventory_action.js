@@ -95,13 +95,16 @@ const dataMatcherArray2D = (listData = [], headerData = []) => {
         showIcon,
         isTouchable,
         isTreeView,
+        labelBool,
       } = config || {};
       if (shown && !doNotShowOnTable) {
-        const createObject = (superType, labelValue) => {
+        const createLabel = (superType, labelValue) => {
           if (superType === 'DATE') {
             return labelValue ? dayjs(labelValue).format('DD-MM-YYYY') : '';
           } else if (superType === 'BYTE') {
             return Helper.formatBytes(labelValue);
+          } else if (superType === 'BOOL') {
+            return labelValue ? labelBool.true : labelBool.false;
           } else {
             return labelValue;
           }
@@ -112,7 +115,7 @@ const dataMatcherArray2D = (listData = [], headerData = []) => {
             flexStart: flexStart,
             width: width,
             superType: superType,
-            label: createObject(superType, item[`${api_id}`]),
+            label: createLabel(superType, item[`${api_id}`]),
             backgroundColor: index % 2 ? colors.gray_table : 'white',
             fontColor:
               formId === 'imsi-hard-code' &&
@@ -120,7 +123,9 @@ const dataMatcherArray2D = (listData = [], headerData = []) => {
               colors.imsi_blue,
             isTouchable:
               formId === 'imsi-hard-code' &&
-              subItem.cellRowType === 'TableCellCheckBox',
+              subItem.cellRowType === 'TableCellCheckBox'
+                ? true
+                : isTouchable,
             visibility: item.visibility == undefined ? true : item.visibility,
             icon: item.icon || null,
             showIcon: showIcon,

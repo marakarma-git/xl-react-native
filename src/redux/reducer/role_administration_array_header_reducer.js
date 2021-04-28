@@ -67,6 +67,11 @@ const dataRoleHeader = [
     config: {
       label: 'Status',
       isTouchable: true,
+      superType: 'BOOL',
+      labelBool: {
+        true: 'Ready',
+        false: 'Read Only',
+      },
     },
     shown: true,
     sort_by_filter: 1,
