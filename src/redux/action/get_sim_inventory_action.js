@@ -98,15 +98,15 @@ const dataMatcherArray2D = (listData = [], headerData = []) => {
         labelBool,
       } = config || {};
       if (shown && !doNotShowOnTable) {
-        const createLabel = (superType, labelValue) => {
+        const createLabel = (superType, firstValue) => {
           if (superType === 'DATE') {
-            return labelValue ? dayjs(labelValue).format('DD-MM-YYYY') : '';
+            return firstValue ? dayjs(firstValue).format('DD-MM-YYYY') : '';
           } else if (superType === 'BYTE') {
-            return Helper.formatBytes(labelValue);
+            return Helper.formatBytes(firstValue);
           } else if (superType === 'BOOL') {
-            return labelValue ? labelBool.true : labelBool.false;
+            return firstValue ? labelBool.true : labelBool.false;
           } else {
-            return labelValue;
+            return firstValue;
           }
         };
         const generateObject = {
@@ -133,11 +133,8 @@ const dataMatcherArray2D = (listData = [], headerData = []) => {
             treeLevel: item.level || 0,
             treeCheck: item.treeCheck == undefined ? false : item.treeCheck,
           },
-          item: {...item},
-          subItem: {
-            formId: formId,
-            ...rest,
-          },
+          item,
+          subItem,
           valueCheck: false,
         };
         subGenerated.push(generateObject);

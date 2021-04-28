@@ -22,6 +22,7 @@ const dataHeaderFilter = [
   {
     formId: 'user-name-hard-coded',
     api_id: 'firstName',
+    child_api_id: 'lastName',
     value: '',
     typeInput: 'TextInput',
     params: '&userName=',

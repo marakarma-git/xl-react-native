@@ -18,7 +18,9 @@ import {colors} from '../../constant/color';
 const TableCellText = (props) => {
   const [moreText, setMoreText] = useState(false);
   const [showMore, setShowMore] = useState(false);
-  const {config, onPress, otherInformation, onPressArrow} = props || {};
+  const {config, onPress, otherInformation, onPressArrow, item, subItem} =
+    props || {};
+  const {child_api_id} = subItem || '';
   const {
     label,
     width,
@@ -90,7 +92,7 @@ const TableCellText = (props) => {
                       &nbsp;
                     </React.Fragment>
                   )}
-                  {label}
+                  {label + (child_api_id ? ` ${item[`${child_api_id}`]}` : '')}
                 </Text>
               </TouchableOpacity>
             </View>
@@ -110,7 +112,9 @@ const TableCellText = (props) => {
               <Text style={inputHybridStyle.modalTitleText}>Detail</Text>
             </View>
             <ScrollView style={{flex: 1}}>
-              <Text>{label}</Text>
+              <Text>
+                {label + (child_api_id ? ` ${item[`${child_api_id}`]}` : '')}
+              </Text>
             </ScrollView>
             <View
               style={{
