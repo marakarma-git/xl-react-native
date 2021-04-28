@@ -36,7 +36,14 @@ const TableCellText = (props) => {
     isTreeView,
     treeLevel,
   } = config || {};
-
+  const createLabel = () => {
+    if (label && !child_api_id) {
+      return label;
+    }
+    if (child_api_id) {
+      return label + (child_api_id ? ` ${item[`${child_api_id}`]}` : '');
+    }
+  };
   const TouchView = isTouchable ? TouchableOpacity : View;
   return (
     <React.Fragment>
@@ -92,7 +99,7 @@ const TableCellText = (props) => {
                       &nbsp;
                     </React.Fragment>
                   )}
-                  {label + (child_api_id ? ` ${item[`${child_api_id}`]}` : '')}
+                  {createLabel()}
                 </Text>
               </TouchableOpacity>
             </View>
@@ -112,9 +119,7 @@ const TableCellText = (props) => {
               <Text style={inputHybridStyle.modalTitleText}>Detail</Text>
             </View>
             <ScrollView style={{flex: 1}}>
-              <Text>
-                {label + (child_api_id ? ` ${item[`${child_api_id}`]}` : '')}
-              </Text>
+              <Text>{createLabel()}</Text>
             </ScrollView>
             <View
               style={{

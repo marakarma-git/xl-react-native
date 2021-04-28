@@ -100,7 +100,9 @@ const dataMatcherArray2D = (listData = [], headerData = []) => {
       if (shown && !doNotShowOnTable) {
         const createLabel = (superType, firstValue) => {
           if (superType === 'DATE') {
-            return firstValue ? dayjs(firstValue).format('DD-MM-YYYY') : '';
+            return firstValue
+              ? dayjs(firstValue.substring(0, 10)).format('DD-MM-YYYY')
+              : '';
           } else if (superType === 'BYTE') {
             return Helper.formatBytes(firstValue);
           } else if (superType === 'BOOL') {
