@@ -289,6 +289,7 @@ class Helper {
     data.map((value, index) => {
       value.level = currentLevel;
       value.visibility = true;
+      value.childrenCnt = value.children.length;
       Object.keys(value).map((objValue, index) => {
         if (typeof value[objValue] === 'object' && value[objValue] != null) {
           currentLevel++;
