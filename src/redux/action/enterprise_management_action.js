@@ -12,6 +12,12 @@ const enterpriseManagementGetDataSuccess = (data) => ({
   type: 'ENTERPRISE_MANAGEMENT_GET_DATA_SUCCESS',
   ...data,
 });
+
+const activeEnterpriseManagementGetDataSucces = (data) => ({
+  type: "ACTIVE_ENTERPRISE_MANAGEMENT_GET_DATA_SUCCESS",
+  payload: data
+});
+
 const enterpriseManagementSetDataGenerated = ({dataEnterpriseGenerated}) => {
   return {
     type: reduxString.ENTERPRISE_MANAGEMENT_SET_DATA_GENERATED,
@@ -97,6 +103,58 @@ const enterpriseManagementHideShow = (enterpriseId) => {
     dispatch(updateEnterpriseData(data_enterprise, generateDataTable));
   };
 };
+
+const getActiveEnterpriseList = (paginate) => {
+    return async (dispatch, getState) => {
+    dispatch(enterpriseManagementRequestData());
+    const {page_params, size_params, header_sort_params} = paginate || {};
+    const {orderBy: order_by_params, sortBy: sort_by_params} =
+      header_sort_params || {};
+    const {access_token} = getState().auth_reducer.data || '';
+    const {dataHeaderEnterprise, searchText, generatedParams} =
+      getState().enterprise_management_header_array_reducer || {};
+    const {
+      enterprise_page,
+      enterprise_total_size,
+      enterprise_applied_header_sort,
+    } = (await getState().enterprise_management_get_enterprise_reducer) || {};
+    const {orderBy, sortBy} = enterprise_applied_header_sort || {};
+
+    try {
+      const {data} = await axios.get(
+        `${base_url}/user/corp/v2/getActiveEnterprise`,
+        {
+          headers: {
+            Authorization: 'Bearer ' + access_token,
+          },
+        },
+      );
+
+      if (data) {
+        const {result, statusCode} = data || {};
+        const {content, totalPages, totalElements} = result || {};
+        if (statusCode === 0) {
+          dispatch(
+            activeEnterpriseManagementGetDataSucces(Helper.makeMultiDimensionalArrayTo2DArray(result))
+          )
+        } else {
+          dispatch(
+            enterpriseManagementGetDataFail({
+              errorText: 'Failed, to get enterprise list',
+            }),
+          );
+        }
+      }
+    } catch (error) {
+      dispatch(
+        enterpriseManagementGetDataFail({
+          errorText: 'Failed, to get enterprise list',
+          ...error.response.data,
+        }),
+      );
+    }
+  };
+}
 
 const getEnterpriseList = (paginate) => {
   return async (dispatch, getState) => {
@@ -208,6 +266,7 @@ const getEnterpriseList = (paginate) => {
 
 export {
   getEnterpriseList,
+  getActiveEnterpriseList,
   enterpriseManagementHideShow,
   enterpriseManagementSetDataGenerated,
   enterpriseManagementCheckBoxToggle,

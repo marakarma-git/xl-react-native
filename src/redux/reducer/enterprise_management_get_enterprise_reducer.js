@@ -4,6 +4,7 @@ const initialState = {
   loading: false,
   errorText: '',
   data_enterprise: [],
+  data_active_enterprise: [],
   data_enterprise_generated: [],
   enterprise_page: 0,
   enterprise_total_page: 0,
@@ -61,6 +62,15 @@ const enterprise_management_get_enterprise_reducer = (
           initialState.enterprise_applied_header_sort,
         enterprise_params_applied_activity_log:
           action.enterpriseParamsAppliedActivityLog || '',
+      };
+    }
+    case reduxString.ACTIVE_ENTERPRISE_MANAGEMENT_GET_DATA_SUCCESS: {
+      console.log(action.payload)
+      return {
+        ...state,
+        loading: false,
+        errorText: '',
+        data_active_enterprise: action.payload
       };
     }
     case reduxString.ENTERPRISE_MANAGEMENT_GET_DATA_FAIL: {

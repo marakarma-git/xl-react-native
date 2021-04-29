@@ -1,4 +1,4 @@
-import {iconComponents, iconGrids, iconHome, iconAdmin} from '../assets/images';
+import { iconComponents, iconGrids, iconHome, iconAdmin } from '../assets/images';
 import {
   LandingPage,
   DashboardPage,
@@ -108,7 +108,7 @@ export const DRAWER_MENU_PRIVILEDGE = [
   },
   // {
   //   priviledgeId: '',
-  //   name: 'Dev Form Step',
+  //   name: 'Create User',
   //   icon: iconHome,
   //   type: 'drawer',
   //   components: FormStepPage,
@@ -241,12 +241,12 @@ export const DRAWER_MENU_PRIVILEDGE = [
 // you can adjust action by you redux action
 
 export const ACTION_PRIVILEDGE = [
-  { 
+  {
     moduleName: "Activity Log",
     activity: [
-      { action: "", actionCode: "AL1",description: "Generate Table List", privId: "adfda120-1193-4ea1-bf35-e3ed3ee2be48", impactOn: "View Activity Log" },
-      { action: "", actionCode: "AL2",description: "Search/Filter", privId: "a7d61448-56ff-11eb-ae93-0242ac130002", impactOn: "Filter" }
-    ] 
+      { action: "", actionCode: "AL1", description: "Generate Table List", privId: "adfda120-1193-4ea1-bf35-e3ed3ee2be48", impactOn: "View Activity Log" },
+      { action: "", actionCode: "AL2", description: "Search/Filter", privId: "a7d61448-56ff-11eb-ae93-0242ac130002", impactOn: "Filter" }
+    ]
   },
   {
     moduleName: "Automation",

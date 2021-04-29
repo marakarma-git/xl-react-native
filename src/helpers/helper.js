@@ -290,15 +290,17 @@ class Helper {
       value.level = currentLevel;
       value.visibility = true;
       value.childrenCnt = value.children.length;
+      value.collapse = true;
       Object.keys(value).map((objValue, index) => {
         if (typeof value[objValue] === 'object' && value[objValue] != null) {
           currentLevel++;
           value.icon = value[objValue].length > 0 && 'caret-down';
           value.treeCheck = false;
-          value.activeStatus = value.activeStatus
-            ? 'Ready for use'
-            : 'Obsolete';
-          value.onboarded = value.onboarded.substring(0, 10);
+          value.isDisabled = false;
+          // value.activeStatus = value.activeStatus
+          //   ? 'Ready for use'
+          //   : 'Obsolete';
+          // value.onboarded = value.onboarded.substring(0, 10);
 
           newData.push(value);
           if (value[objValue].length > 0) {

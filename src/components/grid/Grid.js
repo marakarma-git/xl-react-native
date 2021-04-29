@@ -4,7 +4,8 @@ import {Text} from '../../components';
 import {FlatList, View, TouchableOpacity} from 'react-native';
 
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import CustomCheckBox from '../customCheckBox';
+import CustomCheckBox from '../grid/GridCheckBox';
+import { ActivityIndicator } from 'react-native';
 
 const GridComponent = (props) => {
   return(
@@ -13,82 +14,129 @@ const GridComponent = (props) => {
           <GridHeaderComponent 
             gridOptions={props.gridOptions}
             colHeight={props.colHeight}
+            onPressHeaderCheckBox={props.onPressHeaderCheckBox}
           />
         </View>
-        <GridCellComponent
-          keyExtractor={props.keyExtractor}
-          dataSetter={props.dataSetter}
-          gridOptions={props.gridOptions} 
-          gridData={props.gridData}
-          colHeight={props.colHeight}
-          tableMaxHeight={props.tableMaxHeight}
-        />
+        {
+          props.loading ?
+            <View style={{ justifyContent: 'center', height: 100 }}>
+              <ActivityIndicator color="#002DBB" />
+              <Text style={{
+                  textAlign: 'center',
+                  fontSize: 14,
+                  paddingVertical: 10,
+                }}>Loading...</Text>
+            </View>
+            :
+            <GridCellComponent
+              loading={props.loading}
+              keyExtractor={props.keyExtractor}
+              gridOptions={props.gridOptions} 
+              gridData={props.gridData}
+              colHeight={props.colHeight}
+              tableMaxHeight={props.tableMaxHeight}
+              onPressTree={props.onPressTree}
+              onPressCheckBox={props.onPressCheckBox}
+            />
+
+        }
       </View>
   );
 }
 
 const GridHeaderComponent = (props) => {
+  const generateHeader = (option, index) => {
+    switch (option.headerType) {
+      case "text":
+        return  <GridHeaderTextComponent 
+                  key={index} 
+                  width={option.width}
+                  headerAlign={option.headerAlign}
+                  bgColor={option.bgColor}
+                  headerAlign={option.headerAlign}
+                  label={option.label}
+                  {...props} />
+      case "checkbox": 
+        return  <GridHeaderCheckBoxComponent 
+                  key={index} 
+                  width={option.width}
+                  headerAlign={option.headerAlign}
+                  bgColor={option.bgColor}
+                  headerAlign={option.headerAlign}
+                  label={option.label}
+                  isCheck={option.isCheck}
+                  {...props} />
+    
+      default:
+        return  <GridHeaderTextComponent 
+                  key={index} 
+                  width={option.width}
+                  headerAlign={option.headerAlign}
+                  bgColor={option.bgColor}
+                  headerAlign={option.headerAlign}
+                  label={option.label}
+                  {...props} />
+
+    }
+  }
+
   return(
     <React.Fragment>
       {props.gridOptions.map((option, index) => (
-        <View
-        key={index}  
-        style={{ 
-          height: props.colHeight, 
-          width: option?.width,
-          justifyContent: 'center',
-          alignItems: option.headerAlign,
-          backgroundColor: option.bgColor || "#F4F3F4",
-          borderBottomColor: "#D8D8D8",
-          borderBottomWidth: 1 }}>
-            <Text style={{ color: option.headerColor || "black" }}>{option.label}</Text>
-        </View>
+        generateHeader(option, index)
       ))}
     </React.Fragment>
   );
 }
 
+const GridHeaderTextComponent = (props) => {
+  return(
+    <View
+      key={props.index}  
+      style={{ 
+        height: props.colHeight, 
+        width: props.width,
+        justifyContent: 'center',
+        alignItems: props.headerAlign,
+        backgroundColor: props.bgColor || "#F4F3F4",
+        borderBottomColor: "#D8D8D8",
+        borderBottomWidth: 1 }}>
+          <Text style={{ color: props.headerColor || "black" }}>{props.label}</Text>
+    </View>
+  )
+}
+
+const GridHeaderCheckBoxComponent = (props) => {
+  return(
+    <View
+      key={props.index}  
+      style={{ 
+        height: props.colHeight, 
+        width: props.width,
+        justifyContent: 'center',
+        alignItems: props.headerAlign,
+        backgroundColor: props.bgColor || "#F4F3F4",
+        borderBottomColor: "#D8D8D8",
+        borderBottomWidth: 1 }}>
+        <CustomCheckBox
+          disabled={false}
+          value={props.isCheck}
+          onPress={() => props.onPressHeaderCheckBox(null)}
+        />
+    </View>
+  );
+}
+
 const GridCellComponent = (props) => {
-
-  const treeViewToggle = (cellId) => {
-    const newData = new Array();
-    let isRoot = false;
-    props.gridData.map((data) => {
-      if(data.enterpriseId == cellId){
-        if(data.enterpriseParentId === null){
-          isRoot = true;
-        }
-      }
-
-      if(isRoot){
-        if(data.enterpriseId !== cellId){
-          data.visibility = !data.visibility;
-        }
-        data.icon
-      }else{
-        if(data.enterpriseParentId === cellId){
-          data.visibility = !data.visibility;
-        }
-      }
-
-      if (data.icon) {
-        data.icon = data.icon == 'caret-down' ? 'caret-up' : 'caret-down';
-      }
-
-      newData.push(data);
-    });
-    props.dataSetter(newData);
-  };
 
   const renderList = useCallback(() => {
     return(
-      <View style={{ maxHeight: 200 }}>
+      <View style={{ height: props.tableMaxHeight }}>
         <FlatList
           data={props.gridData}
           renderItem={renderCell}
           keyExtractor={item => item[props.keyExtractor]}
-          extraData={item => item.visibility}
-        />
+          extraData={item => item.visibility} />
       </View>
     )
   }, [props.gridData]);
@@ -99,7 +147,7 @@ const GridCellComponent = (props) => {
         { props.gridOptions.map((option, index) => (
           <CellComponent 
             key={index}
-            cellId={item.enterpriseId}
+            cellId={item[props.keyExtractor]}
             colHeight={props.colHeight}
             width={option.width}
             align={option.headerAlign}
@@ -108,9 +156,13 @@ const GridCellComponent = (props) => {
             headerColor={"black"}
             cellType={option.cellType}
             level={item.level ? item.level : 0}
-            visibility={item.visibility ? true : false}
+            visibility={item.visibility || item.visibility == undefined ? true : false}
             icon={item.icon}
-            onPressTree={treeViewToggle}
+            isSelect={item.treeCheck}
+            isCheck={item.isCheck}
+            isDisabled={item.isDisabled}
+            onPressTree={props.onPressTree}
+            onPressCheckBox={props.onPressCheckBox}
           />
         )) }
       </View>
@@ -132,6 +184,8 @@ const CellComponent = (props) => {
         return <CellTextComponent {...props} />;
       case "treeViewWithCheckBox":
         return <CellTreeViewCheckBoxComponent {...props} />;
+      case "checkbox":
+        return <CellCheckBoxComponent {...props} />;
 
       default:
         return <CellTextComponent {...props} />;
@@ -163,7 +217,7 @@ const CellTreeViewCheckBoxComponent = (props) => {
             <TouchableOpacity
               onPress={() => props.onPressTree(props.cellId)}>
                 <Ionicons
-                  name={"caret-down"}
+                  name={props.icon}
                   color={'black'}
                   style={{ paddingLeft: (props.level * 10) + 5 }}
                 />
@@ -172,9 +226,10 @@ const CellTreeViewCheckBoxComponent = (props) => {
             <Text style={{ paddingLeft: (props.level * 10) + 8 }}></Text>
             }
           <CustomCheckBox
+            disabled={props.isDisabled}
             style={{ marginHorizontal: 10 }}
-            value={false}
-            onPress={() => alert("tes")}
+            value={props.isSelect}
+            onPress={() => props.onPressCheckBox(props.cellId)}
           />
           <Text 
             style={{ color: props.headerColor || "black", fontSize: 12 }}>
@@ -203,25 +258,50 @@ const CellTextComponent = (props) => {
   )
 }
 
+const CellCheckBoxComponent = (props) => {
+  return(
+    <View
+      style={{ 
+        height: props.colHeight, 
+        width: props?.width,
+        justifyContent: 'center',
+        alignItems: props.align,
+        backgroundColor: props.bgColor,
+        borderBottomColor: "#D8D8D8",
+        borderBottomWidth: 1 }}>
+        <CustomCheckBox
+          disabled={false}
+          value={props.isCheck}
+          onPress={() => props.onPressCheckBox(props.cellId)}
+        />
+    </View>
+  )
+}
+
 GridComponent.propTypes = {
+  loading: PropTypes.bool,
+  indexIdentifier: PropTypes.string,
   gridData: PropTypes.array,
   gridOptions: PropTypes.array,
   onPressCell: PropTypes.func,
   onPressCheckBox: PropTypes.func,
   colHeight: PropTypes.number,
-  dataSetter: PropTypes.func,
-  keyExtractor: PropTypes.string
+  keyExtractor: PropTypes.string,
+  onPressHeaderCheckBox: PropTypes.func
 };
 
 GridComponent.defaultProps = {
+  loading: false,
   keyExtractor: "",
   gridData: [],
   gridOptions: [],
   colHeight: 40,
   tableMaxHeight: 100,
+  onPressTree: () => {},
   onPressCell: () => {},
   onPressCheckBox: () => {},
-  dataSetter: () => {}
+  dataSetter: () => {},
+  onPressHeaderCheckBox: () => {}
 };
 
 export default GridComponent;

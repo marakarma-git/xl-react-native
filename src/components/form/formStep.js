@@ -12,6 +12,7 @@ const FormStepComponent = (props) => {
         <React.Fragment>
             <FormStepHeaderComponent formPosition={props.formPosition} formLength={props.formLength} formTitle={props.formTitle} />
             <FormStepBodyComponent
+                listViewRef={props.listViewRef}
                 formBody={props.formBody}
             />
             <FormStepFooterComponent
@@ -71,12 +72,19 @@ const FormStepFooterComponent = (props) => {
                 <View style={{ flexDirection: 'row' }}>
                     { props.formPosition > 0 &&
                         <TouchableOpacity onPress={props.onBack} style={styles.navigationButtonFormStep}>
-                            <Entypo color="white" name="chevron-left" />
+                            <Text style={{ color: 'white' }} fontType="bold">
+                                <Entypo color="white" name="chevron-left" />&nbsp;
+                                Prev
+                            </Text>
                         </TouchableOpacity> 
                     }
                     { props.formPosition < (props.formLength - 1) &&
                         <TouchableOpacity onPress={props.onNext} style={styles.navigationButtonFormStep}>
-                            <Entypo color="white" name="chevron-right" />
+                            <Text style={{ color: 'white' }} fontType="bold">
+                                Next&nbsp;
+                                <Entypo color="white" name="chevron-right" />
+                            </Text>
+                            
                         </TouchableOpacity> 
                     }
                     { props.formPosition >= (props.formLength - 1) &&

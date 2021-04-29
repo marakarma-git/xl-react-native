@@ -10,6 +10,7 @@ const CustomRadioButtonComponent = (props) => {
   return(
       <View style={[styles.radioButtonContainer, props.style]}>
         <RadioButton
+          onPress={() => props.onPressRadio()}
           value={props.radioValue}
           status={props.status}
         />
@@ -22,14 +23,16 @@ CustomRadioButtonComponent.propTypes = {
   label: PropTypes.string,
   radioValue: PropTypes.string,
   status: PropTypes.string,
-  style: PropTypes.object
+  style: PropTypes.object,
+  onPressRadio: PropTypes.func
 };
 
 CustomRadioButtonComponent.defaultProps = {
   label: "",
   radioValue: "",
   status: "unchecked",
-  style: {}
+  style: {},
+  onPressRadio: () => {}
 }
 
 export default CustomRadioButtonComponent;
