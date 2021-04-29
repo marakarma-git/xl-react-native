@@ -35,7 +35,7 @@ const gridOptionsArray = [
     width: '45%', 
     cellAlign: 'center', 
     headerAlign: 'center', 
-    label: "Organization", 
+    label: "Organizations", 
     field: "enterpriseName", 
     cellType: "text",
     headerType: "text"

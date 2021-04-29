@@ -32,6 +32,13 @@ const enterprise_management_get_enterprise_reducer = (
         errorText: '',
       };
     }
+    case reduxString.ENTERPRISE_MANAGEMENT_REQUEST_DATA_END: {
+      return {
+        ...state,
+        loading: false,
+        errorText: '',
+      };
+    }
     case reduxString.ENTERPRISE_UPDATE_DATA: {
       return {
         ...state,

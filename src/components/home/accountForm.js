@@ -28,7 +28,7 @@ const AccountFormComponent = ({
             placeholder={form.title}
           />
           {
-            isValidate &&
+            isValidate && formError[form.key] &&
             <Text style={{ color: 'red' }}>{formError[form.key]}</Text>
           }
         </View>

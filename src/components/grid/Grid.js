@@ -250,7 +250,8 @@ const CellTextComponent = (props) => {
         backgroundColor: props.bgColor,
         borderBottomColor: "#D8D8D8",
         borderBottomWidth: 1 }}>
-          <Text 
+          <Text
+            numberOfLines={1} 
             style={{ color: props.headerColor || "black", fontSize: 12 }}>
               {props.data}
           </Text>

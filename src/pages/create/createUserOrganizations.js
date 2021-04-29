@@ -5,11 +5,15 @@ import {useDispatch, useSelector} from 'react-redux';
 import {Text, CustomRadioButtonComponent, GridComponent} from '../../components';
 
 import styles from '../../style/create.style';
-import { getActiveEnterpriseList, getEnterpriseList } from '../../redux/action/enterprise_management_action';
+import { 
+  enterpriseManagementRequestData, 
+  enterpriseManagementRequestDataEnd, 
+  getActiveEnterpriseList, 
+} from '../../redux/action/enterprise_management_action';
 
 const gridOptionsArray = [
-  {bgColor: "#F4F3F4", headerColor: "#707070", width: '50%', cellAlign: 'center', headerAlign: 'center', label: "Organization", field: "enterpriseName", cellType: "treeViewWithCheckBox", headerType: "text"},
-  {bgColor: "#F4F3F4", headerColor: "#707070", width: '50%', cellAlign: 'center', headerAlign: 'center', label: "Children", field: "childrenCnt", cellType: "text", headerType: "text"},
+  {bgColor: "#F4F3F4", headerColor: "#707070", width: '80%', cellAlign: 'center', headerAlign: 'center', label: "Organization", field: "enterpriseName", cellType: "treeViewWithCheckBox", headerType: "text"},
+  {bgColor: "#F4F3F4", headerColor: "#707070", width: '20%', cellAlign: 'center', headerAlign: 'center', label: "Children", field: "childrenCnt", cellType: "text", headerType: "text"},
 ];
 
 const CreateOrganization = (props) => {
@@ -79,11 +83,17 @@ const CreateOrganization = (props) => {
 
         if(isRoot){
           if(data.enterpriseId !== cellId){
+              if(selectedRadio === 1){
+                data.isDisabled = !data.isDisabled;
+              }
               data.treeCheck = parentCheck;
           }
 
         }else{
           if(data.enterpriseParentId === cellId){
+              if(selectedRadio === 1){
+                data.isDisabled = !data.isDisabled;
+              }
               data.treeCheck = parentCheck;
           }
         }
@@ -102,6 +112,16 @@ const CreateOrganization = (props) => {
 
       props.setSelectedOrganization(selectedData);
     }
+
+    useEffect(() => {
+      // wait for selected radio re render
+      dispatch(enterpriseManagementRequestData());
+
+      setTimeout(() => {
+        dispatch(enterpriseManagementRequestDataEnd());
+      }, 1500);
+
+    }, [selectedRadio]);
 
   return(
     <View

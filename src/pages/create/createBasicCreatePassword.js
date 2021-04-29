@@ -77,8 +77,6 @@ const CreateBasicCreatePassword = (props) => {
   const matchConfirmPassword = () => {
     const newPasswordRules = [...passwordRules];
 
-    console.log(props.userPassword.password, props.userPassword.confirmPassword, " <<< gan")
-
     newPasswordRules[7].valid = props.userPassword.password == props.userPassword.confirmPassword;
     setPasswordRules(newPasswordRules);
   };

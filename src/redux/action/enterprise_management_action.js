@@ -4,8 +4,12 @@ import Helper from '../../helpers/helper';
 import {dataMatcherArray2D} from './get_sim_inventory_action';
 import reduxString from '../reduxString';
 
-const enterpriseManagementRequestData = (payload) => ({
+const enterpriseManagementRequestData = () => ({
   type: 'ENTERPRISE_MANAGEMENT_REQUEST_DATA',
+});
+
+const enterpriseManagementRequestDataEnd = () => ({
+  type: 'ENTERPRISE_MANAGEMENT_REQUEST_DATA_END',
 });
 
 const enterpriseManagementGetDataSuccess = (data) => ({
@@ -270,4 +274,6 @@ export {
   enterpriseManagementHideShow,
   enterpriseManagementSetDataGenerated,
   enterpriseManagementCheckBoxToggle,
+  enterpriseManagementRequestData,
+  enterpriseManagementRequestDataEnd
 };

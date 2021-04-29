@@ -6,7 +6,8 @@ import { GridComponent } from '../../components';
 import { useSelector, useDispatch } from 'react-redux';
 
 const gridOptionsArray = [
-  {bgColor: "#F4F3F4", headerColor: "#707070", width: '100%', cellAlign: 'center', headerAlign: 'center', label: "Company Name", field: "enterpriseName", cellType: "text", headerType: "text"},
+  {bgColor: "#F4F3F4", headerColor: "#707070", width: '50%', cellAlign: 'center', headerAlign: 'center', label: "Company Name", field: "enterpriseName", cellType: "text", headerType: "text"},
+  {bgColor: "#F4F3F4", headerColor: "#707070", width: '50%', cellAlign: 'center', headerAlign: 'center', label: "Company Name", field: "enterpriseName", cellType: "text", headerType: "text"},
 ];
 
 const CreateSummaryOrganization = (props) => {
