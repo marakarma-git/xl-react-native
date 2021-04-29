@@ -1,10 +1,11 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
+import PropTypes from 'prop-types';
 import {View} from 'react-native';
 import { FormPassword } from '../../components';
 
 const passwordFormArray = [
   {
-    name: 'Password',
+    name: 'password',
     label: 'Password',
     required: true,
     visible: false,
@@ -42,6 +43,19 @@ const passwordRulesArray = [
 
 const CreateBasicCreatePassword = (props) => {
 
+  const [passwordForm, setPasswordForm] = useState(passwordFormArray);
+  const [passwordRules, setPasswordRules] = useState(passwordRulesArray);
+
+  const inputHandler = (name, value, validation) => {
+    props.setUserPassword({...props.userPassword, [name]: value});
+    {
+      validation && passwordValidator(value);
+    }
+    {
+      validation && matchConfirmPassword();
+    }
+  };
+
   const passwordValidator = (value) => {
     let isEmpty = value == 0;
 
@@ -59,19 +73,58 @@ const CreateBasicCreatePassword = (props) => {
 
     setPasswordRules(newPasswordRules);
   };
+
+  const matchConfirmPassword = () => {
+    const newPasswordRules = [...passwordRules];
+
+    console.log(props.userPassword.password, props.userPassword.confirmPassword, " <<< gan")
+
+    newPasswordRules[7].valid = props.userPassword.password == props.userPassword.confirmPassword;
+    setPasswordRules(newPasswordRules);
+  };
+
+  const checkFormComplete = () => {
+    let validRules = 0;
+    const passwordRulesLength = passwordRules.length;
+    passwordRules.map((rules) => rules.valid && validRules++);
+    const validationRulesComplete = validRules === passwordRulesLength;
+
+    if (props.userPassword.password.length > 0 && validationRulesComplete) {
+      props.setIsComplete(true);
+    } else {
+      props.setIsComplete(false);
+    }
+  };
+
+  useEffect(() => {
+    checkFormComplete();
+    matchConfirmPassword();
+  }, [props.userPassword])
   
   return(
     <View style={{ alignItems: 'center' }}>
       <FormPassword 
-        formList={passwordFormArray}
-        passwordRules={passwordRulesArray}
+        form={props.userPassword}
+        passwordForm={passwordForm}
+        setPasswordForm={setPasswordForm}
+        passwordRules={passwordRules}
         passwordValidator={passwordValidator}
-        
+        inputHandler={inputHandler}
       />
     </View>
   );
 }
 
-CreateBasicCreatePassword.propTypes = {};
+CreateBasicCreatePassword.propTypes = {
+  userPassword: PropTypes.array,
+  setIsComplete: PropTypes.func,
+  setUserPassword: PropTypes.func
+};
+
+CreateBasicCreatePassword.defaultProps = {
+  userPassword: [],
+  setIsComplete: () => {},
+  setUserPassword: () => {}
+}
 
 export default CreateBasicCreatePassword;

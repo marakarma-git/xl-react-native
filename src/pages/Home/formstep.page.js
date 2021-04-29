@@ -1,4 +1,4 @@
-import React, {useState, useRef} from 'react';
+import React, {useState, useRef, useEffect} from 'react';
 import { useSelector } from 'react-redux';
 import {ScrollView, View} from 'react-native';
 import {
@@ -18,9 +18,20 @@ import {
 
 const FormStepPage = ({navigation}) => {
   const listViewRef = useRef();
-  const [formPosition, setFormPosition] = useState(0);
-  const [scrollViewEnabled, setScrollViewEnabled] = useState(true);
   const {imageBase64} = useSelector((state) => state.enterprise_reducer);
+
+  const [formPosition, setFormPosition] = useState(0);
+  const [userPassword, setUserPassword] = useState({
+    password: "",
+    confirmPassword: ""
+  });
+  const [basicInformation, setBasicInformation] = useState([]);
+  const [selectedOrganization, setSelectedOrganization] = useState([]);
+  const [selectedRoles, setSelectedRoles] = useState([]);
+  const [scrollViewEnabled, setScrollViewEnabled] = useState(true);
+
+  const [isCreatePasswordComplete, setIsPasswordComplete] = useState(false);
+  const [isbasicInformationComplete, setIsBasicInformationComplete] = useState(false);
 
   const detectOffset = () => {
     setScrollViewEnabled(false);
@@ -30,31 +41,52 @@ const FormStepPage = ({navigation}) => {
     {
       title: 'User Information',
       body: [
-        { component: <CreateBasicInformation />, componentTitle: "Basic Information"},
-        { component: <CreateBasicCreatePassword />, componentTitle: "Password"},
+        { 
+          component: <CreateBasicInformation setIsCommplete={setIsBasicInformationComplete} basicInformation={basicInformation} setBasicInformation={setBasicInformation} isEditable={true} />, 
+          componentTitle: "Basic Information"
+        },
+        { 
+          component: <CreateBasicCreatePassword setIsComplete={setIsPasswordComplete} userPassword={userPassword} setUserPassword={setUserPassword} />,
+          componentTitle: "Password"
+        },
       ]
     },
     {
       title: 'Organzations',
       body: [
-        { component: <CreateUserOrganizations detectOffset={detectOffset} />, componentTitle: "Organizations" },
+        { 
+          component: <CreateUserOrganizations selectedOrganization={selectedOrganization} setSelectedOrganization={setSelectedOrganization} detectOffset={detectOffset} />, 
+          componentTitle: "Organizations" 
+        },
       ]
     },
     {
       title: 'Roles',
       body: [
-        { component: <CreateUserRoles detectOffset={detectOffset} />, componentTitle: "Roles" },
+        { 
+          component: <CreateUserRoles setSelectedRoles={setSelectedRoles} enterpriseId={selectedOrganization[0]?.enterpriseId}  detectOffset={detectOffset} />, 
+          componentTitle: "Roles" 
+        },
       ]
     },
     {
       title: 'Summary',
       body: [
-        { component: <CreateBasicInformation />, componentTitle: "Basic Information" },
-        { component: <CreateSummaryOrganization detectOffset={detectOffset} />, componentTitle: "Organizations" },
-        { component: <CreateSummaryRoles detectOffset={detectOffset} />, componentTitle: "Roles" },
+        { component: <CreateBasicInformation basicInformation={basicInformation} setBasicInformation={setBasicInformation} isEditable={false} />, componentTitle: "Basic Information" },
+        { component: <CreateSummaryOrganization selectedOrganization={selectedOrganization} detectOffset={detectOffset} />, componentTitle: "Organizations" },
+        { component: <CreateSummaryRoles selectedRoles={selectedRoles} detectOffset={detectOffset} />, componentTitle: "Roles" },
       ]
     },
   ]
+  
+  useEffect(() => {
+    const pageLoad = navigation.addListener("focus", () => {
+      console.log("mounted")
+    });
+    
+    return pageLoad;
+  }, [navigation]);
+
 
   return (
     <View

@@ -9,19 +9,28 @@ const AccountFormComponent = ({
   editable = false,
   value,
   inputHandler,
+  isValidate,
+  formError,
 }) => {
   const generateForm = () => (
     <>
       {formList.map((form, index) => (
         <View key={index} style={styles.formGroup}>
-          <Text style={styles.label}>{form.title}</Text>
+          <Text style={styles.label}>
+              {form.title}
+              {form.isRequired && <Text style={{color: 'red'}}> *</Text>}
+          </Text>
           <TextInput
             onChangeText={(text) => inputHandler(form.key, text)}
             style={styles.textInputContainer}
-            value={value[form.key] || '-'}
+            value={value[form.key]}
             editable={editable}
             placeholder={form.title}
           />
+          {
+            isValidate &&
+            <Text style={{ color: 'red' }}>{formError[form.key]}</Text>
+          }
         </View>
       ))}
     </>

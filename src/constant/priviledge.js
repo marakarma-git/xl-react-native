@@ -115,13 +115,13 @@ export const DRAWER_MENU_PRIVILEDGE = [
     type: 'drawer',
     components: SmsA2pPage,
   },
-  // {
-  //   priviledgeId: '',
-  //   name: 'Create User',
-  //   icon: iconHome,
-  //   type: 'drawer',
-  //   components: FormStepPage,
-  // },
+  {
+    priviledgeId: '',
+    name: 'Create User',
+    icon: iconHome,
+    type: 'drawer',
+    components: FormStepPage,
+  },
   {
     priviledgeId: '',
     name: 'AutomationFilter',

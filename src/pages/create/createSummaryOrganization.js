@@ -18,7 +18,7 @@ const CreateSummaryOrganization = (props) => {
       style={{ marginTop: 10 }}
       onStartShouldSetResponderCapture={props.detectOffset}>
           <GridComponent 
-            gridData={[]}
+            gridData={props.selectedOrganization}
             gridOptions={gridOptions}
             keyExtractor="enterpriseId"
             colHeight={30}
@@ -29,10 +29,12 @@ const CreateSummaryOrganization = (props) => {
 }
 
 CreateSummaryOrganization.propTypes = {
+  selectedOrganization: PropTypes.array,
   detectOffset: PropTypes.func
 }
 
 CreateSummaryOrganization.defaultProps = {
+  selectedOrganization: [],
   detectOffset: () => {}
 }
 

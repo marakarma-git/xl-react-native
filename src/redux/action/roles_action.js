@@ -17,14 +17,13 @@ const rolesGetActiveRolesSuccess = (data) => ({
   payload: data
 });
 
-const getActiveRoles = () => {
+const getActiveRoles = (enterpriseId) => {
   return async (dispatch, getState) => {
     const {access_token} = getState().auth_reducer.data || '';
-    const dummyEnterpriseId = "a8108751-38e8-4b03-8662-5ab0838be63d";
 
     try {
       dispatch(rolesRequestData())
-      const { data } = await axios.get(`${base_url}/user/role/getActiveRole?enterpriseId=${dummyEnterpriseId}`, {
+      const { data } = await axios.get(`${base_url}/user/role/getActiveRole?enterpriseId=${enterpriseId}`, {
         headers: {
           Authorization: "Bearer " + access_token
         }

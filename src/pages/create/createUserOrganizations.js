@@ -19,7 +19,6 @@ const CreateOrganization = (props) => {
   const [gridData, setGridData] = useState([]);
   const [selectedRadio, setSelectedRadio] = useState(0);
   const [gridOptions, setGridOptions] = useState(gridOptionsArray);
-  const [selectedCell, setSelectedCell] = useState([]);
   
   useEffect(() => {
     if(data_active_enterprise.length <= 0){
@@ -97,11 +96,11 @@ const CreateOrganization = (props) => {
       const selectedData = new Array();
       newData.map((data) => {
         if(data.treeCheck){
-          selectedData.push(data.enterpriseId);
+          selectedData.push(data);
         }
       });
 
-      setSelectedCell(selectedData);
+      props.setSelectedOrganization(selectedData);
     }
 
   return(
@@ -121,7 +120,7 @@ const CreateOrganization = (props) => {
         status={selectedRadio === 1 ? "checked" : "unchecked"}
       />
       <View style={styles.menuBarContainer}>
-        <Text style={{ color: "#707070" }}>Total: {gridData.length} | Selected: {selectedCell.length}</Text>
+        <Text style={{ color: "#707070" }}>Total: {gridData.length} | Selected: {props.selectedOrganization.length}</Text>
       </View>
         <GridComponent
           loading={loading}
@@ -138,11 +137,15 @@ const CreateOrganization = (props) => {
 }
 
 CreateOrganization.propTypes = {
-  detectOffset: PropTypes.func
+  detectOffset: PropTypes.func,
+  selectedOrganization: PropTypes.array,
+  setSelectedOrganization: PropTypes.func
 };
 
 CreateOrganization.defaultProps = {
-  detectOffset: () => {}
+  detectOffset: () => {},
+  selectedOrganization: [],
+  setSelectedOrganization: () => {}
 }
 
 export default CreateOrganization;

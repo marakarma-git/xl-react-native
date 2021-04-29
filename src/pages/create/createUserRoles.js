@@ -49,7 +49,6 @@ const CreateUserRoles = (props) => {
 
   const [gridData, setGridData] = useState([]);
   const [gridOptions, setGridOptions] = useState(gridOptionsArray);
-  const [selectedRoles, setSelectedRoles] = useState([]);
 
   const selectCheckBox = (roleId = null) => {
     const newData = new Array();
@@ -82,13 +81,24 @@ const CreateUserRoles = (props) => {
       newData.push(data);
     });
 
+    const selectedData = new Array();
+
+    newData.map((data) => {
+      if(data.isCheck){
+        selectedData.push(data);
+      }
+    })
+
+    props.setSelectedRoles(selectedData);
+
     setGridData(prevState => prevState = newData);
   }
 
   useEffect(() => {
-    if(data_active_roles.length <= 0){
-      dispatch(getActiveRoles());
-    }
+    dispatch(getActiveRoles(props.enterpriseId))
+  }, [props.enterpriseId])
+
+  useEffect(() => {
 
     if(data_active_roles.length > 0){
       setGridData(data_active_roles)
@@ -114,10 +124,14 @@ const CreateUserRoles = (props) => {
 }
 
 CreateUserRoles.propTypes = {
+  enterpriseId: PropTypes.string,
+  setSelectedRoles: PropTypes.func,
   detectOffset: () => {}
 };
 
 CreateUserRoles.defaultProps = {
+  enterpriseId: "",
+  setSelectedRoles: () => {},
   detectOffset: () => {}
 }
 

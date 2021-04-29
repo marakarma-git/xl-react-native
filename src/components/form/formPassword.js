@@ -21,7 +21,7 @@ const FormPassword = (props) => {
 
     return(
         <React.Fragment>
-            { props.formList.map((form, index) => (
+            { props.passwordForm.map((form, index) => (
                 <View key={index} style={styles.formGroup}>
                     <Text style={styles.label}>
                     {form.label}
@@ -30,12 +30,12 @@ const FormPassword = (props) => {
                     <View style={styles.passwordInputWrapper}>
                     <TextInput
                         onFocus={() =>
-                        form.validation && props.passwordValidator(form.newPassword)
+                        form.validation && props.passwordValidator(props.form.password)
                         }
                         onChangeText={(text) =>
                         props.inputHandler(form.name, text, form.validation)
                         }
-                        value={form[form.name]}
+                        value={props.form[form.name]}
                         style={styles.passwordInput}
                         secureTextEntry={!form.visible}
                         placeholder={form.label}
@@ -89,16 +89,14 @@ const ButtonShowHide = ({visible, position, passwordForm, setPasswordForm}) => {
   };
 
 FormPassword.propTypes = {
-    formList: PropTypes.array,
     passwordRules: PropTypes.array,
-    passwordForm: PropTypes.object,
+    passwordForm: PropTypes.array,
     setPasswordForm: PropTypes.func,
     inputHandler: PropTypes.func,
     passwordValidator: PropTypes.func
 }
 
 FormPassword.defaultProps = {
-    formList: [],
     passwordRules: [],
     passwordForm: {},
     setPasswordForm: () => {},
