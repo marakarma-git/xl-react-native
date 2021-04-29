@@ -23,3 +23,5 @@ export {default as UserAdministrationFilterPage} from './userAdministrationFilte
 export {default as NotificationPage} from './notification.page';
 export {default as AutomationFilterPage} from './automationFilter.page';
 export {default as FormStepPage} from './formstep.page';
+export {default as SmsA2pPage  } from './smsA2p.page';
+export {default as SmsA2pFilterPage  } from './smsA2pFilter.page';

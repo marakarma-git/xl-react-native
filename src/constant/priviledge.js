@@ -24,6 +24,8 @@ import {
   AutomationPage,
   AutomationFilterPage,
   FormStepPage,
+  SmsA2pPage,
+  SmsA2pFilterPage,
 } from '../pages/Home/index';
 
 export const DRAWER_MENU_PRIVILEDGE = [
@@ -106,6 +108,13 @@ export const DRAWER_MENU_PRIVILEDGE = [
     type: 'drawer',
     components: AutomationPage,
   },
+  {
+    priviledgeId: '',
+    name: 'SmsA2p',
+    icon: iconHome,
+    type: 'drawer',
+    components: SmsA2pPage,
+  },
   // {
   //   priviledgeId: '',
   //   name: 'Create User',
@@ -119,6 +128,13 @@ export const DRAWER_MENU_PRIVILEDGE = [
     icon: iconHome,
     type: 'non-drawer',
     components: AutomationFilterPage,
+  },
+  {
+    priviledgeId: '',
+    name: 'SmsA2pFilter',
+    icon: iconHome,
+    type: 'non-drawer',
+    components: SmsA2pFilterPage,
   },
   {
     priviledgeId: '',
