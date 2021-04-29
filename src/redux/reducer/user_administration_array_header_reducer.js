@@ -22,6 +22,7 @@ const dataHeaderFilter = [
   {
     formId: 'user-name-hard-coded',
     api_id: 'firstName',
+    child_api_id: 'lastName',
     value: '',
     typeInput: 'TextInput',
     params: '&userName=',
@@ -55,6 +56,11 @@ const dataHeaderFilter = [
     config: {
       label: 'Status',
       isTouchable: true,
+      superType: 'BOOL',
+      labelBool: {
+        true: 'Active',
+        false: 'Locked',
+      },
     },
     shown: true,
     sort_by_filter: 5,

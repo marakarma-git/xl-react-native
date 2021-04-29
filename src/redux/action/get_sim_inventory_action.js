@@ -95,15 +95,20 @@ const dataMatcherArray2D = (listData = [], headerData = []) => {
         showIcon,
         isTouchable,
         isTreeView,
+        labelBool,
       } = config || {};
       if (shown && !doNotShowOnTable) {
-        const createObject = (superType, labelValue) => {
+        const createLabel = (superType, firstValue) => {
           if (superType === 'DATE') {
-            return labelValue ? dayjs(labelValue).format('DD-MM-YYYY') : '';
+            return firstValue
+              ? dayjs(firstValue.substring(0, 10)).format('DD-MM-YYYY')
+              : '';
           } else if (superType === 'BYTE') {
-            return Helper.formatBytes(labelValue);
+            return Helper.formatBytes(firstValue);
+          } else if (superType === 'BOOL') {
+            return firstValue ? labelBool.true : labelBool.false;
           } else {
-            return labelValue;
+            return firstValue;
           }
         };
         const generateObject = {
@@ -112,7 +117,7 @@ const dataMatcherArray2D = (listData = [], headerData = []) => {
             flexStart: flexStart,
             width: width,
             superType: superType,
-            label: createObject(superType, item[`${api_id}`]),
+            label: createLabel(superType, item[`${api_id}`]),
             backgroundColor: index % 2 ? colors.gray_table : 'white',
             fontColor:
               formId === 'imsi-hard-code' &&
@@ -120,7 +125,9 @@ const dataMatcherArray2D = (listData = [], headerData = []) => {
               colors.imsi_blue,
             isTouchable:
               formId === 'imsi-hard-code' &&
-              subItem.cellRowType === 'TableCellCheckBox',
+              subItem.cellRowType === 'TableCellCheckBox'
+                ? true
+                : isTouchable,
             visibility: item.visibility == undefined ? true : item.visibility,
             icon: item.icon || null,
             showIcon: showIcon,
@@ -128,11 +135,8 @@ const dataMatcherArray2D = (listData = [], headerData = []) => {
             treeLevel: item.level || 0,
             treeCheck: item.treeCheck == undefined ? false : item.treeCheck,
           },
-          item: {...item},
-          subItem: {
-            formId: formId,
-            ...rest,
-          },
+          item,
+          subItem,
           valueCheck: false,
         };
         subGenerated.push(generateObject);
