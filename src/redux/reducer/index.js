@@ -26,6 +26,8 @@ import automation_array_header_reducer from './automation_array_header_reducer';
 import automation_get_automation_reducer from './automation_get_automation_reducer';
 import notification_reducer from './notification_reducer';
 import roles_reducer from './roles_reducer';
+import sms_a2p_array_header_reducer from './sms_a2p_array_header_reducer';
+import sms_a2p_get_all_sms_reducer from './sms_a2p_get_all_sms_reducer';
 const RootReducers = combineReducers({
   dummy_reducer,
   auth_reducer,
@@ -53,6 +55,8 @@ const RootReducers = combineReducers({
   enterprise_management_get_enterprise_reducer,
   automation_array_header_reducer,
   automation_get_automation_reducer,
-  roles_reducer
+  roles_reducer,
+  sms_a2p_array_header_reducer,
+  sms_a2p_get_all_sms_reducer,
 });
 export default RootReducers;
