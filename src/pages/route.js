@@ -1,13 +1,13 @@
-import React from 'react';
+import React, {useState} from 'react';
 import Auth from './auth.page';
 import Login from './login.page';
 import Home from './home.route';
 import ForgetPassword from './forget.password';
-import TermCondition from './term.condition.page';
 import {useSelector} from 'react-redux';
 import {createStackNavigator} from '@react-navigation/stack';
 import {NavigationContainer} from '@react-navigation/native';
 import {ChangePasswordPage} from './Home';
+import GlobalUpdate from '../components/modal/GlobalUpdate';
 
 const Stack = createStackNavigator();
 const RootStack = () => {
@@ -50,8 +50,11 @@ const RootStack = () => {
   );
 };
 const Route = () => {
+  const [dummy] = useState(false);
+  const isLoggedIn = useSelector((state) => state.auth_reducer.isLoggedIn);
   return (
-    <NavigationContainer linking={{prefixes: ["dcp4.adlsandbox.com://app"],}}>
+    <NavigationContainer linking={{prefixes: ['dcp4.adlsandbox.com://app']}}>
+      {dummy && isLoggedIn && <GlobalUpdate />}
       <RootStack />
     </NavigationContainer>
   );
