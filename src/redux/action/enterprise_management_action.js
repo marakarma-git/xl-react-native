@@ -4,6 +4,10 @@ import Helper from '../../helpers/helper';
 import {dataMatcherArray2D} from './get_sim_inventory_action';
 import reduxString from '../reduxString';
 
+const enterpriseManagementClearActiveEnterpriseData = () => ({
+  type: "ENTERPRISE_MANAGEMENT_CLEAR_ACTIVE_ENTERPRISE_DATA"
+});
+
 const enterpriseManagementRequestData = () => ({
   type: 'ENTERPRISE_MANAGEMENT_REQUEST_DATA',
 });
@@ -275,5 +279,6 @@ export {
   enterpriseManagementSetDataGenerated,
   enterpriseManagementCheckBoxToggle,
   enterpriseManagementRequestData,
-  enterpriseManagementRequestDataEnd
+  enterpriseManagementRequestDataEnd,
+  enterpriseManagementClearActiveEnterpriseData
 };

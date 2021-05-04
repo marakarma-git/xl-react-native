@@ -296,11 +296,7 @@ class Helper {
           currentLevel++;
           value.icon = value[objValue].length > 0 && 'caret-down';
           value.treeCheck = false;
-          value.isDisabled = false;
-          // value.activeStatus = value.activeStatus
-          //   ? 'Ready for use'
-          //   : 'Obsolete';
-          // value.onboarded = value.onboarded.substring(0, 10);
+          value.isDisabled = true;
 
           newData.push(value);
           if (value[objValue].length > 0) {

@@ -72,12 +72,19 @@ const enterprise_management_get_enterprise_reducer = (
       };
     }
     case reduxString.ACTIVE_ENTERPRISE_MANAGEMENT_GET_DATA_SUCCESS: {
-      console.log(action.payload)
       return {
         ...state,
         loading: false,
         errorText: '',
         data_active_enterprise: action.payload
+      };
+    }
+    case reduxString.ENTERPRISE_MANAGEMENT_CLEAR_ACTIVE_ENTERPRISE_DATA: {
+      return {
+        ...state,
+        loading: false,
+        errorText: '',
+        data_active_enterprise: []
       };
     }
     case reduxString.ENTERPRISE_MANAGEMENT_GET_DATA_FAIL: {

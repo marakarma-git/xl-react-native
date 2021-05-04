@@ -23,9 +23,9 @@ import {
   NotificationPage,
   AutomationPage,
   AutomationFilterPage,
-  FormStepPage,
   SmsA2pPage,
   SmsA2pFilterPage,
+  CreateNewUserPage,
 } from '../pages/Home/index';
 
 export const DRAWER_MENU_PRIVILEDGE = [
@@ -115,13 +115,13 @@ export const DRAWER_MENU_PRIVILEDGE = [
     type: 'drawer',
     components: SmsA2pPage,
   },
-  // {
-  //   priviledgeId: '',
-  //   name: 'Create User',
-  //   icon: iconHome,
-  //   type: 'drawer',
-  //   components: FormStepPage,
-  // },
+  {
+    priviledgeId: '',
+    name: 'Create User',
+    icon: iconHome,
+    type: 'non-drawer',
+    components: CreateNewUserPage,
+  },
   {
     priviledgeId: '',
     name: 'AutomationFilter',

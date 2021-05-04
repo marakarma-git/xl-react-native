@@ -93,4 +93,20 @@ export default {
     flex: 1,
     marginLeft: 12,
   },
+  headerButtonContainer: { 
+    width: '100%', 
+    flexDirection: 'row', 
+    justifyContent: 'flex-end', 
+    paddingRight: 20 
+  },
+  headerButtonCreate: { 
+    paddingVertical: 10, 
+    backgroundColor: "#002DBB", 
+    width: 150, 
+    marginTop: 15 
+  },
+  headerButtonCreateText: { 
+    color: 'white', 
+    textAlign: 'center' 
+  }
 };

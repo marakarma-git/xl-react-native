@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import {View} from 'react-native';
 import { FormPassword } from '../../components';
+import { useNavigation } from '@react-navigation/native';
 
 const passwordFormArray = [
   {
@@ -42,6 +43,7 @@ const passwordRulesArray = [
 ];
 
 const CreateBasicCreatePassword = (props) => {
+  const navigation = useNavigation();
 
   const [passwordForm, setPasswordForm] = useState(passwordFormArray);
   const [passwordRules, setPasswordRules] = useState(passwordRulesArray);
@@ -78,13 +80,17 @@ const CreateBasicCreatePassword = (props) => {
     const newPasswordRules = [...passwordRules];
 
     newPasswordRules[7].valid = props.userPassword.password == props.userPassword.confirmPassword;
+ 
     setPasswordRules(newPasswordRules);
+    checkFormComplete();
   };
 
   const checkFormComplete = () => {
     let validRules = 0;
+
     const passwordRulesLength = passwordRules.length;
     passwordRules.map((rules) => rules.valid && validRules++);
+
     const validationRulesComplete = validRules === passwordRulesLength;
 
     if (props.userPassword.password.length > 0 && validationRulesComplete) {
@@ -95,9 +101,51 @@ const CreateBasicCreatePassword = (props) => {
   };
 
   useEffect(() => {
-    checkFormComplete();
     matchConfirmPassword();
-  }, [props.userPassword])
+  }, [props.userPassword]);
+
+  useEffect(() => {
+    const pageLoad = navigation.addListener("focus", () => {
+      setPasswordForm([
+        {
+          name: 'password',
+          label: 'Password',
+          required: true,
+          visible: false,
+          validation: true,
+        },
+        {
+          name: 'confirmPassword',
+          label: 'Confirm Password',
+          required: true,
+          visible: false,
+          validation: false,
+        },
+      ]);
+      setPasswordRules([
+        {label: 'Be between 8 and 30 characters', valid: false},
+        {label: 'contain at least 1 number 0-9', valid: false},
+        {label: 'contain at least 1 lower case letter (a-z)', valid: false},
+        {label: 'contain at least 1 upper case letter (A-Z)', valid: false},
+        {
+          label: 'not contain more than 3 consecutives identical characters',
+          valid: true,
+        },
+        {
+          label: 'not contain more than 3 consecutives lower-case characters',
+          valid: true,
+        },
+        {
+          label:
+            'contain only the following characters a-z, A-Z, 0-9, #, -, !, @, %, &, /, (, ), ?, + *',
+          valid: true,
+        },
+        {label: "match the entry in 'Confrim Password'", valid: true},
+      ]);
+    })
+
+    return pageLoad;
+  }, [navigation]);
   
   return(
     <View style={{ alignItems: 'center' }}>

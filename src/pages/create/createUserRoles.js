@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import PropTypes from 'prop-types';
 
 import { View } from 'react-native';
@@ -51,60 +51,77 @@ const CreateUserRoles = (props) => {
   const [gridOptions, setGridOptions] = useState(gridOptionsArray);
 
   const selectCheckBox = (roleId = null) => {
-    const newData = new Array();
-    const newOptions = new Array();
+    if(gridData.length > 0){
+      const newData = new Array();
+      const newOptions = new Array();
 
-    let isHeaderCheck = false;
+      let isHeaderCheck = false;
 
-    if(roleId === null){
-      gridOptions.map((option) => {
-        if(option.headerType === 'checkbox'){
-          isHeaderCheck = !option.isCheck;
-          option.isCheck = !option.isCheck;
+      if(roleId === null){
+        gridOptions.map((option) => {
+          if(option.headerType === 'checkbox'){
+            isHeaderCheck = !option.isCheck;
+            option.isCheck = !option.isCheck;
+          }
+
+          newOptions.push(option)
+        })
+
+        setGridOptions(prevState => prevState = newOptions);
+      }
+
+      gridData.map((data) => {
+        if(roleId === null){
+          data.isCheck = isHeaderCheck;
+        }else{
+          if(data.roleId === roleId){
+            data.isCheck = !data.isCheck;
+          }
         }
 
-        newOptions.push(option)
+        newData.push(data);
+      });
+
+      const selectedData = new Array();
+
+      newData.map((data) => {
+        if(data.isCheck){
+          selectedData.push(data);
+        }
       })
 
-      setGridOptions(prevState => prevState = newOptions);
+      props.setSelectedRoles(selectedData);
+
+      setGridData(prevState => prevState = newData);
     }
-
-    gridData.map((data) => {
-      if(roleId === null){
-        data.isCheck = isHeaderCheck;
-      }else{
-        if(data.roleId === roleId){
-          data.isCheck = !data.isCheck;
-        }
-      }
-
-      newData.push(data);
-    });
-
-    const selectedData = new Array();
-
-    newData.map((data) => {
-      if(data.isCheck){
-        selectedData.push(data);
-      }
-    })
-
-    props.setSelectedRoles(selectedData);
-
-    setGridData(prevState => prevState = newData);
   }
 
-  useEffect(() => {
-    dispatch(getActiveRoles(props.enterpriseId))
-  }, [props.enterpriseId])
-
-  useEffect(() => {
-
-    if(data_active_roles.length > 0){
-      setGridData(data_active_roles)
+  const checkHistory = useCallback(() => {
+    if(gridData.length > 0){
+      props.selectedRoles.map(roles => {
+        selectCheckBox(roles.roleId);
+      })
     }
+  }, [gridData]);
 
+  useEffect(() => {
+    if(props.selectedRoles.length > 0){
+      props.setIsComplete(true);
+    }else{
+      props.setIsComplete(false);
+    }
+  }, [props.selectedRoles]);
+
+  useEffect(() => {
+    if(data_active_roles.length > 0){
+      setGridData(data_active_roles);
+      checkHistory();
+    }
   }, [data_active_roles]);
+
+  useEffect(() => {
+    dispatch(getActiveRoles(props.enterpriseId));
+  }, []);
 
   return(
     <View
@@ -124,13 +141,17 @@ const CreateUserRoles = (props) => {
 }
 
 CreateUserRoles.propTypes = {
+  selectedRoles: PropTypes.array,
+  setIsComplete: PropTypes.func,
   enterpriseId: PropTypes.string,
   setSelectedRoles: PropTypes.func,
   detectOffset: () => {}
 };
 
 CreateUserRoles.defaultProps = {
+  selectedRoles: [],
   enterpriseId: "",
+  setIsComplete: () => {},
   setSelectedRoles: () => {},
   detectOffset: () => {}
 }

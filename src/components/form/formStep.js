@@ -18,9 +18,11 @@ const FormStepComponent = (props) => {
             <FormStepFooterComponent
                 formPosition={props.formPosition}
                 formLength={props.formLength}
+                onCancel={props.onCancel}
                 onBack={props.onBack}
                 onNext={props.onNext}
                 onSubmit={props.onSubmit}
+                submitLoading={props.submitLoading}
             />
         </React.Fragment>
     );
@@ -66,7 +68,9 @@ const FormStepFooterComponent = (props) => {
     return(
         <Card style={[styles.cardSection, {marginTop: '1%'}]}>
             <Card.Content style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
-                <TouchableOpacity style={styles.cancelButtonFormStep}>
+                <TouchableOpacity
+                     onPress={props.onCancel}
+                     style={styles.cancelButtonFormStep}>
                     <Text fontType="bold">Cancel</Text>
                 </TouchableOpacity>
                 <View style={{ flexDirection: 'row' }}>
@@ -88,8 +92,10 @@ const FormStepFooterComponent = (props) => {
                         </TouchableOpacity> 
                     }
                     { props.formPosition >= (props.formLength - 1) &&
-                        <TouchableOpacity onPress={props.onSubmit} style={styles.navigationButtonFormStep}>
-                            <Text style={{ color: 'white' }} fontType="bold">Submit</Text>
+                        <TouchableOpacity
+                             disabled={props.submitLoading}
+                             onPress={props.onSubmit} style={styles.navigationButtonFormStep}>
+                            <Text style={{ color: 'white' }} fontType="bold">{props.submitLoading ? "Loading..." : "Submit"}</Text>
                         </TouchableOpacity> 
                     }
                 </View>
@@ -103,9 +109,11 @@ FormStepComponent.propTypes = {
     formLength: PropTypes.number,
     formTitle: PropTypes.string,
     formBody: PropTypes.array,
+    onCancel: PropTypes.func,
     onNext: PropTypes.func,
     onBack: PropTypes.func,
-    onSubmit: PropTypes.func
+    onSubmit: PropTypes.func,
+    submitLoading: PropTypes.bool
 }
 
 FormStepComponent.defaultProps = {
@@ -113,9 +121,11 @@ FormStepComponent.defaultProps = {
     formLength: 0,
     formTitle: 'Default Form Title',
     formBody: [],
+    onCancel: () => {},
     onNext: () => {},
     onBack: () => {},
-    onSubmit: () => {}
+    onSubmit: () => {},
+    submitLoading: false
 }
 
 export default FormStepComponent;

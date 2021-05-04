@@ -6,7 +6,7 @@ import {AccountForm} from '../../components';
 const userForm = [
   {title: 'First Name', key: 'firstName', isRequired: true},
   {title: 'Last Name', key: 'lastName', isRequired: true},
-  {title: 'User ID', key: 'username', isRequired: true},
+  {title: 'Username', key: 'username', isRequired: true},
   {title: 'Mobile Phone', key: 'phoneNumber', isRequired: false},
   {title: 'Email Address', key: 'email', isRequired: true},
   {title: 'Language', key: 'language', isRequired: true},
@@ -24,11 +24,41 @@ const CreateBasicUserInformation = (props) => {
     });
   }
 
+  const validateForm = () => {
+    const validationError = {};
+    if(touchForm){
+      userForm.map((form) => {
+        if(form.isRequired){
+          validationIsRequired(form.key, form.title, validationError);
+        }
+      })
+    }
+    setFormError(prevState => prevState = validationError);
+  }
+
+  const validationIsRequired = (formKey, formTitle, validationError) => {
+    if(props.basicInformation[formKey].length <= 0){
+      validationError[formKey] = `${formTitle} is required`;
+    }
+  }
+
+  useEffect(() => {
+    validateForm();
+
+    if(Object.keys(formError) <= 0){
+      props.setIsComplete(true);
+    }else{
+      props.setIsComplete(false);
+    }
+
+  }, [props.basicInformation]);
+
   return(
     <AccountForm
       isValidate={true}
       formList={userForm}
       editable={props.isEditable}
+      setIsTouch={setTouchForm}
       value={props.basicInformation}
       formError={formError}
       inputHandler={inputHandler}

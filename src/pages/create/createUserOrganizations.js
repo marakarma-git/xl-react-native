@@ -10,6 +10,7 @@ import {
   enterpriseManagementRequestDataEnd, 
   getActiveEnterpriseList, 
 } from '../../redux/action/enterprise_management_action';
+import { useCallback } from 'react';
 
 const gridOptionsArray = [
   {bgColor: "#F4F3F4", headerColor: "#707070", width: '80%', cellAlign: 'center', headerAlign: 'center', label: "Organization", field: "enterpriseName", cellType: "treeViewWithCheckBox", headerType: "text"},
@@ -21,19 +22,7 @@ const CreateOrganization = (props) => {
   const { data_active_enterprise, loading } = useSelector(state => state.enterprise_management_get_enterprise_reducer);
 
   const [gridData, setGridData] = useState([]);
-  const [selectedRadio, setSelectedRadio] = useState(0);
   const [gridOptions, setGridOptions] = useState(gridOptionsArray);
-  
-  useEffect(() => {
-    if(data_active_enterprise.length <= 0){
-      dispatch(getActiveEnterpriseList());
-    }
-
-    if(data_active_enterprise.length > 0){
-      setGridData(data_active_enterprise)
-    }
-
-  }, [data_active_enterprise]);
 
     const treeViewToggle = (cellId) => {
       const newData = new Array();
@@ -83,7 +72,7 @@ const CreateOrganization = (props) => {
 
         if(isRoot){
           if(data.enterpriseId !== cellId){
-              if(selectedRadio === 1){
+              if(props.selectedRadio === 1){
                 data.isDisabled = !data.isDisabled;
               }
               data.treeCheck = parentCheck;
@@ -91,7 +80,7 @@ const CreateOrganization = (props) => {
 
         }else{
           if(data.enterpriseParentId === cellId){
-              if(selectedRadio === 1){
+              if(props.selectedRadio === 1){
                 data.isDisabled = !data.isDisabled;
               }
               data.treeCheck = parentCheck;
@@ -102,7 +91,26 @@ const CreateOrganization = (props) => {
       });
 
       setGridData(newData);
+      checkSelectedData(newData);
+    }
 
+    const resetGridData = useCallback(() => {
+      if(gridData.length > 0){
+        const newData = new Array();
+        gridData.map(data => {
+          data.treeCheck = false;
+          data.isSelect = false;
+          data.isDisabled = false;
+          
+          newData.push(data);
+        });
+
+        setGridData(newData);
+        checkSelectedData(newData);
+      }
+    }, [gridData]);
+
+    const checkSelectedData = (newData) => {
       const selectedData = new Array();
       newData.map((data) => {
         if(data.treeCheck){
@@ -114,30 +122,49 @@ const CreateOrganization = (props) => {
     }
 
     useEffect(() => {
+      if(props.selectedOrganization.length > 0){
+        props.setIsComplete(true);
+      }else{
+        props.setIsComplete(false);
+      }
+    }, [props.selectedOrganization]);
+
+    useEffect(() => {
       // wait for selected radio re render
       dispatch(enterpriseManagementRequestData());
-
+      resetGridData();
       setTimeout(() => {
         dispatch(enterpriseManagementRequestDataEnd());
       }, 1500);
 
-    }, [selectedRadio]);
+    }, [props.selectedRadio]);
+
+    useEffect(() => {
+      if(data_active_enterprise.length <= 0){
+        dispatch(getActiveEnterpriseList());
+      }
+
+      if(data_active_enterprise.length > 0){
+        setGridData(data_active_enterprise)
+      }
+
+    }, [data_active_enterprise]);
 
   return(
     <View
      onStartShouldSetResponderCapture={props.detectOffset}
      style={{ flexDirection: 'row', flexWrap: 'wrap' }}>
       <CustomRadioButtonComponent
-        onPressRadio={() => setSelectedRadio(prevState => prevState = 0)}
+        onPressRadio={() => props.setSelectedRadio(0)}
         label="XL User"
         radioValue="XL User"
-        status={selectedRadio === 0 ? "checked" : "unchecked"}
+        status={props.selectedRadio === 0 ? "checked" : "unchecked"}
       />
       <CustomRadioButtonComponent
-        onPressRadio={() => setSelectedRadio(prevState => prevState = 1)}
+        onPressRadio={() => props.setSelectedRadio(1)}
         label="Non XL User"
         radioValue="Non XL User"
-        status={selectedRadio === 1 ? "checked" : "unchecked"}
+        status={props.selectedRadio === 1 ? "checked" : "unchecked"}
       />
       <View style={styles.menuBarContainer}>
         <Text style={{ color: "#707070" }}>Total: {gridData.length} | Selected: {props.selectedOrganization.length}</Text>
@@ -157,12 +184,18 @@ const CreateOrganization = (props) => {
 }
 
 CreateOrganization.propTypes = {
+  selectedRadio: PropTypes.array,
+  setSelectedRadio: PropTypes.func,
   detectOffset: PropTypes.func,
+  setIsComplete: PropTypes.func,
   selectedOrganization: PropTypes.array,
   setSelectedOrganization: PropTypes.func
 };
 
 CreateOrganization.defaultProps = {
+  selectedRadio: [],
+  setSelectedRadio: () => {},
+  setIsComplete: () => {},
   detectOffset: () => {},
   selectedOrganization: [],
   setSelectedOrganization: () => {}

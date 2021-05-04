@@ -22,6 +22,6 @@ export {default as UserAdministrationCreatePage} from './userAdministrationCreat
 export {default as UserAdministrationFilterPage} from './userAdministrationFilter.page';
 export {default as NotificationPage} from './notification.page';
 export {default as AutomationFilterPage} from './automationFilter.page';
-export {default as FormStepPage} from './formstep.page';
+export {default as CreateNewUserPage} from './createNewUser.page';
 export {default as SmsA2pPage  } from './smsA2p.page';
 export {default as SmsA2pFilterPage  } from './smsA2pFilter.page';

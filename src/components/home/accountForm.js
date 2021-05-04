@@ -11,6 +11,7 @@ const AccountFormComponent = ({
   inputHandler,
   isValidate,
   formError,
+  setIsTouch = () => {}
 }) => {
   const generateForm = () => (
     <>
@@ -21,6 +22,7 @@ const AccountFormComponent = ({
               {form.isRequired && <Text style={{color: 'red'}}> *</Text>}
           </Text>
           <TextInput
+            onFocus={() => setIsTouch(true)}
             onChangeText={(text) => inputHandler(form.key, text)}
             style={styles.textInputContainer}
             value={value[form.key]}
