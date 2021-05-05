@@ -3,19 +3,61 @@ import PropTypes from 'prop-types';
 
 import {AccountForm} from '../../components';
 
-const userForm = [
-  {title: 'First Name', key: 'firstName', isRequired: true},
-  {title: 'Last Name', key: 'lastName', isRequired: true},
-  {title: 'Username', key: 'username', isRequired: true},
-  {title: 'Mobile Phone', key: 'phoneNumber', isRequired: false},
-  {title: 'Email Address', key: 'email', isRequired: true},
-  {title: 'Language', key: 'language', isRequired: true},
-];
-
 const CreateBasicUserInformation = (props) => {
 
   const [formError, setFormError] = useState({});
   const [touchForm, setTouchForm] = useState(false);
+  const [openDropDown, setOpenDropDown] = useState(false);
+  const [dropDownValue, setDropDownValue] = useState(null);
+
+  const userForm = [
+    {
+      title: 'First Name', 
+      key: 'firstName', 
+      isRequired: true, 
+      type: "text"
+    },
+    {
+      title: 'Last Name', 
+      key: 'lastName', 
+      isRequired: true, 
+      type: "text"
+    },
+    {
+      title: 'Username', 
+      key: 'username', 
+      isRequired: true, 
+      type: "text"
+    },
+    {
+      title: 'Mobile Phone', 
+      key: 'phoneNumber', 
+      isRequired: false, 
+      type: "text"
+    },
+    {
+      title: 'Email Address', 
+      key: 'email', 
+      isRequired: true, 
+      type: "text"
+    },
+    {
+      title: 'Language', 
+      key: 'language', 
+      isRequired: true, 
+      type: "select", 
+      options: [
+        { value: "english", label: "English" },
+        { value: "bahasa", label: "Bahasa" }
+      ],
+      config: {
+        searchable: false,
+        isOpen: openDropDown,
+        onClick: () => setOpenDropDown(prevState => prevState = prevState ? false : true),
+        setValue: setDropDownValue
+      }
+    },
+  ];
 
   const inputHandler = (name, value) => {
     props.setBasicInformation({
@@ -52,6 +94,10 @@ const CreateBasicUserInformation = (props) => {
     }
 
   }, [props.basicInformation]);
+
+  useEffect(() => {
+    inputHandler("language", dropDownValue);
+  }, [dropDownValue]);
 
   return(
     <AccountForm
