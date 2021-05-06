@@ -130,7 +130,7 @@ const CreateNewUserPage = ({navigation}) => {
       ]
     },
     {
-      title: 'Organzations',
+      title: 'Organizations',
       body: [
         { 
           component: 
