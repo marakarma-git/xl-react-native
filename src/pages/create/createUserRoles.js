@@ -50,7 +50,7 @@ const CreateUserRoles = (props) => {
   const [gridData, setGridData] = useState([]);
   const [gridOptions, setGridOptions] = useState(gridOptionsArray);
 
-  const selectCheckBox = (roleId = null) => {
+  const selectCheckBox = (roleId = null, action = "general") => {
     if(gridData.length > 0){
       const newData = new Array();
       const newOptions = new Array();
@@ -75,7 +75,11 @@ const CreateUserRoles = (props) => {
           data.isCheck = isHeaderCheck;
         }else{
           if(data.roleId === roleId){
-            data.isCheck = !data.isCheck;
+            if(action === 'general'){
+              data.isCheck = !data.isCheck;
+            }else{
+              data.isCheck = true;
+            }
           }
         }
 
@@ -99,7 +103,7 @@ const CreateUserRoles = (props) => {
   const checkHistory = useCallback(() => {
     if(gridData.length > 0){
       props.selectedRoles.map(roles => {
-        selectCheckBox(roles.roleId);
+        selectCheckBox(roles.roleId, 're-render');
       })
     }
   }, [gridData]);
@@ -121,7 +125,7 @@ const CreateUserRoles = (props) => {
 
   useEffect(() => {
     dispatch(getActiveRoles(props.enterpriseId));
-  }, []);
+  }, [props.enterpriseId]);
 
   return(
     <View

@@ -83,7 +83,7 @@ const CreateBasicUserInformation = (props) => {
       validationError[formKey] = `${formTitle} is required`;
     }
   }
-
+  
   useEffect(() => {
     validateForm();
 
@@ -93,10 +93,12 @@ const CreateBasicUserInformation = (props) => {
       props.setIsComplete(false);
     }
 
-  }, [props.basicInformation]);
+  }, [props.basicInformation, dropDownValue, touchForm]);
 
   useEffect(() => {
-    inputHandler("language", dropDownValue);
+    if(dropDownValue !== null){
+      inputHandler("language", dropDownValue);
+    }
   }, [dropDownValue]);
 
   return(

@@ -2,52 +2,8 @@ import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import {View} from 'react-native';
 import { FormPassword } from '../../components';
-import { useNavigation } from '@react-navigation/native';
-
-const passwordFormArray = [
-  {
-    name: 'password',
-    label: 'Password',
-    required: true,
-    visible: false,
-    validation: true,
-  },
-  {
-    name: 'confirmPassword',
-    label: 'Confirm Password',
-    required: true,
-    visible: false,
-    validation: false,
-  },
-];
-
-const passwordRulesArray = [
-  {label: 'Be between 8 and 30 characters', valid: false},
-  {label: 'contain at least 1 number 0-9', valid: false},
-  {label: 'contain at least 1 lower case letter (a-z)', valid: false},
-  {label: 'contain at least 1 upper case letter (A-Z)', valid: false},
-  {
-    label: 'not contain more than 3 consecutives identical characters',
-    valid: true,
-  },
-  {
-    label: 'not contain more than 3 consecutives lower-case characters',
-    valid: true,
-  },
-  {
-    label:
-      'contain only the following characters a-z, A-Z, 0-9, #, -, !, @, %, &, /, (, ), ?, + *',
-    valid: true,
-  },
-  {label: "match the entry in 'Confrim Password'", valid: true},
-];
 
 const CreateBasicCreatePassword = (props) => {
-  const navigation = useNavigation();
-
-  const [passwordForm, setPasswordForm] = useState(passwordFormArray);
-  const [passwordRules, setPasswordRules] = useState(passwordRulesArray);
-
   const inputHandler = (name, value, validation) => {
     props.setUserPassword({...props.userPassword, [name]: value});
     {
@@ -61,7 +17,7 @@ const CreateBasicCreatePassword = (props) => {
   const passwordValidator = (value) => {
     let isEmpty = value == 0;
 
-    const newPasswordRules = [...passwordRules];
+    const newPasswordRules = [...props.passwordRules];
 
     newPasswordRules[0].valid =
       value.length >= 8 && value.length < 30 ? true : false;
@@ -73,23 +29,23 @@ const CreateBasicCreatePassword = (props) => {
     newPasswordRules[6].valid =
       /^[a-zA-Z0-9#*!?+&@.$%\-,():;/]+$/.test(value) || isEmpty ? true : false;
 
-    setPasswordRules(newPasswordRules);
+    props.setPasswordRules(newPasswordRules);
   };
 
   const matchConfirmPassword = () => {
-    const newPasswordRules = [...passwordRules];
+    const newPasswordRules = [...props.passwordRules];
 
     newPasswordRules[7].valid = props.userPassword.password == props.userPassword.confirmPassword;
  
-    setPasswordRules(newPasswordRules);
+    props.setPasswordRules(newPasswordRules);
     checkFormComplete();
   };
 
   const checkFormComplete = () => {
     let validRules = 0;
 
-    const passwordRulesLength = passwordRules.length;
-    passwordRules.map((rules) => rules.valid && validRules++);
+    const passwordRulesLength = props.passwordRules.length;
+    props.passwordRules.map((rules) => rules.valid && validRules++);
 
     const validationRulesComplete = validRules === passwordRulesLength;
 
@@ -103,57 +59,14 @@ const CreateBasicCreatePassword = (props) => {
   useEffect(() => {
     matchConfirmPassword();
   }, [props.userPassword]);
-
-  useEffect(() => {
-    const pageLoad = navigation.addListener("focus", () => {
-      setPasswordForm([
-        {
-          name: 'password',
-          label: 'Password',
-          required: true,
-          visible: false,
-          validation: true,
-        },
-        {
-          name: 'confirmPassword',
-          label: 'Confirm Password',
-          required: true,
-          visible: false,
-          validation: false,
-        },
-      ]);
-      setPasswordRules([
-        {label: 'Be between 8 and 30 characters', valid: false},
-        {label: 'contain at least 1 number 0-9', valid: false},
-        {label: 'contain at least 1 lower case letter (a-z)', valid: false},
-        {label: 'contain at least 1 upper case letter (A-Z)', valid: false},
-        {
-          label: 'not contain more than 3 consecutives identical characters',
-          valid: true,
-        },
-        {
-          label: 'not contain more than 3 consecutives lower-case characters',
-          valid: true,
-        },
-        {
-          label:
-            'contain only the following characters a-z, A-Z, 0-9, #, -, !, @, %, &, /, (, ), ?, + *',
-          valid: true,
-        },
-        {label: "match the entry in 'Confrim Password'", valid: true},
-      ]);
-    })
-
-    return pageLoad;
-  }, [navigation]);
   
   return(
     <View style={{ alignItems: 'center' }}>
       <FormPassword 
         form={props.userPassword}
-        passwordForm={passwordForm}
-        setPasswordForm={setPasswordForm}
-        passwordRules={passwordRules}
+        passwordForm={props.passwordForm}
+        setPasswordForm={props.setPasswordForm}
+        passwordRules={props.passwordRules}
         passwordValidator={passwordValidator}
         inputHandler={inputHandler}
       />
@@ -162,15 +75,23 @@ const CreateBasicCreatePassword = (props) => {
 }
 
 CreateBasicCreatePassword.propTypes = {
-  userPassword: PropTypes.array,
+  passwordForm: PropTypes.object,
+  passwordRules: PropTypes.object,
+  userPassword: PropTypes.object,
   setIsComplete: PropTypes.func,
-  setUserPassword: PropTypes.func
+  setUserPassword: PropTypes.func,
+  setPasswordForm: PropTypes.func,
+  setPasswordRules: PropTypes.func,
 };
 
 CreateBasicCreatePassword.defaultProps = {
+  passwordForm: {},
+  passwordRules: {},
   userPassword: [],
   setIsComplete: () => {},
-  setUserPassword: () => {}
+  setUserPassword: () => {},
+  setPasswordForm: () => {},
+  setPasswordRules: () => {},
 }
 
 export default CreateBasicCreatePassword;

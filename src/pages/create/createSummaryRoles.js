@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 
 import { View } from 'react-native';
 import { GridComponent } from '../../components';
-import { useSelector, useDispatch } from 'react-redux';
 
 const gridOptionsArray = [
   {
@@ -43,7 +42,6 @@ const gridOptionsArray = [
 ];
 
 const CreateSummaryOrganization = (props) => {
-  const dispatch = useDispatch();
   const [gridOptions, setGridOptions] = useState(gridOptionsArray);
 
   return(

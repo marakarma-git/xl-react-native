@@ -16,45 +16,58 @@ const AccountFormComponent = ({
 }) => {
   
   const formType = (form) => {
-    switch (form.type) {
-      case "text":
-        return(
-          <TextInput
-            onFocus={() => setIsTouch(true)}
-            onChangeText={(text) => inputHandler(form.key, text)}
-            style={styles.textInputContainer}
-            value={value[form.key]}
-            editable={editable}
-            placeholder={form.title}
-          />
-        );
-      case "select":
-        return(
-          <DropDownPicker
-            disabled={!editable}
-            setValue={form.config?.setValue}
-            open={form.config?.isOpen}
-            items={form.options}
-            style={styles.textInputContainer} 
-            dropDownDirection="TOP"
-            dropDownContainerStyle={{ borderRadius: 3 }}
-            searchable={form.config?.searchable}
-            setOpen={form.config?.onClick}
-            value={value[form.key]}
-          />
-        )
-    
-      default:
-        return(
-          <TextInput
-            onFocus={() => setIsTouch(true)}
-            onChangeText={(text) => inputHandler(form.key, text)}
-            style={styles.textInputContainer}
-            value={value[form.key]}
-            editable={editable}
-            placeholder={form.title}
-          />
-        );
+    if(editable){
+      switch (form.type) {
+        case "text":
+          return(
+            <TextInput
+              onFocus={() => setIsTouch(true)}
+              onChangeText={(text) => inputHandler(form.key, text)}
+              style={styles.textInputContainer}
+              value={value[form.key]}
+              editable={editable}
+              placeholder={form.title}
+            />
+          );
+        case "select":
+          return(
+            <DropDownPicker
+              disabled={!editable}
+              setValue={form.config?.setValue}
+              open={form.config?.isOpen}
+              items={form.options}
+              style={styles.textInputContainer} 
+              dropDownDirection="TOP"
+              dropDownContainerStyle={{ borderRadius: 3 }}
+              searchable={form.config?.searchable}
+              setOpen={form.config?.onClick}
+              value={value[form.key] || form.config?.defaultValue}
+            />
+          )
+      
+        default:
+          return(
+            <TextInput
+              onFocus={() => setIsTouch(true)}
+              onChangeText={(text) => inputHandler(form.key, text)}
+              style={styles.textInputContainer}
+              value={value[form.key]}
+              editable={editable}
+              placeholder={form.title}
+            />
+          );
+      }
+    }else{
+      return(
+        <TextInput
+          onFocus={() => setIsTouch(true)}
+          onChangeText={(text) => inputHandler(form.key, text)}
+          style={styles.textInputContainer}
+          value={value[form.key]}
+          editable={editable}
+          placeholder={form.title}
+        />
+      );
     }
   }
 

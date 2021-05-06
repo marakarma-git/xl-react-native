@@ -23,7 +23,7 @@ import { ToastAndroid } from 'react-native';
 import { enterpriseManagementClearActiveEnterpriseData } from '../../redux/action/enterprise_management_action';
 import { setRequestError } from '../../redux/action/dashboard_action';
 
-const passwordForm = {
+const passwordFormBody = {
     password: "",
     confirmPassword: ""
 };
@@ -34,8 +34,46 @@ const basicInformationArray = {
     username: "",
     phoneNumber: "",
     email: "",
-    language: ""
+    language: "english"
 };
+
+const passwordFormArray = [
+  {
+    name: 'password',
+    label: 'Password',
+    required: true,
+    visible: false,
+    validation: true,
+  },
+  {
+    name: 'confirmPassword',
+    label: 'Confirm Password',
+    required: true,
+    visible: false,
+    validation: false,
+  },
+];
+
+const passwordRulesArray = [
+  {label: 'Be between 8 and 30 characters', valid: false},
+  {label: 'contain at least 1 number 0-9', valid: false},
+  {label: 'contain at least 1 lower case letter (a-z)', valid: false},
+  {label: 'contain at least 1 upper case letter (A-Z)', valid: false},
+  {
+    label: 'not contain more than 3 consecutives identical characters',
+    valid: true,
+  },
+  {
+    label: 'not contain more than 3 consecutives lower-case characters',
+    valid: true,
+  },
+  {
+    label:
+      'contain only the following characters a-z, A-Z, 0-9, #, -, !, @, %, &, /, (, ), ?, + *',
+    valid: true,
+  },
+  {label: "match the entry in 'Confrim Password'", valid: true},
+];
 
 const CreateNewUserPage = ({navigation}) => {
   const dispatch = useDispatch();
@@ -47,11 +85,13 @@ const CreateNewUserPage = ({navigation}) => {
   const [submitLoading, setSubmitLoading] = useState(false);
   const [formPosition, setFormPosition] = useState(0);
   const [selectedRadio, setSelectedRadio] = useState(-1);
-  const [userPassword, setUserPassword] = useState(passwordForm);
+  const [userPassword, setUserPassword] = useState(passwordFormBody);
   const [basicInformation, setBasicInformation] = useState(basicInformationArray);
   const [selectedOrganization, setSelectedOrganization] = useState([]);
   const [selectedRoles, setSelectedRoles] = useState([]);
   const [scrollViewEnabled, setScrollViewEnabled] = useState(true);
+  const [passwordForm, setPasswordForm] = useState(passwordFormArray);
+  const [passwordRules, setPasswordRules] = useState(passwordRulesArray);
 
   const [isCreatePasswordComplete, setIsPasswordComplete] = useState(false);
   const [isBasicInformationComplete, setIsBasicInformationComplete] = useState(false);
@@ -78,6 +118,10 @@ const CreateNewUserPage = ({navigation}) => {
         { 
           component: 
             <CreateBasicCreatePassword 
+              passwordForm={passwordForm}
+              passwordRules={passwordRules}
+              setPasswordForm={setPasswordForm}
+              setPasswordRules={setPasswordRules}
               setIsComplete={setIsPasswordComplete} 
               userPassword={userPassword} 
               setUserPassword={setUserPassword} />,
@@ -201,6 +245,9 @@ const CreateNewUserPage = ({navigation}) => {
     // Created By
     dataRaw.createdBy = data?.principal?.username;
 
+    // Password
+    dataRaw.password  = userPassword?.password;
+
     // Role Id
     selectedRoles.map(roles => {
       dataRaw.roleId.push(roles.roleId);
@@ -228,7 +275,6 @@ const CreateNewUserPage = ({navigation}) => {
 
   const submitAction = async (dataRaw) => {
     try {
-      console.log(dataRaw)
       setSubmitLoading(prevState => prevState = true);
       const { data } = await axios.post(`${base_url}/user/usr/createUser`, dataRaw, {
         headers: {
@@ -262,7 +308,7 @@ const CreateNewUserPage = ({navigation}) => {
   useEffect(() => {
     const pageLoad = navigation.addListener("focus", () => {
       setFormPosition(0);
-      setUserPassword(passwordForm);
+      setUserPassword(passwordFormBody);
       setBasicInformation(basicInformationArray);
       setSelectedRadio(-1);
       setSelectedOrganization([]);
@@ -273,8 +319,43 @@ const CreateNewUserPage = ({navigation}) => {
       setIsBasicInformationComplete(false);
       setIsUserOrganizationsComplete(false);
       dispatch(enterpriseManagementClearActiveEnterpriseData());
-      
-    });
+      setPasswordForm([
+          {
+            name: 'password',
+            label: 'Password',
+            required: true,
+            visible: false,
+            validation: true,
+          },
+          {
+            name: 'confirmPassword',
+            label: 'Confirm Password',
+            required: true,
+            visible: false,
+            validation: false,
+          },
+        ]);
+        setPasswordRules([
+          {label: 'Be between 8 and 30 characters', valid: false},
+          {label: 'contain at least 1 number 0-9', valid: false},
+          {label: 'contain at least 1 lower case letter (a-z)', valid: false},
+          {label: 'contain at least 1 upper case letter (A-Z)', valid: false},
+          {
+            label: 'not contain more than 3 consecutives identical characters',
+            valid: true,
+          },
+          {
+            label: 'not contain more than 3 consecutives lower-case characters',
+            valid: true,
+          },
+          {
+            label:
+              'contain only the following characters a-z, A-Z, 0-9, #, -, !, @, %, &, /, (, ), ?, + *',
+            valid: true,
+          },
+          {label: "match the entry in 'Confrim Password'", valid: true},
+        ]);
+      });
 
     return pageLoad;
   }, [navigation]);
