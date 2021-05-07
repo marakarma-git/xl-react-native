@@ -23,10 +23,10 @@ const activityLogMiddleware = (store) => (next) => (action) => {
 
   if (isHitApi) {
     if (authReducer.isLoggedIn) {
-      saveActivity(dataRaw, authReducer.data.access_token);
+      // saveActivity(dataRaw, authReducer.data.access_token);
     } else {
       if (action.payload.access_token) {
-        saveActivity(dataRaw, action.payload.access_token);
+        // saveActivity(dataRaw, action.payload.access_token);
       }
     }
   }

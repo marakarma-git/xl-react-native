@@ -62,6 +62,13 @@ const UserAdministrationPage = () => {
       setFirstRender(false);
     }
   }, [dispatch, searchText, generatedParams]);
+
+  useEffect(() => {
+      return navigation.addListener("focus", () => {
+        dispatch(callUserAdministrationGetUser());
+      });
+  }, [navigation]);
+  
   return (
     <HeaderContainer
       headerTitle={'User Administration'}

@@ -37,7 +37,7 @@ export const DRAWER_MENU_PRIVILEDGE = [
     components: LandingPage,
   },
   {
-    priviledgeId: '02ac2c76-53ce-11ea-8d77-2e728ce88125',
+    priviledgeId: '',
     name: 'Dashboard',
     icon: iconGrids,
     type: 'drawer',

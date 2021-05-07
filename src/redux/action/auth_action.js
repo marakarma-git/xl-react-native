@@ -28,7 +28,7 @@ const authSuccess = (data, params) => {
     type: reduxString.AUTH_SUCCESS,
     payload: data,
     params,
-    privId: data.authority
+    privId: data?.authority || []
   };
 };
 
@@ -77,6 +77,8 @@ const authLogin = (username, password) => {
       );
 
       if (data) {
+        const authority = await getUserPriviledges(data?.access_token);
+        data.authority = authority;
         dispatch(authSuccess(data, {username, password}));
       }
     } catch (error) {
@@ -84,6 +86,32 @@ const authLogin = (username, password) => {
     }
   };
 };
+
+const getUserPriviledges = async (access_token) => {
+  console.log("get in")
+  let userPriviledges = new Array();
+
+  try {
+    const { data } = await Axios.get(`${base_url}/user/usr/getUserPrivileges`, {
+      headers: {
+        Authorization: "Bearer " + access_token
+      }
+    });
+
+    console.log(data,  "user priviledge")
+
+    if(data){
+      if(data.statusCode === 0){
+        userPriviledges = data.result;
+      }
+    }
+  } catch (error) {
+    console.log(error);
+    dispatch(authFailed(error.response.data));
+  }
+
+  return userPriviledges;
+}
 
 const setTitleVersion = (data) => ({
   type: reduxString.GET_TITLE_VERSION,

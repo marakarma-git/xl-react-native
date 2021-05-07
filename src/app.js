@@ -34,6 +34,7 @@ const persistConfig = {
 const persistReducers = persistReducer(persistConfig, RootReducers);
 const store = createStore(
   persistReducers,
+  // applyMiddleware(thunk, validateTokenMiddleware),
   applyMiddleware(thunk, validateTokenMiddleware, activityLogMiddleware),
 );
 const persist = persistStore(store);
