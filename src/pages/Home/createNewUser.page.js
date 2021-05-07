@@ -284,14 +284,22 @@ const CreateNewUserPage = ({navigation}) => {
       });
 
       if(data){
+        let wording = "";
+        if(data.statusCode === 0){
+          wording = data.statusDescription;
+          navigation.navigate("User Administration");
+        }else if(data.statusCode === 1002){
+           wording = data.statusDescription + ", please use another username! ";
+           setFormPosition(0);
+        }
         ToastAndroid.showWithGravityAndOffset(
-          data.statusDescription, 
+          wording, 
           ToastAndroid.LONG, 
           ToastAndroid.TOP,
           0,
           300
         );
-        navigation.replace("Home");
+
         setSubmitLoading(false);
       }
 

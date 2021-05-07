@@ -14,38 +14,44 @@ const CreateBasicUserInformation = (props) => {
     {
       title: 'First Name', 
       key: 'firstName', 
-      isRequired: true, 
-      type: "text"
+      validation: true, 
+      type: "text",
+      validationType: "required"
     },
     {
       title: 'Last Name', 
       key: 'lastName', 
-      isRequired: true, 
-      type: "text"
+      validation: true, 
+      type: "text",
+      validationType: "required"
     },
     {
       title: 'Username', 
       key: 'username', 
-      isRequired: true, 
-      type: "text"
+      validation: true, 
+      type: "text",
+      validationType: "required"
     },
     {
       title: 'Mobile Phone', 
       key: 'phoneNumber', 
-      isRequired: false, 
-      type: "text"
+      validation: false, 
+      type: "text",
+      validationType: "required"
     },
     {
       title: 'Email Address', 
       key: 'email', 
-      isRequired: true, 
-      type: "text"
+      validation: true, 
+      type: "text",
+      validationType: "isEmail|required"
     },
     {
       title: 'Language', 
       key: 'language', 
-      isRequired: true, 
-      type: "select", 
+      validation: true, 
+      type: "select",
+      validationType: "required",
       options: [
         { value: "english", label: "English" },
         { value: "bahasa", label: "Bahasa" }
@@ -70,18 +76,52 @@ const CreateBasicUserInformation = (props) => {
     const validationError = {};
     if(touchForm){
       userForm.map((form) => {
-        if(form.isRequired){
-          validationIsRequired(form.key, form.title, validationError);
+        if(form.validation){
+          formValidation(form.key, form.title, validationError, form.validationType);
         }
       })
     }
     setFormError(prevState => prevState = validationError);
   }
 
+  const formValidation = (formKey, formTitle, validationError, validationRules) => {
+    const splitValidation = String(validationRules).split("|");
+
+    splitValidation.map((type) => {
+      switch (type) {
+        case "required":
+          validationIsRequired(formKey, formTitle, validationError);
+          break;
+        case "isEmail":
+          validateEmail(formKey, formTitle, validationError);
+          break;
+
+        default:
+         validationIsRequired(formKey, formTitle, validationError);
+      }
+    });
+  }
+
   const validationIsRequired = (formKey, formTitle, validationError) => {
+    let isError = false;
     if(props.basicInformation[formKey].length <= 0){
+      isError = true;
       validationError[formKey] = `${formTitle} is required`;
     }
+
+    return isError;
+  }
+
+  const validateEmail = (formKey, formTitle, validationError) => {
+      let isError = false;
+      var re = /\S+@\S+\.\S+/;
+
+      if(re.test(props.basicInformation[formKey]) == false){
+        isError = true;
+        validationError[formKey] = `Email is not valid!`;
+      }
+
+      return isError;
   }
   
   useEffect(() => {
