@@ -136,7 +136,6 @@ const BarChartComponent = ({item, filterParams = {}}) => {
 
     return pageLoad;
   }, [navigation]);
-  console.log('isinya',dataSet)
   return (
     <Card style={[style.cardSection]}>
       <Card.Content style={[style.cardContentWrapper, {flex: 1}]}>

@@ -19,7 +19,6 @@ class Notification {
             },
             onAction: function (notification) {
                 console.log("ACTION:", notification.action);
-                console.log("SINI:", notification);
                 
                 // process the action
             },

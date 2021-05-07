@@ -3,17 +3,14 @@ import {ACTION_PRIVILEDGE} from '../constant/priviledge';
 export default priviledgeHelper = {
     isHasPriviledge: (actionCode, userAuthorityList) => {
         if(typeof actionCode != 'string' || !actionCode){
-            console.log("action code harus string");
             return;
         }
 
         if(typeof userAuthorityList != 'object' || !userAuthorityList){
-            console.log("User authority list harus array");
             return;
         }
 
         if(actionCode.length >= 2 && actionCode <= 4){
-            console.log("Format action code tidak sesuai");
             return;
         }      
         

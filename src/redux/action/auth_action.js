@@ -88,7 +88,6 @@ const authLogin = (username, password) => {
 };
 
 const getUserPriviledges = async (access_token) => {
-  console.log("get in")
   let userPriviledges = new Array();
 
   try {
@@ -98,15 +97,12 @@ const getUserPriviledges = async (access_token) => {
       }
     });
 
-    console.log(data,  "user priviledge")
-
     if(data){
       if(data.statusCode === 0){
         userPriviledges = data.result;
       }
     }
   } catch (error) {
-    console.log(error);
     dispatch(authFailed(error.response.data));
   }
 
