@@ -51,7 +51,7 @@ const TableCellButton = (props) => {
                 numberOfLines={1}>
                 {label}
               </Text>
-              <TouchableOpacity onPress={() => {}}>
+              <TouchableOpacity onPress={() => setModal(false)}>
                 <MaterialCommunityIcons
                   name={'close-circle'}
                   color={'white'}
