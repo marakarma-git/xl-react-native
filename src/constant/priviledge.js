@@ -99,6 +99,13 @@ export const DRAWER_MENU_PRIVILEDGE = [
         height: 25,
         components: BannerManagementPage,
       },
+      {
+        priviledgeId: '',
+        name: 'SmsA2p',
+        icon: iconHome,
+        type: 'drawer',
+        components: SmsA2pPage,
+      },
     ],
   },
   {
@@ -107,13 +114,6 @@ export const DRAWER_MENU_PRIVILEDGE = [
     icon: iconHome,
     type: 'drawer',
     components: AutomationPage,
-  },
-  {
-    priviledgeId: '',
-    name: 'SmsA2p',
-    icon: iconHome,
-    type: 'drawer',
-    components: SmsA2pPage,
   },
   {
     priviledgeId: '',
