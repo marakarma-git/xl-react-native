@@ -9,6 +9,7 @@ import TableCellText from './tableCellText';
 import TableCellViewMap from './tableCellViewMap';
 import TableCellHeaderCheckBox from './tableCellHeaderCheckBox';
 import TableCellCheckBoxTreeView from './tableCellCheckBoxTreeView';
+import TableCellButton from './tableCellButton';
 
 const TableCell = (props) => {
   const {type} = props || {};
@@ -31,6 +32,8 @@ const TableCell = (props) => {
       return <TableCellViewMap {...props} />;
     case 'TableCellCheckBoxTreeView':
       return <TableCellCheckBoxTreeView {...props} />;
+    case 'TableCellButton':
+      return <TableCellButton {...props} />;
     default:
       return <React.Fragment />;
   }
@@ -46,6 +49,7 @@ TableCell.propTypes = {
     'TableCellText',
     'TableCellViewMap',
     'TableCellCheckBoxTreeView',
+    'TableCellButton',
   ]).isRequired,
   config: {
     label: PropTypes.string,

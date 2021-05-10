@@ -38,7 +38,7 @@ const dataBannerHeader = [
     formId: 'banner-image-hard-code',
     api_id: 'fileName',
     cellType: 'TableCellHeader',
-    cellRowType: 'TableCellText',
+    cellRowType: 'TableCellButton',
     config: {
       label: 'Banner Image',
       doNotShowOnFilter: true,
