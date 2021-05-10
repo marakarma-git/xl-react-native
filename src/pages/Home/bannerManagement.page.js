@@ -34,7 +34,6 @@ const BannerManagementPage = () => {
       <View style={subscriptionStyle.containerBackground}>
         <Table
           isDragNSort
-          hideStickySide
           isScrollView={true}
           stickHeaderIndices={[1]}
           headerOtherLayout={() => {
