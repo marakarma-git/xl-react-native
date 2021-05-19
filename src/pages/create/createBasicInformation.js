@@ -14,42 +14,52 @@ const CreateBasicUserInformation = (props) => {
     {
       title: 'First Name', 
       key: 'firstName', 
-      validation: true, 
+      validation: true,
+      isRequired: true, 
       type: "text",
-      validationType: "required"
+      validationType: "required",
+      editable: props.isEditable
     },
     {
       title: 'Last Name', 
       key: 'lastName', 
       validation: true, 
+      isRequired: true, 
       type: "text",
-      validationType: "required"
+      validationType: "required",
+      editable: props.isEditable
     },
     {
       title: 'Username', 
       key: 'username', 
       validation: true, 
+      isRequired: true, 
       type: "text",
-      validationType: "required"
+      validationType: "required",
+      editable: props.isUpdate ? false : props.isEditable
     },
     {
       title: 'Mobile Phone', 
       key: 'phoneNumber', 
       validation: false, 
       type: "text",
-      validationType: "required"
+      validationType: "required",
+      editable: props.isEditable
     },
     {
       title: 'Email Address', 
       key: 'email', 
       validation: true, 
+      isRequired: true, 
       type: "text",
-      validationType: "isEmail|required"
+      validationType: "isEmail|required",
+      editable: props.isEditable
     },
     {
       title: 'Language', 
       key: 'language', 
       validation: true, 
+      isRequired: true, 
       type: "select",
       validationType: "required",
       options: [
@@ -61,7 +71,8 @@ const CreateBasicUserInformation = (props) => {
         isOpen: openDropDown,
         onClick: () => setOpenDropDown(prevState => prevState = prevState ? false : true),
         setValue: setDropDownValue
-      }
+      },
+      editable: props.isEditable
     },
   ];
 
@@ -128,6 +139,7 @@ const CreateBasicUserInformation = (props) => {
     validateForm();
 
     if(Object.keys(formError) <= 0){
+      console.log("complete")
       props.setIsComplete(true);
     }else{
       props.setIsComplete(false);
@@ -155,6 +167,7 @@ const CreateBasicUserInformation = (props) => {
 }
 
 CreateBasicUserInformation.propTypes = {
+  isUpdate: PropTypes.bool,
   isEditable: PropTypes.bool,
   basicInformation: PropTypes.array,
   setIsComplete: PropTypes.func,
@@ -162,6 +175,7 @@ CreateBasicUserInformation.propTypes = {
 };
 
 CreateBasicUserInformation.defaultProps = {
+  isUpdate: false,
   isEditable: false,
   basicInformation: [],
   setIsComplete: () => {},

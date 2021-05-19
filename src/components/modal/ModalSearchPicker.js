@@ -62,6 +62,7 @@ const ModalSearchPicker = (props) => {
             const {label} = item;
             return (
               <TouchableOpacity
+                disabled={item.isDisabled ? true : false}
                 onPress={() => {
                   onChange(item);
                 }}
@@ -84,7 +85,7 @@ const ModalSearchPicker = (props) => {
                   size={20}
                   style={{marginRight: 5}}
                 />
-                <Text style={{flex: 1}}>{label}</Text>
+                <Text style={{flex: 1, color: item.isDisabled ? '#c8c8c8' : 'black'}}>{label}</Text>
               </TouchableOpacity>
             );
           }}

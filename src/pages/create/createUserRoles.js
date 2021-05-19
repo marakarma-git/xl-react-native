@@ -95,9 +95,34 @@ const CreateUserRoles = (props) => {
       })
 
       props.setSelectedRoles(selectedData);
-
       setGridData(prevState => prevState = newData);
+
     }
+  }
+
+  const checkSelectedRoles = (data, dataRoleId) => {
+    const newData = new Array();
+
+    data.map((data) => {
+        dataRoleId.map((roleId) => {
+          if(data.roleId === roleId){
+            data.isCheck = true;
+          }
+        });
+
+        newData.push(data);
+    });
+
+    const selectedData = new Array();
+
+    newData.map((data) => {
+      if(data.isCheck){
+        selectedData.push(data);
+      }
+    });
+
+    props.setSelectedRoles(selectedData);
+    setGridData(prevState => prevState = newData);
   }
 
   const checkHistory = useCallback(() => {
@@ -118,12 +143,18 @@ const CreateUserRoles = (props) => {
 
   useEffect(() => {
     if(data_active_roles.length > 0){
-      setGridData(data_active_roles);
+      if(props.isUpdate){
+        checkSelectedRoles(data_active_roles, props.dataRoleId);
+      }else{
+        setGridData(data_active_roles);
+      }
+
       checkHistory();
     }
   }, [data_active_roles]);
 
   useEffect(() => {
+    console.log("call enterprise id", props.enterpriseId)
     dispatch(getActiveRoles(props.enterpriseId));
   }, [props.enterpriseId]);
 
@@ -145,6 +176,8 @@ const CreateUserRoles = (props) => {
 }
 
 CreateUserRoles.propTypes = {
+  isUpdate: PropTypes.bool,
+  dataRoleId: PropTypes.array,
   selectedRoles: PropTypes.array,
   setIsComplete: PropTypes.func,
   enterpriseId: PropTypes.string,
@@ -153,6 +186,8 @@ CreateUserRoles.propTypes = {
 };
 
 CreateUserRoles.defaultProps = {
+  isUpdate: false,
+  dataRoleId: [],
   selectedRoles: [],
   enterpriseId: "",
   setIsComplete: () => {},

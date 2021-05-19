@@ -2,7 +2,6 @@ import axios from 'axios';
 import reduxString from '../reduxString';
 import {base_url} from '../../constant/connection';
 import {dataMatcherArray2D} from './get_sim_inventory_action';
-import {get} from 'react-native/Libraries/TurboModule/TurboModuleRegistry';
 
 const userAdministrationGetUserLoading = () => {
   return {
@@ -76,6 +75,60 @@ const userAdministrationResetAppliedHeaderSort = () => {
     type: reduxString.USER_ADMINISTRATION_RESET_APPLIED_HEADER_SORT,
   };
 };
+
+const userAdministrationUpdateUser = (dataUser, dataUserGenerated) => ({
+  type: reduxString.USER_ADMINISTRATION_UPDATE_LOCK_UNLOCK_USER,
+  dataUser,
+  dataUserGenerated
+});
+
+const callUserAdministrationDeleteUser = (userId) => {
+  return (dispatch, getState) => {
+    const newData = new Array();
+    const {data_user} = getState().user_administration_get_user_reducer;
+    const { content } = data_user?.result;
+    const {dataHeader} = getState().user_administration_array_header_reducer || {};
+    
+    let contentLength = content.length;
+
+    userId.map((id) => {
+      for (let i = 0; i < contentLength; i++){
+        if(id === content[i].userId){
+          content.splice(i, 1);
+          isDelete = true;
+          break;
+        }
+      }
+    });
+
+    const generateTable = dataMatcherArray2D(content, dataHeader);
+    dispatch(userAdministrationUpdateUser(data_user, generateTable));
+
+  }
+}
+
+const callUserAdministrationUpdateLockUnlockUser = (userId, lockStatus) => {
+  return (dispatch, getState) => {
+    let updateUserIndex = 0;
+    const {data_user} = getState().user_administration_get_user_reducer;
+    const { content } = data_user?.result;
+    const {dataHeader} = getState().user_administration_array_header_reducer || {};
+
+    content.map((data, index) => {
+      if(data.userId === userId){
+        updateUserIndex = +index;
+        data.lockStatus = lockStatus;
+      }
+    });
+
+    const generateTable = dataMatcherArray2D(content, dataHeader);
+
+    generateTable[updateUserIndex].is_checked_root = true;
+
+    dispatch(userAdministrationUpdateUser(data_user, generateTable));
+  }
+}
+
 const callUserAdministrationGetUser = (paginate) => {
   return async (dispatch, getState) => {
     dispatch(userAdministrationGetUserLoading());
@@ -189,4 +242,6 @@ export {
   userAdministrationUnCheckAllDataUser,
   userAdministrationSetAppliedHeaderSort,
   userAdministrationResetAppliedHeaderSort,
+  callUserAdministrationUpdateLockUnlockUser,
+  callUserAdministrationDeleteUser
 };

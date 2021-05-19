@@ -25,3 +25,4 @@ export {default as AutomationFilterPage} from './automationFilter.page';
 export {default as CreateNewUserPage} from './createNewUser.page';
 export {default as SmsA2pPage  } from './smsA2p.page';
 export {default as SmsA2pFilterPage  } from './smsA2pFilter.page';
+export {default as AutomationCreDitPage} from './automationCreDit.page';

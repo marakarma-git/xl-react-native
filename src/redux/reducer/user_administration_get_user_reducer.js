@@ -4,6 +4,7 @@ import lod from 'lodash';
 const initialState = {
   loading: false,
   errorText: '',
+  successText: '',
   data_user: [],
   data_user_generated: [],
   page_pagination: 0,
@@ -113,6 +114,12 @@ const user_administration_get_user_reducer = (state = initialState, action) => {
         ...state,
         applied_header_sort: initialState.applied_header_sort,
       };
+    case reduxString.USER_ADMINISTRATION_UPDATE_LOCK_UNLOCK_USER:
+      return{
+        ...state,
+        data_user: action.dataUser,
+        data_user_generated: action.dataUserGenerated
+      }
     default:
       return state;
   }

@@ -78,21 +78,31 @@ const Login = ({navigation}) => {
     }
   };
 
-  const errorHandler = (error) => {
-    if (error.error === 'invalid_grant') {
-      setErrorText('The username or password is incorrect');
-    }
-    if (error.error === 'unauthorized') {
-      setErrorText(
-        `Sorry for security reasons, after 3 more failed login\nattempts you'll have to wait ${
-          error.error_description.split(': ')[1]
-        } before trying again`,
-      );
-    }
-    if (error.error_description === 'User is disabled') {
-      setErrorText(
-        "Your account hasn't been verified. Please verify your\naccount on the email to enable you to log in",
-      );
+  const errorHandler = (errorParams) => {
+    const { error, error_description } = errorParams;
+
+    switch (error) {
+      case "invalid_grant":
+        if(error_description === "User is disabled") 
+          setErrorText("Your account hasn't been verified. Please verify your\naccount on the email to enable you to log in");
+        if(error_description === "Bad crendetials") setErrorText("The username or password is incorrect")
+        if(error_description === "User account is locked") setErrorText(error_description);
+        break;
+      case "unauthorized":
+        if(error_description === "User is disabled")
+          setErrorText(
+            "Your account hasn't been verified. Please verify your\naccount on the email to enable you to log in",
+          );
+        else 
+        setErrorText(
+          `Sorry for security reasons, after 3 more failed login\nattempts you'll have to wait ${
+            error_description.split(': ')[1]
+          } before trying again`,
+        );
+        break;
+      default:
+        setErrorText(error_description);
+        break;
     }
   };
 

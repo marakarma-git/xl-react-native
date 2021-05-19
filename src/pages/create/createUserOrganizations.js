@@ -94,6 +94,34 @@ const CreateOrganization = (props) => {
       checkSelectedData(newData);
     }
 
+    const checkSelectedOrganization = (data, selectedOrganization) => {
+      let parentSelected = false;
+        const newData = new Array();
+
+        data.map((data, index) => {
+          data.isDisabled = false;
+          selectedOrganization.map((organization) => {
+            if(organization == data.enterpriseId){
+              data.treeCheck  = true;
+            }
+          });
+
+          if(data.treeCheck){
+            if(props.selectedRadio == 1){
+              if(parentSelected){
+                data.isDisabled = true;
+              }
+            }
+            parentSelected = true;
+          }
+
+          newData.push(data);
+        });
+
+        setGridData(newData);
+        checkSelectedData(newData);
+    }
+
     const resetGridData = useCallback(() => {
       if(gridData.length > 0){
         const newData = new Array();
@@ -112,7 +140,7 @@ const CreateOrganization = (props) => {
 
     const checkSelectedData = (newData) => {
       const selectedData = new Array();
-      newData.map((data) => {
+      newData.map((data, index) => {
         if(data.treeCheck){
           selectedData.push(data);
         }
@@ -145,7 +173,12 @@ const CreateOrganization = (props) => {
       }
 
       if(data_active_enterprise.length > 0){
-        setGridData(data_active_enterprise)
+        if(props.isUpdate){
+          props.defaultParentId(data_active_enterprise[0].enterpriseId); //this useful if user choose xl user
+          checkSelectedOrganization(data_active_enterprise, props.selectedOrganization);
+        }else{
+          setGridData(data_active_enterprise);
+        }
       }
 
     }, [data_active_enterprise]);
@@ -189,16 +222,20 @@ CreateOrganization.propTypes = {
   detectOffset: PropTypes.func,
   setIsComplete: PropTypes.func,
   selectedOrganization: PropTypes.array,
-  setSelectedOrganization: PropTypes.func
+  setSelectedOrganization: PropTypes.func,
+  isUpdate: PropTypes.bool,
+  defaultParentId: PropTypes.func
 };
 
 CreateOrganization.defaultProps = {
+  isUpdate: false,
   selectedRadio: [],
   setSelectedRadio: () => {},
   setIsComplete: () => {},
   detectOffset: () => {},
   selectedOrganization: [],
-  setSelectedOrganization: () => {}
+  setSelectedOrganization: () => {},
+  defaultParentId: () => {}
 }
 
 export default CreateOrganization;

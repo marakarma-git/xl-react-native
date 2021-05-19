@@ -26,6 +26,7 @@ import {
   SmsA2pPage,
   SmsA2pFilterPage,
   CreateNewUserPage,
+  AutomationCreDitPage,
 } from '../pages/Home/index';
 
 export const DRAWER_MENU_PRIVILEDGE = [
@@ -118,35 +119,42 @@ export const DRAWER_MENU_PRIVILEDGE = [
   {
     priviledgeId: '',
     name: 'Create User',
-    icon: iconHome,
+    icon: "",
     type: 'non-drawer',
     components: CreateNewUserPage,
   },
   {
     priviledgeId: '',
     name: 'AutomationFilter',
-    icon: iconHome,
+    icon: "",
     type: 'non-drawer',
     components: AutomationFilterPage,
   },
   {
     priviledgeId: '',
+    name: 'AutomationCreDit',
+    icon: "",
+    type: 'non-drawer',
+    components: AutomationCreDitPage,
+  },
+  {
+    priviledgeId: '',
     name: 'SmsA2pFilter',
-    icon: iconHome,
+    icon: "",
     type: 'non-drawer',
     components: SmsA2pFilterPage,
   },
   {
     priviledgeId: '',
     name: 'SubscriptionFilter',
-    icon: iconHome,
+    icon: "",
     type: 'non-drawer',
     components: SubscriptionFilter,
   },
   {
     priviledgeId: '',
     name: 'Account',
-    icon: iconGrids,
+    icon: "",
     type: 'non-drawer',
     width: 25,
     height: 25,
@@ -155,7 +163,7 @@ export const DRAWER_MENU_PRIVILEDGE = [
   {
     priviledgeId: '',
     name: 'Notification',
-    icon: iconGrids,
+    icon: "",
     type: 'non-drawer',
     width: 25,
     height: 25,
@@ -164,7 +172,7 @@ export const DRAWER_MENU_PRIVILEDGE = [
   {
     priviledgeId: '711111aa-643a-11ea-bc55-0242ac130003',
     name: 'Change Password',
-    icon: iconComponents,
+    icon: "",
     type: 'non-drawer',
     width: 25,
     height: 25,
@@ -173,7 +181,7 @@ export const DRAWER_MENU_PRIVILEDGE = [
   {
     priviledgeId: '',
     name: 'About',
-    icon: iconComponents,
+    icon: "",
     type: 'non-drawer',
     width: 25,
     height: 25,
@@ -182,7 +190,7 @@ export const DRAWER_MENU_PRIVILEDGE = [
   {
     priviledgeId: '',
     name: 'UserAdministrationCreate',
-    icon: iconComponents,
+    icon: "",
     type: 'non-drawer',
     width: 25,
     height: 25,
@@ -191,7 +199,7 @@ export const DRAWER_MENU_PRIVILEDGE = [
   {
     priviledgeId: '',
     name: 'UserAdministrationFilter',
-    icon: iconComponents,
+    icon: "",
     type: 'non-drawer',
     width: 25,
     height: 25,
@@ -200,7 +208,7 @@ export const DRAWER_MENU_PRIVILEDGE = [
   {
     priviledgeId: '',
     name: 'RoleAdministrationCreate',
-    icon: iconComponents,
+    icon: "",
     type: 'non-drawer',
     width: 25,
     height: 25,
@@ -209,7 +217,7 @@ export const DRAWER_MENU_PRIVILEDGE = [
   {
     priviledgeId: '',
     name: 'RoleAdministrationFilter',
-    icon: iconComponents,
+    icon: "",
     type: 'non-drawer',
     width: 25,
     height: 25,
@@ -218,7 +226,7 @@ export const DRAWER_MENU_PRIVILEDGE = [
   {
     priviledgeId: '',
     name: 'EnterpriseManagementFilter',
-    icon: iconComponents,
+    icon: "",
     type: 'non-drawer',
     width: 25,
     height: 25,
@@ -227,7 +235,7 @@ export const DRAWER_MENU_PRIVILEDGE = [
   {
     priviledgeId: '',
     name: 'EnterpriseManagementOnboard',
-    icon: iconComponents,
+    icon: "",
     type: 'non-drawer',
     width: 25,
     height: 25,
@@ -236,7 +244,7 @@ export const DRAWER_MENU_PRIVILEDGE = [
   {
     priviledgeId: '',
     name: 'SubscriptionPackageFilter',
-    icon: iconComponents,
+    icon: "",
     type: 'non-drawer',
     width: 25,
     height: 25,
@@ -245,7 +253,7 @@ export const DRAWER_MENU_PRIVILEDGE = [
   {
     priviledgeId: '',
     name: 'BannerManagementCreate',
-    icon: iconComponents,
+    icon: "",
     type: 'non-drawer',
     width: 25,
     height: 25,

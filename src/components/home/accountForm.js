@@ -23,9 +23,9 @@ const AccountFormComponent = ({
             <TextInput
               onFocus={() => setIsTouch(true)}
               onChangeText={(text) => inputHandler(form.key, text)}
-              style={styles.textInputContainer}
+              style={[styles.textInputContainer, { backgroundColor: form.editable ? 'white' : "#e4e7ea" }]}
               value={value[form.key]}
-              editable={editable}
+              editable={form.editable || false}
               placeholder={form.title}
             />
           );
@@ -50,9 +50,9 @@ const AccountFormComponent = ({
             <TextInput
               onFocus={() => setIsTouch(true)}
               onChangeText={(text) => inputHandler(form.key, text)}
-              style={styles.textInputContainer}
+              style={[styles.textInputContainer, { backgroundColor: form.editable ? 'white' : "#e4e7ea" }]}
               value={value[form.key]}
-              editable={editable}
+              editable={form.editable || false}
               placeholder={form.title}
             />
           );
@@ -62,7 +62,7 @@ const AccountFormComponent = ({
         <TextInput
           onFocus={() => setIsTouch(true)}
           onChangeText={(text) => inputHandler(form.key, text)}
-          style={styles.textInputContainer}
+          style={[styles.textInputContainer, { backgroundColor: form.editable ? 'white' : "#e4e7ea" }]}
           value={value[form.key]}
           editable={editable}
           placeholder={form.title}

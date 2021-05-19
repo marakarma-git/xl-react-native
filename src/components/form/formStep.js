@@ -54,12 +54,16 @@ const FormStepHeaderComponent = (props) => {
 const FormStepBodyComponent = (props) => {
     return(
         <React.Fragment>
-            { props.formBody.map((form, index) => (
-                <Card key={index} style={[styles.cardSection, {marginTop: '1%'}]}>
-                    <Text fontType= 'bold' style={{ paddingLeft: 20, paddingVertical: 5,fontSize: 16 }}>{form.componentTitle || "-"}</Text>
-                    {form.component}
-                </Card>  
-            )) }
+            { props.formBody.map((form, index) => {
+                if(form.isVisible != false){
+                    return(
+                        <Card key={index} style={[styles.cardSection, {marginTop: '1%'}]}>
+                            <Text fontType= 'bold' style={{ paddingLeft: 20, paddingVertical: 5,fontSize: 16 }}>{form.componentTitle || "-"}</Text>
+                            {form.component}
+                        </Card>  
+                    )
+                }
+            }) }
         </React.Fragment>
     )
 }
@@ -113,7 +117,8 @@ FormStepComponent.propTypes = {
     onNext: PropTypes.func,
     onBack: PropTypes.func,
     onSubmit: PropTypes.func,
-    submitLoading: PropTypes.bool
+    submitLoading: PropTypes.bool,
+    isVisible: PropTypes.bool
 }
 
 FormStepComponent.defaultProps = {
@@ -125,7 +130,7 @@ FormStepComponent.defaultProps = {
     onNext: () => {},
     onBack: () => {},
     onSubmit: () => {},
-    submitLoading: false
+    submitLoading: false,
 }
 
 export default FormStepComponent;

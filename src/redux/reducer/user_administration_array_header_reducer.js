@@ -43,11 +43,11 @@ const dataHeaderFilter = [
     data: [
       {
         value: true,
-        label: 'Active',
+        label: 'Verified',
       },
       {
         value: false,
-        label: 'Locked',
+        label: 'Not Verified',
       },
     ],
     params: '&activeStatus=',
@@ -58,8 +58,38 @@ const dataHeaderFilter = [
       isTouchable: true,
       superType: 'BOOL',
       labelBool: {
-        true: 'Active',
-        false: 'Locked',
+        true: 'Verified',
+        false: 'Not Verified',
+      },
+    },
+    shown: true,
+    sort_by_filter: 5,
+  },
+  {
+    formId: 'active-status-hard-code',
+    api_id: 'lockStatus',
+    value: {},
+    typeInput: 'DropDown',
+    data: [
+      {
+        value: true,
+        label: 'Locked',
+      },
+      {
+        value: false,
+        label: 'Active',
+      },
+    ],
+    params: '&lockStatus=',
+    cellType: 'TableCellHeaderAscDesc',
+    cellRowType: 'TableCellText',
+    config: {
+      label: 'Lock Status',
+      isTouchable: true,
+      superType: 'BOOL',
+      labelBool: {
+        true: 'Locked',
+        false: 'Active',
       },
     },
     shown: true,

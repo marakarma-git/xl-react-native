@@ -15,6 +15,7 @@ const actionData = [
 const FilterActionLabel = (props) => {
   const {value, onChange, total, filtered, selected} = props || {};
   const [showAction, setShowAction] = useState(false);
+
   return (
     <>
       <View style={subscriptionStyle.wrapperMenuOption}>
@@ -38,7 +39,7 @@ const FilterActionLabel = (props) => {
       </View>
       {showAction && (
         <ModalSearchPicker
-          data={actionData}
+          data={props.actionData || actionData}
           onChange={(e) => {
             onChange(e);
             setShowAction(false);
@@ -53,6 +54,7 @@ const FilterActionLabel = (props) => {
   );
 };
 FilterActionLabel.propTypes = {
+  actionData: PropTypes.array,
   value: PropTypes.objectOf({
     value: PropTypes.any,
     label: PropTypes.string,

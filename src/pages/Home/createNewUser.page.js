@@ -3,7 +3,8 @@ import {base_url} from '../../constant/connection';
 
 import React, {useState, useRef, useEffect} from 'react';
 import { useSelector } from 'react-redux';
-import {ScrollView, View} from 'react-native';
+import {ScrollView, View, ToastAndroid, ActivityIndicator} from 'react-native';
+import {Text} from '../../components';
 import {
   FormStepComponent, 
   HeaderContainer, 
@@ -19,7 +20,6 @@ import {
   CreateSummaryOrganization,
   CreateSummaryRoles
 } from "../create";
-import { ToastAndroid } from 'react-native';
 import { enterpriseManagementClearActiveEnterpriseData } from '../../redux/action/enterprise_management_action';
 import { setRequestError } from '../../redux/action/dashboard_action';
 
@@ -75,13 +75,15 @@ const passwordRulesArray = [
   {label: "match the entry in 'Confrim Password'", valid: true},
 ];
 
-const CreateNewUserPage = ({navigation}) => {
+const CreateNewUserPage = ({route, navigation}) => {
+  const userId = route.params?.userId || "";
   const dispatch = useDispatch();
   const listViewRef = useRef();
   const {imageBase64} = useSelector((state) => state.enterprise_reducer);
   const { data } = useSelector((state) => state.auth_reducer);
   const accessToken = useSelector((state) => state.auth_reducer.data.access_token);
 
+  const [loadingUserDetail, setLoadingUserDetail] = useState(false);
   const [submitLoading, setSubmitLoading] = useState(false);
   const [formPosition, setFormPosition] = useState(0);
   const [selectedRadio, setSelectedRadio] = useState(-1);
@@ -89,9 +91,11 @@ const CreateNewUserPage = ({navigation}) => {
   const [basicInformation, setBasicInformation] = useState(basicInformationArray);
   const [selectedOrganization, setSelectedOrganization] = useState([]);
   const [selectedRoles, setSelectedRoles] = useState([]);
+  const [dataRoleId, setDataRoleId] = useState([]);
   const [scrollViewEnabled, setScrollViewEnabled] = useState(true);
   const [passwordForm, setPasswordForm] = useState(passwordFormArray);
   const [passwordRules, setPasswordRules] = useState(passwordRulesArray);
+  const [defaultEnterpriseId, setDefaultEnterpriseId] = useState(null);
 
   const [isCreatePasswordComplete, setIsPasswordComplete] = useState(false);
   const [isBasicInformationComplete, setIsBasicInformationComplete] = useState(false);
@@ -109,6 +113,7 @@ const CreateNewUserPage = ({navigation}) => {
         { 
           component: 
             <CreateBasicInformation 
+              isUpdate={userId ? true : false}
               setIsComplete={setIsBasicInformationComplete} 
               basicInformation={basicInformation} 
               setBasicInformation={setBasicInformation} 
@@ -125,7 +130,8 @@ const CreateNewUserPage = ({navigation}) => {
               setIsComplete={setIsPasswordComplete} 
               userPassword={userPassword} 
               setUserPassword={setUserPassword} />,
-          componentTitle: "Password"
+          componentTitle: "Password",
+          isVisible: userId ? false : true
         },
       ]
     },
@@ -135,12 +141,14 @@ const CreateNewUserPage = ({navigation}) => {
         { 
           component: 
             <CreateUserOrganizations
+              defaultParentId={setDefaultEnterpriseId}
               selectedRadio={selectedRadio}
               setSelectedRadio={setSelectedRadio} 
               setIsComplete={setIsUserOrganizationsComplete} 
               selectedOrganization={selectedOrganization} 
-              setSelectedOrganization={setSelectedOrganization} 
-              detectOffset={detectOffset} />, 
+              setSelectedOrganization={setSelectedOrganization}
+              detectOffset={detectOffset}
+              isUpdate={userId ? true : false} />, 
           componentTitle: "Organizations" 
         },
       ]
@@ -155,7 +163,9 @@ const CreateNewUserPage = ({navigation}) => {
               setSelectedRoles={setSelectedRoles} 
               enterpriseId={selectedOrganization[0]?.enterpriseId}  
               detectOffset={detectOffset}
-              setIsComplete={setIsUserRolesComplete} />, 
+              setIsComplete={setIsUserRolesComplete}
+              isUpdate={userId ? true : false }
+              dataRoleId={dataRoleId} />, 
           componentTitle: "Roles" 
         },
       ]
@@ -193,8 +203,15 @@ const CreateNewUserPage = ({navigation}) => {
     let isComplete = false;
     
     if(formPosition === 0){
-      if(isCreatePasswordComplete && isBasicInformationComplete){
-        isComplete = true;
+      if(userId){
+        if(isBasicInformationComplete){
+          isComplete = true;
+        }
+      }else{
+        console.log("Password:",isCreatePasswordComplete, "Basic Information",isBasicInformationComplete, basicInformation)
+        if(isCreatePasswordComplete && isBasicInformationComplete){
+          isComplete = true;
+        }
       }
     }
 
@@ -224,8 +241,9 @@ const CreateNewUserPage = ({navigation}) => {
   }
 
   const onSubmit = () => {
+    let url = `${base_url}/user/usr/createUser`;
+
     const dataRaw = {
-      createdBy: "",
       email: "",
       enterpriseId: "",
       enterpriseScope: [],
@@ -240,10 +258,15 @@ const CreateNewUserPage = ({navigation}) => {
     };
 
     //Enterprise id
-    dataRaw.enterpriseId = selectedOrganization[0]?.enterpriseId;
-
-    // Created By
-    dataRaw.createdBy = data?.principal?.username;
+    if(userId){
+      if(selectedRadio == 0){
+        dataRaw.enterpriseId = defaultEnterpriseId;
+      }else{
+        dataRaw.enterpriseId = selectedOrganization[0]?.enterpriseId;
+      }
+    }else{
+        dataRaw.enterpriseId = selectedOrganization[0]?.enterpriseId;
+    }
 
     // Password
     dataRaw.password  = userPassword?.password;
@@ -257,9 +280,17 @@ const CreateNewUserPage = ({navigation}) => {
     // Selected Radio = 0 (XL User), Selected Radio = 1 (Non Xl User)
     if(selectedRadio == 0){
       dataRaw.xlUser = true;
-      selectedOrganization.map((organization) => {
-        dataRaw.enterpriseScope.push(organization.enterpriseId);
-      });
+    }
+    selectedOrganization.map((organization) => {
+      dataRaw.enterpriseScope.push(organization.enterpriseId);
+    });
+
+    if(userId){
+      url = `${base_url}/user/usr/updateUser?userId=${userId}`;
+      dataRaw.updatedBy = data?.principal?.username;
+    }else{
+      // Created By
+      dataRaw.createdBy = data?.principal?.username;
     }
 
     // Basic Information
@@ -270,13 +301,14 @@ const CreateNewUserPage = ({navigation}) => {
     dataRaw.email       = basicInformation.email;
     dataRaw.language    = basicInformation.language;
 
-    submitAction(dataRaw);
+    console.log(dataRaw, url, "default enterpirse id: ", defaultEnterpriseId);
+    submitAction(dataRaw, url);
   }
 
-  const submitAction = async (dataRaw) => {
+  const submitAction = async (dataRaw, url) => {
     try {
       setSubmitLoading(prevState => prevState = true);
-      const { data } = await axios.post(`${base_url}/user/usr/createUser`, dataRaw, {
+      const { data } = await axios.post(url, dataRaw, {
         headers: {
           Authorization: "Bearer " + accessToken,
           'Content-Type': 'application/json',
@@ -313,8 +345,47 @@ const CreateNewUserPage = ({navigation}) => {
     }
   }
 
+  const getUserDetail = async () => {
+    try {
+      setLoadingUserDetail(true);
+      const { data } = await axios.get(`${base_url}/user/usr/getUserDetail?userId=${userId}`, {
+        headers: {
+          Authorization: "Bearer " + accessToken,
+        }
+      });
+
+      if(data){
+        const { result } = data;
+        console.log(result);
+        setBasicInformation(prevState => prevState = {
+          firstName: result.firstName,
+          lastName: result.lastName,
+          username: result.username,
+          phoneNumber: result.phoneNumber,
+          email: result.email,
+          language: result.language
+        })
+        setSelectedRadio(result.xlUser ? 0 : 1);
+        setSelectedOrganization(result.enterpriseScope);
+        setDataRoleId(result.roleId);
+        setLoadingUserDetail(false);
+      }
+
+    } catch (error) {
+      dispatch(setRequestError(error.response.data))
+      ToastAndroid.show(
+        error.response.data.error_description || error.message,
+        ToastAndroid.LONG,
+      );
+    }
+  }
+
   useEffect(() => {
     const pageLoad = navigation.addListener("focus", () => {
+      if(userId){
+        getUserDetail();
+      }
+
       setFormPosition(0);
       setUserPassword(passwordFormBody);
       setBasicInformation(basicInformationArray);
@@ -383,17 +454,28 @@ const CreateNewUserPage = ({navigation}) => {
         ref={listViewRef}>
           <OverlayBackground />
           <View>
-            <FormStepComponent
-              formPosition={formPosition} 
-              formTitle={formArray[formPosition].title}
-              formLength={formArray.length}
-              formBody={formArray[formPosition].body}
-              onCancel={() => navigation.replace('Home')}
-              onBack={() => setFormPosition(prevState => prevState - 1)}
-              onNext={onNextRules}
-              onSubmit={onSubmit}
-              submitLoading={submitLoading}
-            />
+              { loadingUserDetail ? 
+                <View style={{ justifyContent: 'center', height: 100 }}>
+                  <ActivityIndicator color="#002DBB" />
+                  <Text style={{
+                      textAlign: 'center',
+                      fontSize: 14,
+                      paddingVertical: 10,
+                    }}>Load user data...</Text>
+                </View>
+              :
+              <FormStepComponent
+                formPosition={formPosition} 
+                formTitle={formArray[formPosition].title}
+                formLength={formArray.length}
+                formBody={formArray[formPosition].body}
+                onCancel={() => navigation.goBack()}
+                onBack={() => setFormPosition(prevState => prevState - 1)}
+                onNext={onNextRules}
+                onSubmit={onSubmit}
+                submitLoading={submitLoading}
+              />
+            } 
           </View>
       </ScrollView>
     </View>
