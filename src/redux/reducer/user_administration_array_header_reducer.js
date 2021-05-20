@@ -54,7 +54,7 @@ const dataHeaderFilter = [
     cellType: 'TableCellHeaderAscDesc',
     cellRowType: 'TableCellText',
     config: {
-      label: 'Status',
+      label: 'Email Verify',
       isTouchable: true,
       superType: 'BOOL',
       labelBool: {
