@@ -118,7 +118,13 @@ const user_administration_get_user_reducer = (state = initialState, action) => {
       return{
         ...state,
         data_user: action.dataUser,
-        data_user_generated: action.dataUserGenerated
+        data_user_generated: action.dataUserGenerated,
+        total_elements_pagination:  state.total_elements_pagination - action.removeUser
+      }
+    case reduxString.USER_ADMINISTRATION_CREATE_USER:
+      return{
+        ...state,
+        total_elements_pagination:  state.total_elements_pagination + 1
       }
     default:
       return state;

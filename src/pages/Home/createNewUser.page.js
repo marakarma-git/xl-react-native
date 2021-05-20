@@ -22,6 +22,7 @@ import {
 } from "../create";
 import { enterpriseManagementClearActiveEnterpriseData } from '../../redux/action/enterprise_management_action';
 import { setRequestError } from '../../redux/action/dashboard_action';
+import { userAdministrationCreateUser } from '../../redux/action/user_administration_get_user_action';
 
 const passwordFormBody = {
     password: "",
@@ -113,7 +114,7 @@ const CreateNewUserPage = ({route, navigation}) => {
         { 
           component: 
             <CreateBasicInformation 
-              isUpdate={userId ? true : false}
+              isUpdate={userId}
               setIsComplete={setIsBasicInformationComplete} 
               basicInformation={basicInformation} 
               setBasicInformation={setBasicInformation} 
@@ -208,7 +209,6 @@ const CreateNewUserPage = ({route, navigation}) => {
           isComplete = true;
         }
       }else{
-        console.log("Password:",isCreatePasswordComplete, "Basic Information",isBasicInformationComplete, basicInformation)
         if(isCreatePasswordComplete && isBasicInformationComplete){
           isComplete = true;
         }
@@ -258,15 +258,12 @@ const CreateNewUserPage = ({route, navigation}) => {
     };
 
     //Enterprise id
-    if(userId){
-      if(selectedRadio == 0){
-        dataRaw.enterpriseId = defaultEnterpriseId;
-      }else{
-        dataRaw.enterpriseId = selectedOrganization[0]?.enterpriseId;
-      }
+    if(selectedRadio == 0){
+      dataRaw.enterpriseId = defaultEnterpriseId;
     }else{
-        dataRaw.enterpriseId = selectedOrganization[0]?.enterpriseId;
+      dataRaw.enterpriseId = selectedOrganization[0]?.enterpriseId;
     }
+    
 
     // Password
     dataRaw.password  = userPassword?.password;
@@ -301,7 +298,6 @@ const CreateNewUserPage = ({route, navigation}) => {
     dataRaw.email       = basicInformation.email;
     dataRaw.language    = basicInformation.language;
 
-    console.log(dataRaw, url, "default enterpirse id: ", defaultEnterpriseId);
     submitAction(dataRaw, url);
   }
 
@@ -318,6 +314,9 @@ const CreateNewUserPage = ({route, navigation}) => {
       if(data){
         let wording = "";
         if(data.statusCode === 0){
+          if(!userId){
+           dispatch(userAdministrationCreateUser()); 
+          }
           wording = data.statusDescription;
           navigation.navigate("User Administration");
         }else if(data.statusCode === 1002){
@@ -356,7 +355,6 @@ const CreateNewUserPage = ({route, navigation}) => {
 
       if(data){
         const { result } = data;
-        console.log(result);
         setBasicInformation(prevState => prevState = {
           firstName: result.firstName,
           lastName: result.lastName,
@@ -381,11 +379,18 @@ const CreateNewUserPage = ({route, navigation}) => {
   }
 
   useEffect(() => {
-    const pageLoad = navigation.addListener("focus", () => {
-      if(userId){
-        getUserDetail();
-      }
+    if(userId){
+      getUserDetail();
+    }else{
+      setLoadingUserDetail(true);
+      setTimeout(() => {
+        setLoadingUserDetail(false);
+      }, 1000);
+    }
+  }, [userId]);
 
+  useEffect(() => {
+    const pageLoad = navigation.addListener("focus", () => {
       setFormPosition(0);
       setUserPassword(passwordFormBody);
       setBasicInformation(basicInformationArray);
@@ -461,7 +466,7 @@ const CreateNewUserPage = ({route, navigation}) => {
                       textAlign: 'center',
                       fontSize: 14,
                       paddingVertical: 10,
-                    }}>Load user data...</Text>
+                    }}>Loading...</Text>
                 </View>
               :
               <FormStepComponent

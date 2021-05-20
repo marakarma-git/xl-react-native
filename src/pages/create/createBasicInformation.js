@@ -2,9 +2,10 @@ import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 
 import {AccountForm} from '../../components';
+import {useNavigation} from '@react-navigation/native';
 
 const CreateBasicUserInformation = (props) => {
-
+  const navigation = useNavigation();
   const [formError, setFormError] = useState({});
   const [touchForm, setTouchForm] = useState(false);
   const [openDropDown, setOpenDropDown] = useState(false);
@@ -167,7 +168,7 @@ const CreateBasicUserInformation = (props) => {
 }
 
 CreateBasicUserInformation.propTypes = {
-  isUpdate: PropTypes.bool,
+  isUpdate: PropTypes.string,
   isEditable: PropTypes.bool,
   basicInformation: PropTypes.array,
   setIsComplete: PropTypes.func,
@@ -175,7 +176,7 @@ CreateBasicUserInformation.propTypes = {
 };
 
 CreateBasicUserInformation.defaultProps = {
-  isUpdate: false,
+  isUpdate: "",
   isEditable: false,
   basicInformation: [],
   setIsComplete: () => {},

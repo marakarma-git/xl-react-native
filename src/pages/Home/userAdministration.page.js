@@ -101,7 +101,9 @@ const UserAdministrationPage = () => {
   const actionChange = (e) => {
     switch (e.value) {
       case "0":
-        navigation.navigate("Create User");
+        navigation.navigate("Create User", {
+          userId: ""
+        });
         break;
         
       case "1":
@@ -283,7 +285,11 @@ const UserAdministrationPage = () => {
 
   useEffect(() => {
       return navigation.addListener("focus", () => {
-        dispatch(callUserAdministrationGetUser());
+        dispatch(
+          callUserAdministrationGetUser({
+            paginate_page: 0,
+          }),
+        );
       });
   }, [navigation]);
   

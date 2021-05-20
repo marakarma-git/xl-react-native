@@ -76,10 +76,15 @@ const userAdministrationResetAppliedHeaderSort = () => {
   };
 };
 
-const userAdministrationUpdateUser = (dataUser, dataUserGenerated) => ({
+const userAdministrationUpdateUser = (dataUser, dataUserGenerated, removeUser) => ({
   type: reduxString.USER_ADMINISTRATION_UPDATE_LOCK_UNLOCK_USER,
   dataUser,
-  dataUserGenerated
+  dataUserGenerated,
+  removeUser
+});
+
+const userAdministrationCreateUser = () => ({
+  type: reduxString.USER_ADMINISTRATION_CREATE_USER
 });
 
 const callUserAdministrationDeleteUser = (userId) => {
@@ -102,7 +107,7 @@ const callUserAdministrationDeleteUser = (userId) => {
     });
 
     const generateTable = dataMatcherArray2D(content, dataHeader);
-    dispatch(userAdministrationUpdateUser(data_user, generateTable));
+    dispatch(userAdministrationUpdateUser(data_user, generateTable, userId.length));
 
   }
 }
@@ -125,7 +130,7 @@ const callUserAdministrationUpdateLockUnlockUser = (userId, lockStatus) => {
 
     generateTable[updateUserIndex].is_checked_root = true;
 
-    dispatch(userAdministrationUpdateUser(data_user, generateTable));
+    dispatch(userAdministrationUpdateUser(data_user, generateTable, 0));
   }
 }
 
@@ -243,5 +248,6 @@ export {
   userAdministrationSetAppliedHeaderSort,
   userAdministrationResetAppliedHeaderSort,
   callUserAdministrationUpdateLockUnlockUser,
-  callUserAdministrationDeleteUser
+  callUserAdministrationDeleteUser,
+  userAdministrationCreateUser
 };

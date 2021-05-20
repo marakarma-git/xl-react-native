@@ -173,8 +173,9 @@ const CreateOrganization = (props) => {
       }
 
       if(data_active_enterprise.length > 0){
+        props.defaultParentId(data_active_enterprise[0].enterpriseId); //this useful if user choose xl user
+        
         if(props.isUpdate){
-          props.defaultParentId(data_active_enterprise[0].enterpriseId); //this useful if user choose xl user
           checkSelectedOrganization(data_active_enterprise, props.selectedOrganization);
         }else{
           setGridData(data_active_enterprise);
