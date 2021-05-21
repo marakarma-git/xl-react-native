@@ -172,4 +172,21 @@ export default {
     fontWeight: 'bold',
     color: 'white',
   },
+  customStyle: {
+    width: '100%',
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  customStyleText: {
+    width: '15%',
+    marginRight: 14,
+  },
+  customStyleInnerContainer: {
+    flex: 1,
+  },
+  fullWidthInput: {
+    width: '100%',
+    marginTop: 16,
+    marginBottom: 0,
+  },
 };

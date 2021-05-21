@@ -28,8 +28,8 @@ import ModalMenuPicker from '../../components/modal/ModalMenuPicker';
 import {dataMatcherArray2D} from '../../redux/action/get_sim_inventory_action';
 import Helper from '../../helpers/helper';
 import Loading from '../../components/loading';
-import { setRequestError } from '../../redux/action/dashboard_action';
-import { base_url } from '../../constant/connection';
+import {setRequestError} from '../../redux/action/dashboard_action';
+import {base_url} from '../../constant/connection';
 
 const actionDataArray = [
   {
@@ -55,7 +55,7 @@ const actionDataArray = [
   {
     value: '4',
     label: 'Unlock User',
-    isDisabled: true
+    isDisabled: true,
   },
 ];
 
@@ -67,7 +67,9 @@ const UserAdministrationPage = () => {
   const [showMenu, setShowMenu] = useState(false);
   const [selectedUser, setSelectedUser] = useState([]);
   const {imageBase64} = useSelector((state) => state.enterprise_reducer);
-  const accessToken = useSelector((state) => state.auth_reducer.data.access_token);
+  const accessToken = useSelector(
+    (state) => state.auth_reducer.data.access_token,
+  );
   const {dataHeader, searchText, generatedParams, appliedFilter} = useSelector(
     (state) => state.user_administration_array_header_reducer,
   );
@@ -100,129 +102,148 @@ const UserAdministrationPage = () => {
 
   const actionChange = (e) => {
     switch (e.value) {
-      case "0":
-        navigation.navigate("Create User", {
-          userId: ""
+      case '0':
+        navigation.navigate('Create User', {
+          userId: '',
         });
         break;
-        
-      case "1":
-        if(selectedUser.length > 0){
-          navigation.navigate("Create User", {
-            userId: selectedUser[0].userId
+
+      case '1':
+        if (selectedUser.length > 0) {
+          navigation.navigate('Create User', {
+            userId: selectedUser[0].userId,
           });
-        }else{
-          ToastAndroid.show("Please select at least 1 user", ToastAndroid.LONG);
+        } else {
+          ToastAndroid.show('Please select at least 1 user', ToastAndroid.LONG);
         }
         break;
-      
-      case "2":
+
+      case '2':
         customConfirmAlert(
-          "Delete User",
-          `Are you sure ? \nSelected user(s) will be deleted`,
-          "Delete",
+          'Delete User',
+          'Are you sure ? \nSelected user(s) will be deleted',
+          'Delete',
           () => {},
-          deleteFunction
-        )
+          deleteFunction,
+        );
         break;
 
-      case "3":
+      case '3':
         customConfirmAlert(
-          "Lock User",
-          `Are you sure ? \nSelected user(s) will be locked`,
-          "Confirm",
+          'Lock User',
+          'Are you sure ? \nSelected user(s) will be locked',
+          'Confirm',
           () => {},
-          () => lockUnlockFunction(true)
-        )
+          () => lockUnlockFunction(true),
+        );
         break;
 
-      case "4":
+      case '4':
         customConfirmAlert(
-          "Unlock User",
-          `Are you sure ? \nSelected user(s) will be unlocked`,
-          "Confirm",
+          'Unlock User',
+          'Are you sure ? \nSelected user(s) will be unlocked',
+          'Confirm',
           () => {},
-          () => lockUnlockFunction(false)
-        )
+          () => lockUnlockFunction(false),
+        );
         break;
-        
+
       default:
-        console.log(e)
+        console.log(e);
         break;
     }
-  }
+  };
 
   const deleteFunction = async () => {
-      const roleId = new Array(); 
+    const roleId = new Array();
 
-      selectedUser.map((user) => {
-        roleId.push(user.userId)
-      });
+    selectedUser.map((user) => {
+      roleId.push(user.userId);
+    });
 
-      try {
-        const { data } = await axios.post(`${base_url}/user/usr/deleteUser`, {userId: roleId}, {
+    try {
+      const {data} = await axios.post(
+        `${base_url}/user/usr/deleteUser`,
+        {userId: roleId},
+        {
           headers: {
             Authorization: `Bearer ${accessToken}`,
           },
-        });
+        },
+      );
 
-        if(data){
-          if(data.statusCode === 0){
-            ToastAndroid.show("Selected user(s) has been deleted", ToastAndroid.LONG);
-            setSelectedUser([]);
-            updateActionAccess([]);
-            dispatch(callUserAdministrationDeleteUser(roleId))
-          }
+      if (data) {
+        if (data.statusCode === 0) {
+          ToastAndroid.show(
+            'Selected user(s) has been deleted',
+            ToastAndroid.LONG,
+          );
+          setSelectedUser([]);
+          updateActionAccess([]);
+          dispatch(callUserAdministrationDeleteUser(roleId));
         }
-
-      } catch (error) {
-        dispatch(setRequestError(error.response.data));
-        ToastAndroid.show(
-          error.response.data.error_description || error.message,
-          ToastAndroid.LONG,
-        );
       }
-  }
+    } catch (error) {
+      dispatch(setRequestError(error.response.data));
+      ToastAndroid.show(
+        error.response.data.error_description || error.message,
+        ToastAndroid.LONG,
+      );
+    }
+  };
 
   const lockUnlockFunction = async (lockUser) => {
-      try {
-        const roleId = new Array(); 
-        let successMessage = lockUser ? "locked" : "unlocked";
+    try {
+      const roleId = new Array();
+      let successMessage = lockUser ? 'locked' : 'unlocked';
 
-        selectedUser.map((user) => {
-          roleId.push(user.userId)
-        });
+      selectedUser.map((user) => {
+        roleId.push(user.userId);
+      });
 
-        const { data } = await axios.post(`${base_url}/user/usr/updateLock`, 
-        { lockStatus: lockUser, userId: roleId }, {
+      const {data} = await axios.post(
+        `${base_url}/user/usr/updateLock`,
+        {lockStatus: lockUser, userId: roleId},
+        {
           headers: {
             Authorization: `Bearer ${accessToken}`,
           },
-        });
+        },
+      );
 
-        if(data){
-          if(data.statusCode === 0){
-            ToastAndroid.show(`Selected user(s) has been ${successMessage}`, ToastAndroid.LONG);
-            dispatch(callUserAdministrationUpdateLockUnlockUser(roleId[0], lockUser));
-          }
+      if (data) {
+        if (data.statusCode === 0) {
+          ToastAndroid.show(
+            `Selected user(s) has been ${successMessage}`,
+            ToastAndroid.LONG,
+          );
+          dispatch(
+            callUserAdministrationUpdateLockUnlockUser(roleId[0], lockUser),
+          );
         }
-
-      } catch (error) {
-        dispatch(setRequestError(error.response.data));
-        ToastAndroid.show(
-          error.response.data.error_description || error.message,
-          ToastAndroid.LONG,
-        );
       }
-  }
+    } catch (error) {
+      dispatch(setRequestError(error.response.data));
+      ToastAndroid.show(
+        error.response.data.error_description || error.message,
+        ToastAndroid.LONG,
+      );
+    }
+  };
 
-  const customConfirmAlert = (title, message, actionText, cancelAction, action) => {
+  const customConfirmAlert = (
+    title,
+    message,
+    actionText,
+    cancelAction,
+    action,
+  ) => {
     Alert.alert(
       title,
       message,
       [
         {
-          text: "Cancel",
+          text: 'Cancel',
           onPress: () => cancelAction(),
         },
         {
@@ -232,31 +253,30 @@ const UserAdministrationPage = () => {
       ],
       {
         cancelable: true,
-      }
-    )
-  }
+      },
+    );
+  };
 
   const selectUserToggle = (data, index) => {
-    let isUnique     = true;
+    let isUnique = true;
     let selectedData = data[index];
-    
-    const dataUser   = selectedUser.slice();
+
+    const dataUser = selectedUser.slice();
 
     dataUser.map((user, index) => {
-      if(selectedData.userId === user.userId){
+      if (selectedData.userId === user.userId) {
         isUnique = false;
         dataUser.splice(index, 1);
       }
     });
 
-    if(isUnique){
+    if (isUnique) {
       dataUser.push(selectedData);
     }
 
     updateActionAccess(dataUser);
-    setSelectedUser(prevState => prevState = dataUser);
-
-  }
+    setSelectedUser((prevState) => (prevState = dataUser));
+  };
 
   const updateActionAccess = (dataUser) => {
     const dataAction = actionData.slice();
@@ -266,33 +286,33 @@ const UserAdministrationPage = () => {
     dataAction[3].isDisabled = dataUser.length === 1 ? false : true;
     dataAction[4].isDisabled = dataUser.length === 1 ? false : true;
 
-    setActionData(prevState => prevState = dataAction);
-  }
+    setActionData((prevState) => (prevState = dataAction));
+  };
 
   const reFetchListAction = (dataUser) => {
     selectedUser.map((user) => {
       dataUser.map((data, index) => {
-        if(user.userId === data.userId){
+        if (user.userId === data.userId) {
           dispatch(userAdministrationDynamicCheckDataUser(index));
         }
       });
-    })
-  }
+    });
+  };
 
   useEffect(() => {
-    reFetchListAction(data_user?.result?.content || []);  
+    reFetchListAction(data_user?.result?.content || []);
   }, [data_user]);
 
   useEffect(() => {
-      return navigation.addListener("focus", () => {
-        dispatch(
-          callUserAdministrationGetUser({
-            paginate_page: 0,
-          }),
-        );
-      });
+    return navigation.addListener('focus', () => {
+      dispatch(
+        callUserAdministrationGetUser({
+          paginate_page: 0,
+        }),
+      );
+    });
   }, [navigation]);
-  
+
   return (
     <HeaderContainer
       headerTitle={'User Administration'}

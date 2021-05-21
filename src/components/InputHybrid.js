@@ -37,7 +37,11 @@ InputHybrid.propTypes = {
     'DateTimePicker',
     'DropDownType2',
   ]),
+  customStyle: PropTypes.object,
+  customStyleText: PropTypes.object,
+  fullWidthInput: PropTypes.bool,
   label: PropTypes.string,
+  labelLeft: PropTypes.bool,
   disabled: PropTypes.bool,
   loading: PropTypes.bool,
   disableText: PropTypes.string,
@@ -60,14 +64,33 @@ const ContainerInput = (props) => {
     disableText,
     customTouchProps,
     errorText,
+    labelLeft,
+    fullWidthInput,
     customStyle,
+    customStyleText,
   } = props;
   const CustomTouch = isTouchable ? TouchableOpacity : View;
   return (
-    <View style={[inputHybridStyle.containerInput, customStyle]}>
-      <Text style={inputHybridStyle.titleInput}>{label}</Text>
+    <View
+      style={[
+        inputHybridStyle.containerInput,
+        labelLeft && inputHybridStyle.customStyle,
+        fullWidthInput && inputHybridStyle.fullWidthInput,
+        customStyle,
+      ]}>
+      <Text
+        style={[
+          inputHybridStyle.titleInput,
+          labelLeft && inputHybridStyle.customStyleText,
+          customStyleText,
+        ]}>
+        {label}
+      </Text>
       <CustomTouch
-        style={inputHybridStyle.innerContainerInput}
+        style={[
+          inputHybridStyle.innerContainerInput,
+          labelLeft && inputHybridStyle.customStyleInnerContainer,
+        ]}
         {...customTouchProps}
         disabled={loading || disableText || disabled}>
         {children}

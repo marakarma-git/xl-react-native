@@ -6,6 +6,7 @@ const border_radius = 7;
 const horizontal = 0;
 const vertical = 0;
 const regular_horizontal_padding = 10;
+const title_font_size = 16;
 const regular_vertical_padding = 10;
 const height_keyboard = 43;
 const reguler_font_size = 14;
@@ -25,4 +26,5 @@ export {
   regular_vertical_padding,
   defaultHeightCell,
   defaultWidthCell,
+  title_font_size,
 };

@@ -6,7 +6,6 @@ export {default as MyAccountPage} from './account.page';
 export {default as ChangePasswordPage} from './changepassword.page';
 export {default as AboutPage} from './about.page';
 export {default as AutomationPage} from './automation.page';
-export {default as AutomationCreatePage} from './automationCreateNew.page';
 export {default as BannerManagementPage} from './bannerManagement.page';
 export {default as BannerManagementCreatePage} from './bannerManagementCreate.page';
 export {default as EnterpriseManagementPage} from './enterpriseManagement.page';
@@ -23,6 +22,6 @@ export {default as UserAdministrationFilterPage} from './userAdministrationFilte
 export {default as NotificationPage} from './notification.page';
 export {default as AutomationFilterPage} from './automationFilter.page';
 export {default as CreateNewUserPage} from './createNewUser.page';
-export {default as SmsA2pPage  } from './smsA2p.page';
-export {default as SmsA2pFilterPage  } from './smsA2pFilter.page';
+export {default as SmsA2pPage} from './smsA2p.page';
+export {default as SmsA2pFilterPage} from './smsA2pFilter.page';
 export {default as AutomationCreDitPage} from './automationCreDit.page';

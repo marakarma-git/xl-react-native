@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react';
-import {View} from 'react-native';
-import {HeaderContainer, OverlayBackground} from '../../components';
+import {TouchableOpacity, View} from 'react-native';
+import {HeaderContainer, OverlayBackground, Text} from '../../components';
 import {useDispatch, useSelector} from 'react-redux';
 import getAutomation, {
   automationSetDataAutomationGenerated,
@@ -21,9 +21,11 @@ import {
 } from '../../redux/action/automation_array_header_action';
 import ModalMenuPicker from '../../components/modal/ModalMenuPicker';
 import {dataMatcherArray2D} from '../../redux/action/get_sim_inventory_action';
+import {useNavigation} from '@react-navigation/native';
 
 const AutomationPage = () => {
   const dispatch = useDispatch();
+  const navigation = useNavigation();
   const [firstRender, setFirstRender] = useState(true);
   const [showMenu, setShowMenu] = useState(false);
   const {imageBase64} = useSelector((state) => state.enterprise_reducer);
@@ -65,6 +67,15 @@ const AutomationPage = () => {
       style={{flex: 1}}
       companyLogo={imageBase64}>
       <View style={subscriptionStyle.containerBackground}>
+        <TouchableOpacity
+          style={{
+            paddingVertical: 12,
+            backgroundColor: 'tomato',
+            alignItems: 'center',
+          }}
+          onPress={() => navigation.navigate('AutomationCreDit')}>
+          <Text>Tekan Aku</Text>
+        </TouchableOpacity>
         <Table
           isScrollView={true}
           stickHeaderIndices={[1]}
