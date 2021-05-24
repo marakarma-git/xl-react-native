@@ -37,6 +37,7 @@ InputHybrid.propTypes = {
     'DateTimePicker',
     'DropDownType2',
   ]),
+  removeLabel: PropTypes.bool,
   customStyle: PropTypes.object,
   customStyleText: PropTypes.object,
   fullWidthInput: PropTypes.bool,
@@ -68,6 +69,7 @@ const ContainerInput = (props) => {
     fullWidthInput,
     customStyle,
     customStyleText,
+    removeLabel,
   } = props;
   const CustomTouch = isTouchable ? TouchableOpacity : View;
   return (
@@ -78,14 +80,16 @@ const ContainerInput = (props) => {
         fullWidthInput && inputHybridStyle.fullWidthInput,
         customStyle,
       ]}>
-      <Text
-        style={[
-          inputHybridStyle.titleInput,
-          labelLeft && inputHybridStyle.customStyleText,
-          customStyleText,
-        ]}>
-        {label}
-      </Text>
+      {!removeLabel && (
+        <Text
+          style={[
+            inputHybridStyle.titleInput,
+            labelLeft && inputHybridStyle.customStyleText,
+            customStyleText,
+          ]}>
+          {label}
+        </Text>
+      )}
       <CustomTouch
         style={[
           inputHybridStyle.innerContainerInput,
@@ -96,7 +100,12 @@ const ContainerInput = (props) => {
         {children}
         {(disabled || loading) && (
           <View style={inputHybridStyle.disableInput}>
-            {loading && <ActivityIndicator size={'small'} color={'white'} />}
+            {loading && (
+              <ActivityIndicator
+                size={'small'}
+                color={colors.button_color_one}
+              />
+            )}
             {disableText && !loading && <Text>{disableText}</Text>}
           </View>
         )}
@@ -108,13 +117,14 @@ const ContainerInput = (props) => {
   );
 };
 const NormalInput = (props) => {
-  const {onChange, value} = props;
+  const {onChange, value, placeholder} = props;
   return (
     <ContainerInput {...props}>
       <TextInput
         style={inputHybridStyle.textInputStyle}
         onChangeText={onChange}
         value={value}
+        placeholder={placeholder}
       />
     </ContainerInput>
   );

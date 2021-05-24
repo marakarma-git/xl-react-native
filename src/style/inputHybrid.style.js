@@ -30,6 +30,7 @@ export default {
     borderRadius: border_radius - 1,
     justifyContent: 'center',
     alignItems: 'center',
+    opacity: 0.8,
   },
   titleInput: {
     color: colors.gray_0,

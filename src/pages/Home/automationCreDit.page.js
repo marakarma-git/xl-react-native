@@ -1,36 +1,43 @@
-import React, {useState} from 'react';
+import React, {useEffect} from 'react';
 import {ScrollView, TouchableOpacity, View} from 'react-native';
 import {HeaderContainer, OverlayBackground, Text} from '../../components';
 import {subscriptionStyle} from '../../style';
-import {useSelector} from 'react-redux';
-import {FormStepHeaderComponent} from '../../components/form/formStep';
+import {useDispatch, useSelector} from 'react-redux';
 import styles from '../../style/home.style';
 import {Card} from 'react-native-paper';
 import InputHybrid from '../../components/InputHybrid';
-import CustomCheckBox from '../../components/customCheckBox';
-import {title_font_size} from '../../constant/config';
 import {colors} from '../../constant/color';
-import {
-  userAdministrationGenerateParams,
-  userAdministrationResetAllValue,
-} from '../../redux/action/user_administration_array_header_action';
-const LocalCardWrapper = (props) => {
-  const {title, description, children} = props || {};
-  return (
-    <Card style={[styles.cardSection, {marginTop: '5%'}]}>
-      <Card.Content style={[styles.formStepHeader, {flexDirection: 'column'}]}>
-        <Text fontType="bold" style={styles.formStepHeaderTextTitle}>
-          {title}
-        </Text>
-        <Text style={{marginVertical: 12}}>{description}</Text>
-        {children}
-      </Card.Content>
-    </Card>
-  );
-};
+import AutomationCard from '../../card/AutomationCard';
+import Loading from '../../components/loading';
+import lod from 'lodash';
+import callAutomationEnterprise, {
+  automationSetActiveEnterprise,
+} from '../../redux/action/automation_get_enterprise_action';
+import getAutomationCustomerNumber, {
+  automationCreateEditCheck,
+} from '../../redux/action/automation_create_edit_action';
+
 const AutomationCreateEditPage = () => {
+  const dispatch = useDispatch();
   const {imageBase64} = useSelector((state) => state.enterprise_reducer);
-  const [mode, setMode] = useState('Create');
+  const {
+    loading,
+    errorText,
+    data_active_enterprise,
+    value: valueEnterprise,
+    disabled: enterpriseDisabled,
+  } = useSelector((state) => state.automation_get_enterprise_reducer);
+  const {
+    loading: loading_automation,
+    errorText: error_automation,
+    data_automation_create,
+    dataRuleCategory,
+  } = useSelector((state) => state.automation_create_edit_reducer);
+  useEffect(() => {
+    if (data_active_enterprise.length === 0) {
+      dispatch(callAutomationEnterprise());
+    }
+  }, []);
   return (
     <HeaderContainer
       headerTitle={'Create New Automation'}
@@ -39,132 +46,86 @@ const AutomationCreateEditPage = () => {
       <View style={subscriptionStyle.containerBackground}>
         <ScrollView style={{flex: 1}}>
           <OverlayBackground />
-          <View style={{flex: 1, flexDirection: 'row'}}>
-            <TouchableOpacity
-              onPress={() => setMode('Create')}
-              style={{
-                flex: 1,
-                alignItems: 'center',
-                backgroundColor: 'blue',
-                paddingVertical: 12,
-              }}>
-              <Text
-                fontType={mode === 'Create' && 'bold'}
-                style={{color: 'white'}}>
-                Create
-              </Text>
-            </TouchableOpacity>
-            <TouchableOpacity
-              onPress={() => setMode('Edit')}
-              style={{
-                flex: 1,
-                alignItems: 'center',
-                backgroundColor: 'green',
-                paddingVertical: 12,
-              }}>
-              <Text
-                fontType={mode === 'Edit' && 'bold'}
-                style={{color: 'white'}}>
-                Detail & Edit
-              </Text>
-            </TouchableOpacity>
-          </View>
-          <FormStepHeaderComponent
-            formPosition={mode === 'Create' ? 0 : 1}
-            formLength={2}
-            formTitle={'Target Enterprise'}
-            formDescription={''}
-          />
-          {mode === 'Create' && (
-            <LocalCardWrapper
-              title={'Target Enterprise'}
-              description={
-                'It will affect all subscription packages and individual subscriptions within the selected enterprise'
-              }>
-              <InputHybrid
-                fullWidthInput
-                type={'DropDown'}
-                label={'Enterprise'}
-                data={[]}
-                value={{}}
-              />
-            </LocalCardWrapper>
-          )}
-          {mode === 'Edit' && (
-            <LocalCardWrapper
-              title={'Select Rule Category'}
-              description={
-                'Choose at least one of 3 business automation rules below. Auto Downgrade to original package ' +
-                'is applicable for any subscription package. Bulk shared notification and auto upgrade can only be ' +
-                'configured for Enterprise that subscribes to Bulk Shared Package.'
-              }>
-              {[0, 1, 2, 3].map(() => {
+          <LocalCardWrapper
+            title={'Target Enterprise'}
+            description={
+              'It will affect all subscription packages and individual subscriptions within the selected enterprise'
+            }>
+            <InputHybrid
+              fullWidthInput
+              disabled={enterpriseDisabled}
+              loading={loading}
+              type={'DropDown'}
+              label={'Enterprise'}
+              data={data_active_enterprise}
+              value={valueEnterprise}
+              errorText={errorText}
+              onChange={(e) => {
+                const {customerNumber} = e || {};
+                dispatch(automationSetActiveEnterprise(e));
+                dispatch(getAutomationCustomerNumber({customerNumber}));
+              }}
+            />
+          </LocalCardWrapper>
+          <LocalCardWrapper
+            title={'Select Rule Category'}
+            description={
+              'Choose at least one of 3 business automation rules below. Auto Downgrade to original package ' +
+              'is applicable for any subscription package. Bulk shared notification and auto upgrade can only be ' +
+              'configured for Enterprise that subscribes to Bulk Shared Package.'
+            }>
+            {error_automation ? (
+              <Text style={{color: 'red'}}>{`Error: ${error_automation}`}</Text>
+            ) : (
+              <React.Fragment />
+            )}
+            {!error_automation &&
+              dataRuleCategory?.length > 0 &&
+              dataRuleCategory.map((item) => {
+                const {
+                  card_id,
+                  card_type,
+                  card_disabled,
+                  card_is_checked,
+                  card_title,
+                  card_description,
+                  card_warning_description,
+                  card_type_title,
+                  value,
+                  value_error_text,
+                  sub_value,
+                  sub_value_error_text,
+                  select_api,
+                } = item || {};
                 return (
-                  <View
-                    style={{
-                      flex: 1,
-                      marginVertical: 14,
-                      borderWidth: 1,
-                      borderColor: colors.gray_0,
-                    }}>
-                    <View
-                      style={{
-                        flexDirection: 'row',
-                        backgroundColor: colors.button_color_one,
-                        paddingHorizontal: 6,
-                        alignItems: 'center',
-                      }}>
-                      <Text
-                        numberOfLines={1}
-                        style={{
-                          flex: 1,
-                          textAlign: 'center',
-                          fontSize: title_font_size,
-                          color: 'white',
-                          marginVertical: 10,
-                        }}>
-                        Auto Upgrade Individual Shared Package
-                      </Text>
-                      <CustomCheckBox style={{marginLeft: 16}} value={true} />
-                    </View>
-                    <View style={{padding: 8}}>
-                      <Text
-                        style={{
-                          paddingBottom: 14,
-                          borderBottomWidth: 1,
-                          borderColor: colors.gray_0,
-                        }}>
-                        In the case where a subscription upgrades from package A
-                        to higher package B, and you want to downgrade it back
-                        to package A on the next month billing, you may use this
-                        auto downgrade rule. Please note that it will impact to
-                        change all SIMs subscription under selected enterprise.
-                      </Text>
-                      <Text
-                        fontType={'bold'}
-                        style={{marginTop: 16, marginBottom: 10}}>
-                        Subscription Package
-                      </Text>
-                      <InputHybrid
-                        labelLeft
-                        type={'DropDown'}
-                        label={'From:'}
-                        data={[]}
-                        value={{}}
-                      />
-                      <InputHybrid
-                        labelLeft
-                        type={'DropDown'}
-                        label={'To:'}
-                        data={[]}
-                        value={{}}
-                      />
-                    </View>
-                  </View>
+                  <AutomationCard
+                    type={card_type}
+                    title={card_title}
+                    checked={card_is_checked}
+                    onChangeCheck={() => {
+                      dispatch(
+                        automationCreateEditCheck({
+                          cardId: card_id,
+                        }),
+                      );
+                    }}
+                    disabled={
+                      card_disabled || lod.isEmpty(data_automation_create)
+                    }
+                    cardDescription={card_description}
+                    cardWarningDescription={card_warning_description}
+                    typeTitle={card_type_title}
+                    data={data_automation_create[`${select_api}`] || []}
+                    value={value}
+                    onChange={() => {}}
+                    valueError={value_error_text}
+                    subValue={sub_value}
+                    subOnChange={() => {}}
+                    subValueError={sub_value_error_text}
+                  />
                 );
               })}
-            </LocalCardWrapper>
-          )}
+          </LocalCardWrapper>
           <View
             style={[
               subscriptionStyle.buttonContainer,
@@ -194,9 +155,25 @@ const AutomationCreateEditPage = () => {
             })}
           </View>
         </ScrollView>
+        {loading_automation && <Loading />}
       </View>
     </HeaderContainer>
   );
 };
 
 export default AutomationCreateEditPage;
+
+const LocalCardWrapper = (props) => {
+  const {title, description, children} = props || {};
+  return (
+    <Card style={[styles.cardSection, {marginTop: '5%'}]}>
+      <Card.Content style={[styles.formStepHeader, {flexDirection: 'column'}]}>
+        <Text fontType="bold" style={styles.formStepHeaderTextTitle}>
+          {title}
+        </Text>
+        <Text style={{marginVertical: 12}}>{description}</Text>
+        {children}
+      </Card.Content>
+    </Card>
+  );
+};

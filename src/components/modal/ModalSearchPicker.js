@@ -14,7 +14,6 @@ import {inputHybridStyle} from '../../style';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 const ModalSearchPicker = (props) => {
-  console.log(JSON.stringify(props, null, 2));
   const {data, onClose, onChange, value, title, removeSearch} = props;
   const [searchText, setSearchText] = useState('');
   const [searchResults, setSearchResult] = useState([]);
@@ -85,7 +84,13 @@ const ModalSearchPicker = (props) => {
                   size={20}
                   style={{marginRight: 5}}
                 />
-                <Text style={{flex: 1, color: item.isDisabled ? '#c8c8c8' : 'black'}}>{label}</Text>
+                <Text
+                  style={{
+                    flex: 1,
+                    color: item.isDisabled ? '#c8c8c8' : 'black',
+                  }}>
+                  {label}
+                </Text>
               </TouchableOpacity>
             );
           }}
