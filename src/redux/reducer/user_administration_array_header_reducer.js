@@ -66,7 +66,7 @@ const dataHeaderFilter = [
     sort_by_filter: 5,
   },
   {
-    formId: 'active-status-hard-code',
+    formId: 'lock-status-hard-code',
     api_id: 'lockStatus',
     value: {},
     typeInput: 'DropDown',
@@ -84,7 +84,7 @@ const dataHeaderFilter = [
     cellType: 'TableCellHeaderAscDesc',
     cellRowType: 'TableCellText',
     config: {
-      label: 'Lock Status',
+      label: 'Status',
       isTouchable: true,
       superType: 'BOOL',
       labelBool: {
