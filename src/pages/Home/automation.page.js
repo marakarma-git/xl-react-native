@@ -78,6 +78,7 @@ const AutomationPage = () => {
         </TouchableOpacity>
         <Table
           isScrollView={true}
+          onRight
           stickHeaderIndices={[1]}
           headerOtherLayout={() => {
             return (
@@ -160,6 +161,8 @@ const AutomationPage = () => {
           selectedHeaderOrderSort={automation_applied_header_sort}
           dataHeader={dataAutomationHeader}
           dataTable={data_automation_generated}
+          onPressDelete={(e) => alert(JSON.stringify(e, null, 2))}
+          onPressEdit={(e) => alert(JSON.stringify(e, null, 2))}
         />
         <TableFooter
           currentPage={automation_page}

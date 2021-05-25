@@ -4,6 +4,17 @@ import generateLink from '../../helpers/generateLink';
 
 const dataAutomationHeader = [
   {
+    formId: 'enterprise-button-panel-hard-code',
+    cellType: 'TableCellHeader',
+    cellRowType: 'TableCellEditDelete',
+    config: {
+      label: 'Config',
+      width: 75,
+      doNotShowOnFilter: true,
+    },
+    shown: true,
+  },
+  {
     formId: 'enterprise-name-hard-code',
     api_id: 'enterpriseName',
     data: [],

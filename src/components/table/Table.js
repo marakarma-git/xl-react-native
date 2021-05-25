@@ -24,6 +24,8 @@ const Table = (props) => {
     onRight,
     isDragNSort,
     onDataChange,
+    onPressEdit,
+    onPressDelete,
   } = props || {};
   const headerScrollView = useRef(ScrollView);
   const rowsScrollView = useRef(ScrollView);
@@ -150,6 +152,8 @@ const Table = (props) => {
                   onPressTreeArrow={onPressTreeArrow}
                   onPressCheckCell={onPressCheckCell}
                   borderWidth={borderWidth}
+                  onPressEdit={(e) => onPressEdit(e)}
+                  onPressDelete={(e) => onPressDelete(e)}
                 />
               )}
               <ScrollView
@@ -276,6 +280,8 @@ const Table = (props) => {
                   onPressCheckCell={onPressCheckCell}
                   borderWidth={borderWidth}
                   onRight={true}
+                  onPressEdit={(e) => onPressEdit(e)}
+                  onPressDelete={(e) => onPressDelete(e)}
                 />
               )}
             </View>
@@ -317,6 +323,8 @@ Table.propTypes = {
   onPressCheckHeader: PropTypes.func,
   onPressCheckCell: PropTypes.func,
   onPressTreeArrow: PropTypes.func,
+  onPressEdit: PropTypes.func,
+  onPressDelete: PropTypes.func,
   loading: PropTypes.bool,
   selectedHeaderOrderSort: PropTypes.objectOf({
     formId: PropTypes.string,
@@ -341,6 +349,8 @@ Table.defaultProps = {
   onPressTreeArrow: () => {},
   headerOtherLayout: () => <></>,
   onDataChange: () => {},
+  onPressEdit: () => {},
+  onPressDelete: () => {},
 };
 const StickyComponent = (props) => {
   const {
@@ -350,6 +360,8 @@ const StickyComponent = (props) => {
     onPressCheckCell,
     onRight,
     onPressTreeArrow,
+    onPressEdit,
+    onPressDelete,
   } = props || {};
   return (
     <View
@@ -372,6 +384,8 @@ const StickyComponent = (props) => {
               onChangeCheck={() =>
                 onPressCheckCell({item: dataCell[0], index: index})
               }
+              onPressEdit={onPressEdit}
+              onPressDelete={onPressDelete}
               {...dataCell[0]}
             />
           );
@@ -387,10 +401,14 @@ StickyComponent.propTypes = {
   onPressCheckCell: PropTypes.func,
   onPressTreeArrow: PropTypes.func,
   onRight: PropTypes.bool,
+  onPressEdit: PropTypes.func,
+  onPressDelete: PropTypes.func,
 };
 StickyComponent.defaultProps = {
   borderWidth: 1,
   onPressCell: () => {},
   onPressCheckCell: () => {},
+  onPressEdit: () => {},
+  onPressDelete: () => {},
 };
 export default Table;

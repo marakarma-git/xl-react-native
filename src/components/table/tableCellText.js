@@ -142,7 +142,7 @@ const TableCellText = (props) => {
     </React.Fragment>
   );
 };
-TableCellText.proptTypes = {
+TableCellText.propTypes = {
   config: PropTypes.objectOf({
     label: PropTypes.string,
     width: PropTypes.number,

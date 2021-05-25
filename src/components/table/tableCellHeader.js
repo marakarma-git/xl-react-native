@@ -34,7 +34,7 @@ const TableCellHeader = (props) => {
     </View>
   );
 };
-TableCellHeader.protTypes = {
+TableCellHeader.propTypes = {
   config: PropTypes.objectOf({
     label: PropTypes.string,
     width: PropTypes.number,
