@@ -1,6 +1,7 @@
 import reduxString from '../reduxString';
 import axios from 'axios';
 import {base_url} from '../../constant/connection';
+import lod from 'lodash';
 
 const getActiveEnterpriseLoading = () => {
   return {
@@ -25,8 +26,16 @@ const automationSetActiveEnterprise = (value) => {
     valueEnterprise: value,
   };
 };
-const callAutomationEnterprise = () => {
+const automationActiveEnterpriseReset = () => {
+  return {
+    type: reduxString.AUTOMATION_ACTIVE_ENTERPRISE_RESET,
+  };
+};
+const callAutomationEnterprise = (parameter) => {
   return async (dispatch, getState) => {
+    const {result} = parameter || {};
+    const {enterpriseId: enterpriseIdParameter} = result || {};
+    console.log(JSON.stringify(result, null, 2));
     dispatch(getActiveEnterpriseLoading());
     const {access_token} = (await getState().auth_reducer.data) || {};
     axios
@@ -38,6 +47,7 @@ const callAutomationEnterprise = () => {
       .then(({data}) => {
         const {result, statusCode} = data || {};
         if (statusCode === 0) {
+          let autoInputEnterpriseValue;
           const remap = result.map(
             ({enterpriseId, enterpriseName, ...rest}) => ({
               value: enterpriseId,
@@ -45,9 +55,15 @@ const callAutomationEnterprise = () => {
               ...rest,
             }),
           );
+          if (!lod.isEmpty(result)) {
+            autoInputEnterpriseValue = lod.find(remap, (item) => {
+              return item.value === enterpriseIdParameter;
+            });
+          }
           dispatch(
             getActiveEnterpriseSuccess({
               dataActiveEnterprise: remap,
+              dataAutoInput: autoInputEnterpriseValue,
             }),
           );
         } else {
@@ -69,4 +85,4 @@ const callAutomationEnterprise = () => {
   };
 };
 export default callAutomationEnterprise;
-export {automationSetActiveEnterprise};
+export {automationSetActiveEnterprise, automationActiveEnterpriseReset};

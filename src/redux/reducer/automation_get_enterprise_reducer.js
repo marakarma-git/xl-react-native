@@ -21,6 +21,7 @@ const automation_get_enterprise_reducer = (state = initialState, action) => {
         loading: false,
         errorText: '',
         data_active_enterprise: action.dataActiveEnterprise,
+        value: action.dataAutoInput ? action.dataAutoInput : state.value,
       };
     }
     case reduxString.AUTOMATION_GET_ACTIVE_ENTERPRISE_FAILED: {
@@ -35,6 +36,9 @@ const automation_get_enterprise_reducer = (state = initialState, action) => {
         ...state,
         value: action.valueEnterprise,
       };
+    }
+    case reduxString.AUTOMATION_ACTIVE_ENTERPRISE_RESET: {
+      return state;
     }
     default: {
       return state;

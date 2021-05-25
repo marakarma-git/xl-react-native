@@ -22,10 +22,13 @@ import {
 import ModalMenuPicker from '../../components/modal/ModalMenuPicker';
 import {dataMatcherArray2D} from '../../redux/action/get_sim_inventory_action';
 import {useNavigation} from '@react-navigation/native';
+import axios from 'axios';
+import {base_url} from '../../constant/connection';
 
 const AutomationPage = () => {
   const dispatch = useDispatch();
   const navigation = useNavigation();
+  const [loadingDetail, setLoadingDetail] = useState(false);
   const [firstRender, setFirstRender] = useState(true);
   const [showMenu, setShowMenu] = useState(false);
   const {imageBase64} = useSelector((state) => state.enterprise_reducer);
@@ -49,6 +52,30 @@ const AutomationPage = () => {
     automation_applied_filter,
     automation_params_applied_activity_log,
   } = useSelector((state) => state.automation_get_automation_reducer);
+  const {access_token} = useSelector((state) => state.auth_reducer.data) || {};
+  const getDetailInfo = ({automationId, from}) => {
+    setLoadingDetail(true);
+    axios
+      .get(
+        `${base_url}/dcp/automation/getAutomationDetail?automationId=${automationId}`,
+        {headers: {Authorization: `Bearer ${access_token}`}},
+      )
+      .then(({data}) => {
+        const {result, statusCode} = data || {};
+        if (statusCode === 0) {
+          setLoadingDetail(false);
+          navigation.navigate('AutomationCreDit', {
+            from: 'Edit',
+            result: result,
+          });
+        } else {
+          setLoadingDetail(false);
+        }
+      })
+      .catch((e) => {
+        setLoadingDetail(false);
+      });
+  };
   useEffect(() => {
     if (!firstRender) {
       dispatch(
@@ -161,8 +188,14 @@ const AutomationPage = () => {
           selectedHeaderOrderSort={automation_applied_header_sort}
           dataHeader={dataAutomationHeader}
           dataTable={data_automation_generated}
+          onPressEdit={({item}) => {
+            const {autoId} = item || {};
+            getDetailInfo({
+              automationId: autoId,
+              from: 'Edit',
+            });
+          }}
           onPressDelete={(e) => alert(JSON.stringify(e, null, 2))}
-          onPressEdit={(e) => alert(JSON.stringify(e, null, 2))}
         />
         <TableFooter
           currentPage={automation_page}
@@ -184,7 +217,7 @@ const AutomationPage = () => {
             );
           }}
         />
-        {loading && <Loading />}
+        {(loading || loadingDetail) && <Loading />}
       </View>
       {showMenu && (
         <ModalMenuPicker

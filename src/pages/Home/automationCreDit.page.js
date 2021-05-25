@@ -1,5 +1,5 @@
 import React, {useEffect} from 'react';
-import {ScrollView, TouchableOpacity, View} from 'react-native';
+import {BackHandler, ScrollView, TouchableOpacity, View} from 'react-native';
 import {HeaderContainer, OverlayBackground, Text} from '../../components';
 import {subscriptionStyle} from '../../style';
 import {useDispatch, useSelector} from 'react-redux';
@@ -11,14 +11,20 @@ import AutomationCard from '../../card/AutomationCard';
 import Loading from '../../components/loading';
 import lod from 'lodash';
 import callAutomationEnterprise, {
+  automationActiveEnterpriseReset,
   automationSetActiveEnterprise,
 } from '../../redux/action/automation_get_enterprise_action';
 import getAutomationCustomerNumber, {
   automationCreateEditCheck,
+  automationCreateEditReset,
 } from '../../redux/action/automation_create_edit_action';
+import {useNavigation, useRoute} from '@react-navigation/native';
 
 const AutomationCreateEditPage = () => {
   const dispatch = useDispatch();
+  const navigation = useNavigation();
+  const {params} = useRoute();
+  const {from, result} = params || {};
   const {imageBase64} = useSelector((state) => state.enterprise_reducer);
   const {
     loading,
@@ -35,9 +41,25 @@ const AutomationCreateEditPage = () => {
   } = useSelector((state) => state.automation_create_edit_reducer);
   useEffect(() => {
     if (data_active_enterprise.length === 0) {
-      dispatch(callAutomationEnterprise());
+      dispatch(callAutomationEnterprise({from, result}));
     }
-  }, []);
+    if (lod(result) && from) {
+      const {customerNumber} = result || {};
+      dispatch(
+        getAutomationCustomerNumber({
+          customerNumber,
+          from,
+          result,
+        }),
+      );
+    }
+    const back = BackHandler.addEventListener('hardwareBackPress', () => {
+      alert('back');
+      dispatch(automationActiveEnterpriseReset());
+      dispatch(automationCreateEditReset());
+    });
+    return () => back;
+  }, [navigation]);
   return (
     <HeaderContainer
       headerTitle={'Create New Automation'}
@@ -53,7 +75,7 @@ const AutomationCreateEditPage = () => {
             }>
             <InputHybrid
               fullWidthInput
-              disabled={enterpriseDisabled}
+              disabled={enterpriseDisabled || from}
               loading={loading}
               type={'DropDown'}
               label={'Enterprise'}
@@ -110,7 +132,9 @@ const AutomationCreateEditPage = () => {
                       );
                     }}
                     disabled={
-                      card_disabled || lod.isEmpty(data_automation_create)
+                      card_disabled ||
+                      lod.isEmpty(data_automation_create) ||
+                      from === 'Detail'
                     }
                     cardDescription={card_description}
                     cardWarningDescription={card_warning_description}
@@ -142,7 +166,12 @@ const AutomationCreateEditPage = () => {
                           : colors.button_color_one,
                     },
                     subscriptionStyle.buttonStyle,
-                  ]}>
+                  ]}
+                  onPress={() => {
+                    if (value === 'Cancel') {
+                      navigation.goBack();
+                    }
+                  }}>
                   <Text
                     fontType={'bold'}
                     style={{

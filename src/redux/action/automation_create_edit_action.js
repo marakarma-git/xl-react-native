@@ -1,6 +1,7 @@
 import reduxString from '../reduxString';
 import axios from 'axios';
 import {base_url} from '../../constant/connection';
+import lod from 'lodash';
 
 const automationCreateEditSetValue = ({cardId, inputValue}) => {
   return {
@@ -54,13 +55,18 @@ const automationCreateEditSuccess = ({dataAutomationCreate, reMap}) => {
     reMap,
   };
 };
+const automationCreateEditReset = () => {
+  return {
+    type: reduxString.AUTOMATION_CREATE_EDIT_RESET,
+  };
+};
 const getAutomationCustomerNumber = (value) => {
   return async (dispatch, getState) => {
     dispatch(automationCreateEditLoading());
     const {access_token} = (await getState().auth_reducer.data) || {};
     const {dataRuleCategory} =
       (await getState().automation_create_edit_reducer) || {};
-    const {customerNumber} = value || {};
+    const {customerNumber, from, result: resultParams} = value || {};
     axios
       .get(
         `${base_url}/dcp/automation/getAutomationEnterprise?customerNumber=${customerNumber}`,
@@ -73,15 +79,62 @@ const getAutomationCustomerNumber = (value) => {
       .then(({data}) => {
         const {result, statusCode} = data || {};
         if (statusCode === 0) {
-          const reMap = dataRuleCategory.map(
-            ({card_disabled, disabled_api, ...rest}) => ({
-              ...rest,
-              disabled_api,
-              card_disabled: disabled_api
-                ? !result[`${disabled_api}`]
-                : card_disabled,
-            }),
-          );
+          let reMap = [];
+          if (lod.isEmpty(resultParams)) {
+            reMap = dataRuleCategory.map(
+              ({card_disabled, disabled_api, ...rest}) => ({
+                ...rest,
+                disabled_api,
+                card_disabled: disabled_api
+                  ? !result[`${disabled_api}`]
+                  : card_disabled,
+              }),
+            );
+          } else {
+            dataRuleCategory.map((itemRuleCategory) => {
+              const {
+                params_disabled_api,
+                params_value_api,
+                params_value_api_to,
+                select_api,
+                ...otherValue
+              } = itemRuleCategory || {};
+              const getAutoFrom = lod.find(
+                result[`${select_api}`],
+                (dataAutoFrom) => {
+                  return (
+                    dataAutoFrom.packageId ===
+                    resultParams[`${params_value_api}`]
+                  );
+                },
+              );
+              const getAutoTo = lod.find(
+                result[`${select_api}`],
+                (dataAutoTo) => {
+                  return (
+                    dataAutoTo.packageId ===
+                    resultParams[`${params_value_api_to}`]
+                  );
+                },
+              );
+              const createObject = {
+                ...otherValue,
+                card_is_checked: resultParams[`${params_disabled_api}`],
+                card_disabled: !resultParams[`${params_disabled_api}`],
+                value: getAutoFrom
+                  ? {
+                      value: getAutoFrom.packageId,
+                      label: getAutoFrom.packageDesc,
+                    }
+                  : resultParams[`${params_value_api}`],
+                sub_value: getAutoTo && {
+                  value: getAutoTo.packageId,
+                  label: getAutoTo.packageDesc,
+                },
+              };
+              reMap.push(createObject);
+            });
+          }
           dispatch(
             automationCreateEditSuccess({
               dataAutomationCreate: result,
@@ -113,4 +166,5 @@ export {
   automationCreateEditSetSubValue,
   automationCreateEditSetSubErrorText,
   automationCreateEditCheck,
+  automationCreateEditReset,
 };

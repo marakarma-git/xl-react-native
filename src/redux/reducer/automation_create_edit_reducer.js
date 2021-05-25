@@ -5,6 +5,9 @@ const dataRuleCategory = [
     card_id: 'auto-downgrade-package',
     card_type: 'CardFromTo',
     card_disabled: false,
+    params_disabled_api: 'isDowngrade',
+    params_value_api: 'downgradePackageFrom',
+    params_value_api_to: 'downgradePackageTo',
     card_is_checked: false,
     card_title: 'Auto Downgrade Package',
     card_description:
@@ -24,12 +27,15 @@ const dataRuleCategory = [
     card_type: 'CardFromTo',
     card_disabled: false,
     disabled_api: 'individualUpgrade',
+    params_disabled_api: 'isUpgradeIndividual',
+    params_value_api: 'upgradePackageIndividualFrom',
+    params_value_api_to: 'upgradePackageIndividualTo',
     card_is_checked: false,
     card_title: 'Auto Upgrade Individual Shared Package',
     card_description: 'card_description',
     card_warning_description: 'card_warning_description',
     card_type_title: 'Subscription Package',
-    select_api: 'packageIndividualUpgradeList',
+    select_api: 'packageDowngradeList',
     value: {},
     value_error_text: '',
     sub_value: {},
@@ -40,6 +46,8 @@ const dataRuleCategory = [
     card_type: 'CardEmail',
     card_disabled: false,
     disabled_api: 'bulkNotification',
+    params_disabled_api: 'isNotification',
+    params_value_api: 'notificationEmail',
     card_is_checked: false,
     card_title: 'Bulk Shared Notification',
     card_warning_description:
@@ -54,6 +62,9 @@ const dataRuleCategory = [
     card_type: 'CardFromTo',
     card_disabled: false,
     disabled_api: 'bulkUpgrade',
+    params_disabled_api: 'isUpgradeBulk',
+    params_value_api: 'upgradePackageBulkFrom',
+    params_value_api_to: 'upgradePackageBulkTo',
     card_is_checked: false,
     card_title: 'Bulk Shared Auto Upgrade',
     card_warning_description:
@@ -149,6 +160,9 @@ const automation_create_edit_reducer = (state = initialState, action) => {
         data_automation_create: action.dataAutomationCreate,
         dataRuleCategory: action.reMap,
       };
+    }
+    case reduxString.AUTOMATION_CREATE_EDIT_RESET: {
+      return state;
     }
     default: {
       return state;

@@ -131,6 +131,7 @@ const NormalInput = (props) => {
 };
 const SelectInput = (props) => {
   const {value, onChange, data, label} = props;
+  const {label: valueLabel} = value || {};
   const [visible, setVisible] = useState(false);
   return (
     <React.Fragment>
@@ -140,7 +141,7 @@ const SelectInput = (props) => {
         isTouchable
         customTouchProps={{onPress: () => setVisible(true)}}>
         <Text style={{paddingVertical: 8, flex: 1}} numberOfLines={2}>
-          {value.label || 'Please Select'}
+          {valueLabel || 'Please Select'}
         </Text>
         <MaterialCommunityIcons
           name={'chevron-down'}
