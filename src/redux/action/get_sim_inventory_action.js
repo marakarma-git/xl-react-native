@@ -96,6 +96,8 @@ const dataMatcherArray2D = (listData = [], headerData = []) => {
         isTouchable,
         isTreeView,
         labelBool,
+        textLink,
+        ...getAllConfig
       } = config || {};
       if (shown && !doNotShowOnTable) {
         const createLabel = (superType, firstValue) => {
@@ -134,6 +136,8 @@ const dataMatcherArray2D = (listData = [], headerData = []) => {
             isTreeView: isTreeView,
             treeLevel: item.level || 0,
             treeCheck: item.treeCheck == undefined ? false : item.treeCheck,
+            textLink,
+            rootConfig: getAllConfig,
           },
           item,
           subItem,

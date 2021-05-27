@@ -1,5 +1,5 @@
 import React, {useEffect} from 'react';
-import {BackHandler, ScrollView, TouchableOpacity, View} from 'react-native';
+import {ScrollView, TouchableOpacity, View} from 'react-native';
 import {HeaderContainer, OverlayBackground, Text} from '../../components';
 import {subscriptionStyle} from '../../style';
 import {useDispatch, useSelector} from 'react-redux';
@@ -53,22 +53,10 @@ const AutomationCreateEditPage = () => {
         }),
       );
     }
-    // if (data_active_enterprise.length === 0) {
-    //
-    // }
-    // if (lod(result) && from) {
-    //
-    // }
-    // const back = BackHandler.addEventListener('hardwareBackPress', () => {
-    //   alert('back');
-    //   dispatch(automationActiveEnterpriseReset());
-    //   dispatch(automationCreateEditReset());
-    // });
-    // return () => back;
   }, [navigation, params, result]);
   return (
     <HeaderContainer
-      headerTitle={'Create New Automation'}
+      headerTitle={`${!lod.isEmpty(from) ? from : 'Create New'} Automation`}
       style={{flex: 1}}
       companyLogo={imageBase64}>
       <View style={subscriptionStyle.containerBackground}>
@@ -162,31 +150,13 @@ const AutomationCreateEditPage = () => {
               {justifyContent: 'space-between'},
             ]}>
             {['Cancel', 'Submit'].map((value) => {
-              return (
-                <TouchableOpacity
-                  style={[
-                    {
-                      backgroundColor:
-                        value === 'Cancel'
-                          ? colors.gray_400
-                          : colors.button_color_one,
-                    },
-                    subscriptionStyle.buttonStyle,
-                  ]}
-                  onPress={() => {
-                    if (value === 'Cancel') {
-                      navigation.goBack();
-                    }
-                  }}>
-                  <Text
-                    fontType={'bold'}
-                    style={{
-                      color: value === 'Cancel' ? 'black' : 'white',
-                    }}>
-                    {value}
-                  </Text>
-                </TouchableOpacity>
-              );
+              if (value === 'Submit') {
+                if (from !== 'Detail') {
+                  return <LocalButton value={value} navigation={navigation} />;
+                }
+              } else {
+                return <LocalButton value={value} navigation={navigation} />;
+              }
             })}
           </View>
         </ScrollView>
@@ -210,5 +180,30 @@ const LocalCardWrapper = (props) => {
         {children}
       </Card.Content>
     </Card>
+  );
+};
+const LocalButton = ({value, navigation}) => {
+  return (
+    <TouchableOpacity
+      style={[
+        {
+          backgroundColor:
+            value === 'Cancel' ? colors.gray_400 : colors.button_color_one,
+        },
+        subscriptionStyle.buttonStyle,
+      ]}
+      onPress={() => {
+        if (value === 'Cancel') {
+          navigation.goBack();
+        }
+      }}>
+      <Text
+        fontType={'bold'}
+        style={{
+          color: value === 'Cancel' ? 'black' : 'white',
+        }}>
+        {value}
+      </Text>
+    </TouchableOpacity>
   );
 };

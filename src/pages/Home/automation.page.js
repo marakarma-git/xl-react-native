@@ -65,7 +65,7 @@ const AutomationPage = () => {
         if (statusCode === 0) {
           setLoadingDetail(false);
           navigation.navigate('AutomationCreDit', {
-            from: 'Edit',
+            from: from,
             result: result,
           });
         } else {
@@ -94,38 +94,31 @@ const AutomationPage = () => {
       style={{flex: 1}}
       companyLogo={imageBase64}>
       <View style={subscriptionStyle.containerBackground}>
-        <TouchableOpacity
-          style={{
-            paddingVertical: 12,
-            backgroundColor: 'tomato',
-            alignItems: 'center',
-          }}
-          onPress={() => {
-            navigation.navigate('AutomationCreDit', {
-              refresh: true,
-              from: undefined,
-              result: undefined,
-            });
-          }}>
-          <Text>Tekan Aku</Text>
-        </TouchableOpacity>
         <Table
           isScrollView={true}
           onRight
           stickHeaderIndices={[1]}
+          onPressCell={({item}) => {
+            const {autoId} = item || {};
+            getDetailInfo({
+              automationId: autoId,
+              from: 'Detail',
+            });
+          }}
           headerOtherLayout={() => {
             return (
               <>
                 <OverlayBackground />
                 <SearchHeader
                   value={''}
-                  onSubmitEditing={(e) => {
-                    dispatch(
-                      automationSetSearchText({
-                        searchText: e,
-                      }),
-                    );
-                  }}
+                  swapWithButton
+                  onPressButton={() =>
+                    navigation.navigate('AutomationCreDit', {
+                      refresh: true,
+                      from: undefined,
+                      result: undefined,
+                    })
+                  }
                   showMenu={showMenu}
                   onClickColumn={() => setShowMenu((state) => !state)}
                   navigateTo={'AutomationFilter'}

@@ -35,6 +35,7 @@ const TableCellText = (props) => {
     showIcon,
     isTreeView,
     treeLevel,
+    textLink,
   } = config || {};
   const createLabel = () => {
     if (label && !child_api_id) {
@@ -83,12 +84,22 @@ const TableCellText = (props) => {
                     if (moreText) {
                       setShowMore(true);
                     }
+                    if (!moreText && textLink) {
+                      onPress(otherInformation);
+                    }
                   }}
-                  style={{
-                    paddingLeft:
-                      isTreeView && (treeLevel + (!icon ? 1.6 : 0)) * 10,
-                    color: fontColor || 'black',
-                  }}>
+                  style={[
+                    {
+                      paddingLeft:
+                        isTreeView && (treeLevel + (!icon ? 1.6 : 0)) * 10,
+                      color: fontColor || 'black',
+                    },
+                    ,
+                    textLink && {
+                      color: 'blue',
+                      textDecorationLine: 'underline',
+                    },
+                  ]}>
                   {showIcon && icon && (
                     <React.Fragment>
                       <Ionicons
@@ -135,6 +146,21 @@ const TableCellText = (props) => {
                 onPress={() => setShowMore(false)}>
                 <Text style={{color: 'black'}}>Close</Text>
               </TouchableOpacity>
+              {textLink && (
+                <TouchableOpacity
+                  style={[
+                    inputHybridStyle.buttonStyle,
+                    {backgroundColor: colors.button_color_one},
+                  ]}
+                  onPress={() => {
+                    setShowMore(false);
+                    onPress(otherInformation);
+                  }}>
+                  <Text style={{color: textLink ? 'white' : 'black'}}>
+                    Open Link
+                  </Text>
+                </TouchableOpacity>
+              )}
             </View>
           </KeyboardAvoidingView>
         </Modal>

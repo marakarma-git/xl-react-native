@@ -13,6 +13,8 @@ import {colors} from '../../constant/color';
 import MaterialCommunityIcon from 'react-native-paper/src/components/MaterialCommunityIcon';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import {useNavigation} from '@react-navigation/native';
+import Text from '../global/text';
+import {border_radius} from '../../constant/config';
 const SearchHeader = (props) => {
   const navigation = useNavigation();
   const [refreshWidth, setRefreshWidth] = useState('99%');
@@ -25,6 +27,8 @@ const SearchHeader = (props) => {
     loading,
     onClickColumn,
     navigateTo,
+    swapWithButton,
+    onPressButton,
   } = props || {};
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -35,28 +39,38 @@ const SearchHeader = (props) => {
   return (
     <Container style={subscriptionStyle.containerMargin}>
       <View style={subscriptionStyle.containerTextInput2}>
-        <View
-          style={[
-            subscriptionStyle.containerTextInput,
-            {backgroundColor: loading ? colors.gray_button : null},
-          ]}>
-          <FontAwesome
-            style={{marginHorizontal: 8}}
-            name={'search'}
-            color={colors.gray_0}
-            size={15}
-          />
-          <View style={{flex: 1}}>
-            <TextInput
-              value={changeText}
-              editable={!loading}
-              onChangeText={(e) => setChangeText(e)}
-              onSubmitEditing={() => onSubmitEditing(changeText)}
-              style={{fontSize: 12, width: refreshWidth}}
-              placeholder={value || placeholder || ''}
+        {!swapWithButton ? (
+          <View
+            style={[
+              subscriptionStyle.containerTextInput,
+              {backgroundColor: loading ? colors.gray_button : null},
+            ]}>
+            <FontAwesome
+              style={{marginHorizontal: 8}}
+              name={'search'}
+              color={colors.gray_0}
+              size={15}
             />
+            <View style={{flex: 1}}>
+              <TextInput
+                value={changeText}
+                editable={!loading}
+                onChangeText={(e) => setChangeText(e)}
+                onSubmitEditing={() => onSubmitEditing(changeText)}
+                style={{fontSize: 12, width: refreshWidth}}
+                placeholder={value || placeholder || ''}
+              />
+            </View>
           </View>
-        </View>
+        ) : (
+          <TouchableOpacity
+            style={subscriptionStyle.createButton}
+            onPress={onPressButton}>
+            <Text fontType={'bold'} style={{color: 'white'}}>
+              Create
+            </Text>
+          </TouchableOpacity>
+        )}
         {loading ? (
           <ActivityIndicator size={26} color={colors.button_color_one} />
         ) : (
@@ -88,6 +102,8 @@ SearchHeader.propTypes = {
   onSubmitEditing: PropTypes.func,
   placeholder: PropTypes.string,
   navigateTo: PropTypes.string.isRequired,
+  swapWithButton: PropTypes.bool,
+  onPressButton: PropTypes.func,
 };
 SearchHeader.defaultProps = {
   showMenu: false,
@@ -95,5 +111,6 @@ SearchHeader.defaultProps = {
   onClickColumn: () => {},
   onSubmitEditing: () => {},
   navigateTo: '',
+  onPressButton: () => {},
 };
 export default SearchHeader;

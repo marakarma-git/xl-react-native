@@ -93,20 +93,29 @@ export default {
     flex: 1,
     marginLeft: 12,
   },
-  headerButtonContainer: { 
-    width: '100%', 
-    flexDirection: 'row', 
-    justifyContent: 'flex-end', 
-    paddingRight: 20 
+  headerButtonContainer: {
+    width: '100%',
+    flexDirection: 'row',
+    justifyContent: 'flex-end',
+    paddingRight: 20,
   },
-  headerButtonCreate: { 
-    paddingVertical: 10, 
-    backgroundColor: "#002DBB", 
-    width: 150, 
-    marginTop: 15 
+  headerButtonCreate: {
+    paddingVertical: 10,
+    backgroundColor: '#002DBB',
+    width: 150,
+    marginTop: 15,
   },
-  headerButtonCreateText: { 
-    color: 'white', 
-    textAlign: 'center' 
-  }
+  headerButtonCreateText: {
+    color: 'white',
+    textAlign: 'center',
+  },
+  createButton: {
+    flex: 1,
+    backgroundColor: colors.button_color_one,
+    justifyContent: 'center',
+    alignItems: 'center',
+    paddingVertical: 14,
+    marginRight: 8,
+    borderRadius: border_radius,
+  },
 };

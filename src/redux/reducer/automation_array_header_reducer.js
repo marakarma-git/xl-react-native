@@ -27,6 +27,7 @@ const dataAutomationHeader = [
       label: 'Enterprise Name',
       doNotShowOnFilter: true,
       isTouchable: true,
+      textLink: true,
     },
     shown: true,
     sort_by_filter: 0,
