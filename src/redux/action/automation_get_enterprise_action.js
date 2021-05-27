@@ -33,9 +33,8 @@ const automationActiveEnterpriseReset = () => {
 };
 const callAutomationEnterprise = (parameter) => {
   return async (dispatch, getState) => {
-    const {result} = parameter || {};
-    const {enterpriseId: enterpriseIdParameter} = result || {};
-    console.log(JSON.stringify(result, null, 2));
+    const {result: resultParameter} = parameter || {};
+    const {enterpriseId: enterpriseIdParameter} = resultParameter || {};
     dispatch(getActiveEnterpriseLoading());
     const {access_token} = (await getState().auth_reducer.data) || {};
     axios
@@ -55,7 +54,7 @@ const callAutomationEnterprise = (parameter) => {
               ...rest,
             }),
           );
-          if (!lod.isEmpty(result)) {
+          if (!lod.isEmpty(resultParameter)) {
             autoInputEnterpriseValue = lod.find(remap, (item) => {
               return item.value === enterpriseIdParameter;
             });

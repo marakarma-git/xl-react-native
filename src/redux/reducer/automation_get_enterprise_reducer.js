@@ -38,7 +38,7 @@ const automation_get_enterprise_reducer = (state = initialState, action) => {
       };
     }
     case reduxString.AUTOMATION_ACTIVE_ENTERPRISE_RESET: {
-      return state;
+      return initialState;
     }
     default: {
       return state;

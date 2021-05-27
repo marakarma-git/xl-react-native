@@ -162,7 +162,7 @@ const automation_create_edit_reducer = (state = initialState, action) => {
       };
     }
     case reduxString.AUTOMATION_CREATE_EDIT_RESET: {
-      return state;
+      return initialState;
     }
     default: {
       return state;

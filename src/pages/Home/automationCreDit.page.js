@@ -40,10 +40,10 @@ const AutomationCreateEditPage = () => {
     dataRuleCategory,
   } = useSelector((state) => state.automation_create_edit_reducer);
   useEffect(() => {
-    if (data_active_enterprise.length === 0) {
-      dispatch(callAutomationEnterprise({from, result}));
-    }
-    if (lod(result) && from) {
+    dispatch(automationActiveEnterpriseReset());
+    dispatch(automationCreateEditReset());
+    dispatch(callAutomationEnterprise(!lod.isEmpty(result) && {from, result}));
+    if (!lod.isEmpty(result)) {
       const {customerNumber} = result || {};
       dispatch(
         getAutomationCustomerNumber({
@@ -53,13 +53,19 @@ const AutomationCreateEditPage = () => {
         }),
       );
     }
-    const back = BackHandler.addEventListener('hardwareBackPress', () => {
-      alert('back');
-      dispatch(automationActiveEnterpriseReset());
-      dispatch(automationCreateEditReset());
-    });
-    return () => back;
-  }, [navigation]);
+    // if (data_active_enterprise.length === 0) {
+    //
+    // }
+    // if (lod(result) && from) {
+    //
+    // }
+    // const back = BackHandler.addEventListener('hardwareBackPress', () => {
+    //   alert('back');
+    //   dispatch(automationActiveEnterpriseReset());
+    //   dispatch(automationCreateEditReset());
+    // });
+    // return () => back;
+  }, [navigation, params, result]);
   return (
     <HeaderContainer
       headerTitle={'Create New Automation'}

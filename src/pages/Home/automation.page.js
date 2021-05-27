@@ -100,7 +100,13 @@ const AutomationPage = () => {
             backgroundColor: 'tomato',
             alignItems: 'center',
           }}
-          onPress={() => navigation.navigate('AutomationCreDit')}>
+          onPress={() => {
+            navigation.navigate('AutomationCreDit', {
+              refresh: true,
+              from: undefined,
+              result: undefined,
+            });
+          }}>
           <Text>Tekan Aku</Text>
         </TouchableOpacity>
         <Table
