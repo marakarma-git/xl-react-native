@@ -152,7 +152,12 @@ const AutomationCreateEditPage = () => {
             {['Cancel', 'Submit'].map((value) => {
               if (value === 'Submit') {
                 if (from !== 'Detail') {
-                  return <LocalButton value={value} navigation={navigation} />;
+                  return (
+                    <LocalButton
+                      value={from === 'Edit' ? 'Update' : 'Submit'}
+                      navigation={navigation}
+                    />
+                  );
                 }
               } else {
                 return <LocalButton value={value} navigation={navigation} />;
