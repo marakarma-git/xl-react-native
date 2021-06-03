@@ -320,3 +320,7 @@ class Helper {
 }
 
 export default Helper;
+
+export const Regex = {
+  multipleEmailSeparateComma: /^(\s?[^\s,]+@[^\s,]+\.[^\s,]+\s?,)*(\s?[^\s,]+@[^\s,]+\.[^\s,]+)$/g,
+};

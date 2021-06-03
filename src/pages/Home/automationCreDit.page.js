@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React, {useEffect, useState} from 'react';
 import {ScrollView, TouchableOpacity, View} from 'react-native';
 import {HeaderContainer, OverlayBackground, Text} from '../../components';
 import {subscriptionStyle} from '../../style';
@@ -17,13 +17,20 @@ import callAutomationEnterprise, {
 import getAutomationCustomerNumber, {
   automationCreateEditCheck,
   automationCreateEditReset,
+  automationCreateEditSetSubValue,
+  automationCreateEditSetValue,
 } from '../../redux/action/automation_create_edit_action';
 import {useNavigation, useRoute} from '@react-navigation/native';
+import {automation_create_edit_logic} from '../../redux/logic/automation_create_edit_logic';
+import axios from 'axios';
+import {automationGetAutomationReload} from '../../redux/action/automation_get_automation_action';
+import {base_url, super_base_url} from '../../constant/connection';
 
 const AutomationCreateEditPage = () => {
   const dispatch = useDispatch();
   const navigation = useNavigation();
   const {params} = useRoute();
+  const [loadingCreDit, setLoadingCreDit] = useState(false);
   const {from, result} = params || {};
   const {imageBase64} = useSelector((state) => state.enterprise_reducer);
   const {
@@ -39,6 +46,7 @@ const AutomationCreateEditPage = () => {
     data_automation_create,
     dataRuleCategory,
   } = useSelector((state) => state.automation_create_edit_reducer);
+  const {access_token} = useSelector((state) => state.auth_reducer.data) || {};
   useEffect(() => {
     dispatch(automationActiveEnterpriseReset());
     dispatch(automationCreateEditReset());
@@ -135,10 +143,24 @@ const AutomationCreateEditPage = () => {
                     typeTitle={card_type_title}
                     data={data_automation_create[`${select_api}`] || []}
                     value={value}
-                    onChange={() => {}}
+                    onChange={(value) => {
+                      dispatch(
+                        automationCreateEditSetValue({
+                          cardId: card_id,
+                          inputValue: value,
+                        }),
+                      );
+                    }}
                     valueError={value_error_text}
                     subValue={sub_value}
-                    subOnChange={() => {}}
+                    subOnChange={(value) => {
+                      dispatch(
+                        automationCreateEditSetSubValue({
+                          cardId: card_id,
+                          inputValue: value,
+                        }),
+                      );
+                    }}
                     subValueError={sub_value_error_text}
                   />
                 );
@@ -156,6 +178,71 @@ const AutomationCreateEditPage = () => {
                     <LocalButton
                       value={from === 'Edit' ? 'Update' : 'Submit'}
                       navigation={navigation}
+                      onPress={() => {
+                        const generateCreateEdit = automation_create_edit_logic(
+                          {
+                            dataRuleCategory,
+                            valueEnterprise,
+                            dispatch,
+                            from,
+                            result,
+                          },
+                        );
+                        if (!lod.isEmpty(generateCreateEdit)) {
+                          setLoadingCreDit(true);
+                          console.log(
+                            `${base_url}/dcp/automation/${
+                              from === 'Create'
+                                ? 'createAutomation'
+                                : from === 'Edit' && 'updateAutomation'
+                            }`,
+                          );
+                          axios({
+                            method: 'post',
+                            url: `${base_url}/dcp/automation/${
+                              from === 'Create'
+                                ? 'createAutomation'
+                                : from === 'Edit' && 'updateAutomation'
+                            }`,
+                            data: generateCreateEdit,
+                            headers: {
+                              Authorizations: `Bearer ${access_token}`,
+                            },
+                          })
+                            .then(({data}) => {
+                              const {statusCode} = data || {};
+                              if (statusCode === 0) {
+                                if (from === 'Create') {
+                                  alert('Success to create automation');
+                                }
+                                if (from === 'Edit') {
+                                  alert('Success to update data automation');
+                                }
+                                setLoadingCreDit(false);
+                                dispatch(automationGetAutomationReload());
+                                navigation.goBack();
+                              } else {
+                              }
+                            })
+                            .catch((e) => {
+                              setLoadingCreDit(false);
+                              console.log(
+                                JSON.stringify(
+                                  JSON.parse(e.config.data),
+                                  null,
+                                  2,
+                                ),
+                              );
+                              alert(
+                                JSON.stringify(
+                                  JSON.parse(e.config.data),
+                                  null,
+                                  2,
+                                ),
+                              );
+                            });
+                        }
+                      }}
                     />
                   );
                 }
@@ -165,7 +252,7 @@ const AutomationCreateEditPage = () => {
             })}
           </View>
         </ScrollView>
-        {loading_automation && <Loading />}
+        {(loading_automation || loadingCreDit) && <Loading />}
       </View>
     </HeaderContainer>
   );
@@ -187,7 +274,7 @@ const LocalCardWrapper = (props) => {
     </Card>
   );
 };
-const LocalButton = ({value, navigation}) => {
+const LocalButton = ({value, navigation, onPress}) => {
   return (
     <TouchableOpacity
       style={[
@@ -200,6 +287,8 @@ const LocalButton = ({value, navigation}) => {
       onPress={() => {
         if (value === 'Cancel') {
           navigation.goBack();
+        } else {
+          onPress(value);
         }
       }}>
       <Text
