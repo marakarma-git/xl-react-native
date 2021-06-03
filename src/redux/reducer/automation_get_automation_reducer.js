@@ -1,6 +1,7 @@
 import reduxString from '../reduxString';
 
 const initialState = {
+  reload: false,
   loading: false,
   errorText: '',
   data_automation: [],
@@ -20,9 +21,16 @@ const initialState = {
 };
 const automation_get_automation_reducer = (state = initialState, action) => {
   switch (action.type) {
+    case reduxString.AUTOMATION_GET_AUTOMATION_RELOAD: {
+      return {
+        ...state,
+        reload: true,
+      };
+    }
     case reduxString.AUTOMATION_GET_AUTOMATION_LOADING: {
       return {
         ...state,
+        reload: false,
         loading: true,
         errorText: '',
       };
@@ -30,6 +38,7 @@ const automation_get_automation_reducer = (state = initialState, action) => {
     case reduxString.AUTOMATION_GET_AUTOMATION_SUCCESS: {
       return {
         ...state,
+        reload: false,
         loading: initialState.loading,
         errorText: initialState.errorText,
         data_automation: action.dataAutomation,
@@ -53,6 +62,7 @@ const automation_get_automation_reducer = (state = initialState, action) => {
     case reduxString.AUTOMATION_GET_AUTOMATION_FAILED: {
       return {
         ...state,
+        reload: false,
         loading: initialState.loading,
         errorText: action.errorText,
       };

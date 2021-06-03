@@ -2,7 +2,11 @@ import reduxString from '../reduxString';
 import axios from 'axios';
 import {base_url} from '../../constant/connection';
 import {dataMatcherArray2D} from './get_sim_inventory_action';
-
+const automationGetAutomationReload = () => {
+  return {
+    type: reduxString.AUTOMATION_GET_AUTOMATION_RELOAD,
+  };
+};
 const automationGetAutomationLoading = () => {
   return {
     type: reduxString.AUTOMATION_GET_AUTOMATION_LOADING,
@@ -167,6 +171,7 @@ const getAutomation = (paginate) => {
 };
 export default getAutomation;
 export {
+  automationGetAutomationReload,
   automationGetAutomationReset,
   automationChangeCheckHeader,
   automationSetDataAutomationGenerated,

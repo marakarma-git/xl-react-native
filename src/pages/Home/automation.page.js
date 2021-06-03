@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react';
-import {TouchableOpacity, View} from 'react-native';
-import {HeaderContainer, OverlayBackground, Text} from '../../components';
+import {Alert, View} from 'react-native';
+import {HeaderContainer, OverlayBackground} from '../../components';
 import {useDispatch, useSelector} from 'react-redux';
 import getAutomation, {
   automationSetDataAutomationGenerated,
@@ -16,7 +16,6 @@ import Helper from '../../helpers/helper';
 import {
   automationDynamicReset,
   automationGenerateParams,
-  automationSetSearchText,
   automationUpdateBundleArray,
 } from '../../redux/action/automation_array_header_action';
 import ModalMenuPicker from '../../components/modal/ModalMenuPicker';
@@ -39,6 +38,7 @@ const AutomationPage = () => {
     appliedFilter,
   } = useSelector((state) => state.automation_array_header_reducer);
   const {
+    reload,
     loading,
     errorText,
     data_automation,
@@ -70,10 +70,18 @@ const AutomationPage = () => {
           });
         } else {
           setLoadingDetail(false);
+          Alert.alert(
+            'Failed to get info',
+            `Reason: ${JSON.stringify(data, null, 2)}`,
+          );
         }
       })
-      .catch((e) => {
+      .catch((error) => {
         setLoadingDetail(false);
+        Alert.alert(
+          'Failed to get info',
+          `Reason: ${JSON.stringify(error, null, 2)}`,
+        );
       });
   };
   useEffect(() => {
@@ -88,6 +96,16 @@ const AutomationPage = () => {
       setFirstRender(false);
     }
   }, [dispatch, searchText, generatedParams]);
+
+  useEffect(() => {
+    if (reload) {
+      dispatch(
+        getAutomation({
+          page_params: 0,
+        }),
+      );
+    }
+  }, [dispatch, reload]);
   return (
     <HeaderContainer
       headerTitle={'Automation'}
@@ -194,7 +212,48 @@ const AutomationPage = () => {
               from: 'Edit',
             });
           }}
-          onPressDelete={(e) => alert(JSON.stringify(e, null, 2))}
+          onPressDelete={({item}) => {
+            const {autoId} = item || {};
+            setLoadingDetail(true);
+            axios({
+              method: 'post',
+              url: `${base_url}/dcp/automation/deleteAutomation?automationId=${autoId}`,
+              headers: {Authorization: `Bearer ${access_token}`},
+            })
+              .then(({data}) => {
+                const {statusCode} = data;
+                if (statusCode === 0) {
+                  setLoadingDetail(false);
+                  dispatch(
+                    getAutomation({
+                      page_params: 0,
+                    }),
+                  );
+                  alert(`Success delete automation with id ${autoId}`);
+                } else {
+                  setLoadingDetail(false);
+                  Alert.alert(
+                    'Failed to delete automation',
+                    `Automation Id: ${autoId}, Reason${JSON.stringify(
+                      data,
+                      null,
+                      2,
+                    )}`,
+                  );
+                }
+              })
+              .catch((error) => {
+                setLoadingDetail(false);
+                Alert.alert(
+                  'Failed to delete automation',
+                  `Automation Id: ${autoId}, Reason${JSON.stringify(
+                    error,
+                    null,
+                    2,
+                  )}`,
+                );
+              });
+          }}
         />
         <TableFooter
           currentPage={automation_page}
