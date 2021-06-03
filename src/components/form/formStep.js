@@ -14,6 +14,7 @@ const FormStepComponent = (props) => {
         formPosition={props.formPosition}
         formLength={props.formLength}
         formTitle={props.formTitle}
+        formDescription={props.formDescription}
       />
       <FormStepBodyComponent
         listViewRef={props.listViewRef}
@@ -134,6 +135,7 @@ FormStepComponent.propTypes = {
   formLength: PropTypes.number,
   formTitle: PropTypes.string,
   formBody: PropTypes.array,
+  formDescription: PropTypes.string,
   onCancel: PropTypes.func,
   onNext: PropTypes.func,
   onBack: PropTypes.func,
@@ -146,6 +148,7 @@ FormStepComponent.defaultProps = {
   formPosition: 0,
   formLength: 0,
   formTitle: 'Default Form Title',
+  formDescription: "lorem ipsum sit dolor amet orem ipsum dolor",
   formBody: [],
   onCancel: () => {},
   onNext: () => {},

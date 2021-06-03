@@ -171,7 +171,7 @@ const LandingPage = ({navigation}) => {
           {pagination()}
         </Card>
       </ScrollView>
-      {isLoggedIn && showModalTermCondition() && privHelper.isHasPriviledge('CC', userData.authority)}
+      {isLoggedIn && showModalTermCondition()}
     </HeaderContainer>
   );
 };

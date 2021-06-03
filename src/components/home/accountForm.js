@@ -44,6 +44,18 @@ const AccountFormComponent = ({
               value={value[form.key] || form.config?.defaultValue}
             />
           )
+        case "textarea":
+          return(
+            <TextInput
+              onFocus={() => setIsTouch(true)}
+              onChangeText={(text) => inputHandler(form.key, text)}
+              style={[styles.textInputContainer, { backgroundColor: form.editable ? 'white' : "#e4e7ea", height: 80, textAlignVertical: "top" }]}
+              numberOfLines={3}
+              value={value[form.key]}
+              editable={form.editable || false}
+              placeholder={form.title}
+            />
+          );
       
         default:
           return(

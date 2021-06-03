@@ -110,6 +110,7 @@ const CreateNewUserPage = ({route, navigation}) => {
   const formArray = [
     {
       title: 'User Information',
+      description: "lorem ipsum sit dolor amet orem ipsum dolor",
       body: [
         { 
           component: 
@@ -138,6 +139,7 @@ const CreateNewUserPage = ({route, navigation}) => {
     },
     {
       title: 'Organizations',
+      description: "lorem ipsum sit dolor amet orem ipsum dolor",
       body: [
         { 
           component: 
@@ -156,6 +158,7 @@ const CreateNewUserPage = ({route, navigation}) => {
     },
     {
       title: 'Roles',
+      description: "lorem ipsum sit dolor amet orem ipsum dolor",
       body: [
         { 
           component: 
@@ -173,6 +176,7 @@ const CreateNewUserPage = ({route, navigation}) => {
     },
     {
       title: 'Summary',
+      description: "lorem ipsum sit dolor amet orem ipsum dolor",
       body: [
         { 
           component: 

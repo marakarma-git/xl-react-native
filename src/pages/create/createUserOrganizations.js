@@ -26,6 +26,7 @@ const CreateOrganization = (props) => {
 
     const treeViewToggle = (cellId) => {
       const newData = new Array();
+      
       let isRoot = false;
       gridData.map((data) => {
         if(data.enterpriseId == cellId){

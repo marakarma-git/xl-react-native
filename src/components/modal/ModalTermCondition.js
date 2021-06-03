@@ -29,7 +29,7 @@ const ModalTermCondition = (props) => {
         props.closeModal();
         dispatch(authLogout());
         // if(props.afterLogin){
-            navigation.replace('Auth')
+            // navigation.replace('Auth')
         // }
     }
 
