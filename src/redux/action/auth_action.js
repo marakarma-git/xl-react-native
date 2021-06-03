@@ -161,7 +161,6 @@ const updateCustomerConsent = (userData) => {
 
       if(data){
           userData['principal'] = data.result;
-
           dispatch(updateCustomerConsentSuccess(userData));
       }
 

@@ -61,6 +61,12 @@ const passwordFormArray = [
   },
 ];
 
+const formBody = {
+  oldPassword: '',
+  newPassword: '',
+  confirmPassword: '',
+};
+
 const PasswordInput = ({submitHandler, requestLoading, navigation, orientation, isCreate = false}) => {
   const dispatch = useDispatch();
   const userData = useSelector((state) => state.auth_reducer.data);
@@ -68,11 +74,7 @@ const PasswordInput = ({submitHandler, requestLoading, navigation, orientation, 
   const [passwordForm, setPasswordForm] = useState(passwordFormArray);
   const [passwordRules, setPasswordRules] = useState(passwordRulesArray);
   const [formComplete, setFormComplete] = useState(false);
-  const [form, setForm] = useState({
-    oldPassword: '',
-    newPassword: '',
-    confirmPassword: '',
-  });
+  const [form, setForm] = useState(formBody);
   const [showModal, setShowModal] = useState(true);
 
   const inputHandler = (name, value, validation) => {
@@ -195,6 +197,8 @@ const PasswordInput = ({submitHandler, requestLoading, navigation, orientation, 
 
   useEffect(() => {
     const pageLoad = navigation.addListener("focus", () => {
+
+      setForm({...formBody});
       setPasswordForm([
         {
           name: 'oldPassword',
@@ -219,24 +223,24 @@ const PasswordInput = ({submitHandler, requestLoading, navigation, orientation, 
         },
       ]);
       setPasswordRules([
-        {label: 'Be between 8 and 30 characters', valid: false},
-        {label: 'contain at least 1 number 0-9', valid: false},
-        {label: 'contain at least 1 lower case letter (a-z)', valid: false},
-        {label: 'contain at least 1 upper case letter (A-Z)', valid: false},
-        {
-          label: 'not contain more than 3 consecutives identical characters',
-          valid: true,
-        },
-        {
-          label: 'not contain more than 3 consecutives lower-case characters',
-          valid: true,
-        },
-        {
-          label:
-            'contain only the following characters a-z, A-Z, 0-9, #, -, !, @, %, &, /, (, ), ?, + *',
-          valid: true,
-        },
-        {label: "match the entry in 'Confrim Password'", valid: true},
+          {label: 'Be between 8 and 30 characters', valid: false},
+          {label: 'contain at least 1 number 0-9', valid: false},
+          {label: 'contain at least 1 lower case letter (a-z)', valid: false},
+          {label: 'contain at least 1 upper case letter (A-Z)', valid: false},
+          {
+            label: 'not contain more than 3 consecutives identical characters',
+            valid: true,
+          },
+          {
+            label: 'not contain more than 3 consecutives lower-case characters',
+            valid: true,
+          },
+          {
+            label:
+              'contain only the following characters a-z, A-Z, 0-9, #, -, !, @, %, &, /, (, ), ?, + *',
+            valid: true,
+          },
+          {label: "match the entry in 'Confrim Password'", valid: true},
       ]);
     });
 
@@ -245,22 +249,22 @@ const PasswordInput = ({submitHandler, requestLoading, navigation, orientation, 
 
   return (
     <View style={{ alignItems: 'center', position: 'relative', top: -60 }}>
-      <View style={[styles.formContainer, 
-      {marginTop: 10, borderColor: '#8D8D8D', borderWidth: 0.8, width: orientation === 'potrait' ? '90%' : '50%', backgroundColor: 'white'}]}>
-        <Text style={styles.headerText}>Password</Text>
-        {generateForm()}
-        { userData?.principal?.mustChangePass && !userData?.principal?.isCustomerConsent
-        && <ModalTermCondition 
-            showModal={showModal} 
-            closeModal={() => setShowModal(!showModal)}
-            title={'Terms of Use & Privacy Policy'}/>}
-        <View style={styles.passwordRulesContainer}>
-          <Text style={{fontSize: 12, color: '#949494', textAlign: 'left'}}>
-            Follow the Password validation rules:{' '}
-          </Text>
-          {generatePasswordRules()}
+        <View style={[styles.formContainer, 
+          {marginTop: 10, borderColor: '#8D8D8D', borderWidth: 0.8, width: orientation === 'potrait' ? '90%' : '50%', backgroundColor: 'white'}]}>
+            <Text style={styles.headerText}>Password</Text>
+            {generateForm()}
+            { userData?.principal?.mustChangePass && !userData?.principal?.isCustomerConsent
+            && <ModalTermCondition 
+                showModal={showModal} 
+                closeModal={() => setShowModal(!showModal)}
+                title={'Terms of Use & Privacy Policy'}/>}
+            <View style={styles.passwordRulesContainer}>
+              <Text style={{fontSize: 12, color: '#949494', textAlign: 'left'}}>
+                Follow the Password validation rules:{' '}
+              </Text>
+              {generatePasswordRules()}
+            </View>
         </View>
-      </View>
       {
         !isCreate &&
         <View style={[styles.buttonGroupContainer, { width: orientation === 'potrait' ? '80%' : '40%' }]}>

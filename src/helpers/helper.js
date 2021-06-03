@@ -18,7 +18,7 @@ class Helper {
         return bytes + 'KB';
       }
 
-      const k = 1000;
+      const k = 1024;
       const dm = decimals < 0 ? 0 : decimals;
       const sizes = ['B', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB'];
 
@@ -316,6 +316,139 @@ class Helper {
     });
 
     return newData;
+  }
+
+  static manipulateIsDisabledArray(dataArray){
+    dataArray.map((data, index) => {
+      data.isDisabled = false;
+    });
+
+    return dataArray;
+  }
+
+  static treeViewToggle(gridData, cellId) {
+    const newData = new Array();
+
+    let isRoot = false;
+    gridData.map((data) => {
+      if(data.enterpriseId == cellId){
+        if(data.enterpriseParentId === null){
+          isRoot = true;
+        }
+      }
+
+      if(isRoot){
+        if(data.enterpriseId !== cellId){
+            data.visibility = !data.collapse;
+            data.collapse = !data.collapse;          
+        }
+
+      }else{
+        if(data.enterpriseParentId === cellId){
+          data.visibility = !data.visibility;
+        }
+      }
+
+      if (data.icon) {
+        data.icon = data.icon == 'caret-down' ? 'caret-up' : 'caret-down';
+      }
+
+      newData.push(data);
+    });
+
+    return newData;
+
+  }
+
+  static checkboxToggle(gridData, cellId ,selectedRadio = 1){
+    const newData = new Array();
+    let isRoot = false;
+    let parentCheck = false;
+
+    gridData.map((data) => {
+      if(data.enterpriseId == cellId){
+        if(data.enterpriseParentId === null){
+          isRoot = true;
+        }
+        parentCheck = !data.treeCheck;
+        data.treeCheck = !data.treeCheck;
+      }
+
+      if(isRoot){
+        if(data.enterpriseId !== cellId){
+            if(selectedRadio === 1){
+              data.isDisabled = !data.isDisabled;
+            }
+            data.treeCheck = parentCheck;
+        }
+
+      }else{
+        if(data.enterpriseParentId === cellId){
+            if(selectedRadio === 1){
+              data.isDisabled = !data.isDisabled;
+            }
+            data.treeCheck = parentCheck;
+        }
+      }
+
+      newData.push(data);
+    });
+
+    return newData;
+  }
+
+  static checkSelectedData(newData){
+      const selectedData = new Array();
+
+      newData.map((data, index) => {
+        if(data.treeCheck){
+          selectedData.push(data);
+        }
+      });
+
+      return newData;
+  }
+
+  static formValidation(formKey, formTitle, validationRules, formData, errorValidation){
+    const splitValidation = String(validationRules).split("|");
+
+    splitValidation.map((type) => {
+      switch (type) {
+        case "required":
+          errorValidation[formKey] = Helper.validationIsRequired(formKey, formTitle, formData);
+          break;
+        case "isEmail":
+          errorValidation[formKey] = Helper.validateEmail(formKey, formData);
+          break;
+
+        default:
+         errorValidation[formKey] = Helper.validationIsRequired(formKey, formTitle, formData);
+      }
+    });
+
+    console.log(errorValidation);
+
+    return errorValidation;
+  }
+
+  static validationIsRequired(formKey, formTitle, formData){
+    let errorMsg = "";
+    if(formData[formKey].length <= 0){
+      errorMsg = `${formTitle} is required`;
+    }
+
+    return errorMsg;
+  }
+
+  static validateEmail(formKey, formData){
+    let errorMsg = "";
+    let re = /\S+@\S+\.\S+/;
+
+    if(re.test(formData[formKey]) == false){
+      errorMsg = "Email is not valid!";
+    }
+
+    return errorMsg;
   }
 }
 

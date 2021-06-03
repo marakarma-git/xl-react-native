@@ -80,7 +80,6 @@ const Login = ({navigation}) => {
 
   const errorHandler = (errorParams) => {
     const { error, error_description } = errorParams;
-
     switch (error) {
       case "invalid_grant":
         if(error_description === "User is disabled") 

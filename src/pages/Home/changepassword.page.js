@@ -1,7 +1,7 @@
 import React, {useState, useEffect, useCallback} from 'react';
 import {base_url} from '../../constant/connection';
 import {setRequestError} from '../../redux/action/dashboard_action';
-import {changePassword} from '../../redux/action/auth_action';
+import {authLogout, changePassword} from '../../redux/action/auth_action';
 import {useSelector, useDispatch} from 'react-redux';
 import {ScrollView, ToastAndroid, Dimensions} from 'react-native';
 import {Header, NavbarTitle, PasswordInput} from '../../components/index';
@@ -48,7 +48,8 @@ const ChangePasswordPage = ({navigation}) => {
         if (data.statusCode === 0) {
           dispatch(changePassword(username));
           ToastAndroid.show(data.result, ToastAndroid.LONG);
-          navigation.replace('Home');
+          dispatch(authLogout());
+          navigation.replace("Auth");
         } else {
           ToastAndroid.show(data.statusDescription, ToastAndroid.LONG);
         }

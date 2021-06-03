@@ -1,6 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import {View} from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
+import {useNavigation} from '@react-navigation/native';
 import callRoleAction, {
   roleAdministrationCheckAlDataRole,
   roleAdministrationDynamicCheckDataRole,
@@ -25,8 +26,33 @@ import Helper from '../../helpers/helper';
 import TableFooter from '../../components/subscription/tableFooter';
 import Loading from '../../components/loading';
 
+const actionDataArray = [
+  {
+    value: '0',
+    label: 'Create new role',
+    isDisabled: false,
+  },
+  {
+    value: '1',
+    label: 'Edit role',
+    isDisabled: true,
+  },
+  {
+    value: '2',
+    label: 'Delete role(s)',
+    isDisabled: true,
+  },
+  {
+    value: '3',
+    label: 'Copy role(s)',
+    isDisabled: true,
+  }
+];
+
 const RoleAdministrationPage = () => {
   const dispatch = useDispatch();
+  const navigation = useNavigation();
+  const [actionData, setActionData] = useState(actionDataArray);
   const [firstRender, setFirstRender] = useState(true);
   const [showMenu, setShowMenu] = useState(false);
   const {imageBase64} = useSelector((state) => state.enterprise_reducer);
@@ -50,6 +76,19 @@ const RoleAdministrationPage = () => {
     role_applied_filter,
     role_params_applied_activity_log,
   } = useSelector((state) => state.role_administration_get_all_role_reducer);
+
+  const actionChange = (e) => {
+    switch (e.value) {
+      case '0':
+        navigation.navigate('RoleAdministrationCreate');
+        break;
+
+      default:
+        console.log(e);
+        break;
+    }
+  };
+
   useEffect(() => {
     if (!firstRender) {
       dispatch(
@@ -62,6 +101,7 @@ const RoleAdministrationPage = () => {
       setFirstRender(false);
     }
   }, [dispatch, searchText, generatedParams]);
+
   return (
     <HeaderContainer
       headerTitle={'Role Administration'}
@@ -100,6 +140,8 @@ const RoleAdministrationPage = () => {
                   }}
                 />
                 <FilterActionLabel
+                  actionData={actionData}
+                  onChange={actionChange}
                   total={Helper.numberWithDot(role_elements_static)}
                   filtered={
                     role_applied_filter &&
