@@ -318,7 +318,7 @@ class Helper {
     return newData;
   }
 
-  static manipulateIsDisabledArray(dataArray){
+  static manipulateIsDisabledArray(dataArray) {
     dataArray.map((data, index) => {
       data.isDisabled = false;
     });
@@ -331,20 +331,19 @@ class Helper {
 
     let isRoot = false;
     gridData.map((data) => {
-      if(data.enterpriseId == cellId){
-        if(data.enterpriseParentId === null){
+      if (data.enterpriseId == cellId) {
+        if (data.enterpriseParentId === null) {
           isRoot = true;
         }
       }
 
-      if(isRoot){
-        if(data.enterpriseId !== cellId){
-            data.visibility = !data.collapse;
-            data.collapse = !data.collapse;          
+      if (isRoot) {
+        if (data.enterpriseId !== cellId) {
+          data.visibility = !data.collapse;
+          data.collapse = !data.collapse;
         }
-
-      }else{
-        if(data.enterpriseParentId === cellId){
+      } else {
+        if (data.enterpriseParentId === cellId) {
           data.visibility = !data.visibility;
         }
       }
@@ -357,37 +356,35 @@ class Helper {
     });
 
     return newData;
-
   }
 
-  static checkboxToggle(gridData, cellId ,selectedRadio = 1){
+  static checkboxToggle(gridData, cellId, selectedRadio = 1) {
     const newData = new Array();
     let isRoot = false;
     let parentCheck = false;
 
     gridData.map((data) => {
-      if(data.enterpriseId == cellId){
-        if(data.enterpriseParentId === null){
+      if (data.enterpriseId == cellId) {
+        if (data.enterpriseParentId === null) {
           isRoot = true;
         }
         parentCheck = !data.treeCheck;
         data.treeCheck = !data.treeCheck;
       }
 
-      if(isRoot){
-        if(data.enterpriseId !== cellId){
-            if(selectedRadio === 1){
-              data.isDisabled = !data.isDisabled;
-            }
-            data.treeCheck = parentCheck;
+      if (isRoot) {
+        if (data.enterpriseId !== cellId) {
+          if (selectedRadio === 1) {
+            data.isDisabled = !data.isDisabled;
+          }
+          data.treeCheck = parentCheck;
         }
-
-      }else{
-        if(data.enterpriseParentId === cellId){
-            if(selectedRadio === 1){
-              data.isDisabled = !data.isDisabled;
-            }
-            data.treeCheck = parentCheck;
+      } else {
+        if (data.enterpriseParentId === cellId) {
+          if (selectedRadio === 1) {
+            data.isDisabled = !data.isDisabled;
+          }
+          data.treeCheck = parentCheck;
         }
       }
 
@@ -397,32 +394,46 @@ class Helper {
     return newData;
   }
 
-  static checkSelectedData(newData){
-      const selectedData = new Array();
+  static checkSelectedData(newData) {
+    const selectedData = new Array();
 
-      newData.map((data, index) => {
-        if(data.treeCheck){
-          selectedData.push(data);
-        }
-      });
+    newData.map((data, index) => {
+      if (data.treeCheck) {
+        selectedData.push(data);
+      }
+    });
 
-      return newData;
+    return newData;
   }
 
-  static formValidation(formKey, formTitle, validationRules, formData, errorValidation){
-    const splitValidation = String(validationRules).split("|");
+  static formValidation(
+    formKey,
+    formTitle,
+    validationRules,
+    formData,
+    errorValidation,
+  ) {
+    const splitValidation = String(validationRules).split('|');
 
     splitValidation.map((type) => {
       switch (type) {
-        case "required":
-          errorValidation[formKey] = Helper.validationIsRequired(formKey, formTitle, formData);
+        case 'required':
+          errorValidation[formKey] = Helper.validationIsRequired(
+            formKey,
+            formTitle,
+            formData,
+          );
           break;
-        case "isEmail":
+        case 'isEmail':
           errorValidation[formKey] = Helper.validateEmail(formKey, formData);
           break;
 
         default:
-         errorValidation[formKey] = Helper.validationIsRequired(formKey, formTitle, formData);
+          errorValidation[formKey] = Helper.validationIsRequired(
+            formKey,
+            formTitle,
+            formData,
+          );
       }
     });
 
@@ -431,21 +442,21 @@ class Helper {
     return errorValidation;
   }
 
-  static validationIsRequired(formKey, formTitle, formData){
-    let errorMsg = "";
-    if(formData[formKey].length <= 0){
+  static validationIsRequired(formKey, formTitle, formData) {
+    let errorMsg = '';
+    if (formData[formKey].length <= 0) {
       errorMsg = `${formTitle} is required`;
     }
 
     return errorMsg;
   }
 
-  static validateEmail(formKey, formData){
-    let errorMsg = "";
+  static validateEmail(formKey, formData) {
+    let errorMsg = '';
     let re = /\S+@\S+\.\S+/;
 
-    if(re.test(formData[formKey]) == false){
-      errorMsg = "Email is not valid!";
+    if (re.test(formData[formKey]) == false) {
+      errorMsg = 'Email is not valid!';
     }
 
     return errorMsg;

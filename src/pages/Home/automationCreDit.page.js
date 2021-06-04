@@ -24,7 +24,7 @@ import {useNavigation, useRoute} from '@react-navigation/native';
 import {automation_create_edit_logic} from '../../redux/logic/automation_create_edit_logic';
 import axios from 'axios';
 import {automationGetAutomationReload} from '../../redux/action/automation_get_automation_action';
-import {base_url, super_base_url} from '../../constant/connection';
+import {base_url} from '../../constant/connection';
 
 const AutomationCreateEditPage = () => {
   const dispatch = useDispatch();
@@ -190,25 +190,20 @@ const AutomationCreateEditPage = () => {
                         );
                         if (!lod.isEmpty(generateCreateEdit)) {
                           setLoadingCreDit(true);
-                          console.log(
-                            `${base_url}/dcp/automation/${
-                              from === 'Create'
-                                ? 'createAutomation'
-                                : from === 'Edit' && 'updateAutomation'
-                            }`,
-                          );
-                          axios({
-                            method: 'post',
-                            url: `${base_url}/dcp/automation/${
-                              from === 'Create'
-                                ? 'createAutomation'
-                                : from === 'Edit' && 'updateAutomation'
-                            }`,
-                            data: generateCreateEdit,
-                            headers: {
-                              Authorizations: `Bearer ${access_token}`,
-                            },
-                          })
+                          axios
+                            .post(
+                              `${base_url}/dcp/automation/${
+                                from === 'Edit'
+                                  ? 'updateAutomation'
+                                  : 'createAutomation'
+                              }`,
+                              generateCreateEdit,
+                              {
+                                headers: {
+                                  Authorization: `Bearer ${access_token}`,
+                                },
+                              },
+                            )
                             .then(({data}) => {
                               const {statusCode} = data || {};
                               if (statusCode === 0) {
@@ -226,20 +221,7 @@ const AutomationCreateEditPage = () => {
                             })
                             .catch((e) => {
                               setLoadingCreDit(false);
-                              console.log(
-                                JSON.stringify(
-                                  JSON.parse(e.config.data),
-                                  null,
-                                  2,
-                                ),
-                              );
-                              alert(
-                                JSON.stringify(
-                                  JSON.parse(e.config.data),
-                                  null,
-                                  2,
-                                ),
-                              );
+                              alert(JSON.stringify(e, null, 2));
                             });
                         }
                       }}

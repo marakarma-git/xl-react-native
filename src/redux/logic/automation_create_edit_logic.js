@@ -14,18 +14,19 @@ const automation_create_edit_logic = ({
   let countTextField = 0;
 
   let createData = {
-    isDowngrade: false,
-    isNotification: false,
-    isUpgradeBulk: false,
-    isUpgradeIndividual: false,
-    notificationEmail: null,
-    upgradePackageBulkFrom: null,
-    upgradePackageBulkTo: null,
-    upgradePackageIndividualFrom: null,
-    upgradePackageIndividualTo: null,
-    downgradePackageFrom: null,
+    // isDowngrade: false,
+    // isNotification: false,
+    // isUpgradeBulk: false,
+    // isUpgradeIndividual: false,
+    // notificationEmail: null,
+    // upgradePackageBulkFrom: null,
+    // upgradePackageBulkTo: null,
+    // upgradePackageIndividualFrom: null,
+    // upgradePackageIndividualTo: null,
+    // downgradePackageFrom: null,
     downgradePackageTo: null,
   };
+  const formData = new FormData();
   const {autoId} = result || {};
   const {value: enterpriseId, customerNumber} = valueEnterprise || {};
   createData.enterpriseId = enterpriseId;
@@ -92,6 +93,9 @@ const automation_create_edit_logic = ({
       }),
     );
   } else {
+    // for (const keys in createData) {
+    //   formData.append(keys, createData[keys]);
+    // }
     return createData;
   }
 };
