@@ -90,7 +90,7 @@ const checkLogin = (username, password) => {
 
     try {
       const {data} = await Axios.post(
-          `${base_url}${subDomain.checkLogin}`, {username, password, client_id: clientId}, {
+          `${base_url}${subDomain.checkLogin}`, {username, password, clientId: clientId}, {
           headers: {
             'Content-Type': 'application/json'
           }
