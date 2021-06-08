@@ -322,6 +322,7 @@ const Login = ({navigation}) => {
         </Text>
       </View>
       <ModalMultiSession
+        setLocalLoading={setLocalLoading}
         data={{username, password}} 
         showModal={isMultiSessionDetected}
         title="Multi Session Detected"

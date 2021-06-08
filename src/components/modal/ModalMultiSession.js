@@ -1,10 +1,7 @@
 import React from 'react';
 import {
   Modal,
-  ScrollView,
   TouchableOpacity,
-  TouchableWithoutFeedback,
-  Linking,
   View,
   KeyboardAvoidingView
 } from 'react-native';
@@ -23,6 +20,7 @@ const ModalMultiSession = (props) => {
     }
 
     const cancelHandler = () => {
+      props.setLocalLoading(false);
       dispatch(resetMultiSessionDetected());
     }
 
@@ -72,15 +70,17 @@ ModalMultiSession.propTypes = {
     showModal: PropTypes.bool,
     closeModal: PropTypes.func,
     title: PropTypes.string,
-    text: PropTypes.string
+    text: PropTypes.string,
+    setLocalLoading: PropTypes.func
 }
 
 ModalMultiSession.defaultProps = {
   data: {},
   showModal: false,
-  closeModal: () => {},
   title: "",
-  text: ""
+  text: "",
+  closeModal: () => {},
+  setLocalLoading: () => {}
 }
 
 export default ModalMultiSession;
