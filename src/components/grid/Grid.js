@@ -151,6 +151,7 @@ const GridCellComponent = (props) => {
             colHeight={props.colHeight}
             width={option.width}
             align={option.headerAlign}
+            cellAlign={option.cellAlign}
             bgColor={'white'}
             data={item[option.field]}
             headerColor={"black"}
@@ -163,6 +164,7 @@ const GridCellComponent = (props) => {
             isDisabled={item.isDisabled}
             onPressTree={props.onPressTree}
             onPressCheckBox={props.onPressCheckBox}
+            cellVisible={option.cellVisible == undefined ? true : option.cellVisible}
           />
         )) }
       </View>
@@ -182,6 +184,8 @@ const CellComponent = (props) => {
     switch (props.cellType) {
       case "text":
         return <CellTextComponent {...props} />;
+      case "treeView":
+        return <CellTreeViewComponent {...props} />;
       case "treeViewWithCheckBox":
         return <CellTreeViewCheckBoxComponent {...props} />;
       case "checkbox":
@@ -208,7 +212,7 @@ const CellTreeViewCheckBoxComponent = (props) => {
         height: props.colHeight, 
         width: props?.width,
         justifyContent: 'flex-start',
-        alignItems: props.align,
+        alignItems: 'center',
         backgroundColor: props.bgColor,
         borderBottomColor: "#D8D8D8",
         borderBottomWidth: 1 }}>
@@ -239,6 +243,40 @@ const CellTreeViewCheckBoxComponent = (props) => {
   )
 }
 
+const CellTreeViewComponent = (props) => {
+
+  return(
+    <View
+      style={{ 
+        flexDirection: 'row',
+        height: props.colHeight, 
+        width: props?.width,
+        justifyContent: 'flex-start',
+        alignItems: 'center',
+        backgroundColor: props.bgColor,
+        borderBottomColor: "#D8D8D8",
+        borderBottomWidth: 1 }}>
+          {
+            props.icon ?
+            <TouchableOpacity
+              onPress={() => props.onPressTree(props.cellId)}>
+                <Ionicons
+                  name={props.icon}
+                  color={'black'}
+                  style={{ paddingLeft: (props.level * 10) + 5 }}
+                />
+            </TouchableOpacity>
+            :
+            <Text style={{ paddingLeft: (props.level * 10) + 8 }}></Text>
+            }
+          <Text 
+            style={{ color: props.headerColor || "black", fontSize: 12 }}>
+              {props.data.length > 30 ? props.data.substring(0, 30) + "..." : props.data}
+            </Text>
+    </View>
+  )
+}
+
 const CellTextComponent = (props) => {
   return(
     <View
@@ -246,14 +284,14 @@ const CellTextComponent = (props) => {
         height: props.colHeight, 
         width: props?.width,
         justifyContent: 'center',
-        alignItems: props.align,
+        alignItems: props.cellAlign,
         backgroundColor: props.bgColor,
         borderBottomColor: "#D8D8D8",
         borderBottomWidth: 1 }}>
           <Text
             numberOfLines={1} 
-            style={{ color: props.headerColor || "black", fontSize: 12 }}>
-              {props.data}
+            style={{ color: props.headerColor || "black", fontSize: 12, paddingLeft: 5 }}>
+              {props.cellVisible ? props.data : ""}
           </Text>
     </View>
   )
@@ -266,7 +304,7 @@ const CellCheckBoxComponent = (props) => {
         height: props.colHeight, 
         width: props?.width,
         justifyContent: 'center',
-        alignItems: props.align,
+        alignItems: props.cellAlign,
         backgroundColor: props.bgColor,
         borderBottomColor: "#D8D8D8",
         borderBottomWidth: 1 }}>

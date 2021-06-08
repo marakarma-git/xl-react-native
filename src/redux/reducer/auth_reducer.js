@@ -7,7 +7,9 @@ const initialState = {
   alreadyRequest: false,
   isLoggedIn: false,
   afterLogin: false,
-  homeLogin: false
+  homeLogin: false,
+  multiSessionMsg: "",
+  isMultiSessionDetected: false
 };
 const auth_reducers = (state = initialState, action) => {
   switch (action.type) {
@@ -31,7 +33,9 @@ const auth_reducers = (state = initialState, action) => {
         error: '',
         alreadyRequest: false,
         isLoggedIn: true,
-        afterLogin: true
+        afterLogin: true,
+        isMultiSessionDetected: false,
+        multiSessionMsg: ""
       };
     case reduxString.SET_FALSE_AFTER_LOGIN: 
       return {
@@ -69,6 +73,20 @@ const auth_reducers = (state = initialState, action) => {
       return{
         ...state,
         homeLogin: true
+      }
+    case reduxString.SET_MULTI_SESSION_DETECTED: 
+      return{
+        ...state,
+        isMultiSessionDetected: true,
+        multiSessionMsg: action.payload,
+        loading: false
+      }
+    case reduxString.RESET_MULTI_SESSION_DETECTED: 
+      return{
+        ...state,
+        isMultiSessionDetected: false,
+        multiSessionMsg: "",
+        loading: false
       }
     default:
       return state;

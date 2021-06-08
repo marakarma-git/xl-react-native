@@ -14,12 +14,13 @@ import {
 import Text from '../components/global/text';
 import lod from 'lodash';
 import styles from '../style/login.style';
-import {authLogin} from '../redux/action/auth_action';
+import {authLogin, checkLogin} from '../redux/action/auth_action';
 import {useDispatch, useSelector} from 'react-redux';
 import {loginBrand} from '../assets/images/index';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import CheckBox from '@react-native-community/checkbox';
 import Orientation from '../helpers/orientation';
+import { ModalMultiSession } from '../components';
 const busolLogo = require('../assets/images/logo/xl-busol-inverted.png');
 
 const Login = ({navigation}) => {
@@ -31,7 +32,7 @@ const Login = ({navigation}) => {
   const [errorText, setErrorText] = useState(null);
   const [orientation, setOrientation] = useState('potrait');
   const dispatch = useDispatch();
-  const {data, error, isLoggedIn, alreadyRequest} = useSelector(
+  const {data, error, isLoggedIn, alreadyRequest, multiSessionMsg, isMultiSessionDetected} = useSelector(
     (state) => state.auth_reducer,
   );
 
@@ -48,7 +49,9 @@ const Login = ({navigation}) => {
     if (isLoggedIn) {
       if (!lod.isEmpty(data)) {
         if (data.principal.mustChangePass) {
-          navigation.replace('Change Password');
+          navigation.replace('Change Password', {
+            pageBefore: "login"
+          });
         } else {
           navigation.replace('Home');
         }
@@ -61,13 +64,12 @@ const Login = ({navigation}) => {
         errorHandler(error);
       }
     }
-
     detectOrientation();
   }, [data, error, isLoggedIn]);
 
   const onSubmit = () => {
     if (username.length > 0 && password.length > 0) {
-      dispatch(authLogin(username, password));
+      dispatch(checkLogin(username, password));
       setLocalLoading(true);
     } else {
       if (username.length <= 0) {
@@ -319,6 +321,12 @@ const Login = ({navigation}) => {
           &copy; {`${year} PT. XL Axiata Tbk. All Right Reserved `}
         </Text>
       </View>
+      <ModalMultiSession
+        data={{username, password}} 
+        showModal={isMultiSessionDetected}
+        title="Multi Session Detected"
+        text={multiSessionMsg}
+      />
     </ScrollView>
   );
 };

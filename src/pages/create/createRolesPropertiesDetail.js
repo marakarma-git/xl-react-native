@@ -50,12 +50,16 @@ const CreateRolesPropertiesDetail = (props) => {
 
       formList.map((form) => {
         if(form.validation){
-          validationError = Helper.formValidation(form.key, form.title, form.validationType, props.formValue, errorValidation);
+          let validateForm = Helper.formValidation(form.key, form.title, form.validationType, props.formValue, errorValidation);
+          if(validateForm){
+            validationError[form.key] = validateForm;
+          }
+
         }
       })
     }
-    console.log(validationError, " <<<<< ")
-    // setFormError(prevState => prevState = validationError);
+
+    setFormError(prevState => prevState = validationError);
   }
 
   // End Action
@@ -63,7 +67,7 @@ const CreateRolesPropertiesDetail = (props) => {
   // Life Cycle
   useEffect(() => {
     validateForm();
-
+      console.log(formError)    
     if(typeof formError === 'object'){
       if(Object.keys(formError) <= 0){
         props.setIsComplete(true);
@@ -72,7 +76,7 @@ const CreateRolesPropertiesDetail = (props) => {
       }
     }
 
-  }, [props.formValue, touchForm]);
+  }, [props.formValue]);
 
   useEffect(() => {
     const pageLoad = navigation.addListener("focus", () => {

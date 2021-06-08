@@ -40,6 +40,9 @@ const CreateNewUserPage = ({route, navigation}) => {
   });
   const [selectedOwnership, setSelectedOwnership] = useState([]);
 
+  //Properties State
+  const [selectedVisibility, setSelectedVisibility] = useState(0);
+
   // State Complete Form
   const [isRolesPropertiesDetailComplete, setIsRolesPropertiesDetailComplete] = useState(false);
   const [isRolesPropertiesOwnershipComplete, setIsRolesPropertiesOwnershipComplete] = useState(false);
@@ -61,10 +64,10 @@ const CreateNewUserPage = ({route, navigation}) => {
         { 
           component: 
           <CreateRolesPropertiesOwnership
-           detectOffset={detectOffset} 
-           selectedOwnership={selectedOwnership}
-           setSelectedOwnership={setSelectedOwnership}
-           setIsComplete={setIsRolesPropertiesOwnershipComplete}
+            selectedOwnership={selectedOwnership}
+            setSelectedOwnership={setSelectedOwnership}
+            setIsComplete={setIsRolesPropertiesOwnershipComplete}
+            setScrollView={setScrollViewEnabled}
           />, 
           componentTitle: "Ownership"
         }
@@ -75,7 +78,12 @@ const CreateNewUserPage = ({route, navigation}) => {
       description: "lorem ipsum sit dolor amet orem ipsum dolor",
       body: [
         { 
-          component: <CreateRolesVisibility />, 
+          component: 
+            <CreateRolesVisibility 
+              selectedOwnership={selectedOwnership}
+              selectedVisibility={selectedVisibility}
+              setSelectedVisibility={setSelectedVisibility}
+            />, 
           componentTitle: "Visibility"
         }
       ]
@@ -108,12 +116,27 @@ const CreateNewUserPage = ({route, navigation}) => {
 
   // ACTION FUNCTION
 
-  const detectOffset = () => {
-    setScrollViewEnabled(false);
-  }
-
   const onNextRules = () => {
-    setFormPosition(prevState => prevState += 1);
+    let isComplete = false;
+    if(formPosition === 0){
+      console.log("Role Properties Detail Complete :", isRolesPropertiesDetailComplete);
+      console.log("Role Properties Ownership Complete :", isRolesPropertiesOwnershipComplete);
+      if(isRolesPropertiesDetailComplete && isRolesPropertiesOwnershipComplete){
+        isComplete = true;
+      }
+    }
+    
+    if(isComplete){
+      setFormPosition(prevState => prevState + 1);
+    }else{
+      ToastAndroid.showWithGravityAndOffset(
+        "Please complete the field !", 
+        ToastAndroid.LONG, 
+        ToastAndroid.TOP,
+        0,
+        300
+      );
+    }
   };
 
   const onSubmit = () => {};
@@ -123,15 +146,13 @@ const CreateNewUserPage = ({route, navigation}) => {
 
   useEffect(() => {
     const pageLoad = navigation.addListener("focus", () => {
-      console.log("tes")
     });
 
     return pageLoad;
   }, [navigation]);
 
   return (
-    <View
-      onStartShouldSetResponderCapture={() => setScrollViewEnabled(true)}>
+    <View>
       <HeaderContainer
         navigation={navigation}
         headerTitle={'Create Role'}
@@ -141,7 +162,7 @@ const CreateNewUserPage = ({route, navigation}) => {
         style={{marginBottom: 130}}
         showsVerticalScrollIndicator={false}
         scrollEnabled={scrollViewEnabled}
-        ref={listViewRef}>
+        onScrollBeginDrag={() => setScrollViewEnabled(true)}>
           <OverlayBackground />
           <View>
               { loadingUserDetail ? 

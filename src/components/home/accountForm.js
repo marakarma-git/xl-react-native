@@ -94,7 +94,7 @@ const AccountFormComponent = ({
           { formType(form) }
           {
             isValidate && formError[form.key] &&
-            <Text style={{ color: 'red' }}>{formError[form.key]}</Text>
+            <Text style={{ color: 'red' }}>{formError[form.key] || " "}</Text>
           }
         </View>
       ))}

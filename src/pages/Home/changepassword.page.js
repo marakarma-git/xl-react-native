@@ -10,8 +10,9 @@ import styles from '../../style/home.style';
 import Axios from 'axios';
 import Orientation from '../../helpers/orientation';
 
-const ChangePasswordPage = ({navigation}) => {
+const ChangePasswordPage = ({route, navigation}) => {
   const dispatch = useDispatch();
+  const { pageBefore } = route.params;
   const userData = useSelector((state) => state.auth_reducer.data);
   const {access_token} = useSelector((state) => state.auth_reducer.data);
   const [requestLoading, setRequestLoading] = useState(false);
@@ -48,8 +49,12 @@ const ChangePasswordPage = ({navigation}) => {
         if (data.statusCode === 0) {
           dispatch(changePassword(username));
           ToastAndroid.show(data.result, ToastAndroid.LONG);
-          dispatch(authLogout());
-          navigation.replace("Auth");
+          if(pageBefore === "account"){
+            navigation.goBack();
+          }else {
+            dispatch(authLogout());
+            navigation.replace("Auth");
+          }
         } else {
           ToastAndroid.show(data.statusDescription, ToastAndroid.LONG);
         }
@@ -72,7 +77,7 @@ const ChangePasswordPage = ({navigation}) => {
   return (
     <ScrollView style={[styles.container, {backgroundColor: 'white'}]}>
       <Header notifications={false} orientation={orientation}/>
-      <NavbarTitle title={'Change Password'} type={'change'}/>
+      <NavbarTitle title={'Change Password ' + pageBefore} type={'change'}/>
       <PasswordInput
         orientation={orientation}
         navigation={navigation}

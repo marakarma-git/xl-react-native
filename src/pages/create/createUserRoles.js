@@ -154,7 +154,6 @@ const CreateUserRoles = (props) => {
   }, [data_active_roles]);
 
   useEffect(() => {
-    console.log("call enterprise id", props.enterpriseId)
     dispatch(getActiveRoles(props.enterpriseId));
   }, [props.enterpriseId]);
 

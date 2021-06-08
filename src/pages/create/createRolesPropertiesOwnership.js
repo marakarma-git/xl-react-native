@@ -61,13 +61,19 @@ const CreateOrganization = (props) => {
 
   const checkSelectedData = (data) => {
     const newData = Helper.checkSelectedData(data);
+
+    if(newData.length > 0){
+      props.setIsComplete(true);
+    }else{
+      props.setIsComplete(false);
+    }
     
     props.setSelectedOwnership(newData);
   }
 
   // End Function
 
-  // Lifecycle
+  // Hooks
   useEffect(() => {
     const pageLoad = navigation.addListener("focus", () => {
       dispatch(getActiveEnterpriseList());
@@ -85,8 +91,8 @@ const CreateOrganization = (props) => {
 
   return(
     <View
-     onStartShouldSetResponderCapture={props.detectOffset}
-     style={{ flexDirection: 'row', flexWrap: 'wrap' }}>
+      onTouchStart={() => props.setScrollView(false)}
+      onTouchEnd={() => props.setScrollView(true)}>
         <GridComponent
           loading={loading}
           gridOptions={gridOptions}
@@ -104,13 +110,15 @@ const CreateOrganization = (props) => {
 CreateOrganization.propTypes = {
   selectedOwnership: PropTypes.array,
   setSelectedOwnership: PropTypes.func,
-  detectOffset: PropTypes.func,
+  setScrollView: PropTypes.func,
+  setIsComplete: PropTypes.func
 };
 
 CreateOrganization.defaultProps = {
   selectedOwnership: [],
   setSelectedOwnership: () => {},
-  detectOffset: () => {},
+  setScrollView: () => {},
+  setIsComplete: () => {}
 }
 
 export default CreateOrganization;

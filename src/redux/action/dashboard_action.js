@@ -111,7 +111,6 @@ export const getCarousel = (accessToken) => {
           data.result.map((banner) => {
             banner.bannerImage = `data:image/jpeg;base64,${banner.bannerImage}`;
           });
-
           dispatch(setCarousel(data.result));
         } else {
           throw new Error(data);

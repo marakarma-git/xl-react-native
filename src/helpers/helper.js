@@ -319,7 +319,7 @@ class Helper {
   }
 
   static manipulateIsDisabledArray(dataArray){
-    dataArray.map((data, index) => {
+    dataArray.map((data) => {
       data.isDisabled = false;
     });
 
@@ -410,25 +410,24 @@ class Helper {
   }
 
   static formValidation(formKey, formTitle, validationRules, formData, errorValidation){
+    let errorMsg = "";
     const splitValidation = String(validationRules).split("|");
 
     splitValidation.map((type) => {
       switch (type) {
         case "required":
-          errorValidation[formKey] = Helper.validationIsRequired(formKey, formTitle, formData);
+          errorMsg = Helper.validationIsRequired(formKey, formTitle, formData);
           break;
         case "isEmail":
-          errorValidation[formKey] = Helper.validateEmail(formKey, formData);
+          errorMsg = Helper.validateEmail(formKey, formData);
           break;
 
         default:
-         errorValidation[formKey] = Helper.validationIsRequired(formKey, formTitle, formData);
+         errorMsg = Helper.validationIsRequired(formKey, formTitle, formData);
       }
     });
 
-    console.log(errorValidation);
-
-    return errorValidation;
+    return errorMsg;
   }
 
   static validationIsRequired(formKey, formTitle, formData){

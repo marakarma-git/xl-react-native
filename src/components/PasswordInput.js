@@ -91,6 +91,9 @@ const PasswordInput = ({submitHandler, requestLoading, navigation, orientation, 
     if(userData.principal.mustChangePass && !homeLogin){
       dispatch(authLogout());
       navigation.replace("Auth");
+    }else if(userData.principal.mustChangePass && homeLogin){
+      dispatch(authLogout());
+      navigation.replace("Auth");
     }else{
       navigation.goBack();
     }

@@ -140,7 +140,6 @@ const CreateBasicUserInformation = (props) => {
     validateForm();
 
     if(Object.keys(formError) <= 0){
-      console.log("complete")
       props.setIsComplete(true);
     }else{
       props.setIsComplete(false);

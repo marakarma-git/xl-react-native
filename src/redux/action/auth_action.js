@@ -1,7 +1,7 @@
 import Axios from 'axios';
 import reduxString from '../reduxString';
 import subDomain from '../../constant/requestSubPath';
-import {base_url, headerAuth} from '../../constant/connection';
+import {base_url, headerAuth, clientId} from '../../constant/connection';
 import {removeEnterPriseLogo} from './enterprise_action';
 
 const authRequest = () => {
@@ -28,7 +28,7 @@ const authSuccess = (data, params) => {
     type: reduxString.AUTH_SUCCESS,
     payload: data,
     params,
-    privId: data?.authority || []
+    privId: data.authority
   };
 };
 
@@ -44,10 +44,30 @@ const changePassword = (username) => ({
   params: {username},
 });
 
+const tokenInvalid = () => {
+  return async (dispatch, getState) => {
+      dispatch(removeEnterPriseLogo());
+      dispatch(removeAuth(getState().auth_reducer.data.principal.username));
+  }
+}
+
 const authLogout = () => {
   return async (dispatch, getState) => {
-    dispatch(removeEnterPriseLogo());
-    dispatch(removeAuth(getState().auth_reducer.data.principal.username));
+    try {
+      const {data} = await Axios.post(`${base_url}${subDomain.logout}`, {}, {
+        headers: {
+          Authorization: "Bearer " + getState().auth_reducer.data.access_token
+        }
+      });
+
+      if(data){
+          dispatch(removeEnterPriseLogo());
+          dispatch(removeAuth(getState().auth_reducer.data.principal.username));
+      }
+
+    } catch (error) {
+      dispatch(authFailed(error.response.data));
+    }
   };
 };
 
@@ -55,12 +75,52 @@ const setFalseAfterLogin = () => ({
   type: reduxString.SET_FALSE_AFTER_LOGIN
 });
 
+const setMultiSessionDetected = (text) => ({
+  type: reduxString.SET_MULTI_SESSION_DETECTED,
+  payload: text
+});
+
+const resetMultiSessionDetected = () => ({
+  type: reduxString.RESET_MULTI_SESSION_DETECTED
+})
+
+const checkLogin = (username, password) => {
+  return async (dispatch) => {
+    dispatch(authRequest());
+
+    try {
+      const {data} = await Axios.post(
+          `${base_url}${subDomain.checkLogin}`, {username, password, client_id: clientId}, {
+          headers: {
+            'Content-Type': 'application/json'
+          }
+        });
+
+        console.log(data, " <<< ")
+
+        if(data){
+          dispatch(setMultiSessionDetected(
+            `${username} is open in another session. Click 'Use Here' to close previous session and login`
+          ));
+        }else{
+          dispatch(authLogin(username, password));
+        }
+
+    } catch (error) {
+      console.log(error)
+      dispatch(authFailed(error.response.data));  
+    }
+
+  }
+}
+
 const authLogin = (username, password) => {
   const formData = new FormData();
 
   formData.append('grant_type', 'password');
   formData.append('username', username);
   formData.append('password', password);
+  formData.append('client_id', clientId);
 
   return async (dispatch) => {
     dispatch(authRequest());
@@ -79,7 +139,7 @@ const authLogin = (username, password) => {
       if (data) {
         const authority = await getUserPriviledges(data?.access_token);
         data.authority = authority;
-        dispatch(authSuccess(data, {username, password}));
+        dispatch(authSuccess(data, {username, password, client_id: clientId}));
       }
     } catch (error) {
       dispatch(authFailed(error.response.data));
@@ -170,4 +230,16 @@ const updateCustomerConsent = (userData) => {
   }
 }
 
-export {authLogin, authFailed, authLogout, getTitleVersion, changePassword, setFalseAfterLogin, updateCustomerConsent, setHomeLogin};
+export {
+  tokenInvalid,
+  authLogin, 
+  authFailed, 
+  authLogout, 
+  getTitleVersion, 
+  changePassword, 
+  setFalseAfterLogin, 
+  updateCustomerConsent, 
+  setHomeLogin,
+  checkLogin,
+  resetMultiSessionDetected
+};

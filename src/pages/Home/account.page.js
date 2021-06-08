@@ -12,7 +12,6 @@ import {
 } from '../../components/index';
 import {authLogout} from '../../redux/action/auth_action';
 import {removeEnterPriseLogo} from '../../redux/action/enterprise_action';
-// import privHelper from './../../helpers/helper';
 import privHelper from '../../helpers/privHelper';
 
 import styles from '../../style/account.style';
@@ -103,7 +102,7 @@ const MyAccountPage = (props) => {
             />
             <TouchableOpacity
               // disabled={privHelper.isHasPriviledge("CP",userData.authority)}
-              onPress={() => props.navigation.navigate('Change Password')}>
+              onPress={() => props.navigation.navigate('Change Password', { pageBefore: "account" })}>
               <Text style={styles.linkText}>Change Password</Text>
             </TouchableOpacity>
             {editable && (
