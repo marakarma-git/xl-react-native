@@ -90,29 +90,31 @@ const ContainerInput = (props) => {
           {label}
         </Text>
       )}
-      <CustomTouch
-        style={[
-          inputHybridStyle.innerContainerInput,
-          labelLeft && inputHybridStyle.customStyleInnerContainer,
-        ]}
-        {...customTouchProps}
-        disabled={loading || disableText || disabled}>
-        {children}
-        {(disabled || loading) && (
-          <View style={inputHybridStyle.disableInput}>
-            {loading && (
-              <ActivityIndicator
-                size={'small'}
-                color={colors.button_color_one}
-              />
-            )}
-            {disableText && !loading && <Text>{disableText}</Text>}
-          </View>
-        )}
-      </CustomTouch>
-      <Text style={{fontSize: 10, color: 'red'}} numberOfLines={2}>
-        {errorText && `Error: ${errorText}`}
-      </Text>
+      <View style={{flex: 1}}>
+        <CustomTouch
+          style={[
+            inputHybridStyle.innerContainerInput,
+            labelLeft && inputHybridStyle.customStyleInnerContainer,
+          ]}
+          {...customTouchProps}
+          disabled={loading || disableText || disabled}>
+          {children}
+          {(disabled || loading) && (
+            <View style={inputHybridStyle.disableInput}>
+              {loading && (
+                <ActivityIndicator
+                  size={'small'}
+                  color={colors.button_color_one}
+                />
+              )}
+              {disableText && !loading && <Text>{disableText}</Text>}
+            </View>
+          )}
+        </CustomTouch>
+        <Text style={{fontSize: 10, color: 'red'}} numberOfLines={2}>
+          {errorText && `Error: ${errorText}`}
+        </Text>
+      </View>
     </View>
   );
 };

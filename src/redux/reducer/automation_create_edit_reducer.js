@@ -1,4 +1,5 @@
 import reduxString from '../reduxString';
+import {Regex} from '../../helpers/helper';
 
 const dataRuleCategory = [
   {
@@ -86,11 +87,25 @@ const initialState = {
 };
 const automation_create_edit_reducer = (state = initialState, action) => {
   switch (action.type) {
+    case reduxString.AUTOMATION_SET_DATA_RULE_CATEGORY_BULK: {
+      return {
+        ...state,
+        dataRuleCategory: action.dataRuleCategory,
+      };
+    }
     case reduxString.AUTOMATION_CREATE_EDIT_SET_VALUE: {
       const getIndex =
         state.dataRuleCategory.findIndex((c) => c.card_id === action.cardId) ||
         0;
+      const getCardType = state.dataRuleCategory[getIndex].card_type;
+      const checkError =
+        getCardType === 'CardEmail' &&
+        !Regex.multipleEmailSeparateComma.test(action.inputValue)
+          ? 'Wrong email format'
+          : '';
       state.dataRuleCategory[getIndex].value = action.inputValue;
+      state.dataRuleCategory[getIndex].value_error_text =
+        getCardType === 'CardEmail' ? checkError : '';
       return {
         ...state,
         dataRuleCategory: state.dataRuleCategory,
@@ -110,7 +125,8 @@ const automation_create_edit_reducer = (state = initialState, action) => {
       const getIndex =
         state.dataRuleCategory.findIndex((c) => c.card_id === action.cardId) ||
         0;
-      state.dataRuleCategory[getIndex].subValue = action.inputValue;
+      state.dataRuleCategory[getIndex].sub_value = action.inputValue;
+      state.dataRuleCategory[getIndex].sub_value_error_text = '';
       return {
         ...state,
         dataRuleCategory: state.dataRuleCategory,
@@ -132,6 +148,8 @@ const automation_create_edit_reducer = (state = initialState, action) => {
         0;
       state.dataRuleCategory[getIndex].card_is_checked = !state
         .dataRuleCategory[getIndex].card_is_checked;
+      state.dataRuleCategory[getIndex].value_error_text = '';
+      state.dataRuleCategory[getIndex].sub_value_error_text = '';
       return {
         ...state,
         dataRuleCategory: state.dataRuleCategory,

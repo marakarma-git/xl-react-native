@@ -2,12 +2,18 @@ import reduxString from '../reduxString';
 import axios from 'axios';
 import {base_url} from '../../constant/connection';
 import lod from 'lodash';
-
-const automationCreateEditSetValue = ({cardId, inputValue}) => {
+const automationSetDataRuleCategoryBulk = ({dataRuleCategory}) => {
+  return {
+    type: reduxString.AUTOMATION_SET_DATA_RULE_CATEGORY_BULK,
+    dataRuleCategory,
+  };
+};
+const automationCreateEditSetValue = ({cardId, inputValue, valueErrorText}) => {
   return {
     type: reduxString.AUTOMATION_CREATE_EDIT_SET_VALUE,
     cardId,
     inputValue,
+    valueErrorText,
   };
 };
 const automationCreateEditSetErrorText = ({cardId, errorText}) => {
@@ -118,7 +124,7 @@ const getAutomationCustomerNumber = (value) => {
                 },
               );
               const createObject = {
-                ...otherValue,
+                ...itemRuleCategory,
                 card_is_checked: resultParams[`${params_disabled_api}`],
                 card_disabled: !resultParams[`${params_disabled_api}`],
                 value: getAutoFrom
@@ -161,6 +167,7 @@ const getAutomationCustomerNumber = (value) => {
 };
 export default getAutomationCustomerNumber;
 export {
+  automationSetDataRuleCategoryBulk,
   automationCreateEditSetValue,
   automationCreateEditSetErrorText,
   automationCreateEditSetSubValue,

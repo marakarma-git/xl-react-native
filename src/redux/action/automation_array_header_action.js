@@ -55,7 +55,6 @@ const automationUpdateBundleArray = (value) => {
 };
 const automationSetSearchText = (value) => {
   const {searchText} = value || '';
-  console.log(searchText);
   return {
     type: reduxString.AUTOMATION_SET_SEARCH_TEXT,
     searchText: searchText,
