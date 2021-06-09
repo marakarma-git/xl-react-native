@@ -8,6 +8,7 @@ import {createStackNavigator} from '@react-navigation/stack';
 import {NavigationContainer} from '@react-navigation/native';
 import {ChangePasswordPage} from './Home';
 import GlobalUpdate from '../components/modal/GlobalUpdate';
+import RootedBlocker from '../components/modal/RootedBlocker';
 
 const Stack = createStackNavigator();
 const RootStack = () => {
@@ -55,6 +56,7 @@ const Route = () => {
   return (
     <NavigationContainer linking={{prefixes: ['dcp4.adlsandbox.com://app']}}>
       {dummy && isLoggedIn && <GlobalUpdate />}
+      <RootedBlocker />
       <RootStack />
     </NavigationContainer>
   );
