@@ -366,10 +366,10 @@ const StickyComponent = (props) => {
   return (
     <View
       style={{
-        elevation: borderWidth ? 5 : 0,
+        elevation: borderWidth && !onRight ? 5 : onRight ? 5 : 0,
         borderRightWidth: !onRight && borderWidth ? 1 : 0,
         borderLeftWidth: onRight ? 1 : 0,
-        borderColor: 'white',
+        borderColor: 'transparent',
       }}>
       {dataTable &&
         dataTable.map((value, index) => {

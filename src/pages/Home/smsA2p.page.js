@@ -66,6 +66,7 @@ const SmsA2p = () => {
       companyLogo={imageBase64}>
       <View style={subscriptionStyle.containerBackground}>
         <Table
+          onRight
           isScrollView={true}
           stickHeaderIndices={[1]}
           headerOtherLayout={() => {

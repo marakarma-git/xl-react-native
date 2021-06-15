@@ -116,6 +116,7 @@ const dataHeaderEnterprise = [
     disabled: true,
     config: {
       label: 'Reseller resource Group',
+      width: 230,
     },
     shown: true,
   },

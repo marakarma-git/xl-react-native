@@ -29,6 +29,7 @@ const SearchHeader = (props) => {
     navigateTo,
     swapWithButton,
     onPressButton,
+    removeButtonAndSearch,
   } = props || {};
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -40,28 +41,32 @@ const SearchHeader = (props) => {
     <Container style={subscriptionStyle.containerMargin}>
       <View style={subscriptionStyle.containerTextInput2}>
         {!swapWithButton ? (
-          <View
-            style={[
-              subscriptionStyle.containerTextInput,
-              {backgroundColor: loading ? colors.gray_button : null},
-            ]}>
-            <FontAwesome
-              style={{marginHorizontal: 8}}
-              name={'search'}
-              color={colors.gray_0}
-              size={15}
-            />
-            <View style={{flex: 1}}>
-              <TextInput
-                value={changeText}
-                editable={!loading}
-                onChangeText={(e) => setChangeText(e)}
-                onSubmitEditing={() => onSubmitEditing(changeText)}
-                style={{fontSize: 12, width: refreshWidth}}
-                placeholder={value || placeholder || ''}
+          !removeButtonAndSearch ? (
+            <View
+              style={[
+                subscriptionStyle.containerTextInput,
+                {backgroundColor: loading ? colors.gray_button : null},
+              ]}>
+              <FontAwesome
+                style={{marginHorizontal: 8}}
+                name={'search'}
+                color={colors.gray_0}
+                size={15}
               />
+              <View style={{flex: 1}}>
+                <TextInput
+                  value={changeText}
+                  editable={!loading}
+                  onChangeText={(e) => setChangeText(e)}
+                  onSubmitEditing={() => onSubmitEditing(changeText)}
+                  style={{fontSize: 12, width: refreshWidth}}
+                  placeholder={value || placeholder || ''}
+                />
+              </View>
             </View>
-          </View>
+          ) : (
+            <></>
+          )
         ) : (
           <TouchableOpacity
             style={subscriptionStyle.createButton}
@@ -104,6 +109,7 @@ SearchHeader.propTypes = {
   navigateTo: PropTypes.string.isRequired,
   swapWithButton: PropTypes.bool,
   onPressButton: PropTypes.func,
+  removeButtonAndSearch: PropTypes.bool,
 };
 SearchHeader.defaultProps = {
   showMenu: false,

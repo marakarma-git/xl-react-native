@@ -11,6 +11,7 @@ const dataHeaderFilter = [
     config: {
       label: 'Action',
       doNotShowOnFilter: true,
+      width: 160,
     },
     shown: true,
   },
@@ -26,6 +27,7 @@ const dataHeaderFilter = [
       label: 'ID',
       doNotShowOnFilter: true,
       isTouchable: true,
+      width: 180,
     },
     valueCheck: false,
     shown: true,
@@ -93,6 +95,7 @@ const dataHeaderFilter = [
     config: {
       label: 'Price per SIM Card',
       isTouchable: true,
+      width: 220,
     },
     shown: true,
   },
@@ -104,6 +107,7 @@ const dataHeaderFilter = [
     config: {
       label: 'Price Bulk Shared',
       isTouchable: true,
+      width: 220,
     },
     shown: true,
   },
@@ -183,6 +187,7 @@ const dataHeaderFilter = [
     config: {
       label: 'Trigger Management',
       isTouchable: true,
+      width: 220,
     },
     shown: true,
   },
@@ -197,6 +202,7 @@ const dataHeaderFilter = [
     config: {
       label: 'Service Contract ID',
       isTouchable: true,
+      width: 220,
     },
     shown: true,
     sort_by_filter: 1,
@@ -209,6 +215,7 @@ const dataHeaderFilter = [
     config: {
       label: 'Excess Fee (Cost per KB)',
       isTouchable: true,
+      width: 260,
     },
     shown: true,
   },

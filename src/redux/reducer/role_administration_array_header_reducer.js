@@ -84,6 +84,7 @@ const dataRoleHeader = [
     config: {
       label: 'Role Description',
       isTouchable: true,
+      width: 180,
     },
     shown: true,
   },

@@ -5,6 +5,18 @@ import dayjs from 'dayjs';
 
 const dataSmsHeader = [
   {
+    formId: 'sms-a2p-dummy-action',
+    api_id: '',
+    cellType: 'TableCellHeader',
+    cellRowType: 'TableCellText',
+    config: {
+      label: 'Action',
+      doNotShowOnFilter: true,
+      width: 160,
+    },
+    shown: true,
+  },
+  {
     formId: 'sms-enterprise-name-hard-code',
     api_id: 'enterpriseName',
     value: {},
@@ -18,6 +30,7 @@ const dataSmsHeader = [
       label: 'Enterprise Name',
       doNotShowOnFilter: true,
       isTouchable: true,
+      width: 180,
     },
     shown: true,
   },
@@ -32,6 +45,7 @@ const dataSmsHeader = [
     config: {
       label: 'Sender Address (A.Number)',
       isTouchable: true,
+      width: 280,
     },
     shown: true,
   },
