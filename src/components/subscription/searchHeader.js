@@ -15,6 +15,8 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import {useNavigation} from '@react-navigation/native';
 import Text from '../global/text';
 import {border_radius} from '../../constant/config';
+import FilterActionLabel from './filterActionLabel';
+
 const SearchHeader = (props) => {
   const navigation = useNavigation();
   const [refreshWidth, setRefreshWidth] = useState('99%');
@@ -76,25 +78,11 @@ const SearchHeader = (props) => {
             </Text>
           </TouchableOpacity>
         )}
-        {loading ? (
-          <ActivityIndicator size={26} color={colors.button_color_one} />
-        ) : (
-          <TouchableOpacity onPress={() => navigation.navigate(navigateTo)}>
-            <MaterialCommunityIcon
-              name={'filter'}
-              size={26}
-              color={colors.gray}
-            />
-          </TouchableOpacity>
-        )}
-        <View style={subscriptionStyle.spacer} />
-        {loading ? (
-          <ActivityIndicator size={26} color={colors.button_color_one} />
-        ) : (
-          <TouchableOpacity onPress={onClickColumn}>
-            <Ionicons name={'settings-sharp'} size={22} color={colors.gray} />
-          </TouchableOpacity>
-        )}
+        <ColumnFilterSearch
+          loading={loading}
+          onClickFilter={() => navigation.navigate(navigateTo)}
+          onClickColumn={onClickColumn}
+        />
       </View>
     </Container>
   );
@@ -120,3 +108,46 @@ SearchHeader.defaultProps = {
   onPressButton: () => {},
 };
 export default SearchHeader;
+const ColumnFilterSearch = ({
+  loading,
+  onClickFilter,
+  onClickColumn,
+  noHeight,
+}) => {
+  return (
+    <>
+      {loading ? (
+        <ActivityIndicator size={26} color={colors.button_color_one} />
+      ) : (
+        <TouchableOpacity onPress={onClickFilter}>
+          <MaterialCommunityIcon
+            name={'filter'}
+            size={26}
+            color={colors.gray}
+          />
+        </TouchableOpacity>
+      )}
+      <View
+        style={[
+          subscriptionStyle.spacer,
+          {height: noHeight ? undefined : '50%'},
+        ]}
+      />
+      {loading ? (
+        <ActivityIndicator size={26} color={colors.button_color_one} />
+      ) : (
+        <TouchableOpacity onPress={onClickColumn}>
+          <Ionicons name={'settings-sharp'} size={22} color={colors.gray} />
+        </TouchableOpacity>
+      )}
+    </>
+  );
+};
+const SearchHeaderTwo = (props) => {
+  return (
+    <Container style={subscriptionStyle.containerMargin}>
+      <FilterActionLabel {...props} typeTwo />
+    </Container>
+  );
+};
+export {SearchHeaderTwo, ColumnFilterSearch};

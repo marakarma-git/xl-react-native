@@ -60,7 +60,6 @@ export default {
     alignItems: 'center',
   },
   spacer: {
-    height: '50%',
     width: 1,
     backgroundColor: colors.gray,
     marginHorizontal: 8,
@@ -91,7 +90,6 @@ export default {
   textMenuTotal: {
     color: colors.font_gray,
     flex: 1,
-    marginLeft: 12,
   },
   headerButtonContainer: {
     width: '100%',
@@ -117,5 +115,12 @@ export default {
     paddingVertical: 14,
     marginRight: 8,
     borderRadius: border_radius,
+  },
+  wrapperMenuOptionTypeTwo: {
+    justifyContent: 'space-between',
+  },
+  onlyForTypeOne: {
+    flexDirection: 'row',
+    alignItems: 'center',
   },
 };

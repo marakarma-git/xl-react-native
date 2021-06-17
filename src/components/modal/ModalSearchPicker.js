@@ -18,7 +18,7 @@ const ModalSearchPicker = (props) => {
   const [searchText, setSearchText] = useState('');
   const [searchResults, setSearchResult] = useState([]);
   useEffect(() => {
-    if (data.length > 0 && !removeSearch) {
+    if (data?.length > 0 && !removeSearch) {
       const results = data.filter((item) =>
         item.label.toLowerCase().includes(searchText.toLowerCase()),
       );

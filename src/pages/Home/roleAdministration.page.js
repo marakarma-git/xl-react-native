@@ -46,7 +46,7 @@ const actionDataArray = [
     value: '3',
     label: 'Copy role(s)',
     isDisabled: true,
-  }
+  },
 ];
 
 const RoleAdministrationPage = () => {
@@ -60,7 +60,7 @@ const RoleAdministrationPage = () => {
     dataRoleHeader,
     searchText,
     generatedParams,
-    appliedFilter,
+    appliedFilterRole,
   } = useSelector((state) => state.role_administration_array_header_reducer);
   const {
     loading,
@@ -132,7 +132,7 @@ const RoleAdministrationPage = () => {
                   }
                 />
                 <AppliedFilter
-                  data={appliedFilter}
+                  data={appliedFilterRole}
                   onDelete={(e) => {
                     const {formId} = e || {};
                     dispatch(roleAdministrationDynamicReset({formId}));

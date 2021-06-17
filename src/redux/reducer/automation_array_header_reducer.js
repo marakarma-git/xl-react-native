@@ -177,7 +177,7 @@ const automation_array_header_reducer = (state = initialState, action) => {
       return {
         ...state,
         generatedParams: linkParams || '',
-        appliedFilterRole: containerData || [],
+        appliedFilterAutomation: containerData || [],
       };
     }
     case reduxString.AUTOMATION_RESET_PARAMS: {

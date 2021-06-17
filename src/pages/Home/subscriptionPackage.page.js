@@ -21,10 +21,14 @@ import AppliedFilter from '../../components/subscription/appliedFilter';
 import FilterActionLabel from '../../components/subscription/filterActionLabel';
 import Helper from '../../helpers/helper';
 import TableFooter from '../../components/subscription/tableFooter';
-import SearchHeader from '../../components/subscription/searchHeader';
+import SearchHeader, {
+  SearchHeaderTwo,
+} from '../../components/subscription/searchHeader';
 import Loading from '../../components/loading';
+import {useNavigation} from '@react-navigation/native';
 
 const SubscriptionPackagePage = () => {
+  const navigation = useNavigation();
   const dispatch = useDispatch();
   const [firstRender, setFirstRender] = useState(true);
   const [showMenu, setShowMenu] = useState(false);
@@ -33,7 +37,7 @@ const SubscriptionPackagePage = () => {
     dataSubscriptionHeader,
     searchText,
     generatedParams,
-    appliedFilter,
+    appliedFilterSubscription,
   } = useSelector((state) => state.subscription_package_array_header_reducer);
   const {
     loading,
@@ -77,24 +81,7 @@ const SubscriptionPackagePage = () => {
             return (
               <>
                 <OverlayBackground />
-                <SearchHeader
-                  value={''}
-                  showMenu={showMenu}
-                  onClickColumn={() => setShowMenu((state) => !state)}
-                  navigateTo={'SubscriptionPackageFilter'}
-                  placeholder={
-                    'Search with role name, organization or description'
-                  }
-                />
-                <AppliedFilter
-                  data={appliedFilter}
-                  onDelete={(e) => {
-                    const {formId} = e || {};
-                    dispatch(subscriptionPackageDynamicReset({formId}));
-                    dispatch(subscriptionPackageGenerateParams());
-                  }}
-                />
-                <FilterActionLabel
+                <SearchHeaderTwo
                   total={Helper.numberWithDot(subscription_elements_static)}
                   filtered={
                     subscription_applied_filter &&
@@ -103,6 +90,18 @@ const SubscriptionPackagePage = () => {
                     !errorText &&
                     Helper.numberWithDot(subscription_elements_dynamic)
                   }
+                  onClickFilter={() =>
+                    navigation.navigate('SubscriptionPackageFilter')
+                  }
+                  onClickColumn={() => setShowMenu((state) => !state)}
+                />
+                <AppliedFilter
+                  data={appliedFilterSubscription}
+                  onDelete={(e) => {
+                    const {formId} = e || {};
+                    dispatch(subscriptionPackageDynamicReset({formId}));
+                    dispatch(subscriptionPackageGenerateParams());
+                  }}
                 />
               </>
             );

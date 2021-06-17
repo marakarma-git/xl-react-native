@@ -31,7 +31,7 @@ const SmsA2p = () => {
     dataSmsHeader,
     searchText,
     generatedParams,
-    appliedFilter,
+    appliedFilterSms,
   } = useSelector((state) => state.sms_a2p_array_header_reducer);
   const {
     loading,
@@ -90,7 +90,7 @@ const SmsA2p = () => {
                   }
                 />
                 <AppliedFilter
-                  data={appliedFilter}
+                  data={appliedFilterSms}
                   onDelete={(e) => {
                     const {formId} = e || {};
                     dispatch(smsA2pDynamicReset({formId}));

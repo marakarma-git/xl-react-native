@@ -35,7 +35,7 @@ const AutomationPage = () => {
     dataAutomationHeader,
     searchText,
     generatedParams,
-    appliedFilter,
+    appliedFilterAutomation,
   } = useSelector((state) => state.automation_array_header_reducer);
   const {
     reload,
@@ -143,7 +143,7 @@ const AutomationPage = () => {
                   placeholder={'Nanti ini dihapus'}
                 />
                 <AppliedFilter
-                  data={appliedFilter}
+                  data={appliedFilterAutomation}
                   onDelete={(e) => {
                     const {formId} = e || {};
                     dispatch(automationDynamicReset({formId}));
