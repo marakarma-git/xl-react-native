@@ -62,6 +62,11 @@ export default {
     borderRadius: border_radius,
     elevation: 4,
   },
+  multiSessionModal: {
+    width: '80%',
+    backgroundColor: 'white',
+    elevation: 4,
+  },
   newModalContainer: {
     width: '80%',
     height: '55%',

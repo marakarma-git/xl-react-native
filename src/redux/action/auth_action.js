@@ -84,7 +84,7 @@ const resetMultiSessionDetected = () => ({
   type: reduxString.RESET_MULTI_SESSION_DETECTED
 })
 
-const checkLogin = (username, password) => {
+const checkLogin = (username, password, loginDropDown) => {
   return async (dispatch) => {
     dispatch(authRequest());
 
@@ -96,31 +96,42 @@ const checkLogin = (username, password) => {
           }
         });
 
-        console.log(data, " <<< ")
-
         if(data){
           dispatch(setMultiSessionDetected(
             `${username} is open in another session. Click 'Use Here' to close previous session and login`
           ));
         }else{
-          dispatch(authLogin(username, password));
+          dispatch(authLogin(username, password, loginDropDown));
         }
 
     } catch (error) {
-      console.log(error)
       dispatch(authFailed(error.response.data));  
     }
 
   }
 }
 
-const authLogin = (username, password) => {
+const setIsErricson = (isErricson) => ({
+  type: reduxString.SET_IS_ERRICSON,
+  payload: isErricson
+})
+
+
+const authLogin = (username, password, loginDropDown) => {
   const formData = new FormData();
 
-  formData.append('grant_type', 'password');
-  formData.append('username', username);
-  formData.append('password', password);
-  formData.append('client_id', clientId);
+  if(loginDropDown === 0){
+    formData.append('grant_type', 'password');
+    formData.append('username', username);
+    formData.append('password', "");
+    formData.append('password_ericsson', password);
+    formData.append('client_id', clientId);
+  }else{
+    formData.append('grant_type', 'password');
+    formData.append('username', username);
+    formData.append('password', password);
+    formData.append('client_id', clientId);
+  }
 
   return async (dispatch) => {
     dispatch(authRequest());
@@ -241,5 +252,6 @@ export {
   updateCustomerConsent, 
   setHomeLogin,
   checkLogin,
-  resetMultiSessionDetected
+  resetMultiSessionDetected,
+  setIsErricson
 };

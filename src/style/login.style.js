@@ -203,5 +203,20 @@ export default {
     borderRadius: 5,
     backgroundColor: colors.button_color_one,
     marginHorizontal: 3
+  },
+  containerDropDown: {
+    width: 200, 
+    color: "#707070",
+    borderRadius: 0,
+    zIndex: 5000
+  },
+  dropDownStyle: {
+    height: 30,
+    width: 200, 
+    borderRadius: 0, 
+    paddingLeft: 10,
+    borderWidth: 1,
+    borderColor: '#707070',
+    color: "#707070",
   }
 };

@@ -1,22 +1,30 @@
 import React from 'react';
 import {
   Modal,
+  ScrollView,
   TouchableOpacity,
+  TouchableWithoutFeedback,
+  Linking,
   View,
   KeyboardAvoidingView
 } from 'react-native';
 import {inputHybridStyle} from '../../style';
 import {Text} from '../index';
 import PropTypes from 'prop-types';
+import {useNavigation} from '@react-navigation/native';
 import {useDispatch, useSelector} from 'react-redux';
 import { authLogin, resetMultiSessionDetected } from '../../redux/action/auth_action';
 
 const ModalMultiSession = (props) => {
     const dispatch = useDispatch();
-    const {loading} = useSelector((state) => state.auth_reducer);
+    const {loading, isErricson} = useSelector((state) => state.auth_reducer);
 
     const loginHandler = () => {
-      dispatch(authLogin(props.data?.username, props.data?.password));
+      if(isErricson){
+        cancelHandler();
+      }else{
+          dispatch(authLogin(props.data?.username, props.data?.password, props.data?.loginDropDownValue));
+      }  
     }
 
     const cancelHandler = () => {

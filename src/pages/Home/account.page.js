@@ -10,8 +10,9 @@ import {
   OverlayBackground,
   AccountForm,
 } from '../../components/index';
-import {authLogout} from '../../redux/action/auth_action';
+import {authLogout, manualLogout} from '../../redux/action/auth_action';
 import {removeEnterPriseLogo} from '../../redux/action/enterprise_action';
+// import privHelper from './../../helpers/helper';
 import privHelper from '../../helpers/privHelper';
 
 import styles from '../../style/account.style';
@@ -28,6 +29,7 @@ const userForm = [
 const MyAccountPage = (props) => {
   const dispatch = useDispatch();
   const userData = useSelector((state) => state.auth_reducer.data);
+  const {isErricson} = useSelector((state) => state.auth_reducer);
   const {imageBase64} = useSelector((state) => state.enterprise_reducer);
 
   const [form, setForm] = useState(userData.principal);
@@ -54,7 +56,7 @@ const MyAccountPage = (props) => {
           text: 'Yes',
           onPress: () => {
             dispatch(removeEnterPriseLogo());
-            dispatch(authLogout());
+            dispatch(manualLogout());
           },
         },
       ],
@@ -100,11 +102,14 @@ const MyAccountPage = (props) => {
               editable={editable}
               inputHandler={inputHandler}
             />
-            <TouchableOpacity
-              // disabled={privHelper.isHasPriviledge("CP",userData.authority)}
-              onPress={() => props.navigation.navigate('Change Password', { pageBefore: "account" })}>
-              <Text style={styles.linkText}>Change Password</Text>
-            </TouchableOpacity>
+            {
+              !isErricson &&
+              <TouchableOpacity
+                // disabled={privHelper.isHasPriviledge("CP",userData.authority)}
+                onPress={() => props.navigation.navigate('Change Password', { pageBefore: "account" })}>
+                <Text style={styles.linkText}>Change Password</Text>
+              </TouchableOpacity>
+            }
             {editable && (
               <TouchableOpacity
                 onPress={() => alert('Todo edit user')}

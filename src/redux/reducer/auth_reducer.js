@@ -9,8 +9,10 @@ const initialState = {
   afterLogin: false,
   homeLogin: false,
   multiSessionMsg: "",
-  isMultiSessionDetected: false
+  isMultiSessionDetected: false,
+  isErricson: false
 };
+
 const auth_reducers = (state = initialState, action) => {
   switch (action.type) {
     case reduxString.AUTH_REQUEST:
@@ -87,6 +89,11 @@ const auth_reducers = (state = initialState, action) => {
         isMultiSessionDetected: false,
         multiSessionMsg: "",
         loading: false
+      }
+    case reduxString.SET_IS_ERRICSON: 
+      return{
+        ...state,
+        isErricson: action.payload
       }
     default:
       return state;
