@@ -93,7 +93,7 @@ const SubscriptionPackagePage = () => {
                   onClickFilter={() =>
                     navigation.navigate('SubscriptionPackageFilter')
                   }
-                  onClickColumn={() => setShowMenu((state) => !state)}
+                  onClickColumn={() => setShowMenu(true)}
                 />
                 <AppliedFilter
                   data={appliedFilterSubscription}
@@ -196,14 +196,15 @@ const SubscriptionPackagePage = () => {
           title={'Column'}
           data={dataSubscriptionHeader}
           onApply={(e) => {
+            const {content} = data_subscription || {};
             dispatch(subscriptionPackageUpdateBundleArray({data: e}));
-            const reGenerated = dataMatcherArray2D(data_subscription, e);
+            const reGenerated = dataMatcherArray2D(content, e);
             dispatch(
               subscriptionPackageSetDataSubscriptionGenerated({
                 dataSubscriptionGenerated: reGenerated,
               }),
             );
-            setShowMenu((state) => !state);
+            setShowMenu(false);
           }}
           onClose={() => setShowMenu((state) => !state)}
         />

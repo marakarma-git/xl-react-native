@@ -36,8 +36,13 @@ const TableCellText = (props) => {
     isTreeView,
     treeLevel,
     textLink,
+    rootConfig,
   } = config || {};
+  const {condition} = rootConfig || {};
   const createLabel = () => {
+    if (condition) {
+      return condition[`${label}`];
+    }
     if (label && !child_api_id) {
       return label;
     }

@@ -92,7 +92,7 @@ const EnterpriseManagement = () => {
                     );
                   }}
                   showMenu={showMenu}
-                  onClickColumn={() => setShowMenu((state) => !state)}
+                  onClickColumn={() => setShowMenu(true)}
                   navigateTo={'EnterpriseManagementFilter'}
                   placeholder={'Search enterprise...'}
                 />
@@ -198,16 +198,16 @@ const EnterpriseManagement = () => {
             dispatch(enterpriseManagementUpdateBundleArray({data: e}));
             const reGenerated = dataMatcherArray2D(
               Helper.makeMultiDimensionalArrayTo2DArray(data_enterprise),
-              dataHeaderEnterprise,
+              e,
             );
             dispatch(
               enterpriseManagementSetDataGenerated({
                 dataEnterpriseGenerated: reGenerated,
               }),
             );
-            setShowMenu((state) => !state);
+            setShowMenu(false);
           }}
-          onClose={() => setShowMenu((state) => !state)}
+          onClose={() => setShowMenu(false)}
         />
       )}
     </HeaderContainer>
