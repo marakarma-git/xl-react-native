@@ -1,6 +1,6 @@
 {
   "name": "dcp_mobile_v4",
-  "version": "0.0.1",
+  "version": "1.0.0",
   "private": true,
   "scripts": {
     "env:staging": "node scripts/set-environment.js staging",
