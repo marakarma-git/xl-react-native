@@ -42,7 +42,7 @@ const GlobalUpdate = (props) => {
             textAlign: 'center',
             textAlignVertical: 'center',
           }}>
-         For more features and a better user experiencem please update your app
+         For more features and a better user experience please update your app
         </Text>
         <View style={{alignItems: 'center', marginBottom: '5%', marginTop: '5%' ,flex: 1}}>
           <TouchableOpacity style={inputHybridStyle.buttonStyle} onPress={linkToStore}>
