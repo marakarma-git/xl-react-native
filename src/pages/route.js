@@ -59,12 +59,13 @@ const Route = () => {
   const isLoggedIn = useSelector((state) => state.auth_reducer.isLoggedIn);
   const {titleVersion} = useSelector((state) => state.auth_reducer);
   const version = titleVersion?.versionNumber.replace('v','') ?? 0
+  const isForceUpdate = Helper.semVerCheck(version,packageJson.version) || packageJson.forceUpdate
   useEffect(() => {
     dispatch(getTitleVersion())
   }, [titleVersion])
   return (
     <NavigationContainer linking={{prefixes: ['dcp4.adlsandbox.com://app']}}>
-      <GlobalUpdate isShow={Helper.semVerCheck(version,packageJson.version)} />
+      <GlobalUpdate isShow={isForceUpdate} />
       <RootedBlocker />
       <RootStack />
     </NavigationContainer>
