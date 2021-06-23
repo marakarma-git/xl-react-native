@@ -460,13 +460,13 @@ class Helper {
     return errorMsg;
   }
 
-  static semVerCheck = (currentVersion, upcomingVersion) => {
+  static semVerCheck = (upcomingVersion, currentVersion) => {
     // this function returns true when there is a major update
     // Data Sample
     // const versionA = '14.8.3';
     // const versionB = '15.1.1';
-    const [majorA, minorA, patchA] = String(currentVersion).split('.').map(v => Number.parseInt(v));
-    const [majorB, minorB, patchB] = String(upcomingVersion).split('.').map(v => Number.parseInt(v));
+    const [majorA, minorA, patchA] = String(upcomingVersion).split('.').map(v => Number.parseInt(v));
+    const [majorB, minorB, patchB] = String(currentVersion).split('.').map(v => Number.parseInt(v));
     return majorA > majorB
     // can be modified as below
     // if (majorA !== majorB) {

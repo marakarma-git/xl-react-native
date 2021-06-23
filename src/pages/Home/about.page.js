@@ -15,6 +15,7 @@ const AboutPage = ({navigation}) => {
   const {imageBase64} = useSelector((state) => state.enterprise_reducer);
   const {titleVersion} = useSelector((state) => state.auth_reducer);
   const [orientation, setOrientation] = useState('potrait');
+  const versionLabel = titleVersion ? titleVersion?.appsTitle + ' ' + titleVersion?.versionNumber : '-'
 
   const detectOrientation = useCallback(() => {
     if (Orientation.getHeight() <= Orientation.getWidth()) {
@@ -86,7 +87,7 @@ const AboutPage = ({navigation}) => {
               Application Version
             </Text>
             <Text fontType={'bold'} style={style.aboutTitle}>
-              {titleVersion || '-'}
+              {versionLabel}
             </Text>
           </Card.Content>
         </Card>
