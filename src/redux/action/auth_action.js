@@ -210,8 +210,12 @@ const getTitleVersion = () => {
       });
 
       if (data) {
+        const version = {
+          appsTitle: data?.result?.appsTitle,
+          versionNumber: data?.result?.version
+        }
         dispatch(
-          setTitleVersion(data.result.appsTitle + ' ' + data.result.version),
+          setTitleVersion(version),
         );
       }
     } catch (error) {
