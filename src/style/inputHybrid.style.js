@@ -113,7 +113,10 @@ export default {
   buttonStyle: {
     backgroundColor: 'blue',
     paddingHorizontal: '25%',
-    paddingVertical: '5%',
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    paddingVertical: '2%',
     borderRadius: border_radius,
     margin: 4,
     elevation: 3,
