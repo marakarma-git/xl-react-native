@@ -15,7 +15,7 @@ const linkToStore = () => {
 }
 const GlobalUpdate = (props) => {
   return props.isShow && 
-    <Modal animationType="slide" transparent onRequestClose={true}>
+    <Modal animationType="slide" transparent onRequestClose={props.closeModal}>
       <View style={inputHybridStyle.modalBackdrop} />
       <KeyboardAvoidingView
         enabled={false}
@@ -56,9 +56,11 @@ const GlobalUpdate = (props) => {
 
 GlobalUpdate.propTypes = {
   isShow: PropTypes.bool,
+  closeModal: PropTypes.func
 }
 
 GlobalUpdate.defaultProps = {
   isShow: false,
+  closeModal: () => {},
 }
 export default GlobalUpdate;

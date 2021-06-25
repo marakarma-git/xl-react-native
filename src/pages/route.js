@@ -1,4 +1,5 @@
 import React, {useState, useEffect} from 'react';
+import {BackHandler} from 'react-native'
 import Auth from './auth.page';
 import Login from './login.page';
 import Home from './home.route';
@@ -54,18 +55,20 @@ const RootStack = () => {
   );
 };
 const Route = () => {
-  const [dummy] = useState(false);
   const dispatch = useDispatch();
   const isLoggedIn = useSelector((state) => state.auth_reducer.isLoggedIn);
   const {titleVersion} = useSelector((state) => state.auth_reducer);
   const version = titleVersion?.versionNumber.replace('v','') ?? 0
   const isForceUpdate = Helper.semVerCheck(version,packageJson.version) || packageJson.forceUpdate
+  const onCloseModal = () => {
+    BackHandler.exitApp();
+  }
   useEffect(() => {
     dispatch(getTitleVersion())
   }, [titleVersion])
   return (
     <NavigationContainer linking={{prefixes: ['dcp4.adlsandbox.com://app']}}>
-      <GlobalUpdate isShow={isForceUpdate} />
+      <GlobalUpdate isShow={isForceUpdate} closeModal={onCloseModal} />
       <RootedBlocker />
       <RootStack />
     </NavigationContainer>
