@@ -20,12 +20,15 @@ import {
   CreateRolesSummaryVisibility,
   CreateRolesVisibility
 } from "../create";
+import { setRequestError } from '../../redux/action/dashboard_action';
 
 const CreateNewUserPage = ({route, navigation}) => {
   const listViewRef = useRef();
   const dispatch = useDispatch();
 
   const {imageBase64} = useSelector((state) => state.enterprise_reducer);
+  const { access_token } = useSelector((state) => state.auth_reducer.data);
+
 
   // State Global
   const [formPosition, setFormPosition] = useState(0);
@@ -36,9 +39,11 @@ const CreateNewUserPage = ({route, navigation}) => {
   // State Per Component
   const [formProperties, setFormProperties] = useState({
     roleName: "",
-    roleDescription: ""
+    roleDescription: "",
+    ownerOrganization: ""
   });
   const [selectedOwnership, setSelectedOwnership] = useState([]);
+  const [selectedPermission, setSelectedPerimission] = useState([]);
 
   //Properties State
   const [selectedVisibility, setSelectedVisibility] = useState(0);
@@ -83,6 +88,7 @@ const CreateNewUserPage = ({route, navigation}) => {
               selectedOwnership={selectedOwnership}
               selectedVisibility={selectedVisibility}
               setSelectedVisibility={setSelectedVisibility}
+              setScrollView={setScrollViewEnabled}
             />, 
           componentTitle: "Visibility"
         }
@@ -93,7 +99,12 @@ const CreateNewUserPage = ({route, navigation}) => {
       description: "lorem ipsum sit dolor amet orem ipsum dolor",
       body: [
         { 
-          component: <CreateRolesPermission />, 
+          component: 
+            <CreateRolesPermission
+              selectedPermission={selectedPermission}
+              setSelectedPermission={setSelectedPerimission}
+              setScrollView={setScrollViewEnabled}
+            />, 
           componentTitle: "Permission"
         },
       ]
@@ -103,11 +114,19 @@ const CreateNewUserPage = ({route, navigation}) => {
       description: "lorem ipsum sit dolor amet orem ipsum dolor",
       body: [
         { 
-          component: <CreateRolesSummaryProperties />, 
+          component: 
+            <CreateRolesSummaryProperties
+              formValue={formProperties}
+            />, 
           componentTitle: "Properties"
         },
         { 
-          component: <CreateRolesSummaryVisibility />, 
+          component: 
+            <CreateRolesSummaryVisibility
+              selectedVisibility={selectedVisibility}
+              selectedOwnership={selectedOwnership} 
+              setScrollView={setScrollViewEnabled}
+            />, 
           componentTitle: "Visibility"
         }
       ]
@@ -129,6 +148,10 @@ const CreateNewUserPage = ({route, navigation}) => {
     if(formPosition === 1){
       isComplete = true;
     }
+
+    if(formPosition === 2){
+      isComplete = true;
+    }
     
     if(isComplete){
       setFormPosition(prevState => prevState + 1);
@@ -143,10 +166,87 @@ const CreateNewUserPage = ({route, navigation}) => {
     }
   };
 
-  const onSubmit = () => {};
+  const onSubmit = () => {
+    let url = `${base_url}/user/role/createRole`;
+
+    const dataRaw = {
+      priviledgeIds: [],
+      roleDescription: "",
+      roleName: "",
+      roleOwnership: "",
+      showToChild: ""
+    };
+
+    // Priviledge Id
+    selectedPermission.map((permission) => {
+      console.log(permission)
+      dataRaw.priviledgeIds.push(permission.priviledgeId);
+    });
+
+    dataRaw.roleDescription = formProperties.roleDescription;
+    dataRaw.roleName        = formProperties.roleName;
+    dataRaw.roleOwnership   = selectedOwnership[0].enterpriseId;
+    dataRaw.showToChild     = selectedVisibility == 0 ? false : true;
+
+    console.log(dataRaw)
+
+    submitAction(dataRaw, url);
+  };
+
+    const submitAction = async (dataRaw, url) => {
+    try {
+      setSubmitLoading(prevState => prevState = true);
+      
+      const { data } = await axios.post(url, dataRaw, {
+        headers: {
+          Authorization: "Bearer " + access_token,
+          'Content-Type': 'application/json',
+        }
+      });
+
+      console.log(data, access_token)
+
+      if(data){
+        console.log(data)
+        let wording = "";
+        if(data.statusCode === 0){
+          wording = "Create new role success";
+          navigation.navigate("Role Administration");
+        }
+
+        ToastAndroid.showWithGravityAndOffset(
+          wording, 
+          ToastAndroid.LONG, 
+          ToastAndroid.TOP,
+          0,
+          300
+        );
+
+        setSubmitLoading(false);
+      }
+
+    } catch (error) {
+      console.log(error.response.data)
+        setSubmitLoading(false);
+        dispatch(setRequestError(error.response.data));
+        ToastAndroid.show(
+        error.response.data.error_description || error.message,
+        ToastAndroid.LONG,
+      );
+    }
+  }
   
 
   // END ACTION FUNCTION
+
+  useEffect(() => {
+    if(selectedOwnership.length > 0){
+      setFormProperties({
+        ...formProperties,
+        ownerOrganization: selectedOwnership[0].enterpriseName
+      });
+    }
+  }, [selectedOwnership])
 
   useEffect(() => {
     const pageLoad = navigation.addListener("focus", () => {

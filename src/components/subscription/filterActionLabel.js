@@ -41,8 +41,8 @@ const FilterActionLabel = (props) => {
         <View style={!typeTwo && subscriptionStyle.onlyForTypeOne}>
           <TouchableOpacity
             style={subscriptionStyle.menuOption}
-            //onPress={() => setShowAction(true)}
-            onPress={() => Alert.alert('Coming soon')}
+            onPress={() => setShowAction(true)}
+            // onPress={() => Alert.alert('Coming soon')}
             >
             <Text style={subscriptionStyle.textOption}>Actions</Text>
             <View style={subscriptionStyle.menuOptionChevronDown}>

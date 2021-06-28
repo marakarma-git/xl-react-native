@@ -86,7 +86,9 @@ const createRolesVisibility = (props) => {
 
   return(
     <View
-     style={{ flexDirection: 'row', flexWrap: 'wrap' }}>
+     style={{ flexDirection: 'row', flexWrap: 'wrap' }}
+     onTouchStart={() => props.setScrollView(true)}
+     onTouchEnd={() => props.setScrollView(false)}>
       <View style={styles.menuBarContainer}>
         <Text style={{ color: "#707070", paddingLeft: 10 }}>Visibility type</Text>
       </View>
@@ -120,13 +122,15 @@ const createRolesVisibility = (props) => {
 createRolesVisibility.propTypes = {
   selectedOwnership: PropTypes.array,
   selectedVisibility: PropTypes.number,
-  setSelectedVisibility: PropTypes.func
+  setSelectedVisibility: PropTypes.func,
+  setScrollView: PropTypes.func
 };
 
 createRolesVisibility.defaultProps = {
   selectedOwnership: [],
   selectedVisibility: 0,
-  setSelectedVisibility: () => {}
+  setSelectedVisibility: () => {},
+  setScrollView: () => {}
 }
 
 export default createRolesVisibility;

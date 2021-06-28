@@ -437,9 +437,9 @@ class Helper {
       }
     });
 
-    console.log(errorValidation)
+    // console.log(errorValidation)
 
-    return "";
+    return errorValidation[formKey];
   }
 
   static validationIsRequired(formKey, formTitle, formData) {
