@@ -125,6 +125,10 @@ const CreateNewUserPage = ({route, navigation}) => {
         isComplete = true;
       }
     }
+
+    if(formPosition === 1){
+      isComplete = true;
+    }
     
     if(isComplete){
       setFormPosition(prevState => prevState + 1);

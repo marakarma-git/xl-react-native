@@ -1,4 +1,8 @@
 export default {
+  container: {
+    flexDirection: 'row', 
+    flexWrap: 'wrap'
+  },
   radioButtonContainer: { 
     flexDirection: 'row', 
     alignItems: 'center', 

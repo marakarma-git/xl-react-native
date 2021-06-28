@@ -1,11 +1,10 @@
 import React, { useEffect, useCallback } from 'react';
 import PropTypes from 'prop-types';
 import {Text} from '../../components';
-import {FlatList, View, TouchableOpacity} from 'react-native';
+import {FlatList, View, TouchableOpacity, ActivityIndicator} from 'react-native';
 
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import CustomCheckBox from '../grid/GridCheckBox';
-import { ActivityIndicator } from 'react-native';
 
 const GridComponent = (props) => {
   return(
@@ -38,7 +37,6 @@ const GridComponent = (props) => {
               onPressTree={props.onPressTree}
               onPressCheckBox={props.onPressCheckBox}
             />
-
         }
       </View>
   );

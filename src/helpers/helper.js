@@ -437,7 +437,9 @@ class Helper {
       }
     });
 
-    return errorMsg;
+    console.log(errorValidation)
+
+    return "";
   }
 
   static validationIsRequired(formKey, formTitle, formData) {

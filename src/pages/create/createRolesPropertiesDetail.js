@@ -67,7 +67,6 @@ const CreateRolesPropertiesDetail = (props) => {
   // Life Cycle
   useEffect(() => {
     validateForm();
-      console.log(formError)    
     if(typeof formError === 'object'){
       if(Object.keys(formError) <= 0){
         props.setIsComplete(true);

@@ -20,11 +20,7 @@ const ModalMultiSession = (props) => {
     const {loading, isErricson} = useSelector((state) => state.auth_reducer);
 
     const loginHandler = () => {
-      if(isErricson){
-        cancelHandler();
-      }else{
-          dispatch(authLogin(props.data?.username, props.data?.password, props.data?.loginDropDownValue));
-      }  
+        dispatch(authLogin(props.data?.username, props.data?.password, props.data?.loginDropDownValue));
     }
 
     const cancelHandler = () => {
