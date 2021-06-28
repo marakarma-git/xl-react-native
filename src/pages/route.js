@@ -1,14 +1,18 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
+import {BackHandler} from 'react-native'
 import Auth from './auth.page';
 import Login from './login.page';
 import Home from './home.route';
 import ForgetPassword from './forget.password';
-import {useSelector} from 'react-redux';
+import Helper from '../helpers/helper'
+import {useSelector, useDispatch} from 'react-redux';
 import {createStackNavigator} from '@react-navigation/stack';
 import {NavigationContainer} from '@react-navigation/native';
 import {ChangePasswordPage} from './Home';
 import GlobalUpdate from '../components/modal/GlobalUpdate';
 import RootedBlocker from '../components/modal/RootedBlocker';
+import { getTitleVersion } from '../redux/action/auth_action';
+import packageJson from '../../package.json'
 
 const Stack = createStackNavigator();
 const RootStack = () => {
@@ -51,11 +55,20 @@ const RootStack = () => {
   );
 };
 const Route = () => {
-  const [dummy] = useState(false);
+  const dispatch = useDispatch();
   const isLoggedIn = useSelector((state) => state.auth_reducer.isLoggedIn);
+  const {titleVersion} = useSelector((state) => state.auth_reducer);
+  const version = titleVersion?.versionNumber.replace('v','') ?? 0
+  const isForceUpdate = Helper.semVerCheck(version,packageJson.version) || packageJson.forceUpdate
+  const onCloseModal = () => {
+    BackHandler.exitApp();
+  }
+  useEffect(() => {
+    dispatch(getTitleVersion())
+  }, [titleVersion])
   return (
     <NavigationContainer linking={{prefixes: ['dcp4.adlsandbox.com://app']}}>
-      {dummy && isLoggedIn && <GlobalUpdate />}
+      <GlobalUpdate isShow={isForceUpdate} closeModal={onCloseModal} />
       <RootedBlocker />
       <RootStack />
     </NavigationContainer>

@@ -9,6 +9,7 @@ import ModalSearchPicker from '../modal/ModalSearchPicker';
 import MaterialCommunityIcon from 'react-native-paper/src/components/MaterialCommunityIcon';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import {ColumnFilterSearch} from './searchHeader';
+import { Alert } from 'react-native';
 const actionData = [
   {
     value: 'abc',
@@ -40,7 +41,9 @@ const FilterActionLabel = (props) => {
         <View style={!typeTwo && subscriptionStyle.onlyForTypeOne}>
           <TouchableOpacity
             style={subscriptionStyle.menuOption}
-            onPress={() => setShowAction(true)}>
+            //onPress={() => setShowAction(true)}
+            onPress={() => Alert.alert('Coming soon')}
+            >
             <Text style={subscriptionStyle.textOption}>Actions</Text>
             <View style={subscriptionStyle.menuOptionChevronDown}>
               <MaterialCommunityIcons

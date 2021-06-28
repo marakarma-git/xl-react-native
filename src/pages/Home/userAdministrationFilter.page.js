@@ -71,6 +71,7 @@ const UserAdministrationFilterPage = () => {
                   loading={loading}
                   data={data}
                   errorText={errorText}
+                  disabled={errorText}
                   label={label}
                   onChange={(e) => {
                     if (typeInput === 'TextInput') {

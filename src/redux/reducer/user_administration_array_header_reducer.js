@@ -109,6 +109,7 @@ const dataHeaderFilter = [
       isTouchable: true,
     },
     shown: true,
+    errorText: '',
     sort_by_filter: 2,
   },
   {
@@ -124,6 +125,7 @@ const dataHeaderFilter = [
       label: 'Organizations',
       isTouchable: true,
     },
+    errorText: '',
     shown: true,
     sort_by_filter: 4,
   },
@@ -154,71 +156,78 @@ const user_administration_array_header_reducer = (
   action,
 ) => {
   switch (action.type) {
-    case reduxString.USER_ADMINISTRATION_DYNAMIC_ONCHANGE_TEXT_INPUT:
-      const getIndex =
+    case reduxString.USER_ADMINISTRATION_DYNAMIC_ONCHANGE_TEXT_INPUT: {
+      const index =
         state.dataHeader.findIndex((f) => f.formId === action.formId) || 0;
-      state.dataHeader[getIndex].value = action.textInput;
+      state.dataHeader[index].value = action.textInput;
       return {
         ...state,
         dataHeader: state.dataHeader,
       };
-    case reduxString.USER_ADMINISTRATION_CHANGE_CHECK_HEADER:
+    }
+    case reduxString.USER_ADMINISTRATION_CHANGE_CHECK_HEADER: {
       state.dataHeader[0].valueCheck = !state.dataHeader[0].valueCheck;
       return {
         ...state,
         dataHeader: state.dataHeader,
       };
-    case reduxString.USER_ADMINISTRATION_DYNAMIC_ONCHANGE_DROP_DOWN:
-      const getIndex2 =
+    }
+    case reduxString.USER_ADMINISTRATION_DYNAMIC_ONCHANGE_DROP_DOWN: {
+      const index =
         state.dataHeader.findIndex((f) => f.formId === action.formId) || 0;
-      state.dataHeader[getIndex2].value = action.dropDown;
+      state.dataHeader[index].value = action.dropDown;
       return {
         ...state,
         dataHeader: state.dataHeader,
       };
-    case reduxString.USER_ADMINISTRATION_DYNAMIC_SUCCESS:
-      const getIndex3 =
+    }
+    case reduxString.USER_ADMINISTRATION_DYNAMIC_SUCCESS: {
+      const index =
         state.dataHeader.findIndex((f) => f.formId === action.formId) || 0;
-      state.dataHeader[getIndex3].loading = false;
-      state.dataHeader[getIndex3].data = action.data;
-      state.dataHeader[getIndex3].value = {};
-      state.dataHeader[getIndex3].disabled = false;
+      state.dataHeader[index].loading = false;
+      state.dataHeader[index].data = action.data;
+      state.dataHeader[index].value = {};
+      state.dataHeader[index].disabled = false;
+      state.dataHeader[index].errorText = '';
       return {
         ...state,
         dataHeader: state.dataHeader,
       };
-    case reduxString.USER_ADMINISTRATION_DYNAMIC_FAILED:
-      const getIndex4 =
+    }
+    case reduxString.USER_ADMINISTRATION_DYNAMIC_FAILED: {
+      const index =
         state.dataHeader.findIndex((f) => f.formId === action.formId) || 0;
-      state.dataHeader[getIndex4].loading = false;
-      state.dataHeader[getIndex4].errorText = action.error;
-      state.dataHeader[getIndex4].disabled = true;
+      state.dataHeader[index].loading = false;
+      state.dataHeader[index].errorText = action.error;
+      state.dataHeader[index].disabled = true;
+      state.dataHeader[index].errorText = action.errorText;
       return {
         ...state,
         dataHeader: state.dataHeader,
       };
-    case reduxString.USER_ADMINISTRATION_DYNAMIC_LOADING:
-      const getIndex5 =
+    }
+    case reduxString.USER_ADMINISTRATION_DYNAMIC_LOADING: {
+      const index =
         state.dataHeader.findIndex((f) => f.formId === action.formId) || 0;
-      state.dataHeader[getIndex5].loading = true;
-      state.dataHeader[getIndex5].errorText = '';
-      state.dataHeader[getIndex5].disabled = true;
-      state.dataHeader[getIndex5].data = [];
+      state.dataHeader[index].loading = true;
+      state.dataHeader[index].errorText = '';
+      state.dataHeader[index].disabled = true;
+      state.dataHeader[index].data = [];
       return {
         ...state,
         dataHeader: state.dataHeader,
       };
-    case reduxString.USER_ADMINISTRATION_DYNAMIC_RESET:
-      const getIndex6 =
+    }
+    case reduxString.USER_ADMINISTRATION_DYNAMIC_RESET: {
+      const index =
         state.dataHeader.findIndex((f) => f.formId === action.formId) || 0;
-      const resetSomeData = Helper.dynamicResetForm(
-        state.dataHeader[getIndex6],
-      );
-      state.dataHeader[getIndex6] = resetSomeData;
+      const resetSomeData = Helper.dynamicResetForm(state.dataHeader[index]);
+      state.dataHeader[index] = resetSomeData;
       return {
         ...state,
         dataHeader: state.dataHeader,
       };
+    }
     case reduxString.USER_ADMINISTRATION_RESET_ALL_VALUE:
       const resetValue = Helper.resetAllForm(initialState.dataHeader);
       return {

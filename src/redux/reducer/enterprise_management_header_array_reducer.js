@@ -33,6 +33,10 @@ const dataHeaderEnterprise = [
       label: 'Status',
       isTouchable: true,
       doNotShowOnFilter: true,
+      condition: {
+        true: 'Ready For Use',
+        false: 'Not Ready',
+      },
     },
     shown: true,
   },

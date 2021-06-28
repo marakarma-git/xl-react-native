@@ -25,6 +25,7 @@ const dataAutomationHeader = [
     cellRowType: 'TableCellText',
     config: {
       label: 'Enterprise Name',
+      width: 260,
       doNotShowOnFilter: true,
       isTouchable: true,
       textLink: true,

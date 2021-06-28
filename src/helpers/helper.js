@@ -461,6 +461,25 @@ class Helper {
 
     return errorMsg;
   }
+
+  static semVerCheck = (upcomingVersion, currentVersion) => {
+    // this function returns true when there is a major update
+    // Data Sample
+    // const versionA = '14.8.3';
+    // const versionB = '15.1.1';
+    const [majorA, minorA, patchA] = String(upcomingVersion).split('.').map(v => Number.parseInt(v));
+    const [majorB, minorB, patchB] = String(currentVersion).split('.').map(v => Number.parseInt(v));
+    return majorA > majorB
+    // can be modified as below
+    // if (majorA !== majorB) {
+    //   return majorA > majorB;
+    // }
+    // if (minorA !== minorB) {
+    //   return minorA > minorB;
+    // }
+    // return patchA > patchB;
+  };
+
 }
 
 export default Helper;

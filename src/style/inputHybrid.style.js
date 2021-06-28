@@ -112,8 +112,11 @@ export default {
   },
   buttonStyle: {
     backgroundColor: 'blue',
-    paddingHorizontal: 26,
-    paddingVertical: 6,
+    paddingHorizontal: '25%',
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    paddingVertical: '2%',
     borderRadius: border_radius,
     margin: 4,
     elevation: 3,
