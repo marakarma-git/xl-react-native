@@ -27,6 +27,10 @@ import {
   SmsA2pFilterPage,
   CreateNewUserPage,
   AutomationCreDitPage,
+  SimProductivityPage,
+  GeoDistributionPage,
+  UsageAnalyticsPage,
+  UsageSubscribersAnalyticsPage,
 } from '../pages/Home/index';
 
 export const DRAWER_MENU_PRIVILEDGE = [
@@ -102,7 +106,7 @@ export const DRAWER_MENU_PRIVILEDGE = [
       // },
       {
         priviledgeId: '',
-        name: 'SmsA2p',
+        name: 'SmsA2p Configuration',
         icon: iconHome,
         type: 'drawer',
         components: SmsA2pPage,
@@ -115,6 +119,49 @@ export const DRAWER_MENU_PRIVILEDGE = [
     icon: iconHome,
     type: 'drawer',
     components: AutomationPage,
+  },
+    {
+    priviledgeId: '',
+    name: 'Analytics',
+    icon: iconAdmin,
+    type: 'drawer',
+    width: 25,
+    height: 25,
+    components: '',
+    subMenu: [
+      {
+        priviledgeId: '',
+        name: 'Sim Productivity',
+        type: 'drawer',
+        width: 25,
+        height: 25,
+        components: SimProductivityPage,
+      },
+      {
+        priviledgeId: '',
+        name: 'Usage Analytics',
+        type: 'drawer',
+        width: 25,
+        height: 25,
+        components: UsageAnalyticsPage,
+      },
+      {
+        priviledgeId: '',
+        name: 'Usage & Subscribers Analytics',
+        type: 'drawer',
+        width: 25,
+        height: 25,
+        components: UsageSubscribersAnalyticsPage,
+      },
+      {
+        priviledgeId: '',
+        name: 'Geo Distribution',
+        type: 'drawer',
+        width: 25,
+        height: 25,
+        components: GeoDistributionPage,
+      },
+    ],
   },
   {
     priviledgeId: '',
