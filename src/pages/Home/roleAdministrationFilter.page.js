@@ -35,7 +35,7 @@ const RoleAdministrationFilterPage = () => {
   const sortedArray =
     lod.orderBy(dataRoleHeader, ['sort_by_filter', 'asc']) || [];
   return (
-    <HeaderContainer headerTitle={'Role Administration'}>
+    <HeaderContainer headerTitle={'Role Administration'} backIcon={true}>
       <ScrollView style={{backgroundColor: 'white'}}>
         <OverlayBackground />
         <Container style={{marginTop: 16}}>

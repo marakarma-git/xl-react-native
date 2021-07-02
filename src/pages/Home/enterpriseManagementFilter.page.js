@@ -35,7 +35,7 @@ const EnterpriseManagementFilterPage = () => {
   const sortedArray =
     lod.orderBy(dataHeaderEnterprise, ['sort_by_filter', 'asc']) || [];
   return (
-    <HeaderContainer headerTitle={'Enterprise Management'}>
+    <HeaderContainer headerTitle={'Enterprise Management'} backIcon={true}>
       <ScrollView style={{backgroundColor: 'white'}}>
         <OverlayBackground />
         <Container style={{marginTop: 16}}>

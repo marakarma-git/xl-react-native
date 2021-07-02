@@ -35,7 +35,7 @@ const AutomationFilterPage = () => {
   const sortedArray =
     lod.orderBy(dataAutomationHeader, ['sort_by_filter', 'asc']) || [];
   return (
-    <HeaderContainer headerTitle={'Automation'}>
+    <HeaderContainer headerTitle={'Automation'} backIcon={true}>
       <ScrollView style={{backgroundColor: 'white'}}>
         <OverlayBackground />
         <Container style={{marginTop: 16}}>
