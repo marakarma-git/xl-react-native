@@ -36,7 +36,7 @@ const SubscriptionPackageFilterPage = () => {
   const sortedArray =
     lod.orderBy(dataSubscriptionHeader, ['sort_by_filter', 'asc']) || [];
   return (
-    <HeaderContainer headerTitle={'Subscription Package'}>
+    <HeaderContainer headerTitle={'Subscription Package'} backIcon={true}>
       <ScrollView style={{backgroundColor: 'white'}}>
         <OverlayBackground />
         <Container style={{marginTop: 16}}>

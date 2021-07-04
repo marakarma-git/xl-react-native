@@ -37,7 +37,7 @@ const UserAdministrationFilterPage = () => {
   }, [dispatch]);
   const sortedArray = lod.orderBy(dataHeader, ['sort_by_filter', 'asc']) || [];
   return (
-    <HeaderContainer headerTitle={'User Administration'}>
+    <HeaderContainer headerTitle={'User Administration'} backIcon={true}>
       <ScrollView style={{backgroundColor: 'white'}}>
         <OverlayBackground />
         <Container style={{marginTop: 16}}>

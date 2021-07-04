@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import {useDispatch, useSelector} from 'react-redux';
-import {View, Linking} from 'react-native';
+import {View, Linking, BackHandler} from 'react-native';
 import {useNavigation} from '@react-navigation/native';
 import {subscriptionStyle} from '../../style';
 import Table from '../../components/table/Table';
@@ -30,7 +30,7 @@ import ModalMapOnly from '../../components/modal/ModalMapOnly';
 import lod from 'lodash';
 import Loading from '../../components/loading';
 
-const Subscription = () => {
+const Subscription = ({route}) => {
   const dispatch = useDispatch();
   const navigation = useNavigation();
   const [firstRender, setFirstRender] = useState(true);
@@ -73,6 +73,11 @@ const Subscription = () => {
       setFirstRender(false);
     }
     // return () => clearTimeout(timer);
+    if (route?.params?.key) {
+      BackHandler.addEventListener('hardwareBackPress', () => {
+        navigation.setParams({key: undefined});
+      });
+    }
   }, [current_size, dispatch, navigation, searchText, generatedParams]);
   useEffect(() => {
     if (current_params_applied) {
@@ -83,7 +88,8 @@ const Subscription = () => {
     <HeaderContainer
       headerTitle={'Subscription'}
       style={{flex: 1}}
-      companyLogo={imageBase64}>
+      companyLogo={imageBase64}
+      backIcon={route?.params?.key}>
       <View style={subscriptionStyle.containerBackground}>
         <Table
           isScrollView={true}
