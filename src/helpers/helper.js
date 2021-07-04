@@ -7,6 +7,16 @@ class Helper {
     return result;
   }
 
+  static makeCapital(value){
+    let capitalWord = '';
+    for(let i = 0; i < value.length; i++){
+      if(i === 0) capitalWord += value[i].toUpperCase();
+      else capitalWord += value[i];
+    }
+
+    return capitalWord;
+  }
+
   static formatBytes(bytes) {
     if (!isNaN(bytes)) {
       const decimals = 2;
@@ -403,7 +413,7 @@ class Helper {
       }
     });
 
-    return newData;
+    return selectedData;
   }
 
   static formValidation(

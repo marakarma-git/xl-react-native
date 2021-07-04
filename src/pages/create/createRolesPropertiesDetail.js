@@ -42,24 +42,58 @@ const CreateRolesPropertiesDetail = (props) => {
     })
   }
 
+  // Validation
+
   const validateForm = () => {
-    let validationError = {};
-
+    const validationError = {};
     if(touchForm){
-      const errorValidation = {};
-
       formList.map((form) => {
         if(form.validation){
-          let validateForm = Helper.formValidation(form.key, form.title, form.validationType, props.formValue, errorValidation);
-          if(validateForm){
-            validationError[form.key] = validateForm;
-          }
-
+          formValidation(form.key, form.title, validationError, form.validationType);
         }
       })
     }
-
     setFormError(prevState => prevState = validationError);
+  }
+
+  const formValidation = (formKey, formTitle, validationError, validationRules) => {
+    const splitValidation = String(validationRules).split("|");
+
+    splitValidation.map((type) => {
+      switch (type) {
+        case "required":
+          validationIsRequired(formKey, formTitle, validationError);
+          break;
+        case "isEmail":
+          validateEmail(formKey, formTitle, validationError);
+          break;
+
+        default:
+         validationIsRequired(formKey, formTitle, validationError);
+      }
+    });
+  }
+
+  const validationIsRequired = (formKey, formTitle, validationError) => {
+    let isError = false;
+    if(props.formValue[formKey].length <= 0){
+      isError = true;
+      validationError[formKey] = `${formTitle} is required`;
+    }
+
+    return isError;
+  }
+
+  const validateEmail = (formKey, formTitle, validationError) => {
+      let isError = false;
+      var re = /\S+@\S+\.\S+/;
+
+      if(re.test(props.formValue[formKey]) == false){
+        isError = true;
+        validationError[formKey] = `Email is not valid!`;
+      }
+
+      return isError;
   }
 
   // End Action
@@ -67,6 +101,7 @@ const CreateRolesPropertiesDetail = (props) => {
   // Life Cycle
   useEffect(() => {
     validateForm();
+
     if(typeof formError === 'object'){
       if(Object.keys(formError) <= 0){
         props.setIsComplete(true);
@@ -75,11 +110,12 @@ const CreateRolesPropertiesDetail = (props) => {
       }
     }
 
-  }, [props.formValue]);
+  }, [props.formValue, touchForm]);
 
   useEffect(() => {
     const pageLoad = navigation.addListener("focus", () => {
-      console.log("page load");
+      setFormError({});
+      setTouchForm(false);
     });
 
     return pageLoad;
@@ -99,12 +135,14 @@ const CreateRolesPropertiesDetail = (props) => {
 };
 
 CreateRolesPropertiesDetail.propTypes = {
+  mode: PropTypes.string,
   formValue: PropTypes.object,
   setFormValue: PropTypes.func,
   setIsComplete: PropTypes.func
 };
 
 CreateRolesPropertiesDetail.defaultProps = {
+  mode: 'create',
   formValue: {},
   setFormValue: () => {},
   setIsComplete: () => {},

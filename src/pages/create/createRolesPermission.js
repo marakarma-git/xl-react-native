@@ -1,6 +1,7 @@
 import React, { useEffect, useState, useCallback } from 'react';
 import {View, Text, ScrollView} from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
+import {useNavigation} from '@react-navigation/native';
 
 import PropTypes from 'prop-types';
 import { getListPermission } from '../../redux/action/permission_action';
@@ -46,67 +47,88 @@ const gridOptionsArray = [
 
 const CreateRolesPermission = (props) => {
   const dispatch = useDispatch();
+  const navigation = useNavigation();
   const {loading, listPermission} = useSelector((state) => state.permission_reducer);
 
+  // Global State
   const [gridData, setGridData] = useState([]);
   const [gridOptions, setGridOptions] = useState(gridOptionsArray);
+  const [isCheckData, setIsCheckData] = useState(false);
 
-    const selectCheckBox = (privId = null, action = "general") => {
-      console.log(privId)
-      if(gridData.length > 0){
-        const newData = new Array();
-        const newOptions = new Array();
+  // Function
 
-        let isHeaderCheck = false;
+  const selectCheckBox = (privId = null, action = "general") => {
+    if(gridData.length > 0){
+      const newData = new Array();
+      const newOptions = new Array();
 
-        if(privId === null){
-          gridOptions.map((option) => {
-            if(option.headerType === 'checkbox'){
-              isHeaderCheck = !option.isCheck;
-              option.isCheck = !option.isCheck;
-            }
+      let isHeaderCheck = false;
 
-            newOptions.push(option)
-          })
-
-          setGridOptions(prevState => prevState = newOptions);
-        }
-
-        gridData.map((data) => {
-          if(privId === null){
-            data.isCheck = isHeaderCheck;
-          }else{
-            if(data.priviledgeId === privId){
-              if(action === 'general'){
-                data.isCheck = !data.isCheck;
-              }else{
-                data.isCheck = true;
-              }
-            }
+      if(privId === null){
+        gridOptions.map((option) => {
+          if(option.headerType === 'checkbox'){
+            isHeaderCheck = !option.isCheck;
+            option.isCheck = !option.isCheck;
           }
 
-          newData.push(data);
-        });
-
-        const selectedData = new Array();
-
-        newData.map((data) => {
-          if(data.isCheck){
-            selectedData.push(data);
-          }
+          newOptions.push(option)
         })
 
-        props.setSelectedPermission(selectedData);
-        setGridData(prevState => prevState = newData);
-
+        setGridOptions(prevState => prevState = newOptions);
       }
+
+      gridData.map((data) => {
+        if(privId === null){
+          data.isCheck = isHeaderCheck;
+        }else{
+          if(data.priviledgeId === privId){
+            if(action === 'general'){
+              data.isCheck = !data.isCheck;
+            }else{
+              data.isCheck = true;
+            }
+          }
+        }
+
+        newData.push(data);
+      });
+
+      const selectedData = new Array();
+
+      newData.map((data) => {
+        if(data.isCheck){
+          selectedData.push(data);
+        }
+      })
+
+      props.setSelectedPermission(selectedData);
+      setGridData(prevState => prevState = newData);
+
+    }
   }
+
+  // End Function
+
+  // Hooks 
 
   const checkHistory = useCallback(() => {
     if(gridData.length > 0){
       props.selectedPermission.map(roles => {
         selectCheckBox(roles.priviledgeId, 're-render');
-      })
+      });
+    }
+  }, [gridData]);
+
+  useEffect(() => {
+    if(!isCheckData){
+      if(gridData.length > 0){
+        if(props.mode !== 'create'){
+          props.currentRoleIds.map(roleId => {
+            selectCheckBox(roleId, 're-render');
+          });
+          setIsCheckData(true);
+        }
+      }
     }
   }, [gridData]);
 
@@ -117,6 +139,22 @@ const CreateRolesPermission = (props) => {
 
     checkHistory();
   }, [listPermission])
+
+  useEffect(() => {
+    if(props.selectedPermission.length > 0) props.setIsComplete(true)
+    else props.setIsComplete(false);
+  }, [props.selectedPermission]);
+
+  useEffect(() => {
+    const pageLoad = navigation.addListener('focus', () => {
+      setIsCheckData(false);
+      setGridData([]);
+      setGridOptions(gridOptionsArray);
+    });
+
+    return pageLoad;
+  }, [navigation]);
+  
 
   useEffect(() => {
     dispatch(getListPermission());
@@ -145,14 +183,20 @@ const CreateRolesPermission = (props) => {
 };
 
 CreateRolesPermission.propTypes = {
+  mode: PropTypes.string,
+  currentRoleIds: PropTypes.array,
   selectedPermission: PropTypes.array,
   setScrollView: PropTypes.func,
-  setSelectedPermission: PropTypes.func
+  setSelectedPermission: PropTypes.func,
+  setIsComplete: PropTypes.func
 };
 CreateRolesPermission.defaultProps = {
+  mode: "create",
+  currentRoleIds: [],
   selectedPermission: [],
   setScrollView: () => {},
-  setSelectedPermission: () => {}
+  setSelectedPermission: () => {},
+  setIsComplete: () => {}
 };
 
 export default CreateRolesPermission;

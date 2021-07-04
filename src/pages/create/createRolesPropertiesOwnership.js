@@ -33,13 +33,14 @@ const gridOptionsArray = [
   },
 ];
 
-const CreateOrganization = (props) => {
+const CreateRolesPropertiesOwnership = (props) => {
   const dispatch = useDispatch();
   const navigation = useNavigation();
   const { data_active_enterprise, loading } = useSelector(state => state.enterprise_management_get_enterprise_reducer);
 
 
   // STATE GLOBAL
+  const [isCheckData, setIsCheckData] = useState(false);
   const [gridData, setGridData] = useState([]);
   const [gridOptions, setGridOptions] = useState(gridOptionsArray);
 
@@ -53,6 +54,7 @@ const CreateOrganization = (props) => {
   };
 
   const checkBoxToggle = (cellId) => {
+    console.log(cellId, "");
     const data = Helper.checkboxToggle(gridData, cellId, 1);
 
     setGridData(data);
@@ -75,7 +77,22 @@ const CreateOrganization = (props) => {
 
   // Hooks
   useEffect(() => {
+    if(!isCheckData){
+      if(gridData.length > 0){
+        if(props.mode !== 'create'){
+          checkBoxToggle(props.currentEnterprise);
+          setIsCheckData(true);
+        }
+      }
+    }
+  }, [gridData]);
+
+  useEffect(() => {
     const pageLoad = navigation.addListener("focus", () => {
+      console.log("pageLoad")
+      setIsCheckData(false);
+      setGridData([]);
+      setGridOptions(gridOptionsArray);
       dispatch(getActiveEnterpriseList());
     });
 
@@ -107,18 +124,22 @@ const CreateOrganization = (props) => {
   )
 }
 
-CreateOrganization.propTypes = {
+CreateRolesPropertiesOwnership.propTypes = {
+  mode: PropTypes.string,
+  currentEnterprise: PropTypes.string,
   selectedOwnership: PropTypes.array,
   setSelectedOwnership: PropTypes.func,
   setScrollView: PropTypes.func,
   setIsComplete: PropTypes.func
 };
 
-CreateOrganization.defaultProps = {
+CreateRolesPropertiesOwnership.defaultProps = {
+  mode: "create",
+  currentEnterprise: "",
   selectedOwnership: [],
   setSelectedOwnership: () => {},
   setScrollView: () => {},
   setIsComplete: () => {}
 }
 
-export default CreateOrganization;
+export default CreateRolesPropertiesOwnership;
