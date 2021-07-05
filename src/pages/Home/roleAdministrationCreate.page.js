@@ -29,6 +29,7 @@ const formBody = {
 
 import { setRequestError } from '../../redux/action/dashboard_action';
 import Helper from '../../helpers/helper';
+import { useLinkProps } from '@react-navigation/native';
 
 const CreateNewUserPage = ({route, navigation}) => {
   const dispatch = useDispatch();
@@ -50,6 +51,7 @@ const CreateNewUserPage = ({route, navigation}) => {
   const [formProperties, setFormProperties] = useState(formBody);
   const [selectedOwnership, setSelectedOwnership] = useState([]);
   const [selectedPermission, setSelectedPerimission] = useState([]);
+  const [rolePropertiesFirstRender, setRolePropertiesFirstRender] = useState(false);
 
   //Properties State
   const [selectedVisibility, setSelectedVisibility] = useState(0);
@@ -82,6 +84,9 @@ const CreateNewUserPage = ({route, navigation}) => {
           component: 
           <CreateRolesPropertiesOwnership
             mode={type}
+            formPosition={formPosition}
+            firstRender={rolePropertiesFirstRender}
+            setFirstRender={setRolePropertiesFirstRender}
             currentEnterprise={currentEnterprise}
             selectedOwnership={selectedOwnership}
             setSelectedOwnership={setSelectedOwnership}
@@ -261,7 +266,7 @@ const CreateNewUserPage = ({route, navigation}) => {
     }
   }
   
-  const getRoleDetail = async () => {
+  const getRoleDetail = async (actionType) => {
     try {
       setLoadingUserDetail(true);
       const { data } = await axios.get(`${base_url}/user/role/getRoleDetail?roleId=${roleId}`, {
@@ -274,8 +279,9 @@ const CreateNewUserPage = ({route, navigation}) => {
         const { result } = data;
         console.log(result);
         if(data.statusCode === 0){
+          console.log(actionType, "  dapet type dalem function")
           setFormProperties({
-            roleName: type === "copy" ? `Copy of ${result.roleName}` : result.roleName,
+            roleName: actionType === "copy" ? `Copy of ${result.roleName}` : result.roleName,
             roleDescription: result.description,
             ownerOrganization: result.roleId
           });
@@ -314,26 +320,29 @@ const CreateNewUserPage = ({route, navigation}) => {
       setLoadingUserDetail(false);
       setScrollViewEnabled(true);
 
-      if(type === 'create'){
-        // Reset State Component
-        setFormProperties(formBody);
-        setSelectedOwnership([]);
-        setSelectedPerimission([]);
-  
-        // Reset Properties State
-        setSelectedVisibility(0);
-  
-        // Reset State Validation
-        setIsRolesPropertiesDetailComplete(false);
-        setIsRolesPropertiesOwnershipComplete(false);
-        setIsRolesPermissionComplete(false);
-      }else{
-        getRoleDetail();
-      }
+      // Reset State Component
+      setFormProperties(formBody);
+      setSelectedOwnership([]);
+      setSelectedPerimission([]);
+
+      // Reset Properties State
+      setSelectedVisibility(0);
+
+      // Reset State Validation
+      setIsRolesPropertiesDetailComplete(false);
+      setIsRolesPropertiesOwnershipComplete(false);
+      setIsRolesPermissionComplete(false);
+
     });
 
     return pageLoad;
   }, [navigation]);
+
+  useEffect(() => {
+    if(type != 'create'){
+      getRoleDetail(type);
+    }
+  }, [type]);
 
   return (
     <View>
@@ -356,7 +365,7 @@ const CreateNewUserPage = ({route, navigation}) => {
                       textAlign: 'center',
                       fontSize: 14,
                       paddingVertical: 10,
-                    }}>Loading...</Text>
+                    }}>{type}...</Text>
                 </View>
               :
               <FormStepComponent

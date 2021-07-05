@@ -1,11 +1,11 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 import PropTypes from 'prop-types';
 
 import {View} from 'react-native';
 import {useNavigation} from '@react-navigation/native';
 import {useDispatch, useSelector} from 'react-redux';
 import {Text, GridComponent} from '../../components';
-import { getActiveEnterpriseList } from '../../redux/action/enterprise_management_action';
+import { getActiveEnterpriseList, resetTreeCheckGetActiveEnterpriseList } from '../../redux/action/enterprise_management_action';
 import Helper from '../../helpers/helper';
 
 const gridOptionsArray = [
@@ -38,13 +38,12 @@ const CreateRolesPropertiesOwnership = (props) => {
   const navigation = useNavigation();
   const { data_active_enterprise, loading } = useSelector(state => state.enterprise_management_get_enterprise_reducer);
 
-
   // STATE GLOBAL
-  const [isCheckData, setIsCheckData] = useState(false);
   const [gridData, setGridData] = useState([]);
-  const [gridOptions, setGridOptions] = useState(gridOptionsArray);
-
-  // STATE Component
+  const [gridOptions, setGridOptions] = useState(gridOptionsArray); 
+  const [isCheckData, setIsCheckData] = useState(false);
+  const [isReCheckData, setIsReCheckData] = useState(false); 
+  const [isDataNotEmpty, setIsDataNotEmpty] = useState(false);
 
   // Function
   const treeViewToggle = (cellId) => {
@@ -54,8 +53,9 @@ const CreateRolesPropertiesOwnership = (props) => {
   };
 
   const checkBoxToggle = (cellId) => {
-    console.log(cellId, "");
-    const data = Helper.checkboxToggle(gridData, cellId, 1);
+    const newData = gridData.slice();
+
+    const data = Helper.checkboxToggle(newData, cellId, 1);
 
     setGridData(data);
     checkSelectedData(data);
@@ -69,13 +69,48 @@ const CreateRolesPropertiesOwnership = (props) => {
     }else{
       props.setIsComplete(false);
     }
-    
+
     props.setSelectedOwnership(newData);
+  }
+
+  const revertData = () => {
+    const oldData = gridData.slice();
+    const newData = new Array();
+
+    oldData.map((data, index) => {
+      data.collapse = !data.collapse;
+      if(data.childrenCnt > 0) data.icon = 'caret-up';
+      else data.icon = '';
+
+      newData.push(data);
+    });
+   
+    treeViewToggle(props.currentEnterprise);
+    setGridData(newData);
   }
 
   // End Function
 
-  // Hooks
+  // Hooks 
+  useEffect(() => {
+    const pageLoad = navigation.addListener("focus", () => {
+      setIsCheckData(false);
+      setGridData([]);
+      setGridOptions(gridOptionsArray);
+      dispatch(getActiveEnterpriseList());
+      props.setSelectedOwnership([]);
+    });
+
+    return pageLoad;
+  }, [navigation]);
+
+  useEffect(() => {
+    if(data_active_enterprise.length > 0){
+      setGridData(Helper.manipulateIsDisabledArray(data_active_enterprise));
+    }
+
+  }, [data_active_enterprise]);
+
   useEffect(() => {
     if(!isCheckData){
       if(gridData.length > 0){
@@ -88,23 +123,22 @@ const CreateRolesPropertiesOwnership = (props) => {
   }, [gridData]);
 
   useEffect(() => {
-    const pageLoad = navigation.addListener("focus", () => {
-      console.log("pageLoad")
-      setIsCheckData(false);
-      setGridData([]);
-      setGridOptions(gridOptionsArray);
-      dispatch(getActiveEnterpriseList());
-    });
-
-    return pageLoad;
-  }, [navigation]);
+    if(!isReCheckData){
+      if(props.mode !== 'create' && props.selectedOwnership.length === 0){
+        checkBoxToggle(props.currentEnterprise);
+        setIsReCheckData(true);
+      }
+    }
+  }, [props.selectedOwnership]);
 
   useEffect(() => {
-    if(data_active_enterprise.length > 0){
-      setGridData(Helper.manipulateIsDisabledArray(data_active_enterprise));
+    if(!isDataNotEmpty){
+      if(gridData.length > 0){
+        revertData();
+        setIsDataNotEmpty(true);
+      }
     }
-
-  }, [data_active_enterprise]);
+  }, [props.formPosition, gridData]);
 
   return(
     <View
@@ -126,6 +160,9 @@ const CreateRolesPropertiesOwnership = (props) => {
 
 CreateRolesPropertiesOwnership.propTypes = {
   mode: PropTypes.string,
+  formPosition: PropTypes.number,
+  firstRender: PropTypes.bool,
+  setFirstRender: PropTypes.func,
   currentEnterprise: PropTypes.string,
   selectedOwnership: PropTypes.array,
   setSelectedOwnership: PropTypes.func,
@@ -135,6 +172,9 @@ CreateRolesPropertiesOwnership.propTypes = {
 
 CreateRolesPropertiesOwnership.defaultProps = {
   mode: "create",
+  formPosition: 0,
+  firstRender: false,
+  setFirstRender: () => {},
   currentEnterprise: "",
   selectedOwnership: [],
   setSelectedOwnership: () => {},

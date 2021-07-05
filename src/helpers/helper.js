@@ -296,6 +296,7 @@ class Helper {
     newData = [],
     currentLevel = 0,
   ) {
+    console.log("Re Format")
     data.map((value, index) => {
       value.level = currentLevel;
       value.visibility = true;
@@ -331,6 +332,7 @@ class Helper {
   static manipulateIsDisabledArray(dataArray) {
     dataArray.map((data, index) => {
       data.isDisabled = false;
+      data.treeCheck = false;
     });
 
     return dataArray;
@@ -361,6 +363,18 @@ class Helper {
       if (data.icon) {
         data.icon = data.icon == 'caret-down' ? 'caret-up' : 'caret-down';
       }
+
+      newData.push(data);
+    });
+
+    return newData;
+  }
+
+  static resetDataCheckboxToggle(gridData) {
+    const newData = new Array();
+
+    gridData.map((data) => {
+      data.treeCheck = false;
 
       newData.push(data);
     });

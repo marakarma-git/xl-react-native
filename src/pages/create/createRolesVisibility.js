@@ -83,7 +83,6 @@ const createRolesVisibility = (props) => {
   useEffect(() => {
     if(!isSelectData){
       if(gridData.length > 0){
-        console.log("Sampe sini");
         selectedOwnershipToggle(props.selectedVisibility);
       }
     }
