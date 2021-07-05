@@ -7,6 +7,7 @@ import {border_radius} from '../../constant/config';
 import lod from 'lodash';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import dayjs from 'dayjs';
+import MaterialCommunityIcon from 'react-native-paper/src/components/MaterialCommunityIcon';
 const LocalComponent = (props) => {
   const {type, title, onDelete} = props || '';
   return (
@@ -32,9 +33,14 @@ const LocalComponent = (props) => {
   );
 };
 const AppliedFilter = (props) => {
-  const {data, onDelete} = props || {};
+  const {data, onDelete, withFilterButton, onPressFilter} = props || {};
   return (
-    <View style={{marginHorizontal: 16, marginVertical: 4}}>
+    <View
+      style={{
+        marginHorizontal: !withFilterButton ? 16 : 0,
+        marginVertical: 4,
+        flexDirection: withFilterButton && 'row',
+      }}>
       <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
         {data.length > 0 &&
           data.map((value) => {
@@ -66,15 +72,29 @@ const AppliedFilter = (props) => {
             }
           })}
       </ScrollView>
+      {withFilterButton && (
+        <TouchableOpacity>
+          <MaterialCommunityIcon
+            name={'filter'}
+            size={26}
+            color={colors.gray}
+          />
+        </TouchableOpacity>
+      )}
     </View>
   );
 };
 AppliedFilter.propTypes = {
   data: PropTypes.array,
   onDelete: PropTypes.func,
+
+  withFilterButton: PropTypes.bool,
+  onPressFilter: PropTypes.func,
 };
 AppliedFilter.defaultProps = {
   data: [],
   onDelete: () => {},
+
+  onPressFilter: () => {},
 };
 export default AppliedFilter;

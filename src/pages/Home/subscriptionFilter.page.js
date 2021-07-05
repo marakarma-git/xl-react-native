@@ -26,9 +26,11 @@ import {useNavigation} from '@react-navigation/native';
 import lod from 'lodash';
 import Text from '../../components/global/text';
 const Container = (props) => {
-  const {style, children} = props;
+  const {style, children, onLayout} = props;
   return (
-    <View style={[subscriptionStyle.localContainer, style]}>{children}</View>
+    <View style={[subscriptionStyle.localContainer, style]} onLayout={onLayout}>
+      {children}
+    </View>
   );
 };
 const SubscriptionFilter = () => {
