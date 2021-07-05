@@ -7,6 +7,16 @@ class Helper {
     return result;
   }
 
+  static makeCapital(value){
+    let capitalWord = '';
+    for(let i = 0; i < value.length; i++){
+      if(i === 0) capitalWord += value[i].toUpperCase();
+      else capitalWord += value[i];
+    }
+
+    return capitalWord;
+  }
+
   static formatBytes(bytes) {
     if (!isNaN(bytes)) {
       const decimals = 2;
@@ -286,6 +296,7 @@ class Helper {
     newData = [],
     currentLevel = 0,
   ) {
+    console.log("Re Format")
     data.map((value, index) => {
       value.level = currentLevel;
       value.visibility = true;
@@ -321,6 +332,7 @@ class Helper {
   static manipulateIsDisabledArray(dataArray) {
     dataArray.map((data, index) => {
       data.isDisabled = false;
+      data.treeCheck = false;
     });
 
     return dataArray;
@@ -351,6 +363,18 @@ class Helper {
       if (data.icon) {
         data.icon = data.icon == 'caret-down' ? 'caret-up' : 'caret-down';
       }
+
+      newData.push(data);
+    });
+
+    return newData;
+  }
+
+  static resetDataCheckboxToggle(gridData) {
+    const newData = new Array();
+
+    gridData.map((data) => {
+      data.treeCheck = false;
 
       newData.push(data);
     });
@@ -403,7 +427,7 @@ class Helper {
       }
     });
 
-    return newData;
+    return selectedData;
   }
 
   static formValidation(

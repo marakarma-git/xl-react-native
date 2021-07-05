@@ -164,6 +164,20 @@ const getActiveEnterpriseList = (paginate) => {
   };
 }
 
+// const resetTreeCheckGetActiveEnterpriseList = (dataActiveEnterprise) => {
+//   return (dispatch) => {
+//     const newData = new Array();
+
+//     dataActiveEnterprise.map(enterprise => {
+//       enterprise.treeCheck = false;
+
+//       newData.push(enterprise);
+//     });
+
+//     dispatch(activeEnterpriseManagementGetDataSucces(newData));
+//   }
+// }
+
 const getEnterpriseList = (paginate) => {
   return async (dispatch, getState) => {
     dispatch(enterpriseManagementRequestData());
@@ -280,5 +294,5 @@ export {
   enterpriseManagementCheckBoxToggle,
   enterpriseManagementRequestData,
   enterpriseManagementRequestDataEnd,
-  enterpriseManagementClearActiveEnterpriseData
+  enterpriseManagementClearActiveEnterpriseData,
 };

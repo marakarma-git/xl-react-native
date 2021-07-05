@@ -2,10 +2,8 @@ import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 
 import {AccountForm} from '../../components';
-import {useNavigation} from '@react-navigation/native';
 
 const CreateBasicUserInformation = (props) => {
-  const navigation = useNavigation();
   const [formError, setFormError] = useState({});
   const [touchForm, setTouchForm] = useState(false);
   const [openDropDown, setOpenDropDown] = useState(false);

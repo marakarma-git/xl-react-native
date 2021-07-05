@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import {View} from 'react-native';
 import {useDispatch} from 'react-redux';
 import {Text, CustomRadioButtonComponent, GridComponent} from '../../components';
+import {useNavigation} from '@react-navigation/native';
 
 import styles from '../../style/create.style';
 import Helper from '../../helpers/helper';
@@ -35,10 +36,11 @@ const gridOptionsArray = [
 ];
 
 const createRolesVisibility = (props) => {
-  const dispatch = useDispatch();
+  const navigation = useNavigation();
 
   const [gridData, setGridData] = useState([]);
   const [gridOptions, setGridOptions] = useState(gridOptionsArray);
+  const [isSelectData, setIsSelectData] = useState(false);
 
   // Function
   const treeViewToggle = (cellId) => {
@@ -57,8 +59,8 @@ const createRolesVisibility = (props) => {
       cellVisibilityToggle(gridData, selectedValue);
     }
 
-    newOptions[0].cellType = props.selectedVisibility == 0 ? "treeView" : "text";
-    newOptions[1].cellVisible = props.selectedVisibility == 0 ? true : false;
+    newOptions[0].cellType = !selectedValue == 0 ? "treeView" : "text";
+    newOptions[1].cellVisible = !selectedValue == 0 ? true : false;
 
     setGridOptions(newOptions);
     props.setSelectedVisibility(selectedValue);
@@ -77,12 +79,30 @@ const createRolesVisibility = (props) => {
   }
   // End of Function
 
+  // Hooks
+  useEffect(() => {
+    if(!isSelectData){
+      if(gridData.length > 0){
+        selectedOwnershipToggle(props.selectedVisibility);
+      }
+    }
+  }, [gridData]);
+
   useEffect(() => {
     const newData = props.selectedOwnership.slice();
     const dataToggle = cellVisibilityToggle(newData, false);
-
     setGridData(dataToggle);
   }, [props.selectedOwnership]);
+
+  useEffect(() => {
+    const pageLoad = navigation.addListener('focus', () => {
+      setIsSelectData(false);
+      setGridData([]);
+      setGridOptions(gridOptionsArray);
+    });
+
+    return pageLoad;
+  }, [navigation]);
 
   return(
     <View
@@ -120,6 +140,7 @@ const createRolesVisibility = (props) => {
 }
 
 createRolesVisibility.propTypes = {
+  mode: PropTypes.string,
   selectedOwnership: PropTypes.array,
   selectedVisibility: PropTypes.number,
   setSelectedVisibility: PropTypes.func,
@@ -127,6 +148,7 @@ createRolesVisibility.propTypes = {
 };
 
 createRolesVisibility.defaultProps = {
+  mode: "create",
   selectedOwnership: [],
   selectedVisibility: 0,
   setSelectedVisibility: () => {},

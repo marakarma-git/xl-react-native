@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {View} from 'react-native';
+import {View, ToastAndroid} from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
 import {useNavigation} from '@react-navigation/native';
 import callRoleAction, {
@@ -29,22 +29,22 @@ import Loading from '../../components/loading';
 const actionDataArray = [
   {
     value: '0',
-    label: 'Create new role',
+    label: 'Create new role...',
     isDisabled: false,
   },
   {
     value: '1',
-    label: 'Edit role',
+    label: 'Edit role...',
     isDisabled: true,
   },
   {
     value: '2',
-    label: 'Delete role(s)',
+    label: 'Delete role(s)...',
     isDisabled: true,
   },
   {
     value: '3',
-    label: 'Copy role(s)',
+    label: 'Copy role...',
     isDisabled: true,
   },
 ];
@@ -55,6 +55,7 @@ const RoleAdministrationPage = () => {
   const [actionData, setActionData] = useState(actionDataArray);
   const [firstRender, setFirstRender] = useState(true);
   const [showMenu, setShowMenu] = useState(false);
+  const [selectedRoles, setSelectedRoles] = useState([]);
   const {imageBase64} = useSelector((state) => state.enterprise_reducer);
   const {
     dataRoleHeader,
@@ -80,7 +81,33 @@ const RoleAdministrationPage = () => {
   const actionChange = (e) => {
     switch (e.value) {
       case '0':
+        navigation.navigate('RoleAdministrationCreate', {
+          roleId: '',
+          type: 'create'
+        });
+        break;
+      case '1':
+        if(selectedRoles.length > 0){
+          navigation.navigate('RoleAdministrationCreate', {
+            roleId: selectedRoles[0].roleId,
+            type: 'edit'
+          });
+        }else{
+          ToastAndroid.show('Please select at least 1 role', ToastAndroid.LONG);
+        }
+        break;
+      case '2':
         navigation.navigate('RoleAdministrationCreate');
+        break;
+      case '3':
+        if(selectedRoles.length === 1){
+          navigation.navigate('RoleAdministrationCreate', {
+            roleId: selectedRoles[0].roleId,
+            type: 'copy'
+          });
+        }else{
+          ToastAndroid.show('Please select 1 role', ToastAndroid.LONG);
+        }
         break;
 
       default:
@@ -89,18 +116,52 @@ const RoleAdministrationPage = () => {
     }
   };
 
+  const updateActionAccess = (dataRole) => {
+    const dataAction = actionData.slice();
+
+    dataAction[1].isDisabled = dataRole.length === 1 ? false : true;
+    dataAction[2].isDisabled = dataRole.length > 0 ? false : true;
+    dataAction[3].isDisabled = dataRole.length === 1 ? false : true;
+
+    setActionData((prevState) => (prevState = dataAction));
+  };
+
+  const selectRoleToggle = (data, index) => {
+    let isUnique = true;
+    let selectedData = data[index];
+    console.log(selectedData, " <<< ")
+
+    const dataRole = selectedRoles.slice();
+
+    dataRole.map((role, index) => {
+      if (selectedData.userId === role.roleId) {
+        isUnique = false;
+        dataRole.splice(index, 1);
+      }
+    });
+
+    if (isUnique) {
+      dataRole.push(selectedData);
+    }
+
+    updateActionAccess(dataRole);
+    setSelectedRoles((prevState) => (prevState = dataRole));
+  };
+
   useEffect(() => {
-    if (!firstRender) {
+    dispatch(callRoleAction());
+    setFirstRender(false);
+  }, [searchText, generatedParams]);
+
+  useEffect(() => {
+    return navigation.addListener('focus', () => {
       dispatch(
         callRoleAction({
           page_params: 0,
         }),
       );
-    } else {
-      dispatch(callRoleAction());
-      setFirstRender(false);
-    }
-  }, [dispatch, searchText, generatedParams]);
+    });
+  }, [navigation]);
 
   return (
     <HeaderContainer
@@ -199,6 +260,7 @@ const RoleAdministrationPage = () => {
             dispatch(roleAdministrationCheckAlDataRole({valueCheck}));
           }}
           onPressCheckCell={({index}) => {
+            selectRoleToggle(data_role?.result?.content || [], index);
             dispatch(roleAdministrationDynamicCheckDataRole({index}));
           }}
           selectedHeaderOrderSort={role_applied_header_sort}

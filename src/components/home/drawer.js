@@ -10,7 +10,6 @@ import {removeEnterPriseLogo} from '../../redux/action/enterprise_action';
 import {TouchableOpacity} from 'react-native';
 
 import Helper from '../../helpers/helper';
-import privHelper from '../../helpers/privHelper';
 import styles from '../../style/drawer.style';
 
 const CustomDrawerContent = (props) => {
