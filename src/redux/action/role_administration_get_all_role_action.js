@@ -53,6 +53,22 @@ const roleAdministrationResetAppliedHeaderSort = () => {
     type: reduxString.ROLE_ADMINISTRATION_RESET_APPLIED_HEADER_SORT,
   };
 };
+const roleAdministrationUpdateRoleList = (dataRole, dataRoleGenerated, removeRole) => ({
+  type: reduxString.ROLE_ADMINISTRSTION_UPDATE_ROLE_LIST,
+  dataRole,
+  dataRoleGenerated,
+  removeRole
+});
+
+const roleAdministrationCopyRoleList = () => ({
+  type: reduxString.ROLE_ADMINISTRATION_COPY_ROLE_LIST
+});
+
+const roleAdministrationCrudActiveMenu = (menu) => ({
+  type: reduxString.ROLE_ADMINISTRATION_CRUD_ACTIVE_MENU,
+  payload: menu
+});
+
 const callRoleAction = (paginate) => {
   return async (dispatch, getState) => {
     dispatch(roleAdministrationGetRoleLoading());
@@ -152,6 +168,31 @@ const callRoleAction = (paginate) => {
       });
   };
 };
+
+const callRoleAdministrationDeleteRole = (roleId) => {
+  return (dispatch, getState) => {
+    const {data_role} = getState().role_administration_get_all_role_reducer;
+    const {content} = data_role?.result;
+    const {dataRoleHeader} = getState().role_administration_array_header_reducer || {};
+    
+    let contentLength = content.length;
+
+    roleId.map((id) => {
+      for (let i = 0; i < contentLength; i++){
+        if(id === content[i].roleId){
+          content.splice(i, 1);
+          isDelete = true;
+          break;
+        }
+      }
+    });
+
+    const generateTable = dataMatcherArray2D(content, dataRoleHeader);
+    dispatch(roleAdministrationUpdateRoleList(data_role, generateTable, roleId.length));
+
+  }
+}
+
 export default callRoleAction;
 export {
   roleAdministrationGetRoleReset,
@@ -160,4 +201,7 @@ export {
   roleAdministrationResetAppliedHeaderSort,
   roleAdministrationDynamicCheckDataRole,
   roleAdministrationSetAppliedHeaderSort,
+  callRoleAdministrationDeleteRole,
+  roleAdministrationCrudActiveMenu,
+  roleAdministrationCopyRoleList
 };

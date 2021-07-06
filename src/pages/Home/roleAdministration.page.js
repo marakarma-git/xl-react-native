@@ -1,9 +1,11 @@
 import React, {useEffect, useState} from 'react';
-import {View, ToastAndroid} from 'react-native';
+import {View, ToastAndroid, Alert} from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
 import {useNavigation} from '@react-navigation/native';
 import callRoleAction, {
+  callRoleAdministrationDeleteRole,
   roleAdministrationCheckAlDataRole,
+  roleAdministrationCrudActiveMenu,
   roleAdministrationDynamicCheckDataRole,
   roleAdministrationSetDataRoleGenerated,
 } from '../../redux/action/role_administration_get_all_role_action';
@@ -18,6 +20,7 @@ import {
   roleAdministrationSetSearchText,
   roleAdministrationUpdateBundleArray,
 } from '../../redux/action/role_administration_array_header_action';
+import {ModalConfirmation} from '../../components';
 import Table from '../../components/table/Table';
 import SearchHeader from '../../components/subscription/searchHeader';
 import AppliedFilter from '../../components/subscription/appliedFilter';
@@ -25,6 +28,9 @@ import FilterActionLabel from '../../components/subscription/filterActionLabel';
 import Helper from '../../helpers/helper';
 import TableFooter from '../../components/subscription/tableFooter';
 import Loading from '../../components/loading';
+import axios from 'axios';
+import { setRequestError } from '../../redux/action/dashboard_action';
+import { base_url } from '../../constant/connection';
 
 const actionDataArray = [
   {
@@ -57,6 +63,8 @@ const RoleAdministrationPage = () => {
   const [showMenu, setShowMenu] = useState(false);
   const [selectedRoles, setSelectedRoles] = useState([]);
   const {imageBase64} = useSelector((state) => state.enterprise_reducer);
+  const [showModal, setShowModal] = useState(false);
+  const [deleteLoading, setDeleteLoading] = useState(false);
   const {
     dataRoleHeader,
     searchText,
@@ -77,33 +85,62 @@ const RoleAdministrationPage = () => {
     role_applied_filter,
     role_params_applied_activity_log,
   } = useSelector((state) => state.role_administration_get_all_role_reducer);
+  const accessToken = useSelector(
+    (state) => state.auth_reducer.data.access_token,
+  );
+
+  const customConfirmAlert = (
+    title,
+    message,
+    actionText,
+    cancelAction,
+    action,
+  ) => {
+    Alert.alert(
+      title,
+      message,
+      [
+        {
+          text: 'Cancel',
+          onPress: () => cancelAction(),
+        },
+        {
+          text: actionText,
+          onPress: () => action(),
+        },
+      ],
+      {
+        cancelable: true,
+      },
+    );
+  };
 
   const actionChange = (e) => {
     switch (e.value) {
       case '0':
+        dispatch(roleAdministrationCrudActiveMenu('create'));
         navigation.navigate('RoleAdministrationCreate', {
           roleId: '',
-          type: 'create'
         });
         break;
       case '1':
         if(selectedRoles.length > 0){
+          dispatch(roleAdministrationCrudActiveMenu('edit'));
           navigation.navigate('RoleAdministrationCreate', {
             roleId: selectedRoles[0].roleId,
-            type: 'edit'
           });
         }else{
           ToastAndroid.show('Please select at least 1 role', ToastAndroid.LONG);
         }
         break;
       case '2':
-        navigation.navigate('RoleAdministrationCreate');
+        setShowModal(true);
         break;
       case '3':
         if(selectedRoles.length === 1){
+          dispatch(roleAdministrationCrudActiveMenu('copy'));
           navigation.navigate('RoleAdministrationCreate', {
             roleId: selectedRoles[0].roleId,
-            type: 'copy'
           });
         }else{
           ToastAndroid.show('Please select 1 role', ToastAndroid.LONG);
@@ -113,6 +150,50 @@ const RoleAdministrationPage = () => {
       default:
         console.log(e);
         break;
+    }
+  };
+
+  const deleteFunction = async () => {
+    const roleId = new Array();
+
+    selectedRoles.map((role) => {
+      roleId.push(role.roleId);
+    });
+
+    setDeleteLoading(true);
+
+    try {
+      const {data} = await axios.post(
+        `${base_url}/user/role/deleteRole`,
+        {roleId: roleId},
+        {
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+          },
+        },
+      );
+
+      if (data) {
+        if (data.statusCode === 0) {
+          ToastAndroid.show(
+            'Selected role(s) has been deleted',
+            ToastAndroid.LONG,
+          );
+          setSelectedRoles([]);
+          updateActionAccess([]);
+          dispatch(callRoleAdministrationDeleteRole(roleId));
+        }
+        setShowModal(false);
+        setDeleteLoading(true);
+      }
+    } catch (error) {
+      setShowModal(false);
+      setDeleteLoading(true);
+      dispatch(setRequestError(error.response.data));
+      ToastAndroid.show(
+        error.response.data.error_description || error.message,
+        ToastAndroid.LONG,
+      );
     }
   };
 
@@ -129,12 +210,11 @@ const RoleAdministrationPage = () => {
   const selectRoleToggle = (data, index) => {
     let isUnique = true;
     let selectedData = data[index];
-    console.log(selectedData, " <<< ")
 
     const dataRole = selectedRoles.slice();
 
     dataRole.map((role, index) => {
-      if (selectedData.userId === role.roleId) {
+      if (selectedData.roleId === role.roleId) {
         isUnique = false;
         dataRole.splice(index, 1);
       }
@@ -147,6 +227,20 @@ const RoleAdministrationPage = () => {
     updateActionAccess(dataRole);
     setSelectedRoles((prevState) => (prevState = dataRole));
   };
+
+  const reFetchListAction = (dataRole) => {
+    selectedRoles.map((role) => {
+      dataRole.map((data, index) => {
+        if (role.roleId === data.roleId) {
+          dispatch(roleAdministrationDynamicCheckDataRole({index}));
+        }
+      });
+    });
+  };
+
+  useEffect(() => {
+    reFetchListAction(data_role?.result?.content || []);
+  }, [data_role]);
 
   useEffect(() => {
     dispatch(callRoleAction());
@@ -211,6 +305,7 @@ const RoleAdministrationPage = () => {
                     !errorText &&
                     Helper.numberWithDot(role_elements_dynamic)
                   }
+                  selected={selectedRoles.length}
                 />
               </>
             );
@@ -308,6 +403,18 @@ const RoleAdministrationPage = () => {
           onClose={() => setShowMenu((state) => !state)}
         />
       )}
+      {
+        showModal &&
+        <ModalConfirmation
+          showModal={showModal}
+          loading={deleteLoading} 
+          closeModal={() =>  setShowModal(false)}
+          title="Delete Role"
+          description="Are you sure want to delete selected role(s)?"
+          confirmText="Delete"
+          confirmAction={deleteFunction}
+        />
+      }
     </HeaderContainer>
   );
 };

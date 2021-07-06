@@ -97,7 +97,9 @@ const CreateRolesPropertiesOwnership = (props) => {
       setIsCheckData(false);
       setGridData([]);
       setGridOptions(gridOptionsArray);
-      dispatch(getActiveEnterpriseList());
+      setTimeout(() => {
+        dispatch(getActiveEnterpriseList());
+      }, 1000);
       props.setSelectedOwnership([]);
     });
 

@@ -18,6 +18,7 @@ export {default as TermCondition} from './termCondition';
 // Modal Component
 export {default as ModalTermCondition} from './modal/ModalTermCondition';
 export {default as ModalMultiSession} from './modal/ModalMultiSession';
+export {default as ModalConfirmation} from './modal/ModalConfirmation';
 
 //Global Text
 export { default as Text } from './global/text';
