@@ -11,6 +11,7 @@ import {
   OverlayBackground, 
 } from '../../components';
 import {useDispatch} from 'react-redux';
+import {useToastHooks} from '../../customHooks/customHooks';
 
 import {
   CreateRolesPermission,
@@ -34,6 +35,7 @@ const formBody = {
 const RoleAdministrationCreatePage = ({route, navigation}) => {
   const dispatch = useDispatch();
   const {roleId} = route.params;
+  const showToast = useToastHooks();
 
   const {activeMenu} = useSelector((state) => state.role_administration_get_all_role_reducer);
   const {imageBase64} = useSelector((state) => state.enterprise_reducer);
@@ -248,13 +250,13 @@ const RoleAdministrationCreatePage = ({route, navigation}) => {
           navigation.navigate("Role Administration");
         }
 
-        ToastAndroid.showWithGravityAndOffset(
-          wording, 
-          ToastAndroid.LONG, 
-          ToastAndroid.TOP,
-          0,
-          300
-        );
+        showToast({
+          title: `${Helper.makeCapital(activeMenu)} Role`,
+          type: 'success',
+          message: wording,
+          duration: 4500,
+          showToast: true,
+        })
 
         setSubmitLoading(false);
       }
