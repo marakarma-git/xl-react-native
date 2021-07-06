@@ -89,9 +89,8 @@ const userAdministrationCreateUser = () => ({
 
 const callUserAdministrationDeleteUser = (userId) => {
   return (dispatch, getState) => {
-    const newData = new Array();
     const {data_user} = getState().user_administration_get_user_reducer;
-    const { content } = data_user?.result;
+    const {content} = data_user?.result;
     const {dataHeader} = getState().user_administration_array_header_reducer || {};
     
     let contentLength = content.length;

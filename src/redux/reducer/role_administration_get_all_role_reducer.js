@@ -17,6 +17,7 @@ const initialState = {
     sortBy: '',
   },
   role_params_applied_activity_log: '',
+  activeMenu: ''
 };
 const role_administration_get_all_role_reducer = (
   state = initialState,
@@ -110,6 +111,23 @@ const role_administration_get_all_role_reducer = (
         role_applied_header_sort: initialState.role_applied_header_sort,
       };
     }
+    case reduxString.ROLE_ADMINISTRSTION_UPDATE_ROLE_LIST:
+      return{
+        ...state,
+        data_usedata_roler: action.dataRole,
+        data_role_generated: action.dataRoleGenerated,
+        role_elements_static:  state.role_elements_static - action.removeRole
+      }
+    case reduxString.ROLE_ADMINISTRATION_CRUD_ACTIVE_MENU:
+      return{
+        ...state,
+        activeMenu: action.payload
+      }
+    case reduxString.ROLE_ADMINISTRATION_COPY_ROLE_LIST:
+      return{
+        ...state,
+        role_elements_static: state.role_elements_static + 1
+      }
     default: {
       return state;
     }

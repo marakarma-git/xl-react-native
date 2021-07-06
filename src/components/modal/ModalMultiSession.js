@@ -1,17 +1,13 @@
 import React from 'react';
 import {
   Modal,
-  ScrollView,
   TouchableOpacity,
-  TouchableWithoutFeedback,
-  Linking,
   View,
   KeyboardAvoidingView
 } from 'react-native';
 import {inputHybridStyle} from '../../style';
 import {Text} from '../index';
 import PropTypes from 'prop-types';
-import {useNavigation} from '@react-navigation/native';
 import {useDispatch, useSelector} from 'react-redux';
 import { authLogin, resetMultiSessionDetected } from '../../redux/action/auth_action';
 

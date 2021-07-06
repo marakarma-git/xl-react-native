@@ -1,8 +1,8 @@
 import axios from 'axios';
 import {base_url} from '../../constant/connection';
 
-import React, {useState, useRef, useEffect} from 'react';
-import { useSelector } from 'react-redux';
+import React, {useState, useEffect} from 'react';
+import {useSelector} from 'react-redux';
 import {ScrollView, View, ToastAndroid, ActivityIndicator} from 'react-native';
 import {Text} from '../../components';
 import {
@@ -21,25 +21,24 @@ import {
   CreateRolesVisibility
 } from "../create";
 
+import Helper from '../../helpers/helper';
+import { setRequestError } from '../../redux/action/dashboard_action';
+import { roleAdministrationCopyRoleList } from '../../redux/action/role_administration_get_all_role_action';
+
 const formBody = {
     roleName: "",
     roleDescription: "",
     ownerOrganization: ""
-}
+};
 
-import { setRequestError } from '../../redux/action/dashboard_action';
-import Helper from '../../helpers/helper';
-import { useLinkProps } from '@react-navigation/native';
-
-const CreateNewUserPage = ({route, navigation}) => {
+const RoleAdministrationCreatePage = ({route, navigation}) => {
   const dispatch = useDispatch();
-  const {roleId, type} = route.params;
+  const {roleId} = route.params;
 
+  const {activeMenu} = useSelector((state) => state.role_administration_get_all_role_reducer);
   const {imageBase64} = useSelector((state) => state.enterprise_reducer);
-  const { access_token } = useSelector((state) => state.auth_reducer.data);
-
-  // Data State
-  const [roleDetail, setRoleDetail] = useState([]);
+  const {access_token} = useSelector((state) => state.auth_reducer.data);
+  
 
   // State Global
   const [formPosition, setFormPosition] = useState(0);
@@ -73,7 +72,7 @@ const CreateNewUserPage = ({route, navigation}) => {
         { 
           component: 
             <CreateRolesPropertiesDetail
-              mode={type} 
+              mode={activeMenu} 
               formValue={formProperties}
               setFormValue={setFormProperties}
               setIsComplete={setIsRolesPropertiesDetailComplete}
@@ -83,7 +82,7 @@ const CreateNewUserPage = ({route, navigation}) => {
         { 
           component: 
           <CreateRolesPropertiesOwnership
-            mode={type}
+            mode={activeMenu}
             formPosition={formPosition}
             firstRender={rolePropertiesFirstRender}
             setFirstRender={setRolePropertiesFirstRender}
@@ -104,7 +103,7 @@ const CreateNewUserPage = ({route, navigation}) => {
         { 
           component: 
             <CreateRolesVisibility 
-              mode={type}
+              mode={activeMenu}
               selectedOwnership={selectedOwnership}
               selectedVisibility={selectedVisibility}
               setSelectedVisibility={setSelectedVisibility}
@@ -121,7 +120,7 @@ const CreateNewUserPage = ({route, navigation}) => {
         { 
           component: 
             <CreateRolesPermission
-              mode={type}
+              mode={activeMenu}
               currentRoleIds={currentPriviledgeIds}
               setIsComplete={setIsRolesPermissionComplete}
               selectedPermission={selectedPermission}
@@ -192,7 +191,7 @@ const CreateNewUserPage = ({route, navigation}) => {
   const onSubmit = () => {
     let url = `${base_url}/user/role/createRole`;
 
-    if(type === 'edit'){
+    if(activeMenu === 'edit'){
       url = `${base_url}/user/role/updateRole?roleId=${roleId}`; 
     }
 
@@ -209,7 +208,7 @@ const CreateNewUserPage = ({route, navigation}) => {
       dataRaw.priviledgeIds.push(permission.priviledgeId);
     });
 
-    if(type === 'edit'){
+    if(activeMenu === 'edit'){
       delete dataRaw.roleDescription;
       dataRaw.description = formProperties.roleDescription;
     }else{
@@ -238,10 +237,14 @@ const CreateNewUserPage = ({route, navigation}) => {
         let wording = "";
         if(data.statusCode === 0){
 
-          if(type === 'create') wording = 'Create new role success';
-          if(type === 'copy') wording = 'Copy role success';
-          if(type === 'edit') wording = 'Update role success';
+          if(activeMenu === 'create') wording = 'Create new role success';
+          if(activeMenu === 'copy') wording = 'Copy role success';
+          if(activeMenu === 'edit') wording = 'Update role success';
 
+          if(activeMenu !== 'create'){
+            dispatch(roleAdministrationCopyRoleList());
+          }
+          
           navigation.navigate("Role Administration");
         }
 
@@ -266,7 +269,7 @@ const CreateNewUserPage = ({route, navigation}) => {
     }
   }
   
-  const getRoleDetail = async (actionType) => {
+  const getRoleDetail = async () => {
     try {
       setLoadingUserDetail(true);
       const { data } = await axios.get(`${base_url}/user/role/getRoleDetail?roleId=${roleId}`, {
@@ -277,11 +280,9 @@ const CreateNewUserPage = ({route, navigation}) => {
 
       if(data){
         const { result } = data;
-        console.log(result);
         if(data.statusCode === 0){
-          console.log(actionType, "  dapet type dalem function")
           setFormProperties({
-            roleName: actionType === "copy" ? `Copy of ${result.roleName}` : result.roleName,
+            roleName: activeMenu === "copy" ? `Copy of ${result.roleName}` : result.roleName,
             roleDescription: result.description,
             ownerOrganization: result.roleId
           });
@@ -317,7 +318,7 @@ const CreateNewUserPage = ({route, navigation}) => {
       // Reset Global State
       setFormPosition(0);
       setSubmitLoading(false);
-      setLoadingUserDetail(false);
+      setLoadingUserDetail(true);
       setScrollViewEnabled(true);
 
       // Reset State Component
@@ -339,16 +340,16 @@ const CreateNewUserPage = ({route, navigation}) => {
   }, [navigation]);
 
   useEffect(() => {
-    if(type != 'create'){
-      getRoleDetail(type);
+    if(activeMenu !== 'create'){
+      getRoleDetail();
     }
-  }, [type]);
+  }, [activeMenu])
 
   return (
     <View>
       <HeaderContainer
         navigation={navigation}
-        headerTitle={`${Helper.makeCapital(type)} Role`}
+        headerTitle={`${Helper.makeCapital(activeMenu)} Role`}
         companyLogo={imageBase64}
       />
       <ScrollView
@@ -365,7 +366,7 @@ const CreateNewUserPage = ({route, navigation}) => {
                       textAlign: 'center',
                       fontSize: 14,
                       paddingVertical: 10,
-                    }}>{type}...</Text>
+                    }}>Loading...</Text>
                 </View>
               :
               <FormStepComponent
@@ -387,4 +388,4 @@ const CreateNewUserPage = ({route, navigation}) => {
   );
 };
 
-export default CreateNewUserPage;
+export default RoleAdministrationCreatePage;
