@@ -2,13 +2,17 @@ import React, { useEffect, useRef } from 'react';
 import {View} from 'react-native';
 import PropTypes from 'prop-types';
 import {Text} from '../index';
-import { Animated, StyleSheet } from 'react-native';
+import { Animated, StyleSheet, Dimensions } from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
+
+const toastWidth = Dimensions.get('screen').width - 20;
 
 const ToastComponent = (props) => {
   const slideAnimation = useRef(new Animated.Value(-60)).current;
+  const loadAnimation = useRef(new Animated.Value(0)).current;
 
   const renderToastType = (type, impactOn = 'color') => {
+
     switch (type) {
       case "success":
         return impactOn == 'color' ? '#14B8A6' : 'checkmark';
@@ -36,6 +40,16 @@ const ToastComponent = (props) => {
     ).start();
   }, [slideAnimation])
 
+  useEffect(() => {
+    Animated.timing(
+      loadAnimation,
+      {
+        toValue: toastWidth,
+        duration: props.duration - 700
+      }
+    ).start();
+  }, [loadAnimation])
+
   return (
     <Animated.View style={
       [
@@ -58,11 +72,12 @@ const ToastComponent = (props) => {
           {props.title}
         </Text>
         <Text style={
-          { color: props.type == 'warning' ? 'black' : 'white', fontSize: 14 }
+          { color: props.type == 'warning' ? 'black' : 'white', fontSize: 14, paddingBottom: 5, paddingRight: 10 }
           }>
           {props.message}
         </Text>
       </View>
+      <Animated.View style={[styles.loadAnimation, { width: loadAnimation }]}></Animated.View>
     </Animated.View>
   );
 }
@@ -70,11 +85,11 @@ const ToastComponent = (props) => {
 const styles = StyleSheet.create({
   toastContainer: {
     flexDirection: 'row',
-    position: 'absolute',
-    width: '90%',
-    marginLeft: '5%',
+    position: 'absolute', 
+    width: toastWidth,
+    marginLeft: 10,
     minHeight: 60,
-    borderRadius: 7
+    borderRadius: 5
   },
   iconContainer: {
     width: '20%',
@@ -86,19 +101,30 @@ const styles = StyleSheet.create({
     width: '80%',
     height: '100%',
     paddingVertical: 5
+  },
+  loadAnimation: {
+    position: 'absolute',
+    bottom: 0,
+    backgroundColor: '#e7e7e7',
+    height: 6,
+    width: 0,
+    borderBottomLeftRadius: 5,
+    borderBottomRightRadius: 5
   }
 });
 
 ToastComponent.propTypes = {
   title: PropTypes.string,
   type: PropTypes.string,
-  message: PropTypes.string
+  message: PropTypes.string,
+  duration: PropTypes.number
 }
 
 ToastComponent.defaultProps = {
   title: "",
   type: "success",
-  message: ""
+  message: "",
+  duration: 4500
 }
 
 export default ToastComponent;
