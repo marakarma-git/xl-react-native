@@ -29,3 +29,5 @@ export {default as GeoDistributionPage} from './geoDistribution.page';
 export {default as SimProductivityPage} from './simProductivity.page';
 export {default as UsageAnalyticsPage} from './usageAnalytics.page';
 export {default as UsageSubscribersAnalyticsPage} from './usageSubscribersAnalytics.page';
+export {default as GeoDistributionFilterPage} from './geoDistributionFilter.page';
+export {default as SimProductivityFilterPage} from './simProductivityFilter.page';

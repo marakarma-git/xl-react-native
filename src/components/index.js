@@ -29,3 +29,5 @@ export { default as FormPassword } from './form/formPassword';
 export { default as CustomRadioButtonComponent } from './form/CustomRadioButton';
 
 export { default as GridComponent } from './grid/Grid';
+
+export { default as ToastComponent } from './toast/ToastComponent';

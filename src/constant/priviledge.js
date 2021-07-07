@@ -31,6 +31,8 @@ import {
   GeoDistributionPage,
   UsageAnalyticsPage,
   UsageSubscribersAnalyticsPage,
+  GeoDistributionFilterPage,
+  SimProductivityFilterPage,
 } from '../pages/Home/index';
 
 export const DRAWER_MENU_PRIVILEDGE = [
@@ -96,14 +98,6 @@ export const DRAWER_MENU_PRIVILEDGE = [
         height: 25,
         components: SubscriptionPackagePage,
       },
-      // {
-      //   priviledgeId: '',
-      //   name: 'Banner Management',
-      //   type: 'drawer',
-      //   width: 25,
-      //   height: 25,
-      //   components: BannerManagementPage,
-      // },
       {
         priviledgeId: '',
         name: 'SmsA2p Configuration',
@@ -299,13 +293,22 @@ export const DRAWER_MENU_PRIVILEDGE = [
   },
   {
     priviledgeId: '',
-    name: 'BannerManagementCreate',
+    name: 'GeoDistributionFilterPage',
     icon: '',
     type: 'non-drawer',
     width: 25,
     height: 25,
-    components: BannerManagementCreatePage,
+    components: GeoDistributionFilterPage,
   },
+  {
+    priviledgeId: '',
+    name: 'SimProductivityFilterPage',
+    icon: '',
+    type: 'non-drawer',
+    width: 25,
+    height: 25,
+    components: SimProductivityFilterPage,
+  }
 ];
 
 // you can adjust action by you redux action

@@ -15,6 +15,7 @@ import {SafeAreaProvider} from 'react-native-safe-area-context';
 import {encryptTransform} from 'redux-persist-transform-encrypt';
 import Route from './pages/route';
 import RootReducers from './redux/reducer';
+import {ToastContextProvider} from './context/ToastContext';
 
 const persistConfig = {
   key: 'root',
@@ -42,12 +43,14 @@ const persist = persistStore(store);
 const App = () => {
   return (
     <SafeAreaProvider>
-      <Provider store={store}>
-        <StatusBar backgroundColor="#002DBB" />
-        <PersistGate persistor={persist}>
-          <Route />
-        </PersistGate>
-      </Provider>
+      <ToastContextProvider>
+        <Provider store={store}>
+          <StatusBar backgroundColor="#002DBB" />
+          <PersistGate persistor={persist}>
+            <Route />
+          </PersistGate>
+        </Provider>
+      </ToastContextProvider>
     </SafeAreaProvider>
   );
 };
