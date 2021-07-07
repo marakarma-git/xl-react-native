@@ -73,7 +73,7 @@ const AppliedFilter = (props) => {
           })}
       </ScrollView>
       {withFilterButton && (
-        <TouchableOpacity>
+        <TouchableOpacity onPress={onPressFilter}>
           <MaterialCommunityIcon
             name={'filter'}
             size={26}

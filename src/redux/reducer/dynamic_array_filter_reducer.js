@@ -462,6 +462,7 @@ const initialState = {
   applied_filter: [],
   loading_array_filter: false,
   regenerateParams: false,
+  dynamic_array_filter_snapshot: {},
 };
 const dynamic_array_filter_reducer = (state = initialState, action) => {
   switch (action.type) {

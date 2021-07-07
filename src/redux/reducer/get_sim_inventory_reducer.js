@@ -18,6 +18,7 @@ const initialState = {
     sortBy: '',
   },
   current_params_applied: null,
+  get_sim_inventory_snapshot: {},
 };
 const get_sim_inventory_reducer = (state = initialState, action) => {
   switch (action.type) {
