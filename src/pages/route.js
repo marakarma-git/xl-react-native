@@ -69,7 +69,7 @@ const Route = () => {
   return (
     <NavigationContainer linking={{prefixes: ['dcp4.adlsandbox.com://app']}}>
       <GlobalUpdate isShow={isForceUpdate} closeModal={onCloseModal} />
-      <RootedBlocker />
+      {/* <RootedBlocker /> */}
       <RootStack />
     </NavigationContainer>
   );

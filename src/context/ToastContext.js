@@ -46,6 +46,7 @@ const ToastContextProvider = ({ children }) => {
           message={config.message}
           type={config.type}
           position={config.position}
+          duration={config.duration}
         />
       }
     </ToastContext.Provider>

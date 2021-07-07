@@ -31,6 +31,7 @@ import Loading from '../../components/loading';
 import axios from 'axios';
 import { setRequestError } from '../../redux/action/dashboard_action';
 import { base_url } from '../../constant/connection';
+import { useToastHooks } from '../../customHooks/customHooks';
 
 const actionDataArray = [
   {
@@ -57,6 +58,7 @@ const actionDataArray = [
 
 const RoleAdministrationPage = () => {
   const dispatch = useDispatch();
+  const showToast = useToastHooks();
   const navigation = useNavigation();
   const [actionData, setActionData] = useState(actionDataArray);
   const [firstRender, setFirstRender] = useState(true);
@@ -175,10 +177,15 @@ const RoleAdministrationPage = () => {
 
       if (data) {
         if (data.statusCode === 0) {
-          ToastAndroid.show(
-            'Selected role(s) has been deleted',
-            ToastAndroid.LONG,
-          );
+          showToast({
+            title: 'Delete Role(s)',
+            type: 'success',
+            message: 'Selected role(s) has been deleted',
+            duration: 4500,
+            showToast: true,
+            position: 'top'
+          });
+
           setSelectedRoles([]);
           updateActionAccess([]);
           dispatch(callRoleAdministrationDeleteRole(roleId));
@@ -190,10 +197,14 @@ const RoleAdministrationPage = () => {
       setShowModal(false);
       setDeleteLoading(true);
       dispatch(setRequestError(error.response.data));
-      ToastAndroid.show(
-        error.response.data.error_description || error.message,
-        ToastAndroid.LONG,
-      );
+      showToast({
+        title: 'Error',
+        type: 'error',
+        message: 'error.response.data.error_description || error.message',
+        duration: 4500,
+        showToast: true,
+        position: 'bottom'
+      });
     }
   };
 
