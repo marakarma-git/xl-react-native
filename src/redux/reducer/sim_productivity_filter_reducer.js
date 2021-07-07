@@ -6,13 +6,12 @@ const dataSimProductivity = [
   {
     formId: 'sim-productivity-enterprise-hard-code',
     formIdSubscription: 'enterprise-hard-code',
-    api_id: '',
     loading: false,
     errorText: '',
     value: {},
     data: [],
     typeInput: 'DropDown',
-    params: '',
+    params: '&enterpriseName=',
     config: {
       label: 'Enterprise',
     },
@@ -21,14 +20,13 @@ const dataSimProductivity = [
   {
     formId: 'sim-productivity-package-name-hard-code',
     formIdSubscription: 'subscription-package-name-hard-code',
-    api_id: '',
     disabled: true,
     loading: false,
     errorText: '',
     value: {},
     data: [],
     typeInput: 'DropDown',
-    params: '',
+    params: '&subscriptionPackageDesc=',
     config: {
       label: 'Package Name',
     },
