@@ -31,6 +31,7 @@ import sms_a2p_get_all_sms_reducer from './sms_a2p_get_all_sms_reducer';
 import automation_create_edit_reducer from './automation_create_edit_reducer';
 import automation_get_enterprise_reducer from './automation_get_enterprise_reducer';
 import permission_reducer from './permission_reducer';
+import sim_productivity_filter_reducer from './sim_productivity_filter_reducer';
 const RootReducers = combineReducers({
   dummy_reducer,
   auth_reducer,
@@ -64,5 +65,6 @@ const RootReducers = combineReducers({
   automation_create_edit_reducer,
   automation_get_enterprise_reducer,
   permission_reducer,
+  sim_productivity_filter_reducer,
 });
 export default RootReducers;

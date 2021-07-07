@@ -43,7 +43,7 @@ const TableSummary = (props) => {
 };
 TableSummary.propTypes = {
   data: PropTypes.arrayOf(
-    PropTypes.oneOf({
+    PropTypes.objectOf({
       label: PropTypes.string,
       value: PropTypes.string,
       color: PropTypes.string,
