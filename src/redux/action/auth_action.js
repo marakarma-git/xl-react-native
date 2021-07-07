@@ -44,6 +44,14 @@ const changePassword = (username) => ({
   params: {username},
 });
 
+const setSessionExpired = () => ({
+  type: reduxString.SET_SESSION_EXPIRED
+});
+
+const clearSessionExpiredFlag = () => ({
+  type: reduxString.CLEAR_SESSION_EXPIRED_FLAG
+});
+
 const tokenInvalid = () => {
   return async (dispatch, getState) => {
       dispatch(removeEnterPriseLogo());
@@ -257,5 +265,7 @@ export {
   setHomeLogin,
   checkLogin,
   resetMultiSessionDetected,
-  setIsErricson
+  setIsErricson,
+  setSessionExpired,
+  clearSessionExpiredFlag
 };

@@ -2,7 +2,7 @@ import React, { useEffect, useRef } from 'react';
 import {View} from 'react-native';
 import PropTypes from 'prop-types';
 import {Text} from '../index';
-import { Animated, StyleSheet, Dimensions } from 'react-native';
+import { Animated, StyleSheet, Dimensions, TouchableOpacity } from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 
 const toastWidth = Dimensions.get('screen').width - 20;
@@ -17,9 +17,9 @@ const ToastComponent = (props) => {
       case "success":
         return impactOn == 'color' ? '#14B8A6' : 'checkmark';
       case "warning":
-        return impactOn == 'color' ? '#FBBF24' : 'warning';
+        return impactOn == 'color' ? '#FFBB01' : 'warning';
       case "error":
-        return impactOn == 'color' ? '#EF4444' : 'close';
+        return impactOn == 'color' ? '#FA461C' : 'close';
       case "notice":
         return impactOn == 'color' ? '#3B82F6' : 'chatbox-ellipses';
       case "info":
@@ -77,6 +77,15 @@ const ToastComponent = (props) => {
           {props.message}
         </Text>
       </View>
+      <TouchableOpacity
+        style={styles.btnClose} 
+        onPress={() => props.setShowToast(false)}>
+          <Ionicons 
+            name="close-circle"
+            color="white"
+            size={22}
+          />
+      </TouchableOpacity>
       <Animated.View style={[styles.loadAnimation, { width: loadAnimation }]}></Animated.View>
     </Animated.View>
   );
@@ -92,13 +101,13 @@ const styles = StyleSheet.create({
     borderRadius: 5
   },
   iconContainer: {
-    width: '20%',
+    width: '15%',
     height: '100%',
     justifyContent: 'center',
     alignItems: 'center'
   },
   textContainer: {
-    width: '80%',
+    width: '85%',
     height: '100%',
     paddingVertical: 5
   },
@@ -110,6 +119,11 @@ const styles = StyleSheet.create({
     width: 0,
     borderBottomLeftRadius: 5,
     borderBottomRightRadius: 5
+  },
+  btnClose: {
+    position: 'absolute',
+    top: 7,
+    right: 5
   }
 });
 
@@ -117,14 +131,16 @@ ToastComponent.propTypes = {
   title: PropTypes.string,
   type: PropTypes.string,
   message: PropTypes.string,
-  duration: PropTypes.number
+  duration: PropTypes.number,
+  setShowToast: PropTypes.func
 }
 
 ToastComponent.defaultProps = {
   title: "",
   type: "success",
   message: "",
-  duration: 4500
+  duration: 4500,
+  setShowToast: () => {}
 }
 
 export default ToastComponent;

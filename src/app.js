@@ -43,14 +43,14 @@ const persist = persistStore(store);
 const App = () => {
   return (
     <SafeAreaProvider>
-      <ToastContextProvider>
-        <Provider store={store}>
+      <Provider store={store}>
+        <ToastContextProvider>
           <StatusBar backgroundColor="#002DBB" />
           <PersistGate persistor={persist}>
             <Route />
           </PersistGate>
-        </Provider>
-      </ToastContextProvider>
+        </ToastContextProvider>
+      </Provider>
     </SafeAreaProvider>
   );
 };

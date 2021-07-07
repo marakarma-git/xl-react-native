@@ -212,7 +212,7 @@ export default {
   },
   dropDownStyle: {
     height: 30,
-    width: 200, 
+    width: 230, 
     borderRadius: 0, 
     paddingLeft: 10,
     borderWidth: 1,

@@ -10,7 +10,8 @@ const initialState = {
   homeLogin: false,
   multiSessionMsg: "",
   isMultiSessionDetected: false,
-  isErricson: false
+  isErricson: false,
+  isSessionExpired: false,
 };
 
 const auth_reducers = (state = initialState, action) => {
@@ -94,6 +95,16 @@ const auth_reducers = (state = initialState, action) => {
       return{
         ...state,
         isErricson: action.payload
+      }
+    case reduxString.SET_SESSION_EXPIRED:
+      return{
+        ...state,
+        isSessionExpired: true,
+      }
+    case reduxString.CLEAR_SESSION_EXPIRED_FLAG:
+      return{
+        ...state,
+        isSessionExpired: false,
       }
     default:
       return state;
