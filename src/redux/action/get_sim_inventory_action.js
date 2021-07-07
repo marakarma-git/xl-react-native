@@ -179,6 +179,8 @@ const callSimInventory = (paginate) => {
       page_value,
       size_value,
       selectedHeaderSort: selectedHeaderSortPaginate,
+      simProductivity,
+      geoDistribution,
     } = paginate || {};
     dispatch(getSimInventoryLoading());
     const {data} = await getState().auth_reducer;
