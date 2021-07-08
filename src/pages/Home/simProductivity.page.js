@@ -15,10 +15,6 @@ import {
   simProductivityDynamicResetSelectedValue,
   simProductivityGenerateParams,
 } from '../../redux/action/sim_productivity_filter_action';
-import {
-  userAdministrationDynamicReset,
-  userAdministrationGenerateParams,
-} from '../../redux/action/user_administration_array_header_action';
 
 const SimProductivityPage = () => {
   const navigation = useNavigation();
@@ -65,6 +61,7 @@ const SimProductivityPage = () => {
                   dispatch(simProductivityGenerateParams());
                 }}
               />
+              <Text>{`${errorText && `Error: ${errorText}`}`}</Text>
               <SimChart
                 widthChart={widthChart}
                 data={dataChartSim}
