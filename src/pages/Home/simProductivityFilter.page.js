@@ -19,11 +19,6 @@ import {useDispatch, useSelector} from 'react-redux';
 import {device_width} from '../../constant/config';
 import lod from 'lodash';
 import InputHybrid from '../../components/InputHybrid';
-import {
-  smsA2pDynamicOnchangeDateTime,
-  smsA2pDynamicOnChangeDropDown,
-  smsA2pDynamicOnChangeTextInput,
-} from '../../redux/action/sms_a2p_array_header_action';
 
 const SimProductivityFilterPage = () => {
   const navigation = useNavigation();
@@ -87,7 +82,9 @@ const SimProductivityFilterPage = () => {
                           formId: 'sim-productivity-package-name-hard-code',
                         }),
                       );
-                      simGetEnterprisePackage({enterpriseName: e?.value});
+                      dispatch(
+                        simGetEnterprisePackage({enterpriseName: e?.label}),
+                      );
                     }
                     dispatch(
                       simProductivityDynamicOnchangeDropDown({

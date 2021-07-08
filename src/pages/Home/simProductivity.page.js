@@ -10,7 +10,15 @@ import {analyticStyle} from '../../style';
 import TableSummary from '../../components/table/tableSummary';
 import SimChart from '../../components/simProductivity/simChart.component';
 import Loading from '../../components/loading';
-import {simGetChart} from '../../redux/action/sim_productivity_filter_action';
+import {
+  simGetChart,
+  simProductivityDynamicResetSelectedValue,
+  simProductivityGenerateParams,
+} from '../../redux/action/sim_productivity_filter_action';
+import {
+  userAdministrationDynamicReset,
+  userAdministrationGenerateParams,
+} from '../../redux/action/user_administration_array_header_action';
 
 const SimProductivityPage = () => {
   const navigation = useNavigation();
@@ -47,10 +55,15 @@ const SimProductivityPage = () => {
               <AppliedFilter
                 withFilterButton
                 onPressFilter={() =>
-                  navigation.navigate('simProductivityFilter')
+                  navigation.navigate('SimProductivityFilterPage')
                 }
                 style={{marginLeft: 0, flex: 1}}
                 data={appliedFilter}
+                onDelete={(e) => {
+                  const {formId} = e || {};
+                  dispatch(simProductivityDynamicResetSelectedValue({formId}));
+                  dispatch(simProductivityGenerateParams());
+                }}
               />
               <SimChart
                 widthChart={widthChart}

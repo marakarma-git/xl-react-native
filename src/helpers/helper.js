@@ -7,11 +7,14 @@ class Helper {
     return result;
   }
 
-  static makeCapital(value){
+  static makeCapital(value) {
     let capitalWord = '';
-    for(let i = 0; i < value.length; i++){
-      if(i === 0) capitalWord += value[i].toUpperCase();
-      else capitalWord += value[i];
+    for (let i = 0; i < value.length; i++) {
+      if (i === 0) {
+        capitalWord += value[i].toUpperCase();
+      } else {
+        capitalWord += value[i];
+      }
     }
 
     return capitalWord;
@@ -250,12 +253,13 @@ class Helper {
   };
 
   static resetAllForm(data = []) {
-    return data.map(({formId, typeInput, ...value}) => {
+    return data.map(({formId, typeInput, defaultDisabled, ...value}) => {
       switch (typeInput) {
         case 'DropDown':
           return {
             ...value,
             formId: formId,
+            disabled: defaultDisabled,
             typeInput: typeInput,
             value: {},
           };
@@ -296,7 +300,7 @@ class Helper {
     newData = [],
     currentLevel = 0,
   ) {
-    console.log("Re Format")
+    console.log('Re Format');
     data.map((value, index) => {
       value.level = currentLevel;
       value.visibility = true;
@@ -491,9 +495,13 @@ class Helper {
     // Data Sample
     // const versionA = '14.8.3';
     // const versionB = '15.1.1';
-    const [majorA, minorA, patchA] = String(upcomingVersion).split('.').map(v => Number.parseInt(v));
-    const [majorB, minorB, patchB] = String(currentVersion).split('.').map(v => Number.parseInt(v));
-    return majorA > majorB
+    const [majorA, minorA, patchA] = String(upcomingVersion)
+      .split('.')
+      .map((v) => Number.parseInt(v));
+    const [majorB, minorB, patchB] = String(currentVersion)
+      .split('.')
+      .map((v) => Number.parseInt(v));
+    return majorA > majorB;
     // can be modified as below
     // if (majorA !== majorB) {
     //   return majorA > majorB;
@@ -503,7 +511,6 @@ class Helper {
     // }
     // return patchA > patchB;
   };
-
 }
 
 export default Helper;

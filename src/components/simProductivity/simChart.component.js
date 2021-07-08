@@ -7,6 +7,7 @@ import Text from '../global/text';
 import {ProductivityTableLabel} from '../table/tableSummary';
 const SimChart = (props) => {
   const {widthChart, onPressPie, data, dataColor} = props || {};
+  const isNoUsage = data[0].label === 'No Usage' && data.length === 1;
   return (
     <>
       <Svg width={widthChart - widthChart * 0.1} height={widthChart}>
@@ -33,7 +34,7 @@ const SimChart = (props) => {
               },
             },
           ]}
-          data={data}
+          data={!isNoUsage ? data : [{y: 100}]}
           labelComponent={
             <VictoryLabel
               dy={15}

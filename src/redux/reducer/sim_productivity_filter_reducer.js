@@ -21,6 +21,7 @@ const dataSimProductivity = [
     formId: 'sim-productivity-package-name-hard-code',
     formIdSubscription: 'subscription-package-name-hard-code',
     disabled: true,
+    defaultDisabled: true,
     loading: false,
     errorText: '',
     value: {},
@@ -95,6 +96,12 @@ const sim_productivity_filter_reducer = (state = initialState, action) => {
       const index =
         state.dataHeader.findIndex((f) => f.formId === action.formId) || 0;
       state.dataHeader[index].value = {};
+      if (
+        state.dataHeader[index].formId ===
+        'sim-productivity-package-name-hard-code'
+      ) {
+        state.dataHeader[index].disabled = true;
+      }
       return {
         ...state,
         dataHeader: state.dataHeader,
