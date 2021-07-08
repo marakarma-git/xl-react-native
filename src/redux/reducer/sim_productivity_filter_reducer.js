@@ -41,6 +41,7 @@ const initialState = {
   loading: true,
   errorText: '',
   dataChartSim: [],
+  dataChartColor: [],
 };
 const sim_productivity_filter_reducer = (state = initialState, action) => {
   switch (action.type) {
@@ -154,6 +155,7 @@ const sim_productivity_filter_reducer = (state = initialState, action) => {
         loading: false,
         errorText: initialState.errorText,
         dataChartSim: action.dataChart,
+        dataChartColor: action.dataColor,
       };
     }
     default: {

@@ -73,10 +73,11 @@ const simProductivityChartFailed = ({errorText}) => {
     errorText,
   };
 };
-const simProductivityChartSuccess = ({dataChart}) => {
+const simProductivityChartSuccess = ({dataChart, dataColor}) => {
   return {
     type: reduxString.SIM_PRODUCTIVITY_CHART_SUCCESS,
     dataChart,
+    dataColor,
   };
 };
 
@@ -178,18 +179,46 @@ const simGetChart = () => {
   return async (dispatch, getState) => {
     dispatch(simProductivityChartLoading());
     const {access_token} = (await getState().auth_reducer.data) || {};
+    const {generatedParams} =
+      (await getState().sim_productivity_filter_reducer) || {};
+    console.log(
+      `SIM_GET_CHART_LINK: ${base_url}/dcp/analytics/getSimProductivityStatistics${
+        generatedParams && generatedParams.replace('&', '?')
+      }`,
+    );
     axios
-      .get('', {
-        headers: {
-          Authorization: `Bearer ${access_token}`,
+      .get(
+        `${base_url}/dcp/analytics/getSimProductivityStatistics${
+          generatedParams && generatedParams.replace('&', '?')
+        }`,
+        {
+          headers: {
+            Authorization: `Bearer ${access_token}`,
+          },
         },
-      })
-      .then((data) => {
+      )
+      .then(({data}) => {
         const {result, statusCode} = data || {};
         if (statusCode === 0) {
+          let colors = [];
+          result.map(({color}) => {
+            colors.push(color);
+            return null;
+          });
+          const changeArray = result.map(
+            ({label, percentageValue, percentage, color, ...rest}) => ({
+              label: label,
+              value: percentage,
+              y: percentageValue,
+              percentage: percentageValue,
+              color: color,
+              rest: rest,
+            }),
+          );
           dispatch(
             simProductivityChartSuccess({
-              dataChart: result,
+              dataChart: changeArray,
+              dataColor: colors,
             }),
           );
         } else {
