@@ -57,7 +57,7 @@ const actionDataArray = [
   },
   {
     value: '3',
-    action: "Copy",
+    actionName: "Copy",
     label: 'Copy role...',
     isDisabled: true,
     isVisible: true
