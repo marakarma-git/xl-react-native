@@ -7,38 +7,37 @@ import React from 'react';
 const TableSummary = (props) => {
   const {data} = props || {};
   return (
-    <>
-      <View style={analyticStyle.containerTable}>
-        <Text fontType={'bold'} style={{fontSize: 16}}>
-          Productivity Level
-        </Text>
-        <Text>
-          %{' '}
+    <View style={{marginTop: 24}}>
+      {data && data.length > 0 && (
+        <View style={analyticStyle.containerTable}>
           <Text fontType={'bold'} style={{fontSize: 16}}>
-            of Quota usage
+            Productivity Level
           </Text>
-        </Text>
-      </View>
+          <Text>
+            %{' '}
+            <Text fontType={'bold'} style={{fontSize: 16}}>
+              of Quota usage
+            </Text>
+          </Text>
+        </View>
+      )}
       {data &&
         data.length > 0 &&
-        data.map(({label, value}) => {
+        data.map(({label, value, color, percentage}) => {
           return (
             <View style={analyticStyle.containerTable}>
-              <View style={analyticStyle.containerChild}>
-                <View style={analyticStyle.outerCircle}>
-                  <View style={analyticStyle.innerCircle} />
-                </View>
-                <Text style={{flex: 1}} fontType={'bold'}>
-                  {label}
-                </Text>
-              </View>
+              <ProductivityTableLabel
+                label={label}
+                color={color}
+                // percentage={percentage}
+              />
               <View style={analyticStyle.textRight}>
                 <Text>{value}</Text>
               </View>
             </View>
           );
         })}
-    </>
+    </View>
   );
 };
 TableSummary.propTypes = {
@@ -51,3 +50,17 @@ TableSummary.propTypes = {
   ),
 };
 export default TableSummary;
+const ProductivityTableLabel = ({color, label, percentage}) => {
+  return (
+    <View style={analyticStyle.containerChild}>
+      <View style={[analyticStyle.outerCircle, {backgroundColor: color}]}>
+        <View style={analyticStyle.innerCircle} />
+      </View>
+      <Text style={{flex: 1}}>
+        <Text fontType={'bold'}>{label}</Text>
+        {percentage && ` (${percentage}%)`}
+      </Text>
+    </View>
+  );
+};
+export {ProductivityTableLabel};

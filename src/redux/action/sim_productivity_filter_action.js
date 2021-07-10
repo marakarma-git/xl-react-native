@@ -73,10 +73,11 @@ const simProductivityChartFailed = ({errorText}) => {
     errorText,
   };
 };
-const simProductivityChartSuccess = ({dataChart}) => {
+const simProductivityChartSuccess = ({dataChart, dataColor}) => {
   return {
     type: reduxString.SIM_PRODUCTIVITY_CHART_SUCCESS,
     dataChart,
+    dataColor,
   };
 };
 
@@ -94,7 +95,7 @@ const simGetEnterprise = () => {
         if (statusCode === 0) {
           const changeArray = result.map(
             ({enterpriseId: thisEnterprise, enterpriseName}) => ({
-              value: thisEnterprise,
+              value: enterpriseName,
               label: enterpriseName,
             }),
           );
@@ -134,7 +135,9 @@ const simGetEnterprisePackage = ({enterpriseName}) => {
     const {access_token} = (await getState().auth_reducer.data) || {};
     axios
       .get(
-        `${base_url}/dcp/analytics/getListSubscriptionPackageName?enterpriseName=${enterpriseName}`,
+        `${base_url}/dcp/analytics/getListSubscriptionPackageName?enterpriseName=${enterpriseName}`
+          .split(' ')
+          .join('+'),
         {
           headers: {
             Authorization: `Bearer ${access_token}`,
@@ -145,7 +148,7 @@ const simGetEnterprisePackage = ({enterpriseName}) => {
         const {result, statusCode} = data || {};
         if (statusCode === 0) {
           const changeArray = result.map(({packageId, packageDesc}) => ({
-            value: packageId,
+            value: packageDesc,
             label: packageDesc,
           }));
           dispatch(
@@ -164,6 +167,7 @@ const simGetEnterprisePackage = ({enterpriseName}) => {
         }
       })
       .catch((error) => {
+        alert(JSON.stringify(error, null, 2));
         dispatch(
           simProductivityDynamicFailed({
             formId: 'sim-productivity-package-name-hard-code',
@@ -178,18 +182,50 @@ const simGetChart = () => {
   return async (dispatch, getState) => {
     dispatch(simProductivityChartLoading());
     const {access_token} = (await getState().auth_reducer.data) || {};
+    const {generatedParams} =
+      (await getState().sim_productivity_filter_reducer) || {};
+    console.log(
+      `SIM_GET_CHART_LINK: ${base_url}/dcp/analytics/getSimProductivityStatistics${
+        generatedParams && generatedParams.replace('&', '?')
+      }`
+        .split(' ')
+        .join('+'),
+    );
     axios
-      .get('', {
-        headers: {
-          Authorization: `Bearer ${access_token}`,
+      .get(
+        `${base_url}/dcp/analytics/getSimProductivityStatistics${
+          generatedParams && generatedParams.replace('&', '?')
+        }`
+          .split(' ')
+          .join('+'),
+        {
+          headers: {
+            Authorization: `Bearer ${access_token}`,
+          },
         },
-      })
-      .then((data) => {
+      )
+      .then(({data}) => {
         const {result, statusCode} = data || {};
         if (statusCode === 0) {
+          let colors = [];
+          result.map(({color}) => {
+            colors.push(color);
+            return null;
+          });
+          const changeArray = result.map(
+            ({label, percentageValue, percentage, color, ...rest}) => ({
+              label: label,
+              value: percentage,
+              y: percentageValue,
+              percentage: percentageValue,
+              color: color,
+              rest: rest,
+            }),
+          );
           dispatch(
             simProductivityChartSuccess({
-              dataChart: result,
+              dataChart: changeArray,
+              dataColor: colors,
             }),
           );
         } else {

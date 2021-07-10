@@ -7,12 +7,13 @@ export default {
     borderColor: '#8D8D8D',
   },
   paddingChart: {
-    top: 105,
-    bottom: 105,
+    top: 50,
+    bottom: 50,
   },
   labelChart: {
     fontSize: 12,
     fontWeight: 'bold',
+    display: 'none',
   },
   containerTable: {
     flexDirection: 'row',
