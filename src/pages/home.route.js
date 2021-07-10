@@ -11,7 +11,7 @@ const Home = () => {
   const {authority} = useSelector((state) => state.auth_reducer.data);
 
   const generateHomeScreen = () => {
-    const availableMenu = Helper.drawerData(authority, "all");
+    const availableMenu = Helper.drawerData(authority, 'all');
     return availableMenu.map((menu, i) => (
       <Drawer.Screen key={i} name={menu.name} component={menu.components} />
     ));
