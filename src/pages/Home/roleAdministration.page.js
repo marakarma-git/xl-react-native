@@ -1,7 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import {View, ToastAndroid, Alert} from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
-import {useNavigation} from '@react-navigation/native';
 import callRoleAction, {
   callRoleAdministrationDeleteRole,
   roleAdministrationCheckAlDataRole,
@@ -32,34 +31,42 @@ import axios from 'axios';
 import { setRequestError } from '../../redux/action/dashboard_action';
 import { base_url } from '../../constant/connection';
 import { useToastHooks } from '../../customHooks/customHooks';
+import { ADMINISTRATION_PRIVILEDGE_ID } from '../../constant/actionPriv';
 
 const actionDataArray = [
   {
     value: '0',
+    actionName: "Create",
     label: 'Create new role...',
     isDisabled: false,
+    isVisible: true,
   },
   {
     value: '1',
+    actionName: "Edit",
     label: 'Edit role...',
     isDisabled: true,
+    isVisible: true,
   },
   {
     value: '2',
+    actionName: "Delete",
     label: 'Delete role(s)...',
     isDisabled: true,
+    isVisible: true,
   },
   {
     value: '3',
+    action: "Copy",
     label: 'Copy role...',
     isDisabled: true,
+    isVisible: true
   },
 ];
 
-const RoleAdministrationPage = () => {
+const RoleAdministrationPage = ({ route, navigation }) => {
   const dispatch = useDispatch();
   const showToast = useToastHooks();
-  const navigation = useNavigation();
   const [actionData, setActionData] = useState(actionDataArray);
   const [firstRender, setFirstRender] = useState(true);
   const [showMenu, setShowMenu] = useState(false);
@@ -90,6 +97,7 @@ const RoleAdministrationPage = () => {
   const accessToken = useSelector(
     (state) => state.auth_reducer.data.access_token,
   );
+  const { data } = useSelector((state) => state.auth_reducer);
 
   const customConfirmAlert = (
     title,
@@ -249,6 +257,24 @@ const RoleAdministrationPage = () => {
     });
   };
 
+  const checkActionPriviledge = () => {
+    const dataAction = actionData.slice();
+
+    dataAction.map((action) => {
+      let isVisible = Helper.findAndReturnPriviledge(
+          route.name,
+          action.actionName, 
+          data?.authority || [], 
+          ADMINISTRATION_PRIVILEDGE_ID
+      );
+      action.isVisible = isVisible;
+    });
+
+    console.log(dataAction, " <<< harusnya begini")
+
+    setActionData(dataAction);
+  }
+
   useEffect(() => {
     reFetchListAction(data_role?.result?.content || []);
   }, [data_role]);
@@ -260,6 +286,7 @@ const RoleAdministrationPage = () => {
 
   useEffect(() => {
     return navigation.addListener('focus', () => {
+      checkActionPriviledge();
       dispatch(
         callRoleAction({
           page_params: 0,
@@ -270,7 +297,7 @@ const RoleAdministrationPage = () => {
 
   return (
     <HeaderContainer
-      headerTitle={'Role Administration'}
+      headerTitle={route.name}
       style={{flex: 1}}
       companyLogo={imageBase64}>
       <View style={subscriptionStyle.containerBackground}>
@@ -431,3 +458,4 @@ const RoleAdministrationPage = () => {
 };
 
 export default RoleAdministrationPage;
+

@@ -52,20 +52,27 @@ const CustomDrawerContent = (props) => {
     }
   };
 
+  const renderMenu = (item, type, index, activeMenu) => (
+    <CustomMenu
+      type={type}
+      key={index + 1}
+      style={{
+        backgroundColor: type == 'submenu' ? '#122b86' : 'transparent',
+      }}
+      index={index}
+      item={item}
+      activeMenu={activeMenu}
+      submitEvent={() => drawerOnPress(item.name, item.subMenu)}
+    />
+  )
+
   const generateDrawerMenu = (listDrawer, type = 'menu') =>
     listDrawer.map((item, index) => (
       <React.Fragment>
-        <CustomMenu
-          type={type}
-          key={index + 1}
-          style={{
-            backgroundColor: type == 'submenu' ? '#122b86' : 'transparent',
-          }}
-          index={index}
-          item={item}
-          activeMenu={activeMenu}
-          submitEvent={() => drawerOnPress(item.name, item.subMenu)}
-        />
+        {
+          type != 'submenu' ? renderMenu(item, type, index, activeMenu)
+          : <>{item.isVisible && renderMenu(item, type, index, activeMenu)}</>
+        }
         {item.subMenu &&
           activeMenu == item.name &&
           generateDrawerMenu(item.subMenu, 'submenu')}
@@ -74,7 +81,7 @@ const CustomDrawerContent = (props) => {
 
   useEffect(() => {
     const drawerLoad = props.navigation.addListener('focus', () => {
-      setDrawerData(Helper.addDrawerMenu(userData.authority));
+      setDrawerData(Helper.drawerData(userData.authority));
     });
 
     return drawerLoad;

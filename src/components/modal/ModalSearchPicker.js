@@ -58,40 +58,46 @@ const ModalSearchPicker = (props) => {
         <FlatList
           data={!removeSearch ? searchResults : data}
           renderItem={({item, index}) => {
+            const isVisible  = item.isVisible == undefined ? true : item.isVisible;
             const {label} = item;
             return (
-              <TouchableOpacity
-                disabled={item.isDisabled ? true : false}
-                onPress={() => {
-                  onChange(item);
-                }}
-                style={[
-                  {
-                    backgroundColor:
-                      index % 2 === 0 ? colors.gray_table : 'white',
-                    borderRadius: 3,
-                    borderColor: colors.gray_border,
-                  },
-                  inputHybridStyle.modalItem,
-                ]}>
-                <MaterialCommunityIcons
-                  name={
-                    label === value || item.value === value
-                      ? 'circle-slice-8'
-                      : 'circle-outline'
-                  }
-                  color={colors.button_color_one}
-                  size={20}
-                  style={{marginRight: 5}}
-                />
-                <Text
-                  style={{
-                    flex: 1,
-                    color: item.isDisabled ? '#c8c8c8' : 'black',
-                  }}>
-                  {label}
-                </Text>
-              </TouchableOpacity>
+              <>
+              {
+                isVisible &&
+                <TouchableOpacity
+                  disabled={item.isDisabled ? true : false}
+                  onPress={() => {
+                    onChange(item);
+                  }}
+                  style={[
+                    {
+                      backgroundColor:
+                        index % 2 === 0 ? colors.gray_table : 'white',
+                      borderRadius: 3,
+                      borderColor: colors.gray_border,
+                    },
+                    inputHybridStyle.modalItem,
+                  ]}>
+                  <MaterialCommunityIcons
+                    name={
+                      label === value || item.value === value
+                        ? 'circle-slice-8'
+                        : 'circle-outline'
+                    }
+                    color={colors.button_color_one}
+                    size={20}
+                    style={{marginRight: 5}}
+                  />
+                  <Text
+                    style={{
+                      flex: 1,
+                      color: item.isDisabled ? '#c8c8c8' : 'black',
+                    }}>
+                    {label}
+                  </Text>
+                </TouchableOpacity> 
+              }
+              </>
             );
           }}
         />

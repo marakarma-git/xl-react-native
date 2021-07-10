@@ -7,11 +7,14 @@ class Helper {
     return result;
   }
 
-  static makeCapital(value){
+  static makeCapital(value) {
     let capitalWord = '';
-    for(let i = 0; i < value.length; i++){
-      if(i === 0) capitalWord += value[i].toUpperCase();
-      else capitalWord += value[i];
+    for (let i = 0; i < value.length; i++) {
+      if (i === 0) {
+        capitalWord += value[i].toUpperCase();
+      } else {
+        capitalWord += value[i];
+      }
     }
 
     return capitalWord;
@@ -97,64 +100,74 @@ class Helper {
     }
   }
 
-  static findAndReturnPriviledge = (privId, userPriviledge) => {
-    const isHasPriviledge = userPriviledge.find(
-      (priv) => priv.priviledgeId == privId,
-    );
+  static findAndReturnPriviledge = (menuName , actionName, userPriviledge, priviledgeData) => {
+    let isHasPriviledge = false;
+    let menuData = priviledgeData.filter((priviledge) => priviledge.menuName == menuName);
+    let menuDetail = menuData.find((menu) => menu.actionName == actionName);
 
-    if (isHasPriviledge) {
-      return isHasPriviledge.priviledgeId;
-    } else {
-      return '';
+    for(let i = 0; i < userPriviledge.length; i++){
+      if(menuDetail){
+          if(menuDetail.privId == userPriviledge[i]){
+          isHasPriviledge = true;
+          break;
+          }
+      }
     }
+
+    return isHasPriviledge;
+
   };
 
-  static addDrawerMenu = (userPriviledge, type = 'drawer') => {
-    const drawerMenu = [];
+  static drawerData (userPriviledge = [], type = 'drawer'){
+    const drawerMenuPriv = [...DRAWER_MENU_PRIVILEDGE];
+    const drawerMenu = new Array();
 
-    if (userPriviledge) {
-      DRAWER_MENU_PRIVILEDGE.map((drawer) => {
-        for (let i = 0; i < userPriviledge.length; i++) {
-          if (type === 'drawer') {
-            if (drawer.type == 'drawer' || drawer.type == 'initialRoute') {
-              if (
-                drawer.priviledgeId == userPriviledge[i].priviledgeId ||
-                drawer.priviledgeId == ''
-              ) {
-                drawerMenu.push(drawer);
-                break;
-              }
-            }
-          } else {
-            if (
-              drawer.priviledgeId == userPriviledge[i].priviledgeId ||
-              drawer.priviledgeId == ''
-            ) {
-              if (drawer.components) {
-                drawerMenu.push(drawer);
-                break;
-              } else {
-                if (drawer.subMenu) {
-                  for (let i = 0; i < drawer.subMenu.length; i++) {
-                    drawerMenu.push(drawer.subMenu[i]);
-                  }
-                }
-                break;
-              }
-            }
-          }
+    drawerMenuPriv.map((drawer) => {
+      let isAdded = true;
+      let priviledgeData = new Array();
+
+      if(drawer.type == 'drawer'){
+        if(drawer.priviledgeIds.length > 0){
+          priviledgeData = Helper.checkPriviledgeCount(userPriviledge, drawer.priviledgeIds);
+          if(priviledgeData.length == 0) isAdded = false;
         }
-      });
-    } else {
-      DRAWER_MENU_PRIVILEDGE.map((drawer) => {
-        if (drawer.type == 'non-drawer' || drawer.type == 'initialRoute') {
+      }
+
+      if(isAdded){
+        if(drawer.subMenu){
+          Helper.checkAddedSubMenu(drawer, priviledgeData);
+          if(type != 'drawer') drawer.subMenu.map(subMenu => { drawerMenu.push(subMenu) });
+        }
+        if(type == 'drawer'){
+          if(drawer.type == 'drawer') drawerMenu.push(drawer);
+        }else{
           drawerMenu.push(drawer);
         }
-      });
-    }
+      }
+
+    });
 
     return drawerMenu;
-  };
+  }
+
+  static checkPriviledgeCount (userPriviledge = [], drawerPriviledge){
+    let priviledgeData = new Array();
+    let isHasPriviledge = false;
+
+    drawerPriviledge.map((drawPriv) => {
+      isHasPriviledge = userPriviledge.some((privId) => privId == drawPriv.privId);
+      if(isHasPriviledge) priviledgeData.push(drawPriv);
+    });
+
+    return priviledgeData;
+  }
+
+  static checkAddedSubMenu (menuData, priviledgeData) {
+    menuData.subMenu.map((menu, index) => {
+      let isSubMenuAdded = priviledgeData.some((priviledge) => priviledge.menuName == menu.name);
+      menu.isVisible = isSubMenuAdded;
+    });
+  }
 
   static sortDescending(data, key) {
     if (typeof data === 'object') {
@@ -250,12 +263,13 @@ class Helper {
   };
 
   static resetAllForm(data = []) {
-    return data.map(({formId, typeInput, ...value}) => {
+    return data.map(({formId, typeInput, defaultDisabled, ...value}) => {
       switch (typeInput) {
         case 'DropDown':
           return {
             ...value,
             formId: formId,
+            disabled: defaultDisabled,
             typeInput: typeInput,
             value: {},
           };
@@ -296,7 +310,7 @@ class Helper {
     newData = [],
     currentLevel = 0,
   ) {
-    console.log("Re Format")
+    console.log('Re Format');
     data.map((value, index) => {
       value.level = currentLevel;
       value.visibility = true;
@@ -491,9 +505,13 @@ class Helper {
     // Data Sample
     // const versionA = '14.8.3';
     // const versionB = '15.1.1';
-    const [majorA, minorA, patchA] = String(upcomingVersion).split('.').map(v => Number.parseInt(v));
-    const [majorB, minorB, patchB] = String(currentVersion).split('.').map(v => Number.parseInt(v));
-    return majorA > majorB
+    const [majorA, minorA, patchA] = String(upcomingVersion)
+      .split('.')
+      .map((v) => Number.parseInt(v));
+    const [majorB, minorB, patchB] = String(currentVersion)
+      .split('.')
+      .map((v) => Number.parseInt(v));
+    return majorA > majorB;
     // can be modified as below
     // if (majorA !== majorB) {
     //   return majorA > majorB;
@@ -503,7 +521,6 @@ class Helper {
     // }
     // return patchA > patchB;
   };
-
 }
 
 export default Helper;
