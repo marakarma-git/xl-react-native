@@ -1,5 +1,7 @@
 const DASHBOARD_PRIVILEDGE_ID = [
-  {privId: '02ac2c76-53ce-11ea-8d77-2e728ce88125', menuName: "Dashboard",  actionName: "", activityLog: "Dashboard"}
+  {privId: '02ac2c76-53ce-11ea-8d77-2e728ce88125', menuName: "Dashboard",  actionName: "Dashboard", activityLog: "SIM Statistics"},
+  {privId: '02ac2c76-53ce-11ea-8d77-2e728ce88125', menuName: "Dashboard",  actionName: "Summary", activityLog: "Generate Dashboard Summary Data"},
+  {privId: '02ac2c76-53ce-11ea-8d77-2e728ce88125', menuName: "Dashboard",  actionName: "TopTraffic", activityLog: "Traffic Statistics"},
 ];
 
 const SUBSCRIPTION_PRIVILEDGE_ID = [
@@ -55,8 +57,16 @@ const AUTOMATION_PRIVILEDGE_ID = [
 const ANALYTICS_PRIVILEDGE_ID = [
   {privId: '26f20e88-badb-4bcc-a33d-8d897d675455', menuName: "Sim Productivity",  actionName: "View", activityLog: "SIM Productivity:	View"},
   {privId: '43e6210b-221c-4488-a921-5ec68daecd88', menuName: "Sim Productivity",  actionName: "Filter", activityLog: "SIM Productivity:	Filter"},
-  {privId: 'ee1a51ac-6439-11eb-ae93-0242ac130002', menuName: "Usage Analytics",  actionName: "View", activityLog: "Usage Analytics:	View"},
-  {privId: 'ee1a526a-6439-11eb-ae93-0242ac130002', menuName: "Usage Analytics",  actionName: "Filter", activityLog: "Usage Analytics:	Filter"},
+  {privId: 'ee1a526a-6439-11eb-ae93-0242ac130002', menuName: "Usage Analytics",  actionName: "SimStatisticsView", activityLog: "SIM Statistics"},
+  {privId: 'ee1a51ac-6439-11eb-ae93-0242ac130002', menuName: "Usage Analytics",  actionName: "SimStatisticsFilter", activityLog: "SIM Statistics"},
+  {privId: 'ee1a526a-6439-11eb-ae93-0242ac130002', menuName: "Usage Analytics",  actionName: "TrafficStatisticsView", activityLog: "Traffic Statistics"},
+  {privId: 'ee1a51ac-6439-11eb-ae93-0242ac130002', menuName: "Usage Analytics",  actionName: "TrafficStatisticsFilter", activityLog: "Traffic Statistics"},
+  {privId: 'ee1a526a-6439-11eb-ae93-0242ac130002', menuName: "Usage Analytics",  actionName: "AggregatedTrafficsView", activityLog: "Aggregated Traffics"},
+  {privId: 'ee1a51ac-6439-11eb-ae93-0242ac130002', menuName: "Usage Analytics",  actionName: "AggregatedTrafficsFilter", activityLog: "Aggregated Traffics"},
+  {privId: 'ee1a526a-6439-11eb-ae93-0242ac130002', menuName: "Usage Analytics",  actionName: "Last12MonthUsageView", activityLog: "Last 12 Month Usage"},
+  {privId: 'ee1a51ac-6439-11eb-ae93-0242ac130002', menuName: "Usage Analytics",  actionName: "Last12MonthUsageFilter", activityLog: "Last 12 Month Usage"},
+  {privId: 'ee1a526a-6439-11eb-ae93-0242ac130002', menuName: "Usage Analytics",  actionName: "MonthlyUsageView", activityLog: "Monthly Usage"},
+  {privId: 'ee1a51ac-6439-11eb-ae93-0242ac130002', menuName: "Usage Analytics",  actionName: "MonthlyUsageFilter", activityLog: "Monthly Usage"},
   {privId: '99bd51a2-69d6-11eb-9439-0242ac130002', menuName: "Usage & Subscribers Analytics",  actionName: "Filter", activityLog: "Usage & Subscriber Analytics: Filter"},
   {privId: '99bd52b0-69d6-11eb-9439-0242ac130002', menuName: "Usage & Subscribers Analytics",  actionName: "View", activityLog: "Usage & Subscriber Analytics: View"},
   {privId: '5733ffea-301f-45ec-9f00-52c8cfcae183', menuName: "Geo Distribution",  actionName: "View", activityLog: "Geo Distribution: View"},
@@ -64,8 +74,9 @@ const ANALYTICS_PRIVILEDGE_ID = [
 ];
 
 const LOGIN_LOGOUT_PRIVILEDGE_ID = [
-  {privId: '4acc8dc6-7245-11ea-bc55-0242ac130003', menuName: "Login",  actionName: "Login", activityLog: "Sign In"},
-  {privId: '4acca644-7245-11ea-bc55-0242ac130003', menuName: "Logout",  actionName: "Logout", activityLog: "Sign Out"},
+  {privId: '4acc8dc6-7245-11ea-bc55-0242ac130003', menuName: "Login",  actionName: "Login", activityLog: "Login"},
+  {privId: '4acca644-7245-11ea-bc55-0242ac130003', menuName: "Logout",  actionName: "Logout", activityLog: "Logout"},
+  {privId: 'ee1a4a4a-6439-11eb-ae93-0242ac130002', menuName: "Home",  actionName: "Home", activityLog: "See Home Banner Promotion"},
 ];
 
 const CHANGE_PASSWORD_PRIVILEDGE_ID = [

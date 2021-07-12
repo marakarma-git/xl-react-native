@@ -6,7 +6,6 @@ import {persistStore, persistReducer} from 'redux-persist';
 const thunk = require('redux-thunk').default;
 import {
   validateTokenMiddleware,
-  activityLogMiddleware,
 } from './redux/middleware/index';
 import {PersistGate} from 'redux-persist/integration/react';
 import {applyMiddleware, createStore} from 'redux';
@@ -36,7 +35,7 @@ const persistReducers = persistReducer(persistConfig, RootReducers);
 const store = createStore(
   persistReducers,
   // applyMiddleware(thunk, validateTokenMiddleware),
-  applyMiddleware(thunk, validateTokenMiddleware, activityLogMiddleware),
+  applyMiddleware(thunk, validateTokenMiddleware),
 );
 const persist = persistStore(store);
 

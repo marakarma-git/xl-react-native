@@ -3,6 +3,8 @@ import reduxString from '../reduxString';
 import subDomain from '../../constant/requestSubPath';
 import {base_url, headerAuth, clientId} from '../../constant/connection';
 import {removeEnterPriseLogo} from './enterprise_action';
+import { saveActivityLog } from './save_activity_log_action';
+import { LOGIN_LOGOUT_PRIVILEDGE_ID } from '../../constant/actionPriv';
 
 const authRequest = () => {
   return {
@@ -61,6 +63,13 @@ const tokenInvalid = () => {
 
 const authLogout = () => {
   return async (dispatch, getState) => {
+    const username = getState().auth_reducer.data?.principal?.username || "";
+    dispatch(saveActivityLog(
+      'Logout', 
+      'Logout', 
+      LOGIN_LOGOUT_PRIVILEDGE_ID, 
+      `as ${username}`
+    ));
     try {
       const {data} = await Axios.post(`${base_url}${subDomain.logout}`, {}, {
         headers: {
@@ -70,7 +79,7 @@ const authLogout = () => {
 
       if(data){
           dispatch(removeEnterPriseLogo());
-          dispatch(removeAuth(getState().auth_reducer.data.principal.username));
+          dispatch(removeAuth(username));
       }
 
     } catch (error) {
@@ -159,6 +168,13 @@ const authLogin = (username, password, loginDropDown) => {
         const authority = await getUserPriviledges(data?.access_token);
         data.authority = authority;
         dispatch(authSuccess(data, {username, password, client_id: clientId}));
+        dispatch(saveActivityLog(
+          'Login', 
+          'Login', 
+          LOGIN_LOGOUT_PRIVILEDGE_ID, 
+          `as ${username}`,
+          authority
+        ));
       }
     } catch (error) {
       dispatch(authFailed(error.response.data));
@@ -179,6 +195,9 @@ const getUserPriviledges = async (access_token) => {
     if(data){
       if(data.statusCode === 0){
         userPriviledges = data.result;
+        // Temporary home promotion hard coded priv id
+        checkHomePromotion = userPriviledges.find((promotion) => promotion == 'ee1a4a4a-6439-11eb-ae93-0242ac130002');
+        if(!checkHomePromotion) userPriviledges.push('ee1a4a4a-6439-11eb-ae93-0242ac130002');
       }
     }
   } catch (error) {

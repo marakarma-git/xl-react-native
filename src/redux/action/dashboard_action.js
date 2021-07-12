@@ -3,6 +3,8 @@ import Helper from '../../helpers/helper';
 import reduxString from '../reduxString';
 import {base_url} from '../../constant/connection';
 import {dashboardHeaderAuth} from '../../constant/headers';
+import { saveActivityLog } from './save_activity_log_action';
+import { DASHBOARD_PRIVILEDGE_ID, LOGIN_LOGOUT_PRIVILEDGE_ID } from '../../constant/actionPriv';
 
 const setDashboardSummary = (data) => ({
   type: reduxString.SET_DASHBOARD_SUMMARY,
@@ -50,6 +52,12 @@ export const getDashboardSummary = (accessToken) => {
           });
 
           dispatch(setDashboardSummary(summaryData));
+          dispatch(saveActivityLog(
+            'Dashboard',
+            'Summary',
+            DASHBOARD_PRIVILEDGE_ID,
+            ""
+          ));
         } else {
           throw new Error(data);
         }
@@ -112,6 +120,11 @@ export const getCarousel = (accessToken) => {
             banner.bannerImage = `data:image/jpeg;base64,${banner.bannerImage}`;
           });
           dispatch(setCarousel(data.result));
+          dispatch(saveActivityLog(
+            "Home",
+            "Home",
+            LOGIN_LOGOUT_PRIVILEDGE_ID,
+          ));
         } else {
           throw new Error(data);
         }
@@ -194,6 +207,12 @@ export const requestWidgetData = (
               setTopTrafficStatistics(data.result.dataset, filterParams),
             );
           }
+          dispatch(saveActivityLog(
+            "Dashboard",
+            type === "sim" ? "Dashboard" : "TopTraffic",
+            DASHBOARD_PRIVILEDGE_ID,
+            ""
+          ));
         } else {
           dispatch(setRequestError(data.statusDescription));
         }

@@ -108,15 +108,30 @@ class Helper {
     for(let i = 0; i < userPriviledge.length; i++){
       if(menuDetail){
           if(menuDetail.privId == userPriviledge[i]){
-          isHasPriviledge = true;
-          break;
+            isHasPriviledge = true;
+            break;
           }
       }
     }
 
     return isHasPriviledge;
-
   };
+
+  static findAndReturnActivityLogData = (menuName, actionName, userPriviledge, priviledgeData) => {
+    let returnData = new Array();
+    let menuData = priviledgeData.filter((priviledge) => priviledge.menuName == menuName);
+    let menuDetail = menuData.find((menu) => menu.actionName == actionName);
+
+    for(let i = 0; i < userPriviledge.length; i++){
+      if(menuDetail){
+          if(menuDetail.privId == userPriviledge[i]){
+            returnData.push(menuDetail);
+            break;
+          }
+      }
+    }
+    return returnData; 
+  }
 
   static drawerData (userPriviledge = [], type = 'drawer'){
     const drawerMenuPriv = [...DRAWER_MENU_PRIVILEDGE];
