@@ -8,11 +8,19 @@ import Orientation from '../../helpers/orientation';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
 const NavbarComponent = (props) => {
-  const {companyLogo, headerTitle, orientation, backIcon} = props || null;
+  const {companyLogo, headerTitle, orientation, backIcon, onPressBack} =
+    props || null;
   return (
     <View style={[homeStyle.navbarContainer, props.customStyle]}>
       {backIcon === true ? (
-        <TouchableOpacity onPress={() => props.navigation.goBack()}>
+        <TouchableOpacity
+          onPress={() => {
+            if (!onPressBack) {
+              props.navigation.goBack();
+            } else {
+              onPressBack();
+            }
+          }}>
           <MaterialCommunityIcons
             name={'arrow-left'}
             color={'black'}

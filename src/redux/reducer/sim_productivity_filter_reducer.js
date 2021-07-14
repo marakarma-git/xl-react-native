@@ -5,7 +5,7 @@ import generateLink from '../../helpers/generateLink';
 const dataSimProductivity = [
   {
     formId: 'sim-productivity-enterprise-hard-code',
-    formIdSubscription: 'enterprise-hard-code',
+    formIdTo: 'enterprise-hard-code',
     loading: false,
     errorText: '',
     value: {},
@@ -19,7 +19,7 @@ const dataSimProductivity = [
   },
   {
     formId: 'sim-productivity-package-name-hard-code',
-    formIdSubscription: 'subscription-package-name-hard-code',
+    formIdTo: 'subscription-package-name-hard-code',
     disabled: true,
     defaultDisabled: true,
     loading: false,

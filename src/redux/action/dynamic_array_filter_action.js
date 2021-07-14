@@ -2,6 +2,7 @@ import dayjs from 'dayjs';
 import lod from 'lodash';
 import generateLink from '../../helpers/generateLink';
 import reduxString from '../reduxString';
+import Helper from '../../helpers/helper';
 const updateDataFilter = (data = []) => {
   return {
     type: reduxString.UPDATE_DATA_FILTER,
@@ -34,10 +35,11 @@ const resetGeneratedParams = () => {
   };
 };
 const generateArrayFilterParams = () => {
-  return (dispatch, getState) => {
+  return async (dispatch, getState) => {
     const {dynamic_array_filter_reducer} = getState();
     const {array_filter} = dynamic_array_filter_reducer;
-    dispatch(updateGeneratedParams(generateLink(array_filter)));
+    const data = await generateLink(array_filter);
+    dispatch(updateGeneratedParams(data));
   };
 };
 const removeAllHardCodeTrue = () => {
@@ -85,6 +87,25 @@ const updateSortBy = ({formId, orderBy, sortBy}) => {
 const resetSortBy = () => {
   return {
     type: reduxString.RESET_SORT_BY,
+  };
+};
+const subscriptionDynamicArraySnapshotGenerateParams = ({
+  firstRender,
+  newArray,
+  linkParams,
+  containerData,
+}) => {
+  return {
+    type: reduxString.SUBSCRIPTION_DYNAMIC_ARRAY_SNAPSHOT_GENERATE_PARAMS,
+    firstRender,
+    newArray,
+    linkParams,
+    containerData,
+  };
+};
+const subscriptionDynamicArrayReApplyDataFromSnapshot = () => {
+  return {
+    type: reduxString.SUBSCRIPTION_DYNAMIC_ARRAY_RE_APPLY_DATA_FROM_SNAPSHOT,
   };
 };
 const multipleSetShown = (dataShown = []) => {
@@ -159,6 +180,9 @@ const setSomethingToFilter = (dataObject = []) => {
           newArr[getIndex].isSelected = !newArr[getIndex].isSelected;
           return dispatch(updateDataFilter(newArr));
         case 'OnChangeDropDown':
+          newArr[getIndex].value = {...value};
+          return dispatch(updateDataFilter(newArr));
+        case 'ForParamsOnlyDropDown':
           newArr[getIndex].value = {...value};
           return dispatch(updateDataFilter(newArr));
         case 'OnChangeDropDownType2':
@@ -241,4 +265,7 @@ export {
   updateDataSearchText,
   updateSortBy,
   resetSortBy,
+  // For handling passing params from other layout
+  subscriptionDynamicArraySnapshotGenerateParams,
+  subscriptionDynamicArrayReApplyDataFromSnapshot,
 };

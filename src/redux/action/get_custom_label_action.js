@@ -8,14 +8,13 @@ import {
 import axios from 'axios';
 import lod from 'lodash';
 import {base_url} from '../../constant/connection';
-import {authFailed, authLogout} from './auth_action';
-import {CommonActions} from '@react-navigation/native';
+import {authFailed} from './auth_action';
 const getCustomLabelLoading = () => {
   return {
     type: reduxString.GET_CUSTOM_LABEL_LOADING,
   };
 };
-const getCustomLabel = (navigation) => {
+const getCustomLabel = () => {
   return async (dispatch, getState) => {
     dispatch(removeAllHardCodeTrue());
     dispatch(getCustomLabelLoading());
@@ -33,22 +32,10 @@ const getCustomLabel = (navigation) => {
         },
       )
       .then(({data}) => {
-        if (data.error === 'invalid_token') {
-          dispatch(authLogout());
-          navigation.dispatch(
-            CommonActions.reset({
-              index: 0,
-              routes: [
-                {
-                  name: 'Auth',
-                },
-              ],
-            }),
-          );
-        }
         if (data.statusCode === 0) {
           const modifyArray = data.result.map(
             ({customLabel, customValue, fieldType, labelNumber, ...rest}) => ({
+              ...rest,
               formId: `label-${labelNumber}`,
               api_id: `label${labelNumber}`,
               disabled: false,
@@ -72,7 +59,6 @@ const getCustomLabel = (navigation) => {
               params: `&customLabel${labelNumber}=`,
               shown: false,
               sorted: null,
-              ...rest,
             }),
           );
           dispatch(mergeSpecificDataFilterIndex(modifyArray));
@@ -82,11 +68,6 @@ const getCustomLabel = (navigation) => {
       })
       .catch((error) => {
         dispatch(authFailed(error.response.data));
-        // if (e.response.data) {
-        //
-        // } else {
-        //   alert('Something went wrong went fetching data');
-        // }
       });
   };
 };

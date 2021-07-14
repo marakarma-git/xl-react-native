@@ -15,13 +15,16 @@ import {
   simProductivityDynamicResetSelectedValue,
   simProductivityGenerateParams,
 } from '../../redux/action/sim_productivity_filter_action';
+import {getCustomLabel} from '../../redux/action/get_custom_label_action';
 
 const SimProductivityPage = () => {
   const navigation = useNavigation();
   const dispatch = useDispatch();
+  const [firstRender, setFirstRender] = useState(true);
   const [widthChart, setWidthChart] = useState(0);
   const {imageBase64} = useSelector((state) => state.enterprise_reducer);
   const {
+    dataHeader,
     loading,
     errorText,
     dataChartSim,
@@ -31,7 +34,28 @@ const SimProductivityPage = () => {
   } = useSelector((state) => state.sim_productivity_filter_reducer);
   useEffect(() => {
     dispatch(simGetChart());
+    if (firstRender) {
+      dispatch(getCustomLabel(navigation));
+      setFirstRender(false);
+    }
   }, [generatedParams]);
+  const handleToSubscription = ({label}) => {
+    navigation.navigate('Subscription', {
+      navigationFrom: 'simProductivity',
+      dataNavigation: {
+        arrayNavigation: [
+          ...dataHeader,
+          {
+            formIdTo: 'sim-productivity-percentage-group-params-only-drop-down',
+            value: {
+              label: label,
+              value: label,
+            },
+          },
+        ],
+      },
+    });
+  };
   return (
     <HeaderContainer
       headerTitle={'Sim Productivity'}
@@ -66,9 +90,21 @@ const SimProductivityPage = () => {
                 widthChart={widthChart}
                 data={dataChartSim}
                 dataColor={dataChartColor}
-                onPressPie={(e) => alert(JSON.stringify(e, null, 2))}
+                onPressPie={({datum}) => {
+                  handleToSubscription({
+                    value: datum.value,
+                    label: datum.label,
+                  });
+                }}
               />
-              <TableSummary data={dataChartSim} />
+              <TableSummary
+                data={dataChartSim}
+                onPress={({label}) => {
+                  handleToSubscription({
+                    label,
+                  });
+                }}
+              />
             </Container>
           )}
         </ScrollView>

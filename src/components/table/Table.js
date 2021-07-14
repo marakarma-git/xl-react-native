@@ -83,6 +83,7 @@ const Table = (props) => {
                 setRightIsScrolling(false);
               }}>
               {dataHeader &&
+                dataHeader.length > 0 &&
                 dataHeader.map((item, index) => {
                   const {cellType, shown, formId: inFormId} = item || {};
                   if (index > 0 && shown && !item.config.doNotShowOnTable) {

@@ -8,7 +8,8 @@ import {Dimensions} from 'react-native';
 const HomePageContainer = (props) => {
   const navigation = useNavigation();
   const [orientation, setOrientation] = useState('potrait');
-  const {companyLogo, headerTitle, children, backIcon} = props || null;
+  const {companyLogo, headerTitle, children, backIcon, onPressBack} =
+    props || null;
 
   const detectOrientation = useCallback(() => {
     if (Orientation.getHeight() <= Orientation.getWidth()) {
@@ -34,6 +35,7 @@ const HomePageContainer = (props) => {
         companyLogo={companyLogo}
         headerTitle={headerTitle}
         backIcon={backIcon}
+        onPressBack={onPressBack}
       />
       {children}
     </>
@@ -43,5 +45,9 @@ HomePageContainer.propTypes = {
   orientation: PropTypes.string,
   companyLogo: PropTypes.string,
   headerTitle: PropTypes.string,
+  onPressBack: PropTypes.func,
+};
+HomePageContainer.defaultProps = {
+  onPressBack: undefined,
 };
 export default HomePageContainer;

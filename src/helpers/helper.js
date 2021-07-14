@@ -1,5 +1,6 @@
 import {DRAWER_MENU_PRIVILEDGE} from '../constant/priviledge';
 import dayjs from 'dayjs';
+import lod from 'lodash';
 
 class Helper {
   static numberFormat(value, symbol, type = 'number') {
@@ -100,40 +101,54 @@ class Helper {
     }
   }
 
-  static findAndReturnPriviledge = (menuName , actionName, userPriviledge, priviledgeData) => {
+  static findAndReturnPriviledge = (
+    menuName,
+    actionName,
+    userPriviledge,
+    priviledgeData,
+  ) => {
     let isHasPriviledge = false;
-    let menuData = priviledgeData.filter((priviledge) => priviledge.menuName == menuName);
+    let menuData = priviledgeData.filter(
+      (priviledge) => priviledge.menuName == menuName,
+    );
     let menuDetail = menuData.find((menu) => menu.actionName == actionName);
 
-    for(let i = 0; i < userPriviledge.length; i++){
-      if(menuDetail){
-          if(menuDetail.privId == userPriviledge[i]){
-            isHasPriviledge = true;
-            break;
-          }
+    for (let i = 0; i < userPriviledge.length; i++) {
+      if (menuDetail) {
+        if (menuDetail.privId == userPriviledge[i]) {
+          isHasPriviledge = true;
+          break;
+        }
       }
     }
 
     return isHasPriviledge;
   };
 
-  static findAndReturnActivityLogData = (menuName, actionName, userPriviledge, priviledgeData) => {
+  static findAndReturnActivityLogData = (
+    menuName,
+    actionName,
+    userPriviledge,
+    priviledgeData,
+  ) => {
     let returnData = new Array();
-    let menuData = priviledgeData.filter((priviledge) => priviledge.menuName == menuName);
+    let menuData = priviledgeData.filter(
+      (priviledge) => priviledge.menuName == menuName,
+    );
     let menuDetail = menuData.find((menu) => menu.actionName == actionName);
 
-    for(let i = 0; i < userPriviledge.length; i++){
-      if(menuDetail){
-          if(menuDetail.privId == userPriviledge[i]){
-            returnData.push(menuDetail);
-            break;
-          }
+    for (let i = 0; i < userPriviledge.length; i++) {
+      if (menuDetail) {
+        if (menuDetail.privId == userPriviledge[i]) {
+          returnData.push(menuDetail);
+          break;
+        }
       }
     }
-    return returnData; 
-  }
+    return returnData;
+  };
 
-  static drawerData (userPriviledge = [], type = 'drawer'){
+  static drawerData(userPriviledge = [], type = 'drawer') {
     const drawerMenuPriv = [...DRAWER_MENU_PRIVILEDGE];
     const drawerMenu = new Array();
 
@@ -141,45 +156,61 @@ class Helper {
       let isAdded = true;
       let priviledgeData = new Array();
 
-      if(drawer.type == 'drawer'){
-        if(drawer.priviledgeIds.length > 0){
-          priviledgeData = Helper.checkPriviledgeCount(userPriviledge, drawer.priviledgeIds);
-          if(priviledgeData.length == 0) isAdded = false;
+      if (drawer.type == 'drawer') {
+        if (drawer.priviledgeIds.length > 0) {
+          priviledgeData = Helper.checkPriviledgeCount(
+            userPriviledge,
+            drawer.priviledgeIds,
+          );
+          if (priviledgeData.length == 0) {
+            isAdded = false;
+          }
         }
       }
 
-      if(isAdded){
-        if(drawer.subMenu){
+      if (isAdded) {
+        if (drawer.subMenu) {
           Helper.checkAddedSubMenu(drawer, priviledgeData);
-          if(type != 'drawer') drawer.subMenu.map(subMenu => { drawerMenu.push(subMenu) });
+          if (type != 'drawer') {
+            drawer.subMenu.map((subMenu) => {
+              drawerMenu.push(subMenu);
+            });
+          }
         }
-        if(type == 'drawer'){
-          if(drawer.type == 'drawer') drawerMenu.push(drawer);
-        }else{
+        if (type == 'drawer') {
+          if (drawer.type == 'drawer') {
+            drawerMenu.push(drawer);
+          }
+        } else {
           drawerMenu.push(drawer);
         }
       }
-
     });
 
     return drawerMenu;
   }
 
-  static checkPriviledgeCount (userPriviledge = [], drawerPriviledge){
+  static checkPriviledgeCount(userPriviledge = [], drawerPriviledge) {
     let priviledgeData = new Array();
     let isHasPriviledge = false;
 
     drawerPriviledge.map((drawPriv) => {
-      isHasPriviledge = userPriviledge.some((privId) => privId == drawPriv.privId);
-      if(isHasPriviledge) priviledgeData.push(drawPriv);
+      isHasPriviledge = userPriviledge.some(
+        (privId) => privId == drawPriv.privId,
+      );
+      if (isHasPriviledge) {
+        priviledgeData.push(drawPriv);
+      }
     });
 
     return priviledgeData;
   }
 
-  static checkAddedSubMenu (menuData, priviledgeData) {
+  static checkAddedSubMenu(menuData, priviledgeData) {
     menuData.subMenu.map((menu, index) => {
-      let isSubMenuAdded = priviledgeData.some((priviledge) => priviledge.menuName == menu.name);
+      let isSubMenuAdded = priviledgeData.some(
+        (priviledge) => priviledge.menuName == menu.name,
+      );
       menu.isVisible = isSubMenuAdded;
     });
   }
@@ -278,11 +309,11 @@ class Helper {
   };
 
   static resetAllForm(data = []) {
-    return data.map(({formId, typeInput, defaultDisabled, ...value}) => {
+    return data.map(({formId, typeInput, defaultDisabled, ...rest}) => {
       switch (typeInput) {
         case 'DropDown':
           return {
-            ...value,
+            ...rest,
             formId: formId,
             disabled: defaultDisabled,
             typeInput: typeInput,
@@ -290,7 +321,7 @@ class Helper {
           };
         case 'DropDownType2':
           return {
-            ...value,
+            ...rest,
             formId: formId,
             value: '',
             typeInput: typeInput,
@@ -298,23 +329,30 @@ class Helper {
           };
         case 'TextInput':
           return {
-            ...value,
+            ...rest,
             formId: formId,
             typeInput: typeInput,
             value: '',
           };
         case 'DateTimePicker':
           return {
-            ...value,
+            ...rest,
             isSelected: false,
             formId: formId,
             typeInput: typeInput,
             value: dayjs().toDate(),
           };
+        case 'ForParamsOnlyDropDown':
+          return {
+            formId: formId,
+            typeInput: typeInput,
+            value: {},
+            ...rest,
+          };
         default:
           return {
             formId,
-            ...value,
+            ...rest,
           };
       }
     });
@@ -535,6 +573,20 @@ class Helper {
     //   return minorA > minorB;
     // }
     // return patchA > patchB;
+  };
+
+  static merge2ArrayObject = async ({arrayFrom, arrayTo}) => {
+    const copyArray = lod.cloneDeep(arrayTo);
+    await arrayFrom.map((item) => {
+      const {formIdTo, value, data, disabled} = item || {};
+      const findIndex = arrayTo.findIndex((f) => f.formId === formIdTo);
+      copyArray[findIndex].value = value;
+      copyArray[findIndex].data = data || [];
+      copyArray[findIndex].disabled = disabled;
+    });
+    return {
+      newArray: copyArray,
+    };
   };
 }
 

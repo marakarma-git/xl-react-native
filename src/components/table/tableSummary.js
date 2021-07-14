@@ -1,11 +1,11 @@
-import {View} from 'react-native';
+import {TouchableOpacity, View} from 'react-native';
 import {analyticStyle} from '../../style';
 import Text from '../global/text';
 import PropTypes from 'prop-types';
 import React from 'react';
 
 const TableSummary = (props) => {
-  const {data} = props || {};
+  const {data, onPress} = props || {};
   return (
     <View style={{marginTop: 24}}>
       {data && data.length > 0 && (
@@ -25,16 +25,18 @@ const TableSummary = (props) => {
         data.length > 0 &&
         data.map(({label, value, color, percentage}) => {
           return (
-            <View style={analyticStyle.containerTable}>
+            <TouchableOpacity
+              style={analyticStyle.containerTable}
+              onPress={() => onPress({label, value, color, percentage})}>
               <ProductivityTableLabel
                 label={label}
                 color={color}
-                // percentage={percentage}
+                percentage={percentage}
               />
               <View style={analyticStyle.textRight}>
                 <Text>{value}</Text>
               </View>
-            </View>
+            </TouchableOpacity>
           );
         })}
     </View>
@@ -48,6 +50,7 @@ TableSummary.propTypes = {
       color: PropTypes.string,
     }),
   ),
+  onPress: PropTypes.func,
 };
 export default TableSummary;
 const ProductivityTableLabel = ({color, label, percentage}) => {

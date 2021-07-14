@@ -1,19 +1,19 @@
 import React, {useEffect, useState} from 'react';
 import {useDispatch, useSelector} from 'react-redux';
-import {View, Linking, BackHandler} from 'react-native';
+import {BackHandler, Linking, View} from 'react-native';
 import {useNavigation} from '@react-navigation/native';
 import {subscriptionStyle} from '../../style';
 import Table from '../../components/table/Table';
 import TableFooter from '../../components/subscription/tableFooter';
 import SearchHeader from '../../components/subscription/searchHeader';
-import {HeaderContainer, OverlayBackground} from '../../components/index';
+import {HeaderContainer, OverlayBackground, Text} from '../../components/index';
 import {getCustomLabel} from '../../redux/action/get_custom_label_action';
 import FilterActionLabel from '../../components/subscription/filterActionLabel';
 import Helper from '../../helpers/helper';
 import callSimInventory, {
   changeCheckSimInventory,
-  changeCheckSimInventoryAllTrue,
   changeCheckSimInventoryAllFalse,
+  changeCheckSimInventoryAllTrue,
   dataMatcherArray2D,
   setSimInventoryTable,
 } from '../../redux/action/get_sim_inventory_action';
@@ -23,15 +23,22 @@ import {
   updateDataFilter,
   updateDataSearchText,
 } from '../../redux/action/dynamic_array_filter_action';
+import {
+  subscriptionDynamicArraySnapshotGenerateParams,
+  subscriptionDynamicArrayReApplyDataFromSnapshot,
+} from '../../redux/action/dynamic_array_filter_action';
 import ModalMenuPicker from '../../components/modal/ModalMenuPicker';
 import AppliedFilter from '../../components/subscription/appliedFilter';
 import dayjs from 'dayjs';
 import ModalMapOnly from '../../components/modal/ModalMapOnly';
 import lod from 'lodash';
 import Loading from '../../components/loading';
+import generateLink from '../../helpers/generateLink';
 
 const Subscription = ({route}) => {
   const dispatch = useDispatch();
+  const {params} = route;
+  const {navigationFrom, dataNavigation} = params || {}; //dataNavigation -> {arrayNavigation:[]}
   const navigation = useNavigation();
   const [firstRender, setFirstRender] = useState(true);
   const [showMenu, setShowMenu] = useState(false);
@@ -45,6 +52,7 @@ const Subscription = ({route}) => {
     generatedParams,
     applied_filter,
     totalFiltered,
+    dynamic_array_filter_snapshot,
   } = useSelector((state) => state.dynamic_array_filter_reducer);
   const {
     loading,
@@ -67,16 +75,12 @@ const Subscription = ({route}) => {
           page_value: 0,
         }),
       );
-    } else {
-      dispatch(getCustomLabel(navigation));
-      dispatch(callSimInventory());
-      setFirstRender(false);
     }
-    // return () => clearTimeout(timer);
-    if (route?.params?.key) {
-      BackHandler.addEventListener('hardwareBackPress', () => {
-        navigation.setParams({key: undefined});
-      });
+    if (lod.isEmpty(navigationFrom) && firstRender) {
+      // alert('78');
+      dispatch(callSimInventory());
+      dispatch(getCustomLabel(navigation));
+      setFirstRender(false);
     }
   }, [current_size, dispatch, navigation, searchText, generatedParams]);
   useEffect(() => {
@@ -84,12 +88,75 @@ const Subscription = ({route}) => {
       console.log('params_ada_isi: ' + current_params_applied);
     }
   }, [current_params_applied]);
+
+  // This for params handling ===============
+  const handlingBack = () => {
+    dispatch(subscriptionDynamicArrayReApplyDataFromSnapshot());
+    navigation.setParams({
+      navigationFrom: undefined,
+      dataNavigation: undefined,
+    });
+    dispatch(callSimInventory());
+  };
+  useEffect(() => {
+    return BackHandler.addEventListener('hardwareBackPress', () => {
+      handlingBack();
+    });
+  }, []);
+  useEffect(() => {
+    async function preConfig() {
+      const {arrayNavigation} = dataNavigation || [];
+      const resetArray = await Helper.resetAllForm(array_filter);
+      const {newArray} = await Helper.merge2ArrayObject({
+        arrayFrom: arrayNavigation,
+        arrayTo: resetArray,
+      });
+      const {linkParams, containerData} = await generateLink(newArray);
+      return {newArray, linkParams, containerData};
+    }
+    if (!lod.isEmpty(navigationFrom)) {
+      preConfig()
+        .then(({newArray, linkParams, containerData}) => {
+          if (!firstRender) {
+            dispatch(
+              subscriptionDynamicArraySnapshotGenerateParams({
+                firstRender: false,
+                newArray,
+                linkParams,
+                containerData,
+              }),
+            );
+          } else if (firstRender) {
+            setFirstRender(false);
+            dispatch(
+              subscriptionDynamicArraySnapshotGenerateParams({
+                firstRender: true,
+                newArray,
+                linkParams,
+                containerData,
+              }),
+            );
+          }
+        })
+        .catch((e) => {
+          alert('Fatal, Please restart the app');
+        });
+    }
+  }, [params, dispatch, navigationFrom, dataNavigation]);
+  // End for params handling ===============
+
   return (
     <HeaderContainer
       headerTitle={'Subscription'}
       style={{flex: 1}}
       companyLogo={imageBase64}
-      backIcon={route?.params?.key}>
+      backIcon={!lod.isEmpty(navigationFrom)}
+      onPressBack={() => {
+        if (!lod.isEmpty(navigationFrom)) {
+          handlingBack();
+          navigation.goBack();
+        }
+      }}>
       <View style={subscriptionStyle.containerBackground}>
         <Table
           isScrollView={true}
@@ -110,22 +177,34 @@ const Subscription = ({route}) => {
                   data={applied_filter}
                   onDelete={(e) => {
                     const {formId, typeInput} = e || {};
-                    dispatch(
-                      setSomethingToFilter([
-                        {
-                          formId: formId,
-                          needs: `OnChange${typeInput}`,
-                          value:
-                            typeInput === 'DateTimePicker'
-                              ? dayjs().toDate()
-                              : typeInput === 'DropDown'
-                              ? {}
-                              : '',
-                          selectedValue: {},
-                          isSelected: false,
-                        },
-                      ]),
-                    );
+                    if (typeInput !== 'ForParamsOnlyDropDown') {
+                      dispatch(
+                        setSomethingToFilter([
+                          {
+                            formId: formId,
+                            needs: `OnChange${typeInput}`,
+                            value:
+                              typeInput === 'DateTimePicker'
+                                ? dayjs().toDate()
+                                : typeInput === 'DropDown'
+                                ? {}
+                                : '',
+                            selectedValue: {},
+                            isSelected: false,
+                          },
+                        ]),
+                      );
+                    } else {
+                      dispatch(
+                        setSomethingToFilter([
+                          {
+                            formId: formId,
+                            needs: 'ForParamsOnlyDropDown',
+                            value: {},
+                          },
+                        ]),
+                      );
+                    }
                     dispatch(generateArrayFilterParams());
                   }}
                 />
