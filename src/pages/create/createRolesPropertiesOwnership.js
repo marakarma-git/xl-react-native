@@ -5,7 +5,7 @@ import {View} from 'react-native';
 import {useNavigation} from '@react-navigation/native';
 import {useDispatch, useSelector} from 'react-redux';
 import {Text, GridComponent} from '../../components';
-import { getActiveEnterpriseList, resetTreeCheckGetActiveEnterpriseList } from '../../redux/action/enterprise_management_action';
+import { enterpriseManagementClearActiveEnterpriseData } from '../../redux/action/enterprise_management_action';
 import Helper from '../../helpers/helper';
 
 const gridOptionsArray = [
@@ -94,13 +94,10 @@ const CreateRolesPropertiesOwnership = (props) => {
   // Hooks 
   useEffect(() => {
     const pageLoad = navigation.addListener("focus", () => {
+      dispatch(enterpriseManagementClearActiveEnterpriseData());
       setIsCheckData(false);
       setGridData([]);
       setGridOptions(gridOptionsArray);
-      setTimeout(() => {
-        dispatch(getActiveEnterpriseList());
-      }, 1000);
-      props.setSelectedOwnership([]);
     });
 
     return pageLoad;
@@ -108,9 +105,9 @@ const CreateRolesPropertiesOwnership = (props) => {
 
   useEffect(() => {
     if(data_active_enterprise.length > 0){
+      console.log("Change")
       setGridData(Helper.manipulateIsDisabledArray(data_active_enterprise));
     }
-
   }, [data_active_enterprise]);
 
   useEffect(() => {

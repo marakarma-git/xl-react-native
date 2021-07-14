@@ -25,6 +25,9 @@ import {
 import Helper from '../../helpers/helper';
 import { setRequestError } from '../../redux/action/dashboard_action';
 import { roleAdministrationCopyRoleList } from '../../redux/action/role_administration_get_all_role_action';
+import { saveActivityLog } from '../../redux/action/save_activity_log_action';
+import { ADMINISTRATION_PRIVILEDGE_ID } from '../../constant/actionPriv';
+import { getActiveEnterpriseList } from '../../redux/action/enterprise_management_action';
 
 const formBody = {
     roleName: "",
@@ -47,6 +50,7 @@ const RoleAdministrationCreatePage = ({route, navigation}) => {
   const [submitLoading, setSubmitLoading] = useState(false);
   const [loadingUserDetail, setLoadingUserDetail] = useState(false);
   const [scrollViewEnabled, setScrollViewEnabled] = useState(true);
+  const [callDetailData, setCallDetailData] = useState(false);
 
   // State Per Component
   const [formProperties, setFormProperties] = useState(formBody);
@@ -180,13 +184,14 @@ const RoleAdministrationCreatePage = ({route, navigation}) => {
     if(isComplete){
       setFormPosition(prevState => prevState + 1);
     }else{
-      ToastAndroid.showWithGravityAndOffset(
-        "Please complete the field !", 
-        ToastAndroid.LONG, 
-        ToastAndroid.TOP,
-        0,
-        300
-      );
+      showToast({
+        title: 'Validation',
+        type: 'warning',
+        message: 'Please complete the field!',
+        duration: 2500,
+        showToast: true,
+        position: 'top'
+      });
     }
   };
 
@@ -258,16 +263,28 @@ const RoleAdministrationCreatePage = ({route, navigation}) => {
           showToast: true,
         })
 
+        let capitalActiveMenu = Helper.makeCapital(activeMenu);
+
         setSubmitLoading(false);
+        dispatch(saveActivityLog(
+          'Role Administration',
+          capitalActiveMenu,
+          ADMINISTRATION_PRIVILEDGE_ID,
+          `${capitalActiveMenu} for data: ${dataRaw.roleName}`
+        ))
       }
 
     } catch (error) {
         setSubmitLoading(false);
         dispatch(setRequestError(error.response.data));
-        ToastAndroid.show(
-          error.response.data.error_description || error.message,
-          ToastAndroid.LONG,
-        );
+        showToast({
+          title: 'Error',
+          type: 'error',
+          message: JSON.stringify(error.response.data),
+          duration: 4500,
+          showToast: true,
+          position: 'top'
+        });
     }
   }
   
@@ -283,6 +300,7 @@ const RoleAdministrationCreatePage = ({route, navigation}) => {
       if(data){
         const { result } = data;
         if(data.statusCode === 0){
+          console.log("GET ROLE DETAIL")
           setFormProperties({
             roleName: activeMenu === "copy" ? `Copy of ${result.roleName}` : result.roleName,
             roleDescription: result.description,
@@ -320,8 +338,9 @@ const RoleAdministrationCreatePage = ({route, navigation}) => {
       // Reset Global State
       setFormPosition(0);
       setSubmitLoading(false);
-      setLoadingUserDetail(true);
+      setLoadingUserDetail(false);
       setScrollViewEnabled(true);
+      setCallDetailData(true);
 
       // Reset State Component
       setFormProperties(formBody);
@@ -342,10 +361,15 @@ const RoleAdministrationCreatePage = ({route, navigation}) => {
   }, [navigation]);
 
   useEffect(() => {
-    if(activeMenu !== 'create'){
-      getRoleDetail();
+    if(callDetailData){
+      if(activeMenu !== 'create'){
+        getRoleDetail();
+        console.log("GET ACTIVE ENTERPRISE")
+        dispatch(getActiveEnterpriseList());
+        setCallDetailData(false);
+      }
     }
-  }, [activeMenu])
+  }, [activeMenu, callDetailData])
 
   return (
     <View>

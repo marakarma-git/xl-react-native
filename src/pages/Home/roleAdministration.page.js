@@ -32,6 +32,7 @@ import { setRequestError } from '../../redux/action/dashboard_action';
 import { base_url } from '../../constant/connection';
 import { useToastHooks } from '../../customHooks/customHooks';
 import { ADMINISTRATION_PRIVILEDGE_ID } from '../../constant/actionPriv';
+import { saveActivityLog } from '../../redux/action/save_activity_log_action';
 
 const actionDataArray = [
   {
@@ -165,9 +166,11 @@ const RoleAdministrationPage = ({ route, navigation }) => {
 
   const deleteFunction = async () => {
     const roleId = new Array();
+    const roleNameArray = new Array();
 
     selectedRoles.map((role) => {
       roleId.push(role.roleId);
+      roleNameArray.push(role.roleName);
     });
 
     setDeleteLoading(true);
@@ -197,6 +200,12 @@ const RoleAdministrationPage = ({ route, navigation }) => {
           setSelectedRoles([]);
           updateActionAccess([]);
           dispatch(callRoleAdministrationDeleteRole(roleId));
+          dispatch(saveActivityLog(
+            route.name,
+            'Delete',
+            ADMINISTRATION_PRIVILEDGE_ID,
+            `Delete data for: ${roleNameArray.join(", ")}`
+          ))
         }
         setShowModal(false);
         setDeleteLoading(true);
@@ -208,7 +217,7 @@ const RoleAdministrationPage = ({ route, navigation }) => {
       showToast({
         title: 'Error',
         type: 'error',
-        message: 'error.response.data.error_description || error.message',
+        message: error.response.data.error_description || error.message,
         duration: 4500,
         showToast: true,
         position: 'bottom'
@@ -285,6 +294,11 @@ const RoleAdministrationPage = ({ route, navigation }) => {
   useEffect(() => {
     return navigation.addListener('focus', () => {
       checkActionPriviledge();
+      dispatch(saveActivityLog(
+        route.name,
+        'View',
+        ADMINISTRATION_PRIVILEDGE_ID,
+      ));
       dispatch(
         callRoleAction({
           page_params: 0,

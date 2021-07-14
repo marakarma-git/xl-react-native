@@ -241,7 +241,7 @@ const CreateNewUserPage = ({route, navigation}) => {
       showToast({
         title: 'Validation',
         type: 'warning',
-        message: 'Please complete the field',
+        message: 'Please complete the field!',
         duration: 2500,
         showToast: true,
         position: 'top'
