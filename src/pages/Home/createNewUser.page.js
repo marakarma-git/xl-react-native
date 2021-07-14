@@ -23,6 +23,9 @@ import {
 import { enterpriseManagementClearActiveEnterpriseData } from '../../redux/action/enterprise_management_action';
 import { setRequestError } from '../../redux/action/dashboard_action';
 import { userAdministrationCreateUser } from '../../redux/action/user_administration_get_user_action';
+import { useToastHooks } from '../../customHooks/customHooks';
+import { saveActivityLog } from '../../redux/action/save_activity_log_action';
+import { ADMINISTRATION_PRIVILEDGE_ID } from '../../constant/actionPriv';
 
 const passwordFormBody = {
     password: "",
@@ -79,6 +82,7 @@ const passwordRulesArray = [
 const CreateNewUserPage = ({route, navigation}) => {
   const userId = route.params?.userId || "";
   const dispatch = useDispatch();
+  const showToast = useToastHooks();
   const listViewRef = useRef();
   const {imageBase64} = useSelector((state) => state.enterprise_reducer);
   const { data } = useSelector((state) => state.auth_reducer);
@@ -234,13 +238,14 @@ const CreateNewUserPage = ({route, navigation}) => {
     if(isComplete){
       setFormPosition(prevState => prevState + 1);
     }else{
-      ToastAndroid.showWithGravityAndOffset(
-        "Please complete the field !", 
-        ToastAndroid.LONG, 
-        ToastAndroid.TOP,
-        0,
-        300
-      );
+      showToast({
+        title: 'Validation',
+        type: 'warning',
+        message: 'Please complete the field',
+        duration: 2500,
+        showToast: true,
+        position: 'top'
+      });
     }
   }
 
@@ -317,23 +322,34 @@ const CreateNewUserPage = ({route, navigation}) => {
 
       if(data){
         let wording = "";
+        let actionType = "Edit";
         if(data.statusCode === 0){
           if(!userId){
+           wording = 'Create new user success';
+           actionType = "Create";
            dispatch(userAdministrationCreateUser()); 
           }
-          wording = data.statusDescription;
+          dispatch(saveActivityLog(
+            'User Administration',
+            actionType,
+            ADMINISTRATION_PRIVILEDGE_ID,
+            `${actionType} for data: ${dataRaw.username}`
+           ));
+          wording = 'Update user success';
           navigation.navigate("User Administration");
         }else if(data.statusCode === 1002){
            wording = data.statusDescription + ", please use another username! ";
            setFormPosition(0);
         }
-        ToastAndroid.showWithGravityAndOffset(
-          wording, 
-          ToastAndroid.LONG, 
-          ToastAndroid.TOP,
-          0,
-          300
-        );
+
+        showToast({
+          title: !userId ? 'Create User' : 'Edit User',
+          type: 'warning',
+          message: wording,
+          duration: 4500,
+          showToast: true,
+          position: 'top'
+        });
 
         setSubmitLoading(false);
       }
@@ -341,10 +357,14 @@ const CreateNewUserPage = ({route, navigation}) => {
     } catch (error) {
         setSubmitLoading(false);
         dispatch(setRequestError(error.response.data));
-        ToastAndroid.show(
-        error.response.data.error_description || error.message,
-        ToastAndroid.LONG,
-      );
+        showToast({
+          title: 'Error',
+          type: 'error',
+          message: JSON.stringify(error.response.data),
+          duration: 4500,
+          showToast: true,
+          position: 'top'
+        });
     }
   }
 
@@ -453,7 +473,7 @@ const CreateNewUserPage = ({route, navigation}) => {
       onStartShouldSetResponderCapture={() => setScrollViewEnabled(true)}>
       <HeaderContainer
         navigation={navigation}
-        headerTitle={'Create User'}
+        headerTitle={userId ? "Edit User" : "Create User"}
         companyLogo={imageBase64}
       />
       <ScrollView

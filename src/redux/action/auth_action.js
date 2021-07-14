@@ -4,7 +4,7 @@ import subDomain from '../../constant/requestSubPath';
 import {base_url, headerAuth, clientId} from '../../constant/connection';
 import {removeEnterPriseLogo} from './enterprise_action';
 import { saveActivityLog } from './save_activity_log_action';
-import { LOGIN_LOGOUT_PRIVILEDGE_ID } from '../../constant/actionPriv';
+import { CUSTOMER_CONSENT_PRIVILEDGE_ID, LOGIN_LOGOUT_PRIVILEDGE_ID } from '../../constant/actionPriv';
 
 const authRequest = () => {
   return {
@@ -197,7 +197,12 @@ const getUserPriviledges = async (access_token) => {
         userPriviledges = data.result;
         // Temporary home promotion hard coded priv id
         checkHomePromotion = userPriviledges.find((promotion) => promotion == 'ee1a4a4a-6439-11eb-ae93-0242ac130002');
-        if(!checkHomePromotion) userPriviledges.push('ee1a4a4a-6439-11eb-ae93-0242ac130002');
+        if(!checkHomePromotion) 
+          userPriviledges.push(
+            'ee1a4a4a-6439-11eb-ae93-0242ac130002', 
+            '711111aa-643a-11ea-bc55-0242ac130003',
+            'b1aef948-7d5c-11eb-9439-0242ac130002'
+          );
       }
     }
   } catch (error) {
@@ -264,6 +269,12 @@ const updateCustomerConsent = (userData) => {
       if(data){
           userData['principal'] = data.result;
           dispatch(updateCustomerConsentSuccess(userData));
+          dispatch(saveActivityLog(
+            'Customer Consent',
+            'View',
+            CUSTOMER_CONSENT_PRIVILEDGE_ID,
+            `${userData?.principal?.username || ""} Agreed to Costumer Consent`
+          ));
       }
 
     } catch (error) {

@@ -270,8 +270,6 @@ const RoleAdministrationPage = ({ route, navigation }) => {
       action.isVisible = isVisible;
     });
 
-    console.log(dataAction, " <<< harusnya begini")
-
     setActionData(dataAction);
   }
 

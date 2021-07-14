@@ -9,9 +9,13 @@ import {Header, NavbarTitle, PasswordInput} from '../../components/index';
 import styles from '../../style/home.style';
 import Axios from 'axios';
 import Orientation from '../../helpers/orientation';
+import {useToastHooks} from '../../customHooks/customHooks';
+import { saveActivityLog } from '../../redux/action/save_activity_log_action';
+import { CHANGE_PASSWORD_PRIVILEDGE_ID } from '../../constant/actionPriv';
 
 const ChangePasswordPage = ({route, navigation}) => {
   const dispatch = useDispatch();
+  const openToast = useToastHooks();
   const { pageBefore } = route.params;
   const userData = useSelector((state) => state.auth_reducer.data);
   const {access_token} = useSelector((state) => state.auth_reducer.data);
@@ -48,7 +52,20 @@ const ChangePasswordPage = ({route, navigation}) => {
       if (data) {
         if (data.statusCode === 0) {
           dispatch(changePassword(username));
-          ToastAndroid.show(data.result, ToastAndroid.LONG);
+          openToast({
+            title: 'Change Password',
+            type: 'success',
+            message: data.result,
+            duration: 4500,
+            showToast: true,
+            position: 'top'
+          });
+          dispatch(saveActivityLog(
+            "Change Password",
+            "ChangePassword",
+            CHANGE_PASSWORD_PRIVILEDGE_ID,
+            data.result
+          ))
           if(pageBefore === "account"){
             navigation.goBack();
           }else {
@@ -77,7 +94,7 @@ const ChangePasswordPage = ({route, navigation}) => {
   return (
     <ScrollView style={[styles.container, {backgroundColor: 'white'}]}>
       <Header notifications={false} orientation={orientation}/>
-      <NavbarTitle title={'Change Password ' + pageBefore} type={'change'}/>
+      <NavbarTitle title={'Change Password'} type={'change'}/>
       <PasswordInput
         orientation={orientation}
         navigation={navigation}

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import {
   Modal,
   ScrollView,
@@ -14,6 +14,7 @@ import PropTypes from 'prop-types';
 import {useNavigation} from '@react-navigation/native';
 import {useDispatch, useSelector} from 'react-redux';
 import {authLogout, updateCustomerConsent} from '../../redux/action/auth_action';
+import { saveActivityLog } from '../../redux/action/save_activity_log_action';
 
 const ModalTermCondition = (props) => {
     const navigation = useNavigation()
