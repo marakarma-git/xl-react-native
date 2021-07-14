@@ -16,18 +16,18 @@ const SUBSCRIPTION_PRIVILEDGE_ID = [
 ];
 
 const ADMINISTRATION_PRIVILEDGE_ID = [
-  {privId: '4acc9ee2-7245-11ea-bc55-0242ac130003', menuName: "User Administration",  actionName: "Edit", activityLog: "User Administration: Edit User"},
-  {privId: '4acc9d5c-7245-11ea-bc55-0242ac130003', menuName: "User Administration",  actionName: "View", activityLog: "User Administration: View User List"},
-  {privId: '4acc9e1a-7245-11ea-bc55-0242ac130003', menuName: "User Administration",  actionName: "Create", activityLog: "User Administration: Create New User"},
+  {privId: '4acc9ee2-7245-11ea-bc55-0242ac130003', menuName: "User Administration",  actionName: "Edit", activityLog: ""},
+  {privId: '4acc9d5c-7245-11ea-bc55-0242ac130003', menuName: "User Administration",  actionName: "View", activityLog: "Generate information for User Administration"},
+  {privId: '4acc9e1a-7245-11ea-bc55-0242ac130003', menuName: "User Administration",  actionName: "Create", activityLog: ""},
   {privId: '4acc9faa-7245-11ea-bc55-0242ac130003', menuName: "Role Administration",  actionName: "View", activityLog: "Role Administration: View Roles"},
   {privId: '4acca338-7245-11ea-bc55-0242ac130003', menuName: "Role Administration",  actionName: "Edit", activityLog: "Role Administration: Edit Role"},
   {privId: '4acca068-7245-11ea-bc55-0242ac130003', menuName: "Role Administration",  actionName: "Create", activityLog: "Role Administration: Create New Role"},
   {privId: 'a7d61538-56ff-11eb-ae93-0242ac130002', menuName: "Role Administration",  actionName: "Filter", activityLog: "Role Administration: Filter Role"},
-  {privId: '5265e528-96b1-11eb-a8b3-0242ac130003', menuName: "User Administration",  actionName: "Filter", activityLog: "User Administration: Filter User"},
+  {privId: '5265e528-96b1-11eb-a8b3-0242ac130003', menuName: "User Administration",  actionName: "Filter", activityLog: " Filter User"},
   {privId: '02ac302c-53ce-11ea-8d77-2e728ce88125', menuName: "",  actionName: "", activityLog: ""},
-  {privId: 'e1dc5db0-91fa-11eb-a8b3-0242ac130003', menuName: "User Administration",  actionName: "Delete", activityLog: "User Administration: Delete User"},
-  {privId: 'e1dc5ebe-91fa-11eb-a8b3-0242ac130003', menuName: "User Administration",  actionName: "Lock", activityLog: "User Administration: Lock User"},
-  {privId: 'e1dc5f90-91fa-11eb-a8b3-0242ac130003', menuName: "User Administration",  actionName: "Unlock", activityLog: "User Administration: Unlock User"},
+  {privId: 'e1dc5db0-91fa-11eb-a8b3-0242ac130003', menuName: "User Administration",  actionName: "Delete", activityLog: ""},
+  {privId: 'e1dc5ebe-91fa-11eb-a8b3-0242ac130003', menuName: "User Administration",  actionName: "Lock", activityLog: ""},
+  {privId: 'e1dc5f90-91fa-11eb-a8b3-0242ac130003', menuName: "User Administration",  actionName: "Unlock", activityLog: ""},
   {privId: '31a717d4-9b67-11eb-a8b3-0242ac130003', menuName: "Role Administration",  actionName: "Delete", activityLog: "Role Administration: Delete Role"},
   {privId: '31a718ba-9b67-11eb-a8b3-0242ac130003', menuName: "Role Administration",  actionName: "Copy", activityLog: "Role Administration: Copy Role"},
   {privId: '4acca57c-7245-11ea-bc55-0242ac130003', menuName: "Enterprise Management",  actionName: "Edit", activityLog: "Enterprise Management: Edit"},
@@ -80,11 +80,11 @@ const LOGIN_LOGOUT_PRIVILEDGE_ID = [
 ];
 
 const CHANGE_PASSWORD_PRIVILEDGE_ID = [
-  {privId: '711111aa-643a-11ea-bc55-0242ac130003', menuName: "Change Password",  actionName: "ChangePassword", activityLog: "Change Password"}
+  {privId: '711111aa-643a-11ea-bc55-0242ac130003', menuName: "Change Password",  actionName: "ChangePassword", activityLog: ""}
 ];
 
 const CUSTOMER_CONSENT_PRIVILEDGE_ID = [
-  {privId: 'b1aef948-7d5c-11eb-9439-0242ac130002', menuName: "Customer Consent",  actionName: "View", activityLog: "View Costumer Consent"},
+  {privId: 'b1aef948-7d5c-11eb-9439-0242ac130002', menuName: "Customer Consent",  actionName: "View", activityLog: ""},
 ]
 
 export {

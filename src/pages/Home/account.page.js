@@ -10,7 +10,7 @@ import {
   OverlayBackground,
   AccountForm,
 } from '../../components/index';
-import {authLogout, manualLogout} from '../../redux/action/auth_action';
+import {authLogout} from '../../redux/action/auth_action';
 import {removeEnterPriseLogo} from '../../redux/action/enterprise_action';
 // import privHelper from './../../helpers/helper';
 import privHelper from '../../helpers/privHelper';
@@ -56,7 +56,7 @@ const MyAccountPage = (props) => {
           text: 'Yes',
           onPress: () => {
             dispatch(removeEnterPriseLogo());
-            dispatch(manualLogout());
+            dispatch(authLogout());
           },
         },
       ],
@@ -105,7 +105,6 @@ const MyAccountPage = (props) => {
             {
               !isErricson &&
               <TouchableOpacity
-                // disabled={privHelper.isHasPriviledge("CP",userData.authority)}
                 onPress={() => props.navigation.navigate('Change Password', { pageBefore: "account" })}>
                 <Text style={styles.linkText}>Change Password</Text>
               </TouchableOpacity>
