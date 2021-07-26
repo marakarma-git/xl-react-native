@@ -112,7 +112,6 @@ export default {
   },
   buttonStyle: {
     backgroundColor: 'blue',
-    paddingHorizontal: '25%',
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',

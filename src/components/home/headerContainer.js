@@ -3,7 +3,7 @@ import {Header, Navbar} from '../index';
 import PropTypes from 'prop-types';
 import {useNavigation} from '@react-navigation/native';
 import Orientation from '../../helpers/orientation';
-import {Dimensions} from 'react-native';
+import {Dimensions, View} from 'react-native';
 
 const HomePageContainer = (props) => {
   const navigation = useNavigation();
