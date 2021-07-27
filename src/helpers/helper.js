@@ -588,6 +588,24 @@ class Helper {
       newArray: copyArray,
     };
   };
+
+  static mergeMultiDataProvince = (data, isProvince) => {
+    if (data) {
+      let mergedData = data.reduce((a, c) => {
+        let x = a.find((e) => e.province === c.province);
+        if (!isProvince) {
+          x = a.find((e) => e.city + e.province === c.city + c.province);
+        }
+        if (!x) {
+          a.push(Object.assign({}, c));
+        } else {
+          x.total += c.total;
+        }
+        return a;
+      }, []);
+      return mergedData;
+    }
+  };
 }
 
 export default Helper;
