@@ -2,6 +2,7 @@ import reduxString from '../reduxString';
 import {callActiveEnterprise} from './user_administration_array_header_action';
 import axios from 'axios';
 import {base_url} from '../../constant/connection';
+import Helper from '../../helpers/helper';
 
 const geoDistributionDynamicOnchangeDropDown = ({formId, dropDown}) => {
   return {
@@ -78,7 +79,7 @@ const getEnterpriseGeo = () => {
   return async (dispatch, getState) => {
     dispatch(
       geoDistributionDynamicLoading({
-        formId: '',
+        formId: 'geo-distribution-enterprise-hard-code',
       }),
     );
     const {access_token} = (await getState().auth_reducer.data) || {};
@@ -94,15 +95,15 @@ const getEnterpriseGeo = () => {
           );
           dispatch(
             geoDistributionDynamicSuccess({
-              formId: '',
+              formId: 'geo-distribution-enterprise-hard-code',
               data: changeArray,
             }),
           );
         } else {
           dispatch(
             geoDistributionDynamicFailed({
-              formId: '',
-              errorText: '',
+              formId: 'geo-distribution-enterprise-hard-code',
+              errorText: 'Failed, to get data',
             }),
           );
         }
@@ -110,8 +111,8 @@ const getEnterpriseGeo = () => {
       .catch((error) => {
         dispatch(
           geoDistributionDynamicFailed({
-            formId: '',
-            errorText: '',
+            formId: 'geo-distribution-enterprise-hard-code',
+            errorText: 'Failed, to get data',
             ...error.response.data,
           }),
         );
@@ -140,6 +141,15 @@ const getGeoProvince = () => {
       .then(({data}) => {
         const {result, statusCode} = data || {};
         if (statusCode === 0) {
+          // {
+          //   "city": "Kota Banda Aceh",
+          //   "province": "Aceh",
+          //   "longitude": "95.3237559",
+          //   "latitude": "5.5482904",
+          //   "total": 1044
+          // }
+          const changeData = Helper.mergeMultiDataProvince(result);
+          console.log(JSON.stringify(changeData, null, 2));
         } else {
           dispatch(
             geoDistributionFailed({

@@ -1,39 +1,61 @@
 import React, {useCallback, useEffect, useState} from 'react';
 import MapView, {Marker, PROVIDER_GOOGLE} from 'react-native-maps';
-import {HeaderContainer, OverlayBackground} from '../../components';
-import {useSelector} from 'react-redux';
+import {HeaderContainer, OverlayBackground, Text} from '../../components';
+import {useDispatch, useSelector} from 'react-redux';
 import {useNavigation} from '@react-navigation/native';
 import {ActivityIndicator, View} from 'react-native';
 import {analyticStyle} from '../../style';
 import AppliedFilter from '../../components/subscription/appliedFilter';
 import {debounce} from 'lodash/function';
 import {colors} from '../../constant/color';
+import getGeoProvince from '../../redux/action/geo_distribution_filter_action';
 
 const GeoDistributionPage = () => {
   const navigation = useNavigation();
+  const dispatch = useDispatch();
   const {imageBase64} = useSelector((state) => state.enterprise_reducer);
-  const [levelMap, setLevelMap] = useState(0);
+  const [levelMap, setLevelMap] = useState(3);
+  const [latDelta, setLatDelta] = useState({
+    longitudeDelta: 50.37650607526302,
+    latitudeDelta: 69.40814405209241,
+    longitude: 117.71991703659296,
+    latitude: -1.6825827274869631,
+  });
   const [firstRender, setFirstRender] = useState(true);
   const levelCall = useCallback(
-    debounce((v) => {
-      if (v !== levelMap) {
-        setLevelMap(v);
+    debounce(({calculateLevel, region}) => {
+      if (calculateLevel !== levelMap) {
+        setLevelMap(calculateLevel);
+        setLatDelta(region);
       }
-    }, 1000),
+    }, 500),
     [],
   );
+  const {
+    dataHeader,
+    loading,
+    errorText,
+    appliedFilter,
+    generatedParams,
+  } = useSelector((state) => state.geo_distribution_filter_reducer);
 
   useEffect(() => {
     if (!firstRender) {
-      // call fetch api from the enterprise parameter
+      dispatch(getGeoProvince());
     } else {
       setFirstRender(false);
     }
-  }, []);
-  useEffect(() => {
-    // this useEffect for only tracking changes on map level
-  }, [levelMap]);
+  }, [generatedParams]);
 
+  const handleToSubscription = () => {
+    navigation.navigate('Subscription', {
+      navigationFrom: 'GeoDistribution',
+      dataNavigation: {
+        arrayNavigation: dataHeader,
+      },
+    });
+  };
+  console.log('render: geoDistribution.js');
   return (
     <HeaderContainer
       navigation={navigation}
@@ -53,39 +75,49 @@ const GeoDistributionPage = () => {
                 navigation.navigate('GeoDistributionFilterPage')
               }
               style={{marginLeft: 0}}
-              data={[{config: {label: 'hai'}, value: 'abcasdasdsad'}]}
-              // onDelete={(e) => {}}
+              data={appliedFilter}
+              isRemoveDeleteIcon={true}
             />
+            {errorText ? (
+              <Text>{`Error: ${errorText}`}</Text>
+            ) : (
+              <React.Fragment />
+            )}
             <MapView
               provider={PROVIDER_GOOGLE}
               style={{flex: 1, marginTop: 12}}
               onRegionChange={(region) => {
+                console.log(JSON.stringify(region, null, 2));
                 const calculateLevel =
                   Math.round(
                     Math.log(360 / region.longitudeDelta) / Math.LN2,
                   ) || null;
-                levelCall(calculateLevel);
+                levelCall({
+                  calculateLevel,
+                  region,
+                });
               }}
               region={{
-                latitude: -6.000000019900122,
-                longitude: 105.999999884516,
-                latitudeDelta: 0.07,
-                longitudeDelta: 0.001,
+                latitude: latDelta?.latitude,
+                longitude: latDelta?.longitude,
+                latitudeDelta: latDelta?.latitudeDelta,
+                longitudeDelta: latDelta?.longitudeDelta,
               }}>
-              {/*<Circle*/}
-              {/*  strokeColor={'rgba(62, 153, 237, 1)'}*/}
-              {/*  fillColor={'rgba(62, 153, 237, 0.3)'}*/}
-              {/*  strokeWidth={3}*/}
-              {/*  center={{*/}
-              {/*    latitude: -6.000000019900122,*/}
-              {/*    longitude: 105.999999884516,*/}
-              {/*  }}*/}
-              {/*  radius={1500}*/}
-              {/*/>*/}
+              <Marker
+                coordinate={{
+                  latitude: -6.000000019900122,
+                  longitude: 105.999999884516,
+                }}
+                title={'title'}
+                description={'description'}
+                onPress={() => alert('hai there')}
+              />
             </MapView>
-            <View style={{position: 'absolute', bottom: 10, right: 10}}>
-              <ActivityIndicator size={24} color={colors.button_color_one} />
-            </View>
+            {loading === true && (
+              <View style={{position: 'absolute', bottom: 10, right: 10}}>
+                <ActivityIndicator size={24} color={colors.button_color_one} />
+              </View>
+            )}
           </View>
         </View>
       </View>

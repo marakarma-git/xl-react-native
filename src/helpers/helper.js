@@ -606,6 +606,35 @@ class Helper {
       return mergedData;
     }
   };
+
+  static findRedundantObject = (data = [], findBy, staticInfoObject) => {
+    const container = [];
+    data.map((item) => {
+      const isAvailable =
+        container.find((f) => f[`${findBy}`] === item[`${findBy}`]) ||
+        'not_found';
+      if (isAvailable === 'not_found') {
+        container.push({
+          ...item,
+          ...staticInfoObject,
+        });
+      }
+    });
+    return container;
+  };
+
+  static arrayGroupBy = (data = [], groupBy, target, staticInfoObject) => {
+    let container = [];
+    data.map((value) => {
+      if (value[`${groupBy}`] === target) {
+        container.push({
+          ...value,
+          ...staticInfoObject,
+        });
+      }
+    });
+    return container;
+  };
 }
 
 export default Helper;
