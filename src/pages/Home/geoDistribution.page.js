@@ -87,7 +87,6 @@ const GeoDistributionPage = () => {
               provider={PROVIDER_GOOGLE}
               style={{flex: 1, marginTop: 12}}
               onRegionChange={(region) => {
-                console.log('test push');
                 const calculateLevel =
                   Math.round(
                     Math.log(360 / region.longitudeDelta) / Math.LN2,
