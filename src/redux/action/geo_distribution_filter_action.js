@@ -67,11 +67,11 @@ const getDistributionSuccess = ({geoMaker, geoMakerApi}) => {
     geoMakerApi,
   };
 };
-const geoDistributionSetDataGeoMaker = ({geoMaker}) => {
+const geoDistributionSetDataGeoMarker = ({geoMaker}) => {
   //This function used for set dynamic array data when zoom out, zoom in map level delta
   return {
-    type: reduxString.GEO_DISTRIBUTION_SET_DATA_GEO_MAKER,
-    geoMaker,
+    type: reduxString.GEO_DISTRIBUTION_SET_DATA_GEO_MARKER,
+    dataGeoMarker: geoMaker,
   };
 };
 
@@ -119,7 +119,7 @@ const getEnterpriseGeo = () => {
       });
   };
 };
-const getGeoProvince = () => {
+const getGeoProvince = (rootOfMap) => {
   return async (dispatch, getState) => {
     dispatch(geoDistributionLoading());
     const {access_token} = (await getState().auth_reducer.data) || {};
@@ -141,13 +141,22 @@ const getGeoProvince = () => {
       .then(({data}) => {
         const {result, statusCode} = data || {};
         if (statusCode === 0) {
-          // {
-          //   "city": "Kota Banda Aceh",
-          //   "province": "Aceh",
-          //   "longitude": "95.3237559",
-          //   "latitude": "5.5482904",
-          //   "total": 1044
-          // }
+          if (rootOfMap) {
+            const changeData = Helper.findRedundantObject(result, 'province');
+            dispatch(
+              getDistributionSuccess({
+                geoMaker: changeData,
+                geoMakerApi: result,
+              }),
+            );
+          } else {
+            dispatch(
+              getDistributionSuccess({
+                geoMaker: result,
+                geoMakerApi: result,
+              }),
+            );
+          }
           const changeData = Helper.mergeMultiDataProvince(result);
           console.log(JSON.stringify(changeData, null, 2));
         } else {
@@ -176,4 +185,5 @@ export {
   geoDistributionDynamicResetSelectedValue,
   geoDistributionResetAllValue,
   geoDistributionGenerateParams,
+  geoDistributionSetDataGeoMarker,
 };

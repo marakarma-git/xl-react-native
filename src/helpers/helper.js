@@ -608,7 +608,7 @@ class Helper {
   };
 
   static findRedundantObject = (data = [], findBy, staticInfoObject) => {
-    const container = [];
+    let container = [];
     data.map((item) => {
       const isAvailable =
         container.find((f) => f[`${findBy}`] === item[`${findBy}`]) ||
@@ -617,7 +617,15 @@ class Helper {
         container.push({
           ...item,
           ...staticInfoObject,
+          count_object_found: 1,
         });
+      } else {
+        const findIndex = container.findIndex(
+          (f) => f[`${findBy}`] === item[`${findBy}`],
+        );
+        container[findIndex].count_object_found =
+          container[findIndex].count_object_found + 1;
+        container[findIndex].total = container[findIndex].total + item.total;
       }
     });
     return container;
@@ -627,6 +635,11 @@ class Helper {
     let container = [];
     data.map((value) => {
       if (value[`${groupBy}`] === target) {
+        container.push({
+          ...value,
+          ...staticInfoObject,
+        });
+      } else {
         container.push({
           ...value,
           ...staticInfoObject,

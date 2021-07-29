@@ -58,7 +58,8 @@ const geo_distribution_filter_reducer = (state = initialState, action) => {
       state.dataHeader[index].disabled = true;
       state.dataHeader[index].loading = false;
       state.dataHeader[index].errorText = action.errorText;
-      state.dataHeader[index].data = [];
+      state.dataHeader[index].dataGeoMarker = [];
+      state.dataHeader[index].dataGeoMarkerApi = [];
       state.dataHeader[index].value = {};
       return {
         ...state,
@@ -71,6 +72,8 @@ const geo_distribution_filter_reducer = (state = initialState, action) => {
       state.dataHeader[index].disabled = true;
       state.dataHeader[index].loading = true;
       state.dataHeader[index].errorText = '';
+      state.dataHeader[index].dataGeoMarker = [];
+      state.dataHeader[index].dataGeoMarkerApi = [];
       return {
         ...state,
         dataHeader: state.dataHeader,
@@ -125,7 +128,7 @@ const geo_distribution_filter_reducer = (state = initialState, action) => {
         dataGeoMarkerApi: action.geoMakerApi,
       };
     }
-    case reduxString.GEO_DISTRIBUTION_SET_DATA_GEO_MAKER: {
+    case reduxString.GEO_DISTRIBUTION_SET_DATA_GEO_MARKER: {
       return {
         ...state,
         dataGeoMarker: action.dataGeoMarker,
