@@ -50,7 +50,6 @@ const GeoDistributionPage = () => {
     dataGeoMarker,
     dataGeoMarkerApi,
   } = useSelector((state) => state.geo_distribution_filter_reducer);
-
   useEffect(() => {
     if (!firstRender) {
       dispatch(getGeoProvince(rootOfMap));
@@ -80,17 +79,23 @@ const GeoDistributionPage = () => {
       }
     }
   }, [rootOfMap]);
-
   const handleToSubscription = () => {
-    alert('onProgress to subscription');
-    // navigation.navigate('Subscription', {
-    //   navigationFrom: 'GeoDistribution',
-    //   dataNavigation: {
-    //     arrayNavigation: dataHeader,
-    //   },
-    // });
+    navigation.navigate('Subscription', {
+      navigationFrom: 'GeoDistribution',
+      dataNavigation: {
+        arrayNavigation: [
+          ...dataHeader,
+          {
+            formIdTo: 'geoLocation-location-params-only-drop-down',
+            value: {
+              label: infoDetail?.data_dll?.city,
+              value: infoDetail?.data_dll?.city,
+            },
+          },
+        ],
+      },
+    });
   };
-  console.log('render: geoDistribution.js');
   return (
     <HeaderContainer
       navigation={navigation}
@@ -110,8 +115,6 @@ const GeoDistributionPage = () => {
               data={appliedFilter}
               isRemoveDeleteIcon={true}
             />
-            {/*<Text>{JSON.stringify(levelMap, null, 2)}</Text>*/}
-            {/*<Text>{JSON.stringify(latDelta, null, 2)}</Text>*/}
             {errorText ? (
               <Text>{`Error: ${errorText}`}</Text>
             ) : (
