@@ -10,13 +10,13 @@ import styles from '../../style/home.style';
 import Axios from 'axios';
 import Orientation from '../../helpers/orientation';
 import {useToastHooks} from '../../customHooks/customHooks';
-import { saveActivityLog } from '../../redux/action/save_activity_log_action';
-import { CHANGE_PASSWORD_PRIVILEDGE_ID } from '../../constant/actionPriv';
+import {saveActivityLog} from '../../redux/action/save_activity_log_action';
+import {CHANGE_PASSWORD_PRIVILEDGE_ID} from '../../constant/actionPriv';
 
 const ChangePasswordPage = ({route, navigation}) => {
   const dispatch = useDispatch();
   const openToast = useToastHooks();
-  const { pageBefore } = route.params;
+  const {pageBefore} = route.params;
   const userData = useSelector((state) => state.auth_reducer.data);
   const {access_token} = useSelector((state) => state.auth_reducer.data);
   const [requestLoading, setRequestLoading] = useState(false);
@@ -35,6 +35,14 @@ const ChangePasswordPage = ({route, navigation}) => {
     const username = userData ? userData.principal.username : '';
     setRequestLoading(true);
     try {
+      dispatch(
+        saveActivityLog(
+          'Change Password',
+          'ChangePassword',
+          CHANGE_PASSWORD_PRIVILEDGE_ID,
+          data.result,
+        ),
+      );
       const {data} = await Axios.post(
         `${base_url}/user/usr/changePassword`,
         {
@@ -58,19 +66,13 @@ const ChangePasswordPage = ({route, navigation}) => {
             message: data.result,
             duration: 4500,
             showToast: true,
-            position: 'top'
+            position: 'top',
           });
-          dispatch(saveActivityLog(
-            "Change Password",
-            "ChangePassword",
-            CHANGE_PASSWORD_PRIVILEDGE_ID,
-            data.result
-          ))
-          if(pageBefore === "account"){
+          if (pageBefore === 'account') {
             navigation.goBack();
-          }else {
+          } else {
             dispatch(authLogout());
-            navigation.replace("Auth");
+            navigation.replace('Auth');
           }
         } else {
           ToastAndroid.show(data.statusDescription, ToastAndroid.LONG);
@@ -93,8 +95,8 @@ const ChangePasswordPage = ({route, navigation}) => {
 
   return (
     <ScrollView style={[styles.container, {backgroundColor: 'white'}]}>
-      <Header notifications={false} orientation={orientation}/>
-      <NavbarTitle title={'Change Password'} type={'change'}/>
+      <Header notifications={false} orientation={orientation} />
+      <NavbarTitle title={'Change Password'} type={'change'} />
       <PasswordInput
         orientation={orientation}
         navigation={navigation}

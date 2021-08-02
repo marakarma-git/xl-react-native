@@ -1,7 +1,11 @@
 import axios from 'axios';
 import React, {useEffect, useState} from 'react';
 import {View, Alert, ToastAndroid} from 'react-native';
-import {HeaderContainer, OverlayBackground, ModalConfirmation} from '../../components';
+import {
+  HeaderContainer,
+  OverlayBackground,
+  ModalConfirmation,
+} from '../../components';
 import {useDispatch, useSelector} from 'react-redux';
 import {useNavigation} from '@react-navigation/native';
 import {subscriptionStyle} from '../../style';
@@ -30,9 +34,9 @@ import Helper from '../../helpers/helper';
 import Loading from '../../components/loading';
 import {setRequestError} from '../../redux/action/dashboard_action';
 import {base_url} from '../../constant/connection';
-import { ADMINISTRATION_PRIVILEDGE_ID } from '../../constant/actionPriv';
-import { saveActivityLog } from '../../redux/action/save_activity_log_action';
-import { useToastHooks } from '../../customHooks/customHooks';
+import {ADMINISTRATION_PRIVILEDGE_ID} from '../../constant/actionPriv';
+import {saveActivityLog} from '../../redux/action/save_activity_log_action';
+import {useToastHooks} from '../../customHooks/customHooks';
 
 const actionDataArray = [
   {
@@ -58,21 +62,21 @@ const actionDataArray = [
   },
   {
     value: '3',
-    actionName: "Lock",
+    actionName: 'Lock',
     label: 'Lock User',
     isDisabled: true,
     isVisible: true,
   },
   {
     value: '4',
-    actionName: "Unlock",
+    actionName: 'Unlock',
     label: 'Unlock User',
     isDisabled: true,
     isVisible: true,
   },
 ];
 
-const UserAdministrationPage = ({ route }) => {
+const UserAdministrationPage = ({route}) => {
   const dispatch = useDispatch();
   const openToast = useToastHooks();
   const navigation = useNavigation();
@@ -81,16 +85,18 @@ const UserAdministrationPage = ({ route }) => {
   const [showMenu, setShowMenu] = useState(false);
   const [showModal, setShowModal] = useState(false);
   const [modalLoading, setModalLoading] = useState(false);
-  const [modalTitle, setModalTitle] = useState("");
-  const [modalDescription, setModalDescription] = useState("");
-  const [modalConfirmText, setModalConfirmText] = useState("");
+  const [modalTitle, setModalTitle] = useState('');
+  const [modalDescription, setModalDescription] = useState('');
+  const [modalConfirmText, setModalConfirmText] = useState('');
   const [selectedUser, setSelectedUser] = useState([]);
   const [isFilterVisible, setIsFilterVisible] = useState(true);
   const {imageBase64} = useSelector((state) => state.enterprise_reducer);
   const accessToken = useSelector(
     (state) => state.auth_reducer.data.access_token,
   );
-  const userAuthority = useSelector((state) => state.auth_reducer.data?.authority);
+  const userAuthority = useSelector(
+    (state) => state.auth_reducer.data?.authority,
+  );
   const {dataHeader, searchText, generatedParams, appliedFilter} = useSelector(
     (state) => state.user_administration_array_header_reducer,
   );
@@ -141,23 +147,23 @@ const UserAdministrationPage = ({ route }) => {
 
       case '2':
         setShowModal(true);
-        setModalTitle("Delete User");
-        setModalDescription("Are you sure ? Selected user(s) will be deleted");
-        setModalConfirmText("Delete");
+        setModalTitle('Delete User');
+        setModalDescription('Are you sure ? Selected user(s) will be deleted');
+        setModalConfirmText('Delete');
         break;
 
       case '3':
         setShowModal(true);
-        setModalTitle("Lock User");
-        setModalDescription("Are you sure ? Selected user(s) will be locked");
-        setModalConfirmText("Confirm");
+        setModalTitle('Lock User');
+        setModalDescription('Are you sure ? Selected user(s) will be locked');
+        setModalConfirmText('Confirm');
         break;
 
       case '4':
         setShowModal(true);
-        setModalTitle("Unlock User");
-        setModalDescription("Are you sure ? Selected user(s) will be unlocked");
-        setModalConfirmText("Confirm");
+        setModalTitle('Unlock User');
+        setModalDescription('Are you sure ? Selected user(s) will be unlocked');
+        setModalConfirmText('Confirm');
         break;
 
       default:
@@ -178,6 +184,14 @@ const UserAdministrationPage = ({ route }) => {
     setModalLoading(true);
 
     try {
+      dispatch(
+        saveActivityLog(
+          route.name,
+          'Delete',
+          ADMINISTRATION_PRIVILEDGE_ID,
+          `Delete for data: ${usernameArray.join(', ')}`,
+        ),
+      );
       const {data} = await axios.post(
         `${base_url}/user/usr/deleteUser`,
         {userId: roleId},
@@ -198,17 +212,11 @@ const UserAdministrationPage = ({ route }) => {
             message: 'Selected user(s) has been deleted',
             duration: 4500,
             showToast: true,
-            position: 'top'
+            position: 'top',
           });
           setSelectedUser([]);
           updateActionAccess([]);
           dispatch(callUserAdministrationDeleteUser(roleId));
-          dispatch(saveActivityLog(
-            route.name,
-            'Delete',
-            ADMINISTRATION_PRIVILEDGE_ID,
-            `Delete for data: ${usernameArray.join(", ")}`
-          ));
         }
       }
     } catch (error) {
@@ -219,7 +227,7 @@ const UserAdministrationPage = ({ route }) => {
         message: JSON.stringify(error.response.data),
         duration: 4500,
         showToast: true,
-        position: 'top'
+        position: 'top',
       });
     }
   };
@@ -227,7 +235,16 @@ const UserAdministrationPage = ({ route }) => {
   const lockUnlockFunction = async (lockUser) => {
     try {
       setModalLoading(true);
-
+      dispatch(
+        saveActivityLog(
+          route.name,
+          lockUser ? 'Lock' : 'Unlock',
+          ADMINISTRATION_PRIVILEDGE_ID,
+          `${lockUser ? 'Lock' : 'Unlock'} for data: ${usernameArray.join(
+            ', ',
+          )}`,
+        ),
+      );
       const roleId = new Array();
       const usernameArray = new Array();
       let successMessage = lockUser ? 'locked' : 'unlocked';
@@ -252,23 +269,17 @@ const UserAdministrationPage = ({ route }) => {
           setModalLoading(false);
           setShowModal(false);
           openToast({
-            title: `${lockUser ? "Lock" : "Unlock"} user`,
+            title: `${lockUser ? 'Lock' : 'Unlock'} user`,
             type: 'success',
             message: `Selected user(s) has been ${successMessage}`,
             duration: 4500,
             showToast: true,
-            position: 'top'
+            position: 'top',
           });
 
           dispatch(
             callUserAdministrationUpdateLockUnlockUser(roleId[0], lockUser),
           );
-          dispatch(saveActivityLog(
-            route.name,
-            lockUser ? "Lock" : "Unlock",
-            ADMINISTRATION_PRIVILEDGE_ID,
-            `${lockUser ? 'Lock' : 'Unlock'} for data: ${usernameArray.join(", ")}`
-          ));
         }
       }
     } catch (error) {
@@ -279,7 +290,7 @@ const UserAdministrationPage = ({ route }) => {
         message: JSON.stringify(error.response.data),
         duration: 4500,
         showToast: true,
-        position: 'top'
+        position: 'top',
       });
     }
   };
@@ -318,12 +329,12 @@ const UserAdministrationPage = ({ route }) => {
 
   const checkActionPriviledge = () => {
     const dataAction = actionData.slice();
-    const isVisible  = Helper.findAndReturnPriviledge(
-        route.name,
-        "Filter",
-        userAuthority,
-        ADMINISTRATION_PRIVILEDGE_ID
-      )
+    const isVisible = Helper.findAndReturnPriviledge(
+      route.name,
+      'Filter',
+      userAuthority,
+      ADMINISTRATION_PRIVILEDGE_ID,
+    );
 
     // Filter
     setIsFilterVisible(isVisible);
@@ -331,16 +342,16 @@ const UserAdministrationPage = ({ route }) => {
     // Action
     dataAction.map((action) => {
       let isVisible = Helper.findAndReturnPriviledge(
-          route.name,
-          action.actionName, 
-          userAuthority || [], 
-          ADMINISTRATION_PRIVILEDGE_ID
+        route.name,
+        action.actionName,
+        userAuthority || [],
+        ADMINISTRATION_PRIVILEDGE_ID,
       );
       action.isVisible = isVisible;
     });
 
     setActionData(dataAction);
-  }
+  };
 
   const reFetchListAction = (dataUser) => {
     selectedUser.map((user) => {
@@ -359,11 +370,9 @@ const UserAdministrationPage = ({ route }) => {
   useEffect(() => {
     return navigation.addListener('focus', () => {
       checkActionPriviledge();
-      dispatch(saveActivityLog(
-        route.name,
-        'View',
-        ADMINISTRATION_PRIVILEDGE_ID
-      ));
+      // dispatch(
+      //   saveActivityLog(route.name, 'View', ADMINISTRATION_PRIVILEDGE_ID),
+      // );
       dispatch(
         callUserAdministrationGetUser({
           paginate_page: 0,
@@ -384,10 +393,8 @@ const UserAdministrationPage = ({ route }) => {
           headerOtherLayout={() => {
             return (
               <>
-                <OverlayBackground height={isFilterVisible ? 100 : 0 } />
-                {
-                  isFilterVisible
-                  &&
+                <OverlayBackground height={isFilterVisible ? 100 : 0} />
+                {isFilterVisible && (
                   <SearchHeader
                     value={''}
                     onSubmitEditing={(e) => {
@@ -403,7 +410,7 @@ const UserAdministrationPage = ({ route }) => {
                     navigateTo={'UserAdministrationFilter'}
                     placeholder={'Search with user ID, name or organization'}
                   />
-                }
+                )}
                 <AppliedFilter
                   data={appliedFilter}
                   onDelete={(e) => {
@@ -517,23 +524,22 @@ const UserAdministrationPage = ({ route }) => {
           onClose={() => setShowMenu((state) => !state)}
         />
       )}
-     {
-        showModal &&
+      {showModal && (
         <ModalConfirmation
           showModal={showModal}
-          loading={modalLoading} 
-          closeModal={() =>  setShowModal(false)}
+          loading={modalLoading}
+          closeModal={() => setShowModal(false)}
           title={modalTitle}
           description={modalDescription}
           confirmText={modalConfirmText}
-          confirmAction=
-          {
-            modalTitle == 'Delete User' 
-            ? deleteFunction : 
-            () => lockUnlockFunction(modalTitle == 'Lock User' ? true : false)
+          confirmAction={
+            modalTitle == 'Delete User'
+              ? deleteFunction
+              : () =>
+                  lockUnlockFunction(modalTitle == 'Lock User' ? true : false)
           }
         />
-      }
+      )}
     </HeaderContainer>
   );
 };

@@ -3,8 +3,11 @@ import Helper from '../../helpers/helper';
 import reduxString from '../reduxString';
 import {base_url} from '../../constant/connection';
 import {dashboardHeaderAuth} from '../../constant/headers';
-import { saveActivityLog } from './save_activity_log_action';
-import { DASHBOARD_PRIVILEDGE_ID, LOGIN_LOGOUT_PRIVILEDGE_ID } from '../../constant/actionPriv';
+import {saveActivityLog} from './save_activity_log_action';
+import {
+  DASHBOARD_PRIVILEDGE_ID,
+  LOGIN_LOGOUT_PRIVILEDGE_ID,
+} from '../../constant/actionPriv';
 
 const setDashboardSummary = (data) => ({
   type: reduxString.SET_DASHBOARD_SUMMARY,
@@ -24,6 +27,9 @@ export const getDashboardSummary = (accessToken) => {
   return async (dispatch) => {
     try {
       dispatch(requestDashboardData());
+      // dispatch(
+      //   saveActivityLog('Dashboard', 'Summary', DASHBOARD_PRIVILEDGE_ID, ''),
+      // );
       const {data} = await Axios.get(
         `${base_url}/dcp/dashboard/getSummaryDashboard`,
         {
@@ -52,12 +58,6 @@ export const getDashboardSummary = (accessToken) => {
           });
 
           dispatch(setDashboardSummary(summaryData));
-          dispatch(saveActivityLog(
-            'Dashboard',
-            'Summary',
-            DASHBOARD_PRIVILEDGE_ID,
-            ""
-          ));
         } else {
           throw new Error(data);
         }
@@ -107,6 +107,7 @@ const setCarousel = (data) => ({
 export const getCarousel = (accessToken) => {
   return async (dispatch) => {
     dispatch(requestDashboardData());
+    // dispatch(saveActivityLog('Home', 'Home', LOGIN_LOGOUT_PRIVILEDGE_ID));
     try {
       const {data} = await Axios.get(`${base_url}/dcp/banner/getListBanner`, {
         headers: {
@@ -120,11 +121,6 @@ export const getCarousel = (accessToken) => {
             banner.bannerImage = `data:image/jpeg;base64,${banner.bannerImage}`;
           });
           dispatch(setCarousel(data.result));
-          dispatch(saveActivityLog(
-            "Home",
-            "Home",
-            LOGIN_LOGOUT_PRIVILEDGE_ID,
-          ));
         } else {
           throw new Error(data);
         }
@@ -163,13 +159,15 @@ const setTopTrafficStatistics = (data, params) => {
 
   data.map((datas) => {
     newDataSet.push({
-      x: datas.msisdn, 
-      y: +datas.datausage, 
+      x: datas.msisdn,
+      y: +datas.datausage,
       label: [
-        `MSISDN: `, 
-        `${datas.msisdn}`, 
-        `Data usage: `, 
-        `${Helper.formatBytes(+datas.datausage)}`]});
+        `MSISDN: `,
+        `${datas.msisdn}`,
+        `Data usage: `,
+        `${Helper.formatBytes(+datas.datausage)}`,
+      ],
+    });
   });
 
   Helper.sortAscending(newDataSet, 'y');
@@ -189,6 +187,14 @@ export const requestWidgetData = (
 ) => {
   return async (dispatch) => {
     dispatch(requestDashboardData());
+    // dispatch(
+    //   saveActivityLog(
+    //     'Dashboard',
+    //     type === 'sim' ? 'Dashboard' : 'TopTraffic',
+    //     DASHBOARD_PRIVILEDGE_ID,
+    //     '',
+    //   ),
+    // );
     try {
       const {data} = await Axios.post(
         `${base_url}/dcp/dashboard/v2/getDataSet?datasetId=${item.datasetId}`,
@@ -207,12 +213,6 @@ export const requestWidgetData = (
               setTopTrafficStatistics(data.result.dataset, filterParams),
             );
           }
-          dispatch(saveActivityLog(
-            "Dashboard",
-            type === "sim" ? "Dashboard" : "TopTraffic",
-            DASHBOARD_PRIVILEDGE_ID,
-            ""
-          ));
         } else {
           dispatch(setRequestError(data.statusDescription));
         }

@@ -148,6 +148,19 @@ class Helper {
     return returnData;
   };
 
+  static findAndReturnActivityLogDataStaticPriv = (
+    menuName,
+    actionName,
+    priviledgeData,
+  ) => {
+    let menuData = priviledgeData.filter(
+      (priviledge) =>
+        priviledge.menuName == menuName && priviledge.actionName == actionName,
+    );
+
+    return menuData;
+  };
+
   static drawerData(userPriviledge = [], type = 'drawer') {
     const drawerMenuPriv = [...DRAWER_MENU_PRIVILEDGE];
     const drawerMenu = new Array();

@@ -1,24 +1,37 @@
 import React, {useEffect, useState} from 'react';
-import {Container} from './subscriptionFilter.page';
 import {useDispatch, useSelector} from 'react-redux';
-import {analyticStyle, subscriptionStyle} from '../../style';
-import {ActivityIndicatorScrollView, View, ScrollView} from 'react-native';
-import {Card, Headline} from 'react-native-paper';
+import {View, ScrollView} from 'react-native';
 import {
   HeaderContainer,
   OverlayBackground,
-  WidgetStore,
-  Text
+  Text,
+  ContentCard,
+  FilterCard,
 } from '../../components';
 
 // Undestruct
-import Helper from '../../helpers/helper';
-import AppliedFilter from '../../components/subscription/appliedFilter';
+import styles from '../../style/usageAnalytics.style';
+import BarChartComponent from '../../components/widget/barchart';
 
-const UsageAnalyticsPage = ({navigation}) => {
+const UsageAnalyticsPage = ({route, navigation}) => {
   const dispatch = useDispatch();
-  const [widthChart, setWidthChart] = useState(0);
   const {imageBase64} = useSelector((state) => state.enterprise_reducer);
+  const widgetList = useSelector((state) => state.dashboard_reducer.widgetList);
+
+  // Data State
+  const [topTrafficWidget, setTopTrafficWidget] = useState({});
+
+  useEffect(() => {
+    const pageLoad = navigation.addListener('focus', () => {
+      const topTrafficWidget = widgetList.filter(
+        (widget) => widget.widgetCode === 'Top-Traffic',
+      );
+
+      setTopTrafficWidget(topTrafficWidget);
+    });
+
+    return pageLoad;
+  }, []);
 
   return (
     <View>
@@ -28,32 +41,22 @@ const UsageAnalyticsPage = ({navigation}) => {
         companyLogo={imageBase64}
       />
       <ScrollView
-        style={{marginBottom: 130}}
+        style={styles.scrollContainer}
         showsVerticalScrollIndicator={false}>
-        <View style={[subscriptionStyle.containerBackground]}>
+        <View style={styles.cardContainer}>
           <OverlayBackground />
-          <Container
-            style={analyticStyle.container}
-            onLayout={({nativeEvent}) => {
-              const {layout} = nativeEvent || {};
-              const {width} = layout || {};
-              setWidthChart(width);
-            }}>
-            <AppliedFilter
-              withFilterButton
-              onPressFilter={() => navigation.navigate('simProductivityFilter')}
-              style={{marginLeft: 0, flex: 1}}
-              data={[
-                {
-                  config: {
-                    label: 'Enterprise',
-                  },
-                  value: 'Company A',
-                },
-              ]}
+          <View style={styles.cardWrapper}>
+            <FilterCard />
+            <ContentCard
+              loadingContent={topTrafficWidget ? false : true}
+              cardContent={
+                <BarChartComponent item={topTrafficWidget} filterParams={{}} />
+              }
+              cardTitle="Top Traffic Statistics"
             />
-            
-          </Container>
+            <ContentCard cardTitle="Aggregated Traffic" />
+            <ContentCard cardTitle="Previous 12 month average" />
+          </View>
         </View>
       </ScrollView>
     </View>
