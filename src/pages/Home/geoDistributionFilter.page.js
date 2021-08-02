@@ -33,7 +33,7 @@ const GeoDistributionFilterPage = () => {
     return () => timer;
   }, [dispatch]);
   return (
-    <HeaderContainer headerTitle={'Geo Distribution'}>
+    <HeaderContainer headerTitle={'Geo Distribution'} backIcon={true}>
       <ScrollView style={{backgroundColor: 'white'}}>
         <OverlayBackground />
         <Container style={{marginTop: 16}}>

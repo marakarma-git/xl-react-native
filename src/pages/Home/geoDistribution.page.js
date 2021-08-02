@@ -38,7 +38,7 @@ const GeoDistributionPage = () => {
     debounce(({calculateLevel, region}) => {
       setRootOfMap(calculateLevel < levelHighOrDeep);
       setLatDelta(region);
-    }, 500),
+    }, 100),
     [],
   );
   const {
@@ -56,7 +56,7 @@ const GeoDistributionPage = () => {
     } else {
       setFirstRender(false);
     }
-  }, [generatedParams]);
+  }, [generatedParams, dispatch]);
   useEffect(() => {
     if (dataGeoMarkerApi.length > 0) {
       if (rootOfMap) {
@@ -78,7 +78,7 @@ const GeoDistributionPage = () => {
         );
       }
     }
-  }, [rootOfMap]);
+  }, [dispatch, rootOfMap]);
   const handleToSubscription = () => {
     navigation.navigate('Subscription', {
       navigationFrom: 'GeoDistribution',
@@ -152,13 +152,18 @@ const GeoDistributionPage = () => {
                       }}
                       title={province}
                       description={`Total Active: ${total}`}
-                      onPress={() => {
+                      onPress={(e) => {
+                        const {coordinate} = e.nativeEvent || {};
+                        const {
+                          latitude: thisLatitude,
+                          longitude: thisLongitude,
+                        } = coordinate;
                         setShowInfo(true);
                         setLatDelta({
                           longitudeDelta: 3.5,
                           latitudeDelta: 4,
-                          longitude: parseFloat(longitude),
-                          latitude: parseFloat(latitude),
+                          longitude: parseFloat(thisLongitude),
+                          latitude: parseFloat(thisLatitude),
                         });
                         setInfoDetail((state) => ({
                           ...state,

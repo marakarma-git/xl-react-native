@@ -11,7 +11,7 @@ const dataGeoDistribution = [
     value: {},
     data: [],
     typeInput: 'DropDown',
-    params: '&enterpriseName=',
+    params: '&customerNo=',
     config: {
       label: 'Enterprise',
     },

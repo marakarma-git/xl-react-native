@@ -88,8 +88,8 @@ const getEnterpriseGeo = () => {
         const {result, statusCode} = data || {};
         if (statusCode === 0) {
           const changeArray = result.map(
-            ({enterpriseId: thisEnterprise, enterpriseName}) => ({
-              value: enterpriseName,
+            ({customerNumber, enterpriseName}) => ({
+              value: customerNumber,
               label: enterpriseName,
             }),
           );
@@ -124,7 +124,7 @@ const getGeoProvince = (rootOfMap) => {
     dispatch(geoDistributionLoading());
     const {access_token} = (await getState().auth_reducer.data) || {};
     const {generatedParams} =
-      (await getState().sim_productivity_filter_reducer) || {};
+      (await getState().geo_distribution_filter_reducer) || {};
     axios
       .get(
         `${base_url}/dcp/sim/getTotalSimByLocation?zoomLevel=4${
@@ -157,8 +157,6 @@ const getGeoProvince = (rootOfMap) => {
               }),
             );
           }
-          const changeData = Helper.mergeMultiDataProvince(result);
-          console.log(JSON.stringify(changeData, null, 2));
         } else {
           dispatch(
             geoDistributionFailed({
