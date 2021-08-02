@@ -601,6 +601,66 @@ class Helper {
       newArray: copyArray,
     };
   };
+
+  static mergeMultiDataProvince = (data, isProvince) => {
+    if (data) {
+      let mergedData = data.reduce((a, c) => {
+        let x = a.find((e) => e.province === c.province);
+        if (!isProvince) {
+          x = a.find((e) => e.city + e.province === c.city + c.province);
+        }
+        if (!x) {
+          a.push(Object.assign({}, c));
+        } else {
+          x.total += c.total;
+        }
+        return a;
+      }, []);
+      return mergedData;
+    }
+  };
+
+  static findRedundantObject = (data = [], findBy, staticInfoObject) => {
+    let container = [];
+    data.map((item) => {
+      const isAvailable =
+        container.find((f) => f[`${findBy}`] === item[`${findBy}`]) ||
+        'not_found';
+      if (isAvailable === 'not_found') {
+        container.push({
+          ...item,
+          ...staticInfoObject,
+          count_object_found: 1,
+        });
+      } else {
+        const findIndex = container.findIndex(
+          (f) => f[`${findBy}`] === item[`${findBy}`],
+        );
+        container[findIndex].count_object_found =
+          container[findIndex].count_object_found + 1;
+        container[findIndex].total = container[findIndex].total + item.total;
+      }
+    });
+    return container;
+  };
+
+  static arrayGroupBy = (data = [], groupBy, target, staticInfoObject) => {
+    let container = [];
+    data.map((value) => {
+      if (value[`${groupBy}`] === target) {
+        container.push({
+          ...value,
+          ...staticInfoObject,
+        });
+      } else {
+        container.push({
+          ...value,
+          ...staticInfoObject,
+        });
+      }
+    });
+    return container;
+  };
 }
 
 export default Helper;

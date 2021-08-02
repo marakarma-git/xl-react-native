@@ -9,7 +9,7 @@ import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityI
 import dayjs from 'dayjs';
 import MaterialCommunityIcon from 'react-native-paper/src/components/MaterialCommunityIcon';
 const LocalComponent = (props) => {
-  const {type, title, onDelete} = props || '';
+  const {type, title, onDelete, isRemoveDeleteIcon} = props || '';
   return (
     <View
       style={{
@@ -22,18 +22,21 @@ const LocalComponent = (props) => {
         alignItems: 'center',
       }}>
       <Text style={{flex: 1, color: 'white'}}>{`${type}: ${title}`}</Text>
-      <TouchableOpacity onPress={onDelete} style={{paddingLeft: 6}}>
-        <MaterialCommunityIcons
-          name={'close-circle'}
-          color={'white'}
-          size={18}
-        />
-      </TouchableOpacity>
+      {isRemoveDeleteIcon !== true && (
+        <TouchableOpacity onPress={onDelete} style={{paddingLeft: 6}}>
+          <MaterialCommunityIcons
+            name={'close-circle'}
+            color={'white'}
+            size={18}
+          />
+        </TouchableOpacity>
+      )}
     </View>
   );
 };
 const AppliedFilter = (props) => {
-  const {data, onDelete, withFilterButton, onPressFilter} = props || {};
+  const {data, onDelete, withFilterButton, onPressFilter, isRemoveDeleteIcon} =
+    props || {};
   return (
     <View
       style={{
@@ -56,6 +59,7 @@ const AppliedFilter = (props) => {
             if (!lod.isEmpty(valueInput) || isSelected) {
               return (
                 <LocalComponent
+                  isRemoveDeleteIcon={isRemoveDeleteIcon}
                   type={label}
                   title={
                     typeInput === 'DropDownType2'
@@ -87,6 +91,7 @@ const AppliedFilter = (props) => {
 AppliedFilter.propTypes = {
   data: PropTypes.array,
   onDelete: PropTypes.func,
+  isRemoveDeleteIcon: PropTypes.bool, //only true for remove the button
 
   withFilterButton: PropTypes.bool,
   onPressFilter: PropTypes.func,
