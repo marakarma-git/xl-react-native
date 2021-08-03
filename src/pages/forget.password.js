@@ -1,4 +1,4 @@
-import React, {useState, useEffect, useCallback} from 'react';
+import React, {useState, useEffect, useCallback, useRef} from 'react';
 import {base_url} from '../constant/connection';
 import {
   View,
@@ -15,8 +15,9 @@ import {
   Linking,
   Dimensions
 } from 'react-native';
+import Recaptcha from '../components/googleCaptcha/recaptcha';
 import {Header, NavbarTitle} from '../components';
-
+import {API_URL, RECAPTCHA_TOKEN} from '../../env.json';
 import Axios from 'axios';
 import inputloginStyle from '../style/account.style';
 import loginStyle from '../style/login.style';
@@ -29,6 +30,17 @@ const ChangePasswordPage = ({navigation}) => {
   const [username, setUsername] = useState('');
   const [requestLoading, setRequestLoading] = useState(false);
   const [orientation, setOrientation] = useState('potrait');
+
+  const recaptchaRef = useRef();
+  const send = value => {
+    recaptchaRef.current.open();
+  };
+  const onVerify = token => {
+    requestChangePassword();
+  }
+  const onExpire = () => {
+    alert('Captcha expired');
+  };
 
   const detectOrientation = useCallback(() => {
     if (Orientation.getHeight() <= Orientation.getWidth()) {
@@ -80,7 +92,7 @@ const ChangePasswordPage = ({navigation}) => {
                 backgroundColor: 'transparent',
               }
             : {
-                height: Orientation.getHeight() - 150,
+                height: Orientation.getHeight() - 20,
                 backgroundColor: 'transparent',
               }
         }
@@ -141,9 +153,17 @@ const ChangePasswordPage = ({navigation}) => {
                   placeholder={'Username'}
                 />
               </View>
+              <Recaptcha
+                ref={recaptchaRef}
+                siteKey={RECAPTCHA_TOKEN}
+                baseUrl={API_URL}
+                onVerify={onVerify}
+                onExpire={onExpire}
+                size="invisible"
+              />
               <TouchableOpacity
                 disabled={requestLoading}
-                onPress={requestChangePassword}
+                onPress={send}
                 style={[
                   inputloginStyle.buttonBlock,
                   {
