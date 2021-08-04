@@ -67,14 +67,14 @@ const tokenInvalid = () => {
 const authLogout = () => {
   return async (dispatch, getState) => {
     const username = getState().auth_reducer.data?.principal?.username || '';
-    dispatch(
-      saveActivityLog(
-        'Logout',
-        'Logout',
-        LOGIN_LOGOUT_PRIVILEDGE_ID,
-        `as ${username}`,
-      ),
-    );
+    // dispatch(
+    //   saveActivityLog(
+    //     'Logout',
+    //     'Logout',
+    //     LOGIN_LOGOUT_PRIVILEDGE_ID,
+    //     `as ${username}`,
+    //   ),
+    // );
     try {
       const {data} = await Axios.post(
         `${base_url}${subDomain.logout}`,
@@ -164,16 +164,16 @@ const authLogin = (username, password, loginDropDown) => {
   return async (dispatch) => {
     dispatch(authRequest());
     try {
-      await dispatch(
-        saveActivityLog(
-          'Login',
-          'Login',
-          LOGIN_LOGOUT_PRIVILEDGE_ID,
-          `as ${username}`,
-          [],
-          true,
-        ),
-      );
+      // await dispatch(
+      //   saveActivityLog(
+      //     'Login',
+      //     'Login',
+      //     LOGIN_LOGOUT_PRIVILEDGE_ID,
+      //     `as ${username}`,
+      //     [],
+      //     true,
+      //   ),
+      // );
       const {data} = await Axios.post(
         `${base_url}${subDomain.fetchLogin}`,
         formData,
@@ -273,14 +273,14 @@ const getTitleVersion = () => {
 const updateCustomerConsent = (userData) => {
   return async (dispatch) => {
     try {
-      dispatch(
-        saveActivityLog(
-          'Customer Consent',
-          'View',
-          CUSTOMER_CONSENT_PRIVILEDGE_ID,
-          `${userData?.principal?.username || ''} Agreed to Costumer Consent`,
-        ),
-      );
+      // dispatch(
+      //   saveActivityLog(
+      //     'Customer Consent',
+      //     'View',
+      //     CUSTOMER_CONSENT_PRIVILEDGE_ID,
+      //     `${userData?.principal?.username || ''} Agreed to Costumer Consent`,
+      //   ),
+      // );
       const {data} = await Axios.post(
         `${base_url}/user/usr/updateCustomerConsent?userId=${userData.principal.userId}`,
         {},

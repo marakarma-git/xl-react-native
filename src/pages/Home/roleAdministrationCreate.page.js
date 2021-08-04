@@ -283,14 +283,14 @@ const RoleAdministrationCreatePage = ({route, navigation}) => {
         let capitalActiveMenu = Helper.makeCapital(activeMenu);
 
         setSubmitLoading(false);
-        dispatch(
-          saveActivityLog(
-            'Role Administration',
-            capitalActiveMenu,
-            ADMINISTRATION_PRIVILEDGE_ID,
-            `${capitalActiveMenu} for data: ${dataRaw.roleName}`,
-          ),
-        );
+        // dispatch(
+        //   saveActivityLog(
+        //     'Role Administration',
+        //     capitalActiveMenu,
+        //     ADMINISTRATION_PRIVILEDGE_ID,
+        //     `${capitalActiveMenu} for data: ${dataRaw.roleName}`,
+        //   ),
+        // );
       }
     } catch (error) {
       setSubmitLoading(false);

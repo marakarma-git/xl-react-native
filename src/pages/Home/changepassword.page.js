@@ -35,14 +35,14 @@ const ChangePasswordPage = ({route, navigation}) => {
     const username = userData ? userData.principal.username : '';
     setRequestLoading(true);
     try {
-      dispatch(
-        saveActivityLog(
-          'Change Password',
-          'ChangePassword',
-          CHANGE_PASSWORD_PRIVILEDGE_ID,
-          data.result,
-        ),
-      );
+      // dispatch(
+      //   saveActivityLog(
+      //     'Change Password',
+      //     'ChangePassword',
+      //     CHANGE_PASSWORD_PRIVILEDGE_ID,
+      //     data.result,
+      //   ),
+      // );
       const {data} = await Axios.post(
         `${base_url}/user/usr/changePassword`,
         {

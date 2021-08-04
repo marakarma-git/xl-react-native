@@ -200,12 +200,12 @@ const RoleAdministrationPage = ({ route, navigation }) => {
           setSelectedRoles([]);
           updateActionAccess([]);
           dispatch(callRoleAdministrationDeleteRole(roleId));
-          dispatch(saveActivityLog(
-            route.name,
-            'Delete',
-            ADMINISTRATION_PRIVILEDGE_ID,
-            `Delete data for: ${roleNameArray.join(", ")}`
-          ))
+          // dispatch(saveActivityLog(
+          //   route.name,
+          //   'Delete',
+          //   ADMINISTRATION_PRIVILEDGE_ID,
+          //   `Delete data for: ${roleNameArray.join(", ")}`
+          // ))
         }
         setShowModal(false);
         setDeleteLoading(true);
@@ -294,11 +294,11 @@ const RoleAdministrationPage = ({ route, navigation }) => {
   useEffect(() => {
     return navigation.addListener('focus', () => {
       checkActionPriviledge();
-      dispatch(saveActivityLog(
-        route.name,
-        'View',
-        ADMINISTRATION_PRIVILEDGE_ID,
-      ));
+      // dispatch(saveActivityLog(
+      //   route.name,
+      //   'View',
+      //   ADMINISTRATION_PRIVILEDGE_ID,
+      // ));
       dispatch(
         callRoleAction({
           page_params: 0,
