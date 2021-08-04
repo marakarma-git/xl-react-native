@@ -235,7 +235,7 @@ const UserAdministrationPage = ({route}) => {
   const lockUnlockFunction = async (lockUser) => {
     try {
       setModalLoading(true);
-      dispatch(
+      //dispatch(
         // saveActivityLog(
         //   route.name,
         //   lockUser ? 'Lock' : 'Unlock',
