@@ -47,8 +47,6 @@ const ChangePasswordPage = ({route, navigation}) => {
         `${base_url}/user/usr/changePassword`,
         {
           ...form,
-          updatedBy: username,
-          username,
         },
         {
           headers: {
