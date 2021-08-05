@@ -1,5 +1,4 @@
 import axios from 'axios';
-import {callApi} from '../../constant/connection';
 import Helper from '../../helpers/helper';
 
 const setActivityError = (payload) => ({

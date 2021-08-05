@@ -236,15 +236,15 @@ const UserAdministrationPage = ({route}) => {
     try {
       setModalLoading(true);
       //dispatch(
-        // saveActivityLog(
-        //   route.name,
-        //   lockUser ? 'Lock' : 'Unlock',
-        //   ADMINISTRATION_PRIVILEDGE_ID,
-        //   `${lockUser ? 'Lock' : 'Unlock'} for data: ${usernameArray.join(
-        //     ', ',
-        //   )}`,
-        // ),
-      );
+      // saveActivityLog(
+      //   route.name,
+      //   lockUser ? 'Lock' : 'Unlock',
+      //   ADMINISTRATION_PRIVILEDGE_ID,
+      //   `${lockUser ? 'Lock' : 'Unlock'} for data: ${usernameArray.join(
+      //     ', ',
+      //   )}`,
+      // ),
+      // );
       const roleId = new Array();
       const usernameArray = new Array();
       let successMessage = lockUser ? 'locked' : 'unlocked';
