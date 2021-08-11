@@ -121,7 +121,7 @@ export default {
     justifyContent: 'center',
     alignItems: 'center',
     marginVertical: 10,
-    backgroundColor: '#002DBB'
+    backgroundColor: '#002DBB',
   },
   buttonBlockLandscape: {
     width: '90%',
@@ -129,7 +129,7 @@ export default {
     marginVertical: 5,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#002DBB'
+    backgroundColor: '#002DBB',
   },
   buttonText: {
     fontSize: 16,
@@ -163,10 +163,10 @@ export default {
     height: 40,
   },
   tcText: {
-    fontSize: 12, 
-    position: 'relative', 
-    top: 3, 
-    color: '#949494'
+    fontSize: 12,
+    position: 'relative',
+    top: 3,
+    color: '#949494',
   },
   tcBox: {
     width: '80%',
@@ -175,14 +175,14 @@ export default {
     borderColor: '#8D8D8D',
     alignItems: 'center',
     justifyContent: 'center',
-    marginVertical: 20
+    marginVertical: 20,
   },
   buttonContainer: {
     width: '80%',
     height: 50,
     flexDirection: 'row',
     justifyContent: 'flex-end',
-    alignItems: 'center'
+    alignItems: 'center',
   },
   buttonCancel: {
     width: 100,
@@ -193,7 +193,7 @@ export default {
     borderColor: '#8D8D8D',
     borderRadius: 5,
     backgroundColor: 'white',
-    marginHorizontal: 3
+    marginHorizontal: 3,
   },
   buttonNext: {
     width: 100,
@@ -202,21 +202,29 @@ export default {
     height: 30,
     borderRadius: 5,
     backgroundColor: colors.button_color_one,
-    marginHorizontal: 3
+    marginHorizontal: 3,
   },
   containerDropDown: {
-    width: 200, 
-    color: "#707070",
+    width: 200,
+    color: '#707070',
     borderRadius: 0,
-    zIndex: 5000
+    zIndex: 5000,
   },
   dropDownStyle: {
     height: 30,
-    width: 230, 
-    borderRadius: 0, 
+    width: 230,
+    borderRadius: 0,
     paddingLeft: 10,
     borderWidth: 1,
     borderColor: '#707070',
-    color: "#707070",
-  }
+    color: '#707070',
+  },
+  toolbarDropDown: {
+    height: 20,
+    borderRadius: 10,
+    paddingLeft: 10,
+    borderWidth: 1,
+    borderColor: '#707070',
+    color: '#707070',
+  },
 };

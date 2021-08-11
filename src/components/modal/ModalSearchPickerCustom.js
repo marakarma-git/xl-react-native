@@ -13,8 +13,16 @@ import {colors} from '../../constant/color';
 import {inputHybridStyle} from '../../style';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
-const ModalSearchPicker = (props) => {
-  const {data, onClose, onChange, value, title, removeSearch} = props;
+const ModalSearchPickerCustom = (props) => {
+  const {
+    data,
+    onClose,
+    onChange,
+    value,
+    title,
+    removeSearch,
+    modalHeight,
+  } = props;
   const [searchText, setSearchText] = useState('');
   const [searchResults, setSearchResult] = useState([]);
   useEffect(() => {
@@ -30,7 +38,10 @@ const ModalSearchPicker = (props) => {
       <View style={inputHybridStyle.modalBackdrop} />
       <KeyboardAvoidingView
         enabled={false}
-        style={inputHybridStyle.modalContainer}>
+        style={[
+          inputHybridStyle.customModalContainer,
+          {height: modalHeight || 200},
+        ]}>
         <View style={inputHybridStyle.modalTitleContainer}>
           <Text style={inputHybridStyle.modalTitleText}>{title}</Text>
           <TouchableOpacity onPress={onClose}>
@@ -105,12 +116,13 @@ const ModalSearchPicker = (props) => {
     </Modal>
   );
 };
-ModalSearchPicker.propTypes = {
+ModalSearchPickerCustom.propTypes = {
   title: PropTypes.string,
   data: PropTypes.array,
   onClose: PropTypes.func,
   onChange: PropTypes.func,
   removeSearch: PropTypes.bool,
+  modalHeight: PropTypes.number,
   value: PropTypes.oneOf([
     PropTypes.objectOf({
       label: PropTypes.string,
@@ -119,4 +131,4 @@ ModalSearchPicker.propTypes = {
     PropTypes.any,
   ]),
 };
-export default ModalSearchPicker;
+export default ModalSearchPickerCustom;

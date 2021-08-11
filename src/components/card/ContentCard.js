@@ -1,5 +1,5 @@
 import React from 'react';
-import {View} from 'react-native';
+import {View, ActivityIndicator} from 'react-native';
 import {Card} from 'react-native-paper';
 import {Text} from '../../components';
 
@@ -11,15 +11,32 @@ const ContentCard = (props) => {
   return (
     <Card style={[styles.cardSection, {marginTop: '3%'}]}>
       <Card.Content style={styles.cardContentWrapper}>
-        <View style={[styles.cardTitleContainer, props.cardHeaderStyle]}>
+        <View style={[styles.cardTitleContainer]}>
           <Text
             fontType="bold"
-            style={[{fontSize: 10, color: 'black'}, props.titleStyle]}>
+            style={[{fontSize: 12, color: 'black'}, props.titleStyle]}>
             {props.cardTitle}
           </Text>
-          {props.cardToolbar}
+          <View style={{flexDirection: 'row', justifyContent: 'flex-end'}}>
+            {props.cardToolbar}
+          </View>
         </View>
-        {props.loadingContent ? '' : props.cardContent}
+        {props.loadingContent ? (
+          <View style={{justifyContent: 'center', height: 100}}>
+            <ActivityIndicator size="large" color="#002DBB" />
+            <Text
+              fontType="bold"
+              style={{
+                textAlign: 'center',
+                fontSize: 14,
+                paddingVertical: 10,
+              }}>
+              Loading...
+            </Text>
+          </View>
+        ) : (
+          props.cardContent
+        )}
       </Card.Content>
     </Card>
   );

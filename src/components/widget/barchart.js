@@ -18,15 +18,22 @@ import Helper from '../../helpers/helper';
 import style from '../../style/home.style';
 import {NoDataText} from '..';
 
-const BarChartComponent = ({item, filterParams = {}}) => {
+const BarChartComponent = ({
+  item,
+  viewType = 'dashboard',
+  filterParams = {},
+}) => {
   const dispatch = useDispatch();
   const navigation = useNavigation();
   const dataSet = useSelector(
     (state) => state.dashboard_reducer.topTrafficStatistics,
   );
   const userData = useSelector((state) => state.auth_reducer.data);
-  const {loading, error} = useSelector((state) => state.dashboard_reducer);
+  const {loadingTopTraffic, error} = useSelector(
+    (state) => state.dashboard_reducer,
+  );
   const [orientation, setOrientation] = useState('potrait');
+  const [firstRender, setFirstRender] = useState(true);
 
   const generateChart = () => (
     <View style={{position: 'relative', top: -20, left: -15}}>
@@ -34,7 +41,7 @@ const BarChartComponent = ({item, filterParams = {}}) => {
         <VictoryContainer>
           <VictoryChart
             width={
-              Orientation.getWidth() - (orientation === 'landscape' ? 120 : 70)
+              Orientation.getWidth() - (orientation === 'landscape' ? 120 : 30)
             }>
             <VictoryAxis
               crossAxis
@@ -99,6 +106,25 @@ const BarChartComponent = ({item, filterParams = {}}) => {
     </View>
   );
 
+  const generateView = () => {
+    if (viewType === 'dashboard') {
+      return (
+        <Card style={[style.cardSection]}>
+          <Card.Content style={[style.cardContentWrapper, {flex: 1}]}>
+            <Title>{item.jsonData?.title?.text || ''}</Title>
+            {loadingTopTraffic ? (
+              <ActivityIndicator color="#002DBB" size="large" />
+            ) : (
+              <>{dataSet && generateChart()}</>
+            )}
+          </Card.Content>
+        </Card>
+      );
+    } else {
+      return <View style={{marginLeft: 10}}>{dataSet && generateChart()}</View>;
+    }
+  };
+
   const detectOrientation = useCallback(() => {
     if (Orientation.getHeight() <= Orientation.getWidth()) {
       setOrientation('landscape');
@@ -119,34 +145,18 @@ const BarChartComponent = ({item, filterParams = {}}) => {
         ),
       );
     }
+  }, [dataSet]);
 
+  useEffect(() => {
     const pageLoad = navigation.addListener('focus', () => {
-      dispatch(
-        requestWidgetData(
-          userData.access_token,
-          item,
-          filterParams,
-          (type = 'top'),
-        ),
-      );
+      setFirstRender(false);
     });
 
     detectOrientation();
 
     return pageLoad;
   }, [navigation]);
-  return (
-    <Card style={[style.cardSection]}>
-      <Card.Content style={[style.cardContentWrapper, {flex: 1}]}>
-        <Title>{item.jsonData?.title?.text || ''}</Title>
-        {loading ? (
-          <ActivityIndicator color="#002DBB" size="large" />
-        ) : (
-          <>{dataSet ? generateChart() : <NoDataText />}</>
-        )}
-      </Card.Content>
-    </Card>
-  );
+  return <>{generateView()}</>;
 };
 
 const CustomLabel = (props) => {

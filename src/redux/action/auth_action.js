@@ -92,6 +92,7 @@ const authLogout = () => {
         dispatch(removeAuth(username));
       }
     } catch (error) {
+      console.log("Logout")
       dispatch(authFailed(error.response.data));
     }
   };

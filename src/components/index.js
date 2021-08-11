@@ -10,10 +10,12 @@ export {default as NavbarTitle} from './home/navbarTitle';
 // Widget Component
 export {default as WidgetStore} from './widget/widget.store';
 export {default as ChartLegend} from './widget/chartlegend';
+export {default as Last12MonthChart} from './widget/lastMonthChart';
 
 // Form Component
 export {default as PasswordInput} from './PasswordInput';
 export {default as TermCondition} from './termCondition';
+export {default as CustomDropDownPicker} from './form/CustomDropDown';
 
 // Modal Component
 export {default as ModalTermCondition} from './modal/ModalTermCondition';

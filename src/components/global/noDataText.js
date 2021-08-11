@@ -21,6 +21,7 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
+    marginTop: 30,
   },
   noDataText: {
     fontSize: 14,

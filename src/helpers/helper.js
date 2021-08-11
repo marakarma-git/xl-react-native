@@ -83,6 +83,20 @@ class Helper {
     return convertVal.value * value;
   }
 
+  static convertUnit(labelValue) {
+    if (labelValue) {
+      let formattedAmount = Math.round(labelValue / Math.pow(1024, 3));
+      return formattedAmount + ' GB';
+    } else {
+      return 0 + ' GB';
+    }
+  }
+
+  static tooltipConvertUnit(amount) {
+    let formattedAmount = (amount / Math.pow(1024, 3)).toFixed(2).toString();
+    return formattedAmount + ' GB';
+  }
+
   static sortAscending(data, key) {
     if (typeof data === 'object') {
       for (let i = 0; i < data.length; i++) {
