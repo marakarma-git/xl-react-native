@@ -24,66 +24,66 @@ import {TouchableOpacity} from 'react-native-gesture-handler';
 import styles from '../../style/usageAnalytics.style';
 import {Button} from 'react-native';
 
-// const dataSet = [
-//   {
-//     x: 'Aug-2020',
-//     y: 0,
-//   },
-//   {
-//     x: 'Sep-2020',
-//     y: 0,
-//   },
-//   {
-//     x: 'Oct-2020',
-//     y: 0,
-//   },
-//   {
-//     x: 'Nov-2020',
-//     y: 0,
-//   },
-//   {
-//     x: 'Dec-2020',
-//     y: 0,
-//   },
-//   {
-//     x: 'Jan-2021',
-//     y: 2781275254330,
-//   },
-//   {
-//     x: 'Feb-2021',
-//     y: 2409217081165,
-//   },
-//   {
-//     x: 'Mar-2021',
-//     y: 2442480971496,
-//   },
-//   {
-//     x: 'Apr-2021',
-//     y: 3574879964123,
-//   },
-//   {
-//     x: 'May-2021',
-//     y: 4134712503244,
-//   },
-//   {
-//     x: 'Jun-2021',
-//     y: 2620960428109,
-//   },
-//   {
-//     x: 'Jul-2021',
-//     y: 3483071671449,
-//   },
-//   {
-//     x: 'Aug-2021',
-//     y: 0,
-//   },
-// ];
+const dataSet = [
+  {
+    x: 'Aug-2020',
+    y: 0,
+  },
+  {
+    x: 'Sep-2020',
+    y: 0,
+  },
+  {
+    x: 'Oct-2020',
+    y: 0,
+  },
+  {
+    x: 'Nov-2020',
+    y: 0,
+  },
+  {
+    x: 'Dec-2020',
+    y: 0,
+  },
+  {
+    x: 'Jan-2021',
+    y: 2781275254330,
+  },
+  {
+    x: 'Feb-2021',
+    y: 2409217081165,
+  },
+  {
+    x: 'Mar-2021',
+    y: 2442480971496,
+  },
+  {
+    x: 'Apr-2021',
+    y: 3574879964123,
+  },
+  {
+    x: 'May-2021',
+    y: 4134712503244,
+  },
+  {
+    x: 'Jun-2021',
+    y: 2620960428109,
+  },
+  {
+    x: 'Jul-2021',
+    y: 3483071671449,
+  },
+  {
+    x: 'Aug-2021',
+    y: 0,
+  },
+];
 
 const Las12MonthUsageChart = () => {
   const navigation = useNavigation();
-  const dataSet = useSelector(
-    (state) => state.dashboard_reducer.last12MonthUsage,
-  );
+  // const dataSet = useSelector(
+  //   (state) => state.dashboard_reducer.last12MonthUsage,
+  // );
   const [orientation, setOrientation] = useState('potrait');
   const [activeBarIndex, setActiveBarIndex] = useState(null);
 
@@ -111,6 +111,7 @@ const Las12MonthUsageChart = () => {
       {dataSet.length > 0 ? (
         <Svg>
           <VictoryChart
+            padding={{top:10, right:30, left:80, bottom: 60}}
             width={
               Orientation.getWidth() - (orientation === 'landscape' ? 120 : 30)
             }
@@ -135,6 +136,8 @@ const Las12MonthUsageChart = () => {
             }>
             <VictoryAxis
               dependentAxis
+              label={"Data volumes"}
+              axisLabelComponent={<VictoryLabel dy={-40} />}
               standalone={true}
               fixLabelOverlap
               tickFormat={(t) => Helper.convertUnit(t)}
@@ -143,6 +146,7 @@ const Las12MonthUsageChart = () => {
             <VictoryAxis
               crossAxis
               label="Data per month"
+              axisLabelComponent={<VictoryLabel dy={20} />}
               standalone={false}
               tickLabelComponent={
                 <VictoryLabel dx={-10} angle={-13} style={{fontSize: 10}} />
