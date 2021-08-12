@@ -13,7 +13,7 @@ import {
   KeyboardAvoidingView,
   Image,
   Linking,
-  Dimensions
+  Dimensions,
 } from 'react-native';
 import Recaptcha from '../components/googleCaptcha/recaptcha';
 import {Header, NavbarTitle} from '../components';
@@ -32,12 +32,12 @@ const ChangePasswordPage = ({navigation}) => {
   const [orientation, setOrientation] = useState('potrait');
 
   const recaptchaRef = useRef();
-  const send = value => {
+  const send = (value) => {
     recaptchaRef.current.open();
   };
-  const onVerify = token => {
+  const onVerify = (token) => {
     requestChangePassword();
-  }
+  };
   const onExpire = () => {
     alert('Captcha expired');
   };
@@ -105,26 +105,31 @@ const ChangePasswordPage = ({navigation}) => {
                 ? {justifyContent: 'center'}
                 : {marginTop: 10},
             ]}>
-            <View style={[loginStyle.imageContainer, 
-              { height: 100, justifyContent: 'center', alignItems: 'center' }]}>
+            <View
+              style={[
+                loginStyle.imageContainer,
+                {height: 100, justifyContent: 'center', alignItems: 'center'},
+              ]}>
               <Image
                 resizeMode="contain"
-                style={
-                  { 
-                    width: Orientation.getWidth() * (orientation === 'potrait' ? 0.5 : 0.4), 
-                    height: Orientation.getHeight() * (orientation === 'potrait' ? 0.2 : 0.15) 
-                  }
-                }
+                style={{
+                  width:
+                    Orientation.getWidth() *
+                    (orientation === 'potrait' ? 0.5 : 0.4),
+                  height:
+                    Orientation.getHeight() *
+                    (orientation === 'potrait' ? 0.2 : 0.15),
+                }}
                 source={busolLogo}
               />
             </View>
-              <View
-                style={[
-                  loginStyle.loginContainer,
-                  orientation === 'landscape'
-                    ? {width: '48%', marginHorizontal: '26%'}
-                    : {width: '85%', marginHorizontal: '7.5%'},
-                ]}>
+            <View
+              style={[
+                loginStyle.loginContainer,
+                orientation === 'landscape'
+                  ? {width: '48%', marginHorizontal: '26%'}
+                  : {width: '85%', marginHorizontal: '7.5%'},
+              ]}>
               <Text
                 style={{color: '#363636', fontSize: 16, fontWeight: 'bold'}}>
                 Forgot Your Password?
@@ -178,7 +183,9 @@ const ChangePasswordPage = ({navigation}) => {
                       style={loginStyle.buttonText}
                     />
                   ) : (
-                    <Text style={inputloginStyle.buttonText}>Reset Password</Text>
+                    <Text style={inputloginStyle.buttonText}>
+                      Reset Password
+                    </Text>
                   )}
                 </Text>
               </TouchableOpacity>
@@ -231,15 +238,50 @@ const ChangePasswordPage = ({navigation}) => {
           </View>
         </TouchableWithoutFeedback>
       </KeyboardAvoidingView>
-      <View style={(loginStyle.footer, {alignItems: 'center'})}>
+      <View
+        style={
+          (loginStyle.footer,
+          {
+            alignItems: 'center',
+            bottom: orientation === 'potrait' ? 30 : 5,
+          })
+        }>
         <Text
           style={{
             color: '#707070',
             fontSize: 12,
-            bottom: orientation === 'potrait' ? 30 : 5,
+            // bottom: 15,
           }}>
           &copy; {`${year} PT. XL Axiata Tbk. All Right Reserved `}
         </Text>
+        <View
+          style={{
+            alignItems: 'center',
+            flexDirection: 'row',
+            marginTop: 5,
+          }}>
+          <Text
+            onPress={() =>
+              Linking.openURL('https://www.xl.co.id/en/terms-and-conditions ')
+            }
+            style={{
+              fontSize: 12,
+              color: '#20A8D8',
+            }}>
+            Term of use{'  '}
+          </Text>
+          <Text style={{fontSize: 5, color: 'black'}}>{'\u2B24'}</Text>
+          <Text
+            onPress={() =>
+              Linking.openURL('https://www.xl.co.id/en/privacy-policy')
+            }
+            style={{
+              fontSize: 12,
+              color: '#20A8D8',
+            }}>
+            {'  '}Privacy Policy
+          </Text>
+        </View>
       </View>
     </ScrollView>
   );
