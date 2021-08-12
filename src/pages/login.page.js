@@ -110,12 +110,15 @@ const Login = ({navigation}) => {
     const {error, error_description} = errorParams;
     switch (error) {
       case 'invalid_grant':
-        if (error_description === 'User is disabled')
+        if (error_description === 'User is disabled') {
           setErrorText("Your account hasn't been verified.");
-        if (error_description === 'Bad credentials')
+        }
+        if (error_description === 'Bad credentials') {
           setErrorText('The username or password is incorrect');
-        if (error_description === 'User account is locked')
+        }
+        if (error_description === 'User account is locked') {
           setErrorText(error_description);
+        }
         break;
       case 'unauthorized':
         setErrorText(
@@ -380,6 +383,30 @@ const Login = ({navigation}) => {
           }}>
           &copy; {`${year} PT. XL Axiata Tbk. All Right Reserved `}
         </Text>
+        <View
+          style={{alignItems: 'center', marginTop: 12, flexDirection: 'row'}}>
+          <Text
+            onPress={() =>
+              Linking.openURL('https://www.xl.co.id/en/terms-and-conditions ')
+            }
+            style={{
+              fontSize: 12,
+              color: '#20A8D8',
+            }}>
+            Term of use{'  '}
+          </Text>
+          <Text style={{fontSize: 5, color: 'black'}}>{'\u2B24'}</Text>
+          <Text
+            onPress={() =>
+              Linking.openURL('https://www.xl.co.id/en/privacy-policy')
+            }
+            style={{
+              fontSize: 12,
+              color: '#20A8D8',
+            }}>
+            {'  '}Privacy Policy
+          </Text>
+        </View>
       </View>
       {isSubmit && (
         <ModalMultiSession

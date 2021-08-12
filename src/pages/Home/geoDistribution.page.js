@@ -84,7 +84,21 @@ const GeoDistributionPage = () => {
       navigationFrom: 'GeoDistribution',
       dataNavigation: {
         arrayNavigation: [
-          ...dataHeader,
+          // ...dataHeader,
+          {
+            formIdTo: 'enterprise-hard-code',
+            data: dataHeader[0].data,
+            typeInput: 'DropDown',
+            params: '&customerNo=',
+            config: {
+              label: 'Enterprise',
+            },
+            sort_by_filter: 0,
+            value: {
+              label: dataHeader[0].value?.label,
+              value: dataHeader[0].value?.label,
+            },
+          },
           {
             formIdTo: 'geoLocation-location-params-only-drop-down',
             value: {
