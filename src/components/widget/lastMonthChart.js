@@ -24,66 +24,66 @@ import {TouchableOpacity} from 'react-native-gesture-handler';
 import styles from '../../style/usageAnalytics.style';
 import {Button} from 'react-native';
 
-const dataSet = [
-  {
-    x: 'Aug-2020',
-    y: 0,
-  },
-  {
-    x: 'Sep-2020',
-    y: 0,
-  },
-  {
-    x: 'Oct-2020',
-    y: 0,
-  },
-  {
-    x: 'Nov-2020',
-    y: 0,
-  },
-  {
-    x: 'Dec-2020',
-    y: 0,
-  },
-  {
-    x: 'Jan-2021',
-    y: 2781275254330,
-  },
-  {
-    x: 'Feb-2021',
-    y: 2409217081165,
-  },
-  {
-    x: 'Mar-2021',
-    y: 2442480971496,
-  },
-  {
-    x: 'Apr-2021',
-    y: 3574879964123,
-  },
-  {
-    x: 'May-2021',
-    y: 4134712503244,
-  },
-  {
-    x: 'Jun-2021',
-    y: 2620960428109,
-  },
-  {
-    x: 'Jul-2021',
-    y: 3483071671449,
-  },
-  {
-    x: 'Aug-2021',
-    y: 0,
-  },
-];
+// const dataSet = [
+//   {
+//     x: 'Aug-2020',
+//     y: 0,
+//   },
+//   {
+//     x: 'Sep-2020',
+//     y: 0,
+//   },
+//   {
+//     x: 'Oct-2020',
+//     y: 0,
+//   },
+//   {
+//     x: 'Nov-2020',
+//     y: 0,
+//   },
+//   {
+//     x: 'Dec-2020',
+//     y: 0,
+//   },
+//   {
+//     x: 'Jan-2021',
+//     y: 2781275254330,
+//   },
+//   {
+//     x: 'Feb-2021',
+//     y: 2409217081165,
+//   },
+//   {
+//     x: 'Mar-2021',
+//     y: 2442480971496,
+//   },
+//   {
+//     x: 'Apr-2021',
+//     y: 3574879964123,
+//   },
+//   {
+//     x: 'May-2021',
+//     y: 4134712503244,
+//   },
+//   {
+//     x: 'Jun-2021',
+//     y: 2620960428109,
+//   },
+//   {
+//     x: 'Jul-2021',
+//     y: 3483071671449,
+//   },
+//   {
+//     x: 'Aug-2021',
+//     y: 0,
+//   },
+// ];
 
 const Las12MonthUsageChart = () => {
   const navigation = useNavigation();
-  // const dataSet = useSelector(
-  //   (state) => state.dashboard_reducer.last12MonthUsage,
-  // );
+  const dataSet = useSelector(
+    (state) => state.dashboard_reducer.last12MonthUsage,
+  );
   const [orientation, setOrientation] = useState('potrait');
   const [activeBarIndex, setActiveBarIndex] = useState(null);
 
