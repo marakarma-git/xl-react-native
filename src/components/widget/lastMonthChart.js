@@ -111,6 +111,7 @@ const Las12MonthUsageChart = () => {
       {dataSet.length > 0 ? (
         <Svg>
           <VictoryChart
+            padding={{top:10, right:30, left:80, bottom: 60}}
             width={
               Orientation.getWidth() - (orientation === 'landscape' ? 120 : 30)
             }
@@ -135,6 +136,8 @@ const Las12MonthUsageChart = () => {
             }>
             <VictoryAxis
               dependentAxis
+              label={"Data volumes"}
+              axisLabelComponent={<VictoryLabel dy={-40} />}
               standalone={true}
               fixLabelOverlap
               tickFormat={(t) => Helper.convertUnit(t)}
@@ -143,6 +146,7 @@ const Las12MonthUsageChart = () => {
             <VictoryAxis
               crossAxis
               label="Data per month"
+              axisLabelComponent={<VictoryLabel dy={20} />}
               standalone={false}
               tickLabelComponent={
                 <VictoryLabel dx={-10} angle={-13} style={{fontSize: 10}} />
