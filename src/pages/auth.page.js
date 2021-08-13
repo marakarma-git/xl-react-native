@@ -3,13 +3,14 @@ import SplashScreen from 'react-native-splash-screen';
 import React, {useEffect} from 'react';
 import {View, ActivityIndicator} from 'react-native';
 import {useSelector, useDispatch} from 'react-redux';
-import {authLogout, setFalseAfterLogin} from '../redux/action/auth_action';
+import {authLogout, resetMultiSessionDetected, setFalseAfterLogin} from '../redux/action/auth_action';
 
 const Auth = ({navigation}) => {
   const dispatch = useDispatch();
   const {data, error, isLoggedIn, afterLogin} = useSelector((state) => state.auth_reducer);
 
   useEffect(() => {
+    dispatch(resetMultiSessionDetected());
     setTimeout(() => {
       SplashScreen.hide();
     }, 1000);

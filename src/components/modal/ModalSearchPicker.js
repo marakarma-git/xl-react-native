@@ -14,12 +14,11 @@ import {inputHybridStyle} from '../../style';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 const ModalSearchPicker = (props) => {
-  console.log(JSON.stringify(props, null, 2));
   const {data, onClose, onChange, value, title, removeSearch} = props;
   const [searchText, setSearchText] = useState('');
   const [searchResults, setSearchResult] = useState([]);
   useEffect(() => {
-    if (data.length > 0 && !removeSearch) {
+    if (data?.length > 0 && !removeSearch) {
       const results = data.filter((item) =>
         item.label.toLowerCase().includes(searchText.toLowerCase()),
       );
@@ -59,33 +58,46 @@ const ModalSearchPicker = (props) => {
         <FlatList
           data={!removeSearch ? searchResults : data}
           renderItem={({item, index}) => {
+            const isVisible =
+              item.isVisible == undefined ? true : item.isVisible;
             const {label} = item;
             return (
-              <TouchableOpacity
-                onPress={() => {
-                  onChange(item);
-                }}
-                style={[
-                  {
-                    backgroundColor:
-                      index % 2 === 0 ? colors.gray_table : 'white',
-                    borderRadius: 3,
-                    borderColor: colors.gray_border,
-                  },
-                  inputHybridStyle.modalItem,
-                ]}>
-                <MaterialCommunityIcons
-                  name={
-                    label === value || item.value === value
-                      ? 'circle-slice-8'
-                      : 'circle-outline'
-                  }
-                  color={colors.button_color_one}
-                  size={20}
-                  style={{marginRight: 5}}
-                />
-                <Text style={{flex: 1}}>{label}</Text>
-              </TouchableOpacity>
+              <>
+                {isVisible && (
+                  <TouchableOpacity
+                    disabled={item.isDisabled ? true : false}
+                    onPress={() => {
+                      onChange(item);
+                    }}
+                    style={[
+                      {
+                        backgroundColor:
+                          index % 2 === 0 ? colors.gray_table : 'white',
+                        borderRadius: 3,
+                        borderColor: colors.gray_border,
+                      },
+                      inputHybridStyle.modalItem,
+                    ]}>
+                    <MaterialCommunityIcons
+                      name={
+                        label === value || item.value === value
+                          ? 'circle-slice-8'
+                          : 'circle-outline'
+                      }
+                      color={colors.button_color_one}
+                      size={20}
+                      style={{marginRight: 5}}
+                    />
+                    <Text
+                      style={{
+                        flex: 1,
+                        color: item.isDisabled ? '#c8c8c8' : 'black',
+                      }}>
+                      {label}
+                    </Text>
+                  </TouchableOpacity>
+                )}
+              </>
             );
           }}
         />

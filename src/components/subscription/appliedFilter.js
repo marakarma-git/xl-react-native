@@ -7,8 +7,9 @@ import {border_radius} from '../../constant/config';
 import lod from 'lodash';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import dayjs from 'dayjs';
+import MaterialCommunityIcon from 'react-native-paper/src/components/MaterialCommunityIcon';
 const LocalComponent = (props) => {
-  const {type, title, onDelete} = props || '';
+  const {type, title, onDelete, isRemoveDeleteIcon} = props || '';
   return (
     <View
       style={{
@@ -21,20 +22,28 @@ const LocalComponent = (props) => {
         alignItems: 'center',
       }}>
       <Text style={{flex: 1, color: 'white'}}>{`${type}: ${title}`}</Text>
-      <TouchableOpacity onPress={onDelete} style={{paddingLeft: 6}}>
-        <MaterialCommunityIcons
-          name={'close-circle'}
-          color={'white'}
-          size={18}
-        />
-      </TouchableOpacity>
+      {isRemoveDeleteIcon !== true && (
+        <TouchableOpacity onPress={onDelete} style={{paddingLeft: 6}}>
+          <MaterialCommunityIcons
+            name={'close-circle'}
+            color={'white'}
+            size={18}
+          />
+        </TouchableOpacity>
+      )}
     </View>
   );
 };
 const AppliedFilter = (props) => {
-  const {data, onDelete} = props || {};
+  const {data, onDelete, withFilterButton, onPressFilter, isRemoveDeleteIcon} =
+    props || {};
   return (
-    <View style={{marginHorizontal: 16, marginVertical: 4}}>
+    <View
+      style={{
+        marginHorizontal: !withFilterButton ? 16 : 0,
+        marginVertical: 4,
+        flexDirection: withFilterButton && 'row',
+      }}>
       <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
         {data.length > 0 &&
           data.map((value) => {
@@ -50,6 +59,7 @@ const AppliedFilter = (props) => {
             if (!lod.isEmpty(valueInput) || isSelected) {
               return (
                 <LocalComponent
+                  isRemoveDeleteIcon={isRemoveDeleteIcon}
                   type={label}
                   title={
                     typeInput === 'DropDownType2'
@@ -66,15 +76,30 @@ const AppliedFilter = (props) => {
             }
           })}
       </ScrollView>
+      {withFilterButton && (
+        <TouchableOpacity onPress={onPressFilter}>
+          <MaterialCommunityIcon
+            name={'filter'}
+            size={26}
+            color={colors.gray}
+          />
+        </TouchableOpacity>
+      )}
     </View>
   );
 };
 AppliedFilter.propTypes = {
   data: PropTypes.array,
   onDelete: PropTypes.func,
+  isRemoveDeleteIcon: PropTypes.bool, //only true for remove the button
+
+  withFilterButton: PropTypes.bool,
+  onPressFilter: PropTypes.func,
 };
 AppliedFilter.defaultProps = {
   data: [],
   onDelete: () => {},
+
+  onPressFilter: () => {},
 };
 export default AppliedFilter;

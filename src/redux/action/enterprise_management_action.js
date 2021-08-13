@@ -1,0 +1,298 @@
+import axios from 'axios';
+import {base_url} from '../../constant/connection';
+import Helper from '../../helpers/helper';
+import {dataMatcherArray2D} from './get_sim_inventory_action';
+import reduxString from '../reduxString';
+
+const enterpriseManagementClearActiveEnterpriseData = () => ({
+  type: "ENTERPRISE_MANAGEMENT_CLEAR_ACTIVE_ENTERPRISE_DATA"
+});
+
+const enterpriseManagementRequestData = () => ({
+  type: 'ENTERPRISE_MANAGEMENT_REQUEST_DATA',
+});
+
+const enterpriseManagementRequestDataEnd = () => ({
+  type: 'ENTERPRISE_MANAGEMENT_REQUEST_DATA_END',
+});
+
+const enterpriseManagementGetDataSuccess = (data) => ({
+  type: 'ENTERPRISE_MANAGEMENT_GET_DATA_SUCCESS',
+  ...data,
+});
+
+const activeEnterpriseManagementGetDataSucces = (data) => ({
+  type: "ACTIVE_ENTERPRISE_MANAGEMENT_GET_DATA_SUCCESS",
+  payload: data
+});
+
+const enterpriseManagementSetDataGenerated = ({dataEnterpriseGenerated}) => {
+  return {
+    type: reduxString.ENTERPRISE_MANAGEMENT_SET_DATA_GENERATED,
+    dataEnterpriseGenerated,
+  };
+};
+const updateEnterpriseData = (dataEnterprise, dataEnterpriseGenerated) => ({
+  type: 'ENTERPRISE_UPDATE_DATA',
+  dataEnterprise,
+  dataEnterpriseGenerated,
+});
+
+const enterpriseManagementGetDataFail = (payload) => ({
+  type: 'ENTERPRISE_MANAGEMENT_GET_DATA_FAIL',
+  payload,
+});
+
+const treeViewToggle = (
+  enterpriseId,
+  data_enterprise,
+  parentCondition = null,
+  key = 'visibility',
+) => {
+  data_enterprise.map((data) => {
+    if (data.enterpriseParentId == enterpriseId) {
+      if (parentCondition == null) {
+        data[key] = !data[key];
+      } else {
+        data[key] = parentCondition;
+      }
+
+      treeViewToggle(data.enterpriseId, data_enterprise, data[key], key);
+    }
+  });
+};
+
+const enterpriseManagementCheckBoxToggle = (enterpriseId) => {
+  return async (dispatch, getState) => {
+    const {data_enterprise} =
+      getState().enterprise_management_get_enterprise_reducer || {};
+    const {dataHeaderEnterprise} =
+      getState().enterprise_management_header_array_reducer || {};
+
+    data_enterprise.map((data) => {
+      if (data.enterpriseId == enterpriseId) {
+        data.treeCheck = !data.treeCheck;
+      }
+    });
+
+    treeViewToggle(enterpriseId, data_enterprise, null, 'treeCheck');
+
+    const generateDataTable = dataMatcherArray2D(
+      data_enterprise,
+      dataHeaderEnterprise,
+    );
+
+    dispatch(updateEnterpriseData(data_enterprise, generateDataTable));
+  };
+};
+
+const enterpriseManagementHideShow = (enterpriseId) => {
+  return async (dispatch, getState) => {
+    const {data_enterprise} =
+      getState().enterprise_management_get_enterprise_reducer || {};
+    const {dataHeaderEnterprise} =
+      getState().enterprise_management_header_array_reducer || {};
+
+    await data_enterprise.map((data) => {
+      if (data.enterpriseId == enterpriseId) {
+        if (data.icon) {
+          data.icon = data.icon == 'caret-down' ? 'caret-up' : 'caret-down';
+        }
+      }
+    });
+
+    treeViewToggle(enterpriseId, data_enterprise, null, 'visibility');
+
+    const generateDataTable = dataMatcherArray2D(
+      data_enterprise,
+      dataHeaderEnterprise,
+    );
+
+    dispatch(updateEnterpriseData(data_enterprise, generateDataTable));
+  };
+};
+
+const getActiveEnterpriseList = (paginate) => {
+    return async (dispatch, getState) => {
+    dispatch(enterpriseManagementRequestData());
+    const {page_params, size_params, header_sort_params} = paginate || {};
+    const {orderBy: order_by_params, sortBy: sort_by_params} =
+      header_sort_params || {};
+    const {access_token} = getState().auth_reducer.data || '';
+    const {dataHeaderEnterprise, searchText, generatedParams} =
+      getState().enterprise_management_header_array_reducer || {};
+    const {
+      enterprise_page,
+      enterprise_total_size,
+      enterprise_applied_header_sort,
+    } = (await getState().enterprise_management_get_enterprise_reducer) || {};
+    const {orderBy, sortBy} = enterprise_applied_header_sort || {};
+
+    try {
+      const {data} = await axios.get(
+        `${base_url}/user/corp/v2/getActiveEnterprise`,
+        {
+          headers: {
+            Authorization: 'Bearer ' + access_token,
+          },
+        },
+      );
+
+      if (data) {
+        const {result, statusCode} = data || {};
+        const {content, totalPages, totalElements} = result || {};
+        if (statusCode === 0) {
+          dispatch(
+            activeEnterpriseManagementGetDataSucces(Helper.makeMultiDimensionalArrayTo2DArray(result))
+          )
+        } else {
+          dispatch(
+            enterpriseManagementGetDataFail({
+              errorText: 'Failed, to get enterprise list',
+            }),
+          );
+        }
+      }
+    } catch (error) {
+      dispatch(
+        enterpriseManagementGetDataFail({
+          errorText: 'Failed, to get enterprise list',
+          ...error.response.data,
+        }),
+      );
+    }
+  };
+}
+
+// const resetTreeCheckGetActiveEnterpriseList = (dataActiveEnterprise) => {
+//   return (dispatch) => {
+//     const newData = new Array();
+
+//     dataActiveEnterprise.map(enterprise => {
+//       enterprise.treeCheck = false;
+
+//       newData.push(enterprise);
+//     });
+
+//     dispatch(activeEnterpriseManagementGetDataSucces(newData));
+//   }
+// }
+
+const getEnterpriseList = (paginate) => {
+  return async (dispatch, getState) => {
+    dispatch(enterpriseManagementRequestData());
+    const {page_params, size_params, header_sort_params} = paginate || {};
+    const {orderBy: order_by_params, sortBy: sort_by_params} =
+      header_sort_params || {};
+    const {access_token} = getState().auth_reducer.data || '';
+    const {dataHeaderEnterprise, searchText, generatedParams} =
+      getState().enterprise_management_header_array_reducer || {};
+    const {
+      enterprise_page,
+      enterprise_total_size,
+      enterprise_applied_header_sort,
+    } = (await getState().enterprise_management_get_enterprise_reducer) || {};
+    const {orderBy, sortBy} = enterprise_applied_header_sort || {};
+
+    const getPage = page_params ?? enterprise_page;
+    const getSize = size_params || enterprise_total_size;
+
+    const getOrderBy = () => {
+      if (order_by_params === 'RESET' || orderBy === 'RESET') {
+        return '';
+      } else {
+        if (order_by_params) {
+          return order_by_params;
+        } else {
+          return orderBy;
+        }
+      }
+    };
+    const getSortBy = () => {
+      if (sort_by_params === 'RESET' || sortBy === 'RESET') {
+        return '';
+      } else {
+        if (sort_by_params) {
+          return sort_by_params;
+        } else {
+          return sortBy;
+        }
+      }
+    };
+
+    console.log(
+      `${base_url}/user/corp/v2/getEnterpriseList?page${getPage}&size=${getSize}&keyword=${searchText}${
+        getSortBy() ? `&order=${getSortBy()}` : ''
+      }${getSortBy() ? `&sort=${getOrderBy()}` : ''}${generatedParams}`
+        .split(' ')
+        .join('+'),
+    );
+    try {
+      const {data} = await axios.get(
+        `${base_url}/user/corp/v2/getEnterpriseList?page${getPage}&size=${getSize}&keyword=${searchText}${
+          getSortBy() ? `&order=${getSortBy()}` : ''
+        }${getSortBy() ? `&sort=${getOrderBy()}` : ''}${generatedParams}`
+          .split(' ')
+          .join('+'),
+        {
+          headers: {
+            Authorization: 'Bearer ' + access_token,
+          },
+        },
+      );
+
+      if (data) {
+        const {result, statusCode} = data || {};
+        const {content, totalPages, totalElements} = result || {};
+        if (statusCode === 0) {
+          const isAppliedFilter = () => !!(searchText || generatedParams);
+          const generateDataTable = dataMatcherArray2D(
+            Helper.makeMultiDimensionalArrayTo2DArray(content),
+            dataHeaderEnterprise,
+          );
+          dispatch(
+            enterpriseManagementGetDataSuccess({
+              dataEnterprise: Helper.makeMultiDimensionalArrayTo2DArray(
+                content,
+              ),
+              dataEnterpriseGenerated: generateDataTable,
+              enterprisePage: getPage,
+              enterpriseTotalPage: totalPages,
+              enterpriseTotalSize: getSize,
+              enterpriseElements: totalElements,
+              enterpriseAppliedFilter: isAppliedFilter(),
+              enterpriseAppliedHeaderSort: header_sort_params
+                ? header_sort_params
+                : enterprise_applied_header_sort,
+              enterpriseParamsAppliedActivityLog: generatedParams,
+            }),
+          );
+        } else {
+          dispatch(
+            enterpriseManagementGetDataFail({
+              errorText: 'Failed, to get enterprise list',
+            }),
+          );
+        }
+      }
+    } catch (error) {
+      dispatch(
+        enterpriseManagementGetDataFail({
+          errorText: 'Failed, to get enterprise list',
+          ...error.response.data,
+        }),
+      );
+    }
+  };
+};
+
+export {
+  getEnterpriseList,
+  getActiveEnterpriseList,
+  enterpriseManagementHideShow,
+  enterpriseManagementSetDataGenerated,
+  enterpriseManagementCheckBoxToggle,
+  enterpriseManagementRequestData,
+  enterpriseManagementRequestDataEnd,
+  enterpriseManagementClearActiveEnterpriseData,
+};

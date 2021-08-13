@@ -3,12 +3,13 @@ import {Header, Navbar} from '../index';
 import PropTypes from 'prop-types';
 import {useNavigation} from '@react-navigation/native';
 import Orientation from '../../helpers/orientation';
-import {Dimensions} from 'react-native';
+import {Dimensions, View} from 'react-native';
 
 const HomePageContainer = (props) => {
   const navigation = useNavigation();
   const [orientation, setOrientation] = useState('potrait');
-  const {companyLogo, headerTitle, children} = props || null;
+  const {companyLogo, headerTitle, children, backIcon, onPressBack} =
+    props || null;
 
   const detectOrientation = useCallback(() => {
     if (Orientation.getHeight() <= Orientation.getWidth()) {
@@ -33,6 +34,8 @@ const HomePageContainer = (props) => {
         navigation={navigation}
         companyLogo={companyLogo}
         headerTitle={headerTitle}
+        backIcon={backIcon}
+        onPressBack={onPressBack}
       />
       {children}
     </>
@@ -42,5 +45,9 @@ HomePageContainer.propTypes = {
   orientation: PropTypes.string,
   companyLogo: PropTypes.string,
   headerTitle: PropTypes.string,
+  onPressBack: PropTypes.func,
+};
+HomePageContainer.defaultProps = {
+  onPressBack: undefined,
 };
 export default HomePageContainer;

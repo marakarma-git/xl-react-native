@@ -8,6 +8,9 @@ import TableCellStatus from './tableCellStatus';
 import TableCellText from './tableCellText';
 import TableCellViewMap from './tableCellViewMap';
 import TableCellHeaderCheckBox from './tableCellHeaderCheckBox';
+import TableCellCheckBoxTreeView from './tableCellCheckBoxTreeView';
+import TableCellButton from './tableCellButton';
+import TableCellEditDelete from './tableCellEditDelete';
 
 const TableCell = (props) => {
   const {type} = props || {};
@@ -28,6 +31,12 @@ const TableCell = (props) => {
       return <TableCellText {...props} />;
     case 'TableCellViewMap':
       return <TableCellViewMap {...props} />;
+    case 'TableCellCheckBoxTreeView':
+      return <TableCellCheckBoxTreeView {...props} />;
+    case 'TableCellButton':
+      return <TableCellButton {...props} />;
+    case 'TableCellEditDelete':
+      return <TableCellEditDelete {...props} />;
     default:
       return <React.Fragment />;
   }
@@ -42,6 +51,9 @@ TableCell.propTypes = {
     'TableCellStatus',
     'TableCellText',
     'TableCellViewMap',
+    'TableCellCheckBoxTreeView',
+    'TableCellButton',
+    'TableCellEditDelete',
   ]).isRequired,
   config: {
     label: PropTypes.string,
@@ -53,9 +65,18 @@ TableCell.propTypes = {
     isTouchable: PropTypes.bool,
     superType: PropTypes.oneOf(['DATE', 'BYTE']),
     flexStart: PropTypes.bool,
+    visibility: PropTypes.bool,
+    icon: PropTypes.string,
+    showIcon: PropTypes.bool,
+    isTreeView: PropTypes.bool,
+    treeLevel: PropTypes.number,
+    treeCheck: PropTypes.bool,
   },
   onPress: PropTypes.func,
+  onPressArrow: PropTypes.func,
   onChangeCheck: PropTypes.func,
+  onPressEdit: PropTypes.func,
+  onPressDelete: PropTypes.func,
   dataOption: PropTypes.arrayOf([
     PropTypes.objectOf({
       value: PropTypes.string,
@@ -79,6 +100,9 @@ TableCell.propTypes = {
 };
 TableCell.defaultProps = {
   onPress: () => {},
+  onPressArrow: () => {},
   onChangeCheck: () => {},
+  onPressEdit: () => {},
+  onPressDelete: () => {},
 };
 export default TableCell;

@@ -5,32 +5,52 @@ import PropTypes from 'prop-types';
 import {homeStyle} from '../../style/index';
 import {burgerMenu} from '../../assets/images/index';
 import Orientation from '../../helpers/orientation';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
 const NavbarComponent = (props) => {
-  const {companyLogo, headerTitle, orientation} = props || null;
+  const {companyLogo, headerTitle, orientation, backIcon, onPressBack} =
+    props || null;
   return (
     <View style={[homeStyle.navbarContainer, props.customStyle]}>
-      <TouchableOpacity onPress={() => props.navigation.toggleDrawer()}>
-        <Image
-          source={burgerMenu}
-          style={[
-            homeStyle.navbarButton,
-            {
-              width:
-                orientation === 'landscape'
-                  ? Orientation.getWidth() * 0.03
-                  : Orientation.getWidth() * 0.05,
-            },
-          ]}
-        />
-      </TouchableOpacity>
+      {backIcon === true ? (
+        <TouchableOpacity
+          onPress={() => {
+            if (!onPressBack) {
+              props.navigation.goBack();
+            } else {
+              onPressBack();
+            }
+          }}>
+          <MaterialCommunityIcons
+            name={'arrow-left'}
+            color={'black'}
+            size={24}
+          />
+        </TouchableOpacity>
+      ) : (
+        <TouchableOpacity onPress={() => props.navigation.toggleDrawer()}>
+          <Image
+            source={burgerMenu}
+            style={[
+              homeStyle.navbarButton,
+              {
+                width:
+                  orientation === 'landscape'
+                    ? Orientation.getWidth() * 0.03
+                    : Orientation.getWidth() * 0.05,
+              },
+            ]}
+          />
+        </TouchableOpacity>
+      )}
       {headerTitle && (
         <Text
           style={{
             flex: 1,
             paddingLeft: 20,
             fontSize: 20,
-          }}>
+          }}
+          fontType="bold">
           {headerTitle}
         </Text>
       )}

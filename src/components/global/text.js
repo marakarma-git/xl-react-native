@@ -30,7 +30,14 @@ const Text = (props) => {
     }
   };
 
-  return <MyText style={[props.style, fontWeight()]}>{props.children}</MyText>;
+  return (
+    <MyText
+      {...props}
+      style={[props.style, fontWeight()]}
+      >
+      {props.children}
+    </MyText>
+  );
 };
 
 Text.propTypes = {

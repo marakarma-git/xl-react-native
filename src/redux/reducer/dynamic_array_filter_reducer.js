@@ -1,6 +1,8 @@
 import reduxString from '../reduxString';
 import dayjs from 'dayjs';
 import Helper from '../../helpers/helper';
+import generateLink from '../../helpers/generateLink';
+import lod from 'lodash';
 const dynamicFilter = [
   {
     formId: 'imsi-hard-code',
@@ -453,6 +455,24 @@ const dynamicFilter = [
     shown: true,
     sort_by_filter: 19,
   },
+  {
+    formId: 'sim-productivity-percentage-group-params-only-drop-down',
+    typeInput: 'ForParamsOnlyDropDown',
+    config: {
+      label: 'Percentage Group',
+      doNotShowOnFilter: true,
+    },
+    params: '&percentageGroup=',
+    value: {},
+    hard_code: true,
+  },
+  {
+    formId: 'geoLocation-location-params-only-drop-down',
+    typeInput: 'ForParamsOnlyDropDown',
+    params: '&city=',
+    value: {},
+    hard_code: true,
+  },
 ];
 const initialState = {
   searchText: '',
@@ -462,27 +482,31 @@ const initialState = {
   applied_filter: [],
   loading_array_filter: false,
   regenerateParams: false,
+  dynamic_array_filter_snapshot: {},
 };
 const dynamic_array_filter_reducer = (state = initialState, action) => {
   switch (action.type) {
-    case reduxString.UPDATE_DATA_FILTER:
+    case reduxString.UPDATE_DATA_FILTER: {
       return {
         ...state,
         loading_array_filter: false,
         array_filter: action.payload,
       };
-    case reduxString.UPDATE_DATA_SEARCH_TEXT:
+    }
+    case reduxString.UPDATE_DATA_SEARCH_TEXT: {
       return {
         ...state,
         searchText: action.searchText,
         regenerateParams: false,
       };
-    case reduxString.RESET_DATA_SEARCH_TEXT:
+    }
+    case reduxString.RESET_DATA_SEARCH_TEXT: {
       return {
         ...state,
         searchText: '',
       };
-    case reduxString.UPDATE_GENERATED_PARAMS:
+    }
+    case reduxString.UPDATE_GENERATED_PARAMS: {
       return {
         ...state,
         totalFiltered: action.totalFiltered,
@@ -490,30 +514,35 @@ const dynamic_array_filter_reducer = (state = initialState, action) => {
         generatedParams: action.generatedParams,
         regenerateParams: true,
       };
-    case reduxString.RESET_GENERATED_PARAMS:
+    }
+    case reduxString.RESET_GENERATED_PARAMS: {
       return {
         ...state,
         totalFiltered: 0,
         applied_filter: [],
         generatedParams: '',
       };
-    case reduxString.SET_LOADING_FILTER_TRUE:
+    }
+    case reduxString.SET_LOADING_FILTER_TRUE: {
       return {
         ...state,
         loading_array_filter: true,
       };
-    case reduxString.SET_LOADING_FILTER_FALSE:
+    }
+    case reduxString.SET_LOADING_FILTER_FALSE: {
       return {
         ...state,
         loading_array_filter: false,
       };
-    case reduxString.MERGE_DATA_FILTER:
+    }
+    case reduxString.MERGE_DATA_FILTER: {
       return {
         ...state,
         loading_array_filter: false,
         array_filter: [...state.array_filter, ...action.data],
       };
-    case reduxString.MERGE_SPECIFIC_DATA_FILTER_INDEX:
+    }
+    case reduxString.MERGE_SPECIFIC_DATA_FILTER_INDEX: {
       return {
         ...state,
         loading_array_filter: false,
@@ -523,8 +552,54 @@ const dynamic_array_filter_reducer = (state = initialState, action) => {
           state.array_filter.length - 1,
         ),
       };
-    default:
+    }
+    case reduxString.SUBSCRIPTION_DYNAMIC_ARRAY_SNAPSHOT_GENERATE_PARAMS: {
+      const snapshot = action.firstRender === true ? {} : state;
+      return {
+        ...state,
+        searchText: '',
+        generatedParams: action.linkParams || '',
+        applied_filter: action.containerData || [],
+        array_filter: action.newArray || [],
+        totalFiltered: 0,
+        loading_array_filter: false,
+        regenerateParams: false,
+        dynamic_array_filter_snapshot: snapshot,
+      };
+    }
+    // case reduxString.SUBSCRIPTION_DYNAMIC_ARRAY_RE_APPLY_DATA_FROM_SNAPSHOT: {
+    //   return lod.isEmpty(state.dynamic_array_filter_snapshot)
+    //     ? {...initialState}
+    //     : {...state.dynamic_array_filter_snapshot};
+    // }
+    case reduxString.SUBSCRIPTION_DYNAMIC_ARRAY_RE_APPLY_DATA_FROM_SNAPSHOT: {
+      return {
+        ...state,
+        searchText:
+          state.dynamic_array_filter_snapshot?.searchText ||
+          initialState.searchText,
+        generatedParams:
+          state.dynamic_array_filter_snapshot?.generatedParams ||
+          initialState.generatedParams,
+        totalFiltered:
+          state.dynamic_array_filter_snapshot?.totalFiltered ||
+          initialState.totalFiltered,
+        array_filter:
+          state.dynamic_array_filter_snapshot?.array_filter ||
+          state.array_filter,
+        applied_filter:
+          state.dynamic_array_filter_snapshot?.applied_filter ||
+          initialState.applied_filter,
+        loading_array_filter:
+          state.dynamic_array_filter_snapshot?.loading_array_filter ||
+          initialState.loading_array_filter,
+        regenerateParams: state.dynamic_array_filter_snapshot?.regenerateParams,
+        dynamic_array_filter_snapshot: {},
+      };
+    }
+    default: {
       return state;
+    }
   }
 };
 export default dynamic_array_filter_reducer;

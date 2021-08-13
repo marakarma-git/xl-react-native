@@ -29,6 +29,7 @@ const userForm = [
 const MyAccountPage = (props) => {
   const dispatch = useDispatch();
   const userData = useSelector((state) => state.auth_reducer.data);
+  const {isErricson} = useSelector((state) => state.auth_reducer);
   const {imageBase64} = useSelector((state) => state.enterprise_reducer);
 
   const [form, setForm] = useState(userData.principal);
@@ -101,11 +102,13 @@ const MyAccountPage = (props) => {
               editable={editable}
               inputHandler={inputHandler}
             />
-            <TouchableOpacity
-              disabled={!privHelper.isHasPriviledge("CP",userData.authority)}
-              onPress={() => props.navigation.navigate('Change Password')}>
-              <Text style={styles.linkText}>Change Password</Text>
-            </TouchableOpacity>
+            {
+              !isErricson &&
+              <TouchableOpacity
+                onPress={() => props.navigation.navigate('Change Password', { pageBefore: "account" })}>
+                <Text style={styles.linkText}>Change Password</Text>
+              </TouchableOpacity>
+            }
             {editable && (
               <TouchableOpacity
                 onPress={() => alert('Todo edit user')}

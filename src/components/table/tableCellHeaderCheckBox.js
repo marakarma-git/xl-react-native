@@ -5,6 +5,7 @@ import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import React from 'react';
 import {defaultWidthCell, defaultHeightCell} from '../../constant/config';
 import PropTypes from 'prop-types';
+import {colors} from '../../constant/color';
 
 const TableCellHeaderCheckBox = (props) => {
   const {config, onPress, onChangeCheck, valueCheck, sorted, key} = props || {};
@@ -56,7 +57,11 @@ const TableCellHeaderCheckBox = (props) => {
                 ? 'sort-desc'
                 : 'unsorted'
             }
-            color={'white'}
+            color={
+              sorted === 'RESET' || !sorted
+                ? 'white'
+                : colors.white_header_asc_desc
+            }
             size={18}
           />
         </View>

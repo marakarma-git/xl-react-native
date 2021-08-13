@@ -4,7 +4,6 @@ import {
   KeyboardAvoidingView,
   Modal,
   ScrollView,
-  Text,
   TouchableOpacity,
   View,
 } from 'react-native';
@@ -13,6 +12,7 @@ import {inputHybridStyle, subscriptionStyle} from '../../style';
 import {device_width} from '../../constant/config';
 import CustomCheckBox from '../customCheckBox';
 import lod from 'lodash';
+import Text from '../global/text';
 const ModalMenuPicker = (props) => {
   const {data, onClose, onApply, title} = props;
   const [localData, setLocaldata] = useState(data);
@@ -70,12 +70,16 @@ const ModalMenuPicker = (props) => {
               {backgroundColor: colors.gray_button_cancel},
             ]}
             onPress={onClose}>
-            <Text style={{color: 'black'}}>Cancel</Text>
+            <Text fontType={'bold'} style={{color: 'black'}}>
+              Cancel
+            </Text>
           </TouchableOpacity>
           <TouchableOpacity
             style={inputHybridStyle.buttonStyle}
             onPress={() => onApply(localData)}>
-            <Text style={{color: 'white'}}>Apply</Text>
+            <Text fontType={'bold'} style={{color: 'white'}}>
+              Apply
+            </Text>
           </TouchableOpacity>
         </View>
       </KeyboardAvoidingView>

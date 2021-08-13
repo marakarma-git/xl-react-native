@@ -1,5 +1,4 @@
-import {authLogout} from '../action/auth_action';
-import {ToastAndroid} from 'react-native';
+import {setSessionExpired, tokenInvalid} from '../action/auth_action';
 
 const validateTokenMiddleware = (store) => (next) => (action) => {
 
@@ -7,9 +6,13 @@ const validateTokenMiddleware = (store) => (next) => (action) => {
     if (action.payload) {
       if (action.payload.error) {
         if (action.payload.error === 'invalid_token') {
-          ToastAndroid.show('Token Expired', ToastAndroid.LONG);
-          store.dispatch(authLogout());
+          store.dispatch(tokenInvalid());
+          store.dispatch(setSessionExpired());
           throw new Error('Token Expired');
+        }else if(action.payload.error === 'unauthorized'){
+          store.dispatch(tokenInvalid());
+          store.dispatch(setSessionExpired());
+          throw new Error('Token Invalid');
         }
       }
     }

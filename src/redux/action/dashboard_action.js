@@ -3,6 +3,11 @@ import Helper from '../../helpers/helper';
 import reduxString from '../reduxString';
 import {base_url} from '../../constant/connection';
 import {dashboardHeaderAuth} from '../../constant/headers';
+import {saveActivityLog} from './save_activity_log_action';
+import {
+  DASHBOARD_PRIVILEDGE_ID,
+  LOGIN_LOGOUT_PRIVILEDGE_ID,
+} from '../../constant/actionPriv';
 
 const setDashboardSummary = (data) => ({
   type: reduxString.SET_DASHBOARD_SUMMARY,
@@ -11,6 +16,18 @@ const setDashboardSummary = (data) => ({
 
 const requestDashboardData = () => ({
   type: reduxString.REQUEST_DASHBOARD_DATA,
+});
+
+const requestTopTraffic = () => ({
+  type: reduxString.REQUEST_TOP_TRAFFIC,
+});
+
+const request12MonthUsage = () => ({
+  type: reduxString.REQUEST_12_MONTH_USAGE,
+});
+
+const requestAggregatedTraffic = () => ({
+  type: reduxString.REQUEST_AGGREGATED_TRAFFIC,
 });
 
 export const setRequestError = (error) => ({
@@ -22,6 +39,9 @@ export const getDashboardSummary = (accessToken) => {
   return async (dispatch) => {
     try {
       dispatch(requestDashboardData());
+      // dispatch(
+      //   saveActivityLog('Dashboard', 'Summary', DASHBOARD_PRIVILEDGE_ID, ''),
+      // );
       const {data} = await Axios.get(
         `${base_url}/dcp/dashboard/getSummaryDashboard`,
         {
@@ -34,14 +54,13 @@ export const getDashboardSummary = (accessToken) => {
         if (data.statusCode === 0) {
           const summaryData = [
             {title: 'Total SIM Card', resultId: 'totalsimcard'},
-            {title: 'Total Active SIM Card', resultId: 'totalactivesim'},
             {title: 'Total Active Session', resultId: 'totalactivesession'},
+            {title: 'Total Active SIM Card', resultId: 'totalactivesim'},
             {
               title: 'Total Aggregated Traffic',
               resultId: 'totalaggregatedtraffic',
             },
           ];
-
           Object.keys(data.result).map((keys) => {
             summaryData.map((sumData, index) => {
               if (keys === sumData.resultId) {
@@ -100,6 +119,7 @@ const setCarousel = (data) => ({
 export const getCarousel = (accessToken) => {
   return async (dispatch) => {
     dispatch(requestDashboardData());
+    // dispatch(saveActivityLog('Home', 'Home', LOGIN_LOGOUT_PRIVILEDGE_ID));
     try {
       const {data} = await Axios.get(`${base_url}/dcp/banner/getListBanner`, {
         headers: {
@@ -112,7 +132,6 @@ export const getCarousel = (accessToken) => {
           data.result.map((banner) => {
             banner.bannerImage = `data:image/jpeg;base64,${banner.bannerImage}`;
           });
-
           dispatch(setCarousel(data.result));
         } else {
           throw new Error(data);
@@ -152,13 +171,15 @@ const setTopTrafficStatistics = (data, params) => {
 
   data.map((datas) => {
     newDataSet.push({
-      x: datas.msisdn, 
-      y: +datas.datausage, 
+      x: datas.msisdn,
+      y: +datas.datausage,
       label: [
-        `MSISDN: `, 
-        `${datas.msisdn}`, 
-        `Data usage: `, 
-        `${Helper.formatBytes(+datas.datausage)}`]});
+        `MSISDN: `,
+        `${datas.msisdn}`,
+        `Data usage: `,
+        `${Helper.formatBytes(+datas.datausage)}`,
+      ],
+    });
   });
 
   Helper.sortAscending(newDataSet, 'y');
@@ -170,6 +191,66 @@ const setTopTrafficStatistics = (data, params) => {
   };
 };
 
+export const resetTopTrafficStatistics = () => ({
+  type: reduxString.RESET_TOP_TRAFFIC_STATISTICS,
+});
+
+const setAggregatedTraffic = (data, params) => {
+  const summaryData = [
+    {
+      title: 'From start of month, Total Volume',
+      dataId: 'firstmonthvolume',
+      smsId: 'firstmonthsms',
+    },
+    {
+      title: 'Previous 30 days, Total Volume',
+      dataId: 'last30dayvolume',
+      smsId: 'last30daysms',
+    },
+    {
+      title: 'From start of month, Average per subscription',
+      dataId: 'firstmonthavgpersubs',
+      smsId: 'firstmonthavgpersubssms',
+    },
+    {
+      title: 'Previous 30 days, Average per subscription',
+      dataId: 'last30dayavgpersubs',
+      smsId: 'last30dayavgpersubssms',
+    },
+  ];
+
+  data.map((datas) => {
+    Object.keys(datas).map((keys) => {
+      summaryData.map((sumData, index) => {
+        if (keys === sumData.dataId)
+          summaryData[index].data = Helper.formatBytes(+datas[keys]);
+        else if (keys === sumData.smsId)
+          summaryData[index].sms = Helper.formatBytes(+datas[keys]);
+      });
+    });
+  });
+
+  return {
+    type: reduxString.SET_AGGREGATED_TRAFFIC,
+    payload: summaryData,
+    params,
+  };
+};
+
+const set12MonthUsage = (data, params) => {
+  const monthUsage = new Array();
+
+  data.map((datas) => {
+    monthUsage.push({x: datas.monthperiod, y: +datas.traffic || 0});
+  });
+
+  return {
+    type: reduxString.SET_12_MONTH_USAGE,
+    payload: monthUsage,
+    params,
+  };
+};
+
 export const requestWidgetData = (
   accessToken,
   item,
@@ -177,7 +258,17 @@ export const requestWidgetData = (
   type = 'sim',
 ) => {
   return async (dispatch) => {
-    dispatch(requestDashboardData());
+    if (type === 'sim') dispatch(requestDashboardData());
+    if (type === 'top') dispatch(requestTopTraffic());
+    // dispatch(
+    //   saveActivityLog(
+    //     'Dashboard',
+    //     type === 'sim' ? 'Dashboard' : 'TopTraffic',
+    //     DASHBOARD_PRIVILEDGE_ID,
+    //     '',
+    //   ),
+    // );
+
     try {
       const {data} = await Axios.post(
         `${base_url}/dcp/dashboard/v2/getDataSet?datasetId=${item.datasetId}`,
@@ -191,8 +282,7 @@ export const requestWidgetData = (
         if (data.statusCode === 0) {
           if (type === 'sim') {
             dispatch(setSimStatistics(data.result.dataset, filterParams));
-          } else {
-            console.log(data, " top traffic")
+          } else if (type === 'top') {
             dispatch(
               setTopTrafficStatistics(data.result.dataset, filterParams),
             );
@@ -202,6 +292,56 @@ export const requestWidgetData = (
         }
       }
     } catch (error) {
+      dispatch(setRequestError(error.response.data));
+    }
+  };
+};
+
+export const getAggregatedTraffic = (item, filterParams = {}) => {
+  return async (dispatch, getState) => {
+    const accessToken = getState().auth_reducer.data?.access_token;
+
+    try {
+      dispatch(requestAggregatedTraffic());
+      const {data} = await Axios.post(
+        `${base_url}/dcp/dashboard/v2/getDataSet?datasetId=${item.datasetId}`,
+        filterParams,
+        {
+          headers: dashboardHeaderAuth(accessToken),
+        },
+      );
+      if (data) {
+        if (data.statusCode === 0) {
+          dispatch(setAggregatedTraffic(data.result.dataset, filterParams));
+        }
+      }
+    } catch (error) {
+      dispatch(setRequestError(error.response.data));
+    }
+  };
+};
+
+export const get12MonthUsage = (item, filterParams = {}) => {
+  return async (dispatch, getState) => {
+    const accessToken = getState().auth_reducer.data?.access_token;
+
+    try {
+      dispatch(request12MonthUsage());
+      const {data} = await Axios.post(
+        `${base_url}/dcp/dashboard/v2/getDataSet?datasetId=${item.datasetId}`,
+        filterParams,
+        {
+          headers: dashboardHeaderAuth(accessToken),
+        },
+      );
+
+      if (data) {
+        if (data.statusCode === 0) {
+          dispatch(set12MonthUsage(data.result.dataset, filterParams));
+        }
+      }
+    } catch (error) {
+      console.log('ERROR', error.response.data);
       dispatch(setRequestError(error.response.data));
     }
   };

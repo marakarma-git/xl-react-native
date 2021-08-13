@@ -6,7 +6,6 @@ import {persistStore, persistReducer} from 'redux-persist';
 const thunk = require('redux-thunk').default;
 import {
   validateTokenMiddleware,
-  activityLogMiddleware,
 } from './redux/middleware/index';
 import {PersistGate} from 'redux-persist/integration/react';
 import {applyMiddleware, createStore} from 'redux';
@@ -15,11 +14,12 @@ import {SafeAreaProvider} from 'react-native-safe-area-context';
 import {encryptTransform} from 'redux-persist-transform-encrypt';
 import Route from './pages/route';
 import RootReducers from './redux/reducer';
+import {ToastContextProvider} from './context/ToastContext';
 
 const persistConfig = {
   key: 'root',
   storage: AsyncStorage,
-  whitelist: ['auth_reducer'],
+  whitelist: ['auth_reducer', 'notification_reducer'],
   transforms: [
     encryptTransform({
       secretKey: headerAuth,
@@ -34,7 +34,8 @@ const persistConfig = {
 const persistReducers = persistReducer(persistConfig, RootReducers);
 const store = createStore(
   persistReducers,
-  applyMiddleware(thunk, validateTokenMiddleware, activityLogMiddleware),
+  // applyMiddleware(thunk, validateTokenMiddleware),
+  applyMiddleware(thunk, validateTokenMiddleware),
 );
 const persist = persistStore(store);
 
@@ -42,10 +43,12 @@ const App = () => {
   return (
     <SafeAreaProvider>
       <Provider store={store}>
-        <StatusBar backgroundColor="#002DBB" />
-        <PersistGate persistor={persist}>
-          <Route />
-        </PersistGate>
+        <ToastContextProvider>
+          <StatusBar backgroundColor="#002DBB" />
+          <PersistGate persistor={persist}>
+            <Route />
+          </PersistGate>
+        </ToastContextProvider>
       </Provider>
     </SafeAreaProvider>
   );

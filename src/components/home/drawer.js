@@ -10,7 +10,6 @@ import {removeEnterPriseLogo} from '../../redux/action/enterprise_action';
 import {TouchableOpacity} from 'react-native';
 
 import Helper from '../../helpers/helper';
-import privHelper from '../../helpers/privHelper';
 import styles from '../../style/drawer.style';
 
 const CustomDrawerContent = (props) => {
@@ -53,20 +52,27 @@ const CustomDrawerContent = (props) => {
     }
   };
 
+  const renderMenu = (item, type, index, activeMenu) => (
+    <CustomMenu
+      type={type}
+      key={index + 1}
+      style={{
+        backgroundColor: type == 'submenu' ? '#122b86' : 'transparent',
+      }}
+      index={index}
+      item={item}
+      activeMenu={activeMenu}
+      submitEvent={() => drawerOnPress(item.name, item.subMenu)}
+    />
+  )
+
   const generateDrawerMenu = (listDrawer, type = 'menu') =>
     listDrawer.map((item, index) => (
       <React.Fragment>
-        <CustomMenu
-          type={type}
-          key={index + 1}
-          style={{
-            backgroundColor: type == 'submenu' ? '#122b86' : 'transparent',
-          }}
-          index={index}
-          item={item}
-          activeMenu={activeMenu}
-          submitEvent={() => drawerOnPress(item.name, item.subMenu)}
-        />
+        {
+          type != 'submenu' ? renderMenu(item, type, index, activeMenu)
+          : <>{item.isVisible && renderMenu(item, type, index, activeMenu)}</>
+        }
         {item.subMenu &&
           activeMenu == item.name &&
           generateDrawerMenu(item.subMenu, 'submenu')}
@@ -75,7 +81,7 @@ const CustomDrawerContent = (props) => {
 
   useEffect(() => {
     const drawerLoad = props.navigation.addListener('focus', () => {
-      setDrawerData(Helper.addDrawerMenu(userData.authority));
+      setDrawerData(Helper.drawerData(userData.authority));
     });
 
     return drawerLoad;
@@ -85,13 +91,11 @@ const CustomDrawerContent = (props) => {
     <DrawerContentScrollView {...props} style={{padding: 0}}>
       <View style={styles.avatarContainer}>
         <TouchableOpacity
-          disabled={!privHelper.isHasPriviledge("MA", userData.authority)}
           onPress={() => props.navigation.navigate('Account')}
           style={styles.userImageContainer}>
           <Ionicons name={'md-person'} color={'white'} size={24} />
         </TouchableOpacity>
         <TouchableOpacity
-          disabled={!privHelper.isHasPriviledge("MA", userData.authority)}
           onPress={() => props.navigation.navigate('Account')}
           style={{paddingLeft: 15}}>
           <Text fontType="regular" style={styles.userName}>

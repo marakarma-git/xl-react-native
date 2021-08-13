@@ -14,12 +14,18 @@ import {
 import Text from '../components/global/text';
 import lod from 'lodash';
 import styles from '../style/login.style';
-import {authLogin} from '../redux/action/auth_action';
+import {
+  authLogin,
+  checkLogin,
+  setIsErricson,
+} from '../redux/action/auth_action';
 import {useDispatch, useSelector} from 'react-redux';
 import {loginBrand} from '../assets/images/index';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import CheckBox from '@react-native-community/checkbox';
 import Orientation from '../helpers/orientation';
+import {ModalMultiSession} from '../components';
+import DropDownPicker from 'react-native-dropdown-picker';
 const busolLogo = require('../assets/images/logo/xl-busol-inverted.png');
 
 const Login = ({navigation}) => {
@@ -30,10 +36,23 @@ const Login = ({navigation}) => {
   const [password, setPassword] = useState('');
   const [errorText, setErrorText] = useState(null);
   const [orientation, setOrientation] = useState('potrait');
+  const [isSubmit, setIsSubmit] = useState(false);
   const dispatch = useDispatch();
-  const {data, error, isLoggedIn, alreadyRequest} = useSelector(
-    (state) => state.auth_reducer,
-  );
+  const {
+    data,
+    error,
+    isLoggedIn,
+    alreadyRequest,
+    multiSessionMsg,
+    isMultiSessionDetected,
+    isErricson,
+  } = useSelector((state) => state.auth_reducer);
+  const [open, setOpen] = useState(false);
+  const [loginDropDownValue, setLoginDropDownValue] = useState(0);
+  const [items, setItems] = useState([
+    {label: 'DCP Connect (default)', value: 0},
+    {label: 'IoT Connectivity +', value: 1},
+  ]);
 
   const detectOrientation = useCallback(() => {
     if (Orientation.getHeight() <= Orientation.getWidth()) {
@@ -45,12 +64,20 @@ const Login = ({navigation}) => {
   }, [Dimensions]);
 
   useEffect(() => {
+    dispatch(setIsErricson(loginDropDownValue === 0 ? true : false));
+  }, [loginDropDownValue]);
+
+  useEffect(() => {
     if (isLoggedIn) {
       if (!lod.isEmpty(data)) {
-        if (data.principal.mustChangePass) {
-          navigation.replace('Change Password');
-        } else {
-          navigation.replace('Home');
+        if (!isErricson) {
+          if (data.principal.mustChangePass) {
+            navigation.replace('Change Password', {
+              pageBefore: 'login',
+            });
+          } else {
+            navigation.replace('Home');
+          }
         }
       }
     }
@@ -61,13 +88,14 @@ const Login = ({navigation}) => {
         errorHandler(error);
       }
     }
-
+    dispatch(setIsErricson(loginDropDownValue === 0 ? true : false));
     detectOrientation();
   }, [data, error, isLoggedIn]);
 
   const onSubmit = () => {
+    setIsSubmit(true);
     if (username.length > 0 && password.length > 0) {
-      dispatch(authLogin(username, password));
+      dispatch(checkLogin(username, password, loginDropDownValue));
       setLocalLoading(true);
     } else {
       if (username.length <= 0) {
@@ -78,23 +106,40 @@ const Login = ({navigation}) => {
     }
   };
 
-  const errorHandler = (error) => {
-    if (error.error === 'invalid_grant') {
-      setErrorText('The username or password is incorrect');
-    }
-    if (error.error === 'unauthorized') {
-      setErrorText(
-        `Sorry for security reasons, after 3 more failed login\nattempts you'll have to wait ${
-          error.error_description.split(': ')[1]
-        } before trying again`,
-      );
-    }
-    if (error.error_description === 'User is disabled') {
-      setErrorText(
-        "Your account hasn't been verified. Please verify your\naccount on the email to enable you to log in",
-      );
+  const errorHandler = (errorParams) => {
+    const {error, error_description} = errorParams;
+    switch (error) {
+      case 'invalid_grant':
+        if (error_description === 'User is disabled') {
+          setErrorText("Your account hasn't been verified.");
+        }
+        if (error_description === 'Bad credentials') {
+          setErrorText('The username or password is incorrect');
+        }
+        if (error_description === 'User account is locked') {
+          setErrorText(error_description);
+        }
+        break;
+      case 'unauthorized':
+        setErrorText(
+          `Sorry for security reasons, after 3 more failed login\nattempts you'll have to wait ${
+            error_description.split(': ')[1]
+          } before trying again`,
+        );
+        break;
+      default:
+        setErrorText('The username or password is incorrect');
+        break;
     }
   };
+
+  useEffect(() => {
+    const pageLoad = navigation.addListener('focus', () => {
+      setIsSubmit(false);
+    });
+
+    return pageLoad;
+  }, [navigation]);
 
   return (
     <ScrollView style={styles.container}>
@@ -236,6 +281,30 @@ const Login = ({navigation}) => {
                   </Text>
                 </TouchableWithoutFeedback>
               </View>
+              <View
+                style={[
+                  styles.loginSettingWrapper,
+                  open && {marginBottom: 80},
+                ]}>
+                <View style={styles.loginSetting}>
+                  <Text style={[styles.label, {paddingRight: 10}]}>
+                    Login with:{' '}
+                  </Text>
+                  <DropDownPicker
+                    dropDownDirection="BOTTOM"
+                    style={styles.dropDownStyle}
+                    dropDownContainerStyle={styles.containerDropDown}
+                    customItemContainerStyle={{height: 30}}
+                    open={open}
+                    value={loginDropDownValue}
+                    items={items}
+                    setOpen={setOpen}
+                    setValue={setLoginDropDownValue}
+                    setItems={setItems}
+                    badgeColors="#707070"
+                  />
+                </View>
+              </View>
               {/* <View style={styles.loginSettingWrapper}>
                 <View style={styles.loginSetting}>
                   <CheckBox
@@ -314,7 +383,40 @@ const Login = ({navigation}) => {
           }}>
           &copy; {`${year} PT. XL Axiata Tbk. All Right Reserved `}
         </Text>
+        <View
+          style={{alignItems: 'center', marginTop: 12, flexDirection: 'row'}}>
+          <Text
+            onPress={() =>
+              Linking.openURL('https://www.xl.co.id/en/terms-and-conditions ')
+            }
+            style={{
+              fontSize: 12,
+              color: '#20A8D8',
+            }}>
+            Term of use{'  '}
+          </Text>
+          <Text style={{fontSize: 5, color: 'black'}}>{'\u2B24'}</Text>
+          <Text
+            onPress={() =>
+              Linking.openURL('https://www.xl.co.id/en/privacy-policy')
+            }
+            style={{
+              fontSize: 12,
+              color: '#20A8D8',
+            }}>
+            {'  '}Privacy Policy
+          </Text>
+        </View>
       </View>
+      {isSubmit && (
+        <ModalMultiSession
+          setLocalLoading={setLocalLoading}
+          data={{username, password, loginDropDownValue}}
+          showModal={isMultiSessionDetected}
+          title="Multi Session Detected"
+          text={multiSessionMsg}
+        />
+      )}
     </ScrollView>
   );
 };

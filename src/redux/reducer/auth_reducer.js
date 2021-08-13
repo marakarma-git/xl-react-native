@@ -6,8 +6,14 @@ const initialState = {
   titleVersion: null,
   alreadyRequest: false,
   isLoggedIn: false,
-  afterLogin: false
+  afterLogin: false,
+  homeLogin: false,
+  multiSessionMsg: "",
+  isMultiSessionDetected: false,
+  isErricson: false,
+  isSessionExpired: false,
 };
+
 const auth_reducers = (state = initialState, action) => {
   switch (action.type) {
     case reduxString.AUTH_REQUEST:
@@ -30,7 +36,9 @@ const auth_reducers = (state = initialState, action) => {
         error: '',
         alreadyRequest: false,
         isLoggedIn: true,
-        afterLogin: true
+        afterLogin: true,
+        isMultiSessionDetected: false,
+        multiSessionMsg: ""
       };
     case reduxString.SET_FALSE_AFTER_LOGIN: 
       return {
@@ -64,6 +72,40 @@ const auth_reducers = (state = initialState, action) => {
         ...state,
         data: payload,
       };
+    case reduxString.HOME_LOGIN:
+      return{
+        ...state,
+        homeLogin: true
+      }
+    case reduxString.SET_MULTI_SESSION_DETECTED: 
+      return{
+        ...state,
+        isMultiSessionDetected: true,
+        multiSessionMsg: action.payload,
+        loading: false
+      }
+    case reduxString.RESET_MULTI_SESSION_DETECTED: 
+      return{
+        ...state,
+        isMultiSessionDetected: false,
+        multiSessionMsg: "",
+        loading: false
+      }
+    case reduxString.SET_IS_ERRICSON: 
+      return{
+        ...state,
+        isErricson: action.payload
+      }
+    case reduxString.SET_SESSION_EXPIRED:
+      return{
+        ...state,
+        isSessionExpired: true,
+      }
+    case reduxString.CLEAR_SESSION_EXPIRED_FLAG:
+      return{
+        ...state,
+        isSessionExpired: false,
+      }
     default:
       return state;
   }

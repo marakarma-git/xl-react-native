@@ -14,7 +14,6 @@ import {ModalTermCondition} from '../components';
 import Entypo from 'react-native-vector-icons/Entypo';
 import Feather from 'react-native-vector-icons/Feather';
 import styles from '../style/account.style';
-import privHelper from '../helpers/privHelper';
 import { authLogout } from '../redux/action/auth_action';
 
 const passwordRulesArray = [
@@ -62,17 +61,20 @@ const passwordFormArray = [
   },
 ];
 
-const PasswordInput = ({submitHandler, requestLoading, navigation, orientation}) => {
+const formBody = {
+  oldPassword: '',
+  newPassword: '',
+  confirmPassword: '',
+};
+
+const PasswordInput = ({submitHandler, requestLoading, navigation, orientation, isCreate = false}) => {
   const dispatch = useDispatch();
   const userData = useSelector((state) => state.auth_reducer.data);
+  const homeLogin = useSelector((state) => state.auth_reducer.homeLogin);
   const [passwordForm, setPasswordForm] = useState(passwordFormArray);
   const [passwordRules, setPasswordRules] = useState(passwordRulesArray);
   const [formComplete, setFormComplete] = useState(false);
-  const [form, setForm] = useState({
-    oldPassword: '',
-    newPassword: '',
-    confirmPassword: '',
-  });
+  const [form, setForm] = useState(formBody);
   const [showModal, setShowModal] = useState(true);
 
   const inputHandler = (name, value, validation) => {
@@ -86,7 +88,10 @@ const PasswordInput = ({submitHandler, requestLoading, navigation, orientation})
   };
 
   const goBack = () => {
-    if(userData.principal.mustChangePass){
+    if(userData.principal.mustChangePass && !homeLogin){
+      dispatch(authLogout());
+      navigation.replace("Auth");
+    }else if(userData.principal.mustChangePass && homeLogin){
       dispatch(authLogout());
       navigation.replace("Auth");
     }else{
@@ -193,24 +198,78 @@ const PasswordInput = ({submitHandler, requestLoading, navigation, orientation})
     checkFormComplete();
   }, [form]);
 
+  useEffect(() => {
+    const pageLoad = navigation.addListener("focus", () => {
+
+      setForm({...formBody});
+      setPasswordForm([
+        {
+          name: 'oldPassword',
+          label: 'Current Password',
+          required: true,
+          visible: false,
+          validation: false,
+        },
+        {
+          name: 'newPassword',
+          label: 'New Password',
+          required: true,
+          visible: false,
+          validation: true,
+        },
+        {
+          name: 'confirmPassword',
+          label: 'Confirm Password',
+          required: true,
+          visible: false,
+          validation: false,
+        },
+      ]);
+      setPasswordRules([
+          {label: 'Be between 8 and 30 characters', valid: false},
+          {label: 'contain at least 1 number 0-9', valid: false},
+          {label: 'contain at least 1 lower case letter (a-z)', valid: false},
+          {label: 'contain at least 1 upper case letter (A-Z)', valid: false},
+          {
+            label: 'not contain more than 3 consecutives identical characters',
+            valid: true,
+          },
+          {
+            label: 'not contain more than 3 consecutives lower-case characters',
+            valid: true,
+          },
+          {
+            label:
+              'contain only the following characters a-z, A-Z, 0-9, #, -, !, @, %, &, /, (, ), ?, + *',
+            valid: true,
+          },
+          {label: "match the entry in 'Confrim Password'", valid: true},
+      ]);
+    });
+
+    return pageLoad;
+  }, [navigation]);
+
   return (
     <View style={{ alignItems: 'center', position: 'relative', top: -60 }}>
-      <View style={[styles.formContainer, 
-      {marginTop: 10, borderColor: '#8D8D8D', borderWidth: 0.8, width: orientation === 'potrait' ? '90%' : '50%', backgroundColor: 'white'}]}>
-        <Text style={styles.headerText}>Password</Text>
-        {generateForm()}
-        { userData?.principal?.mustChangePass && !userData?.principal?.isCustomerConsent && privHelper.isHasPriviledge('CC', userData.authority)
-        && <ModalTermCondition 
-            showModal={showModal} 
-            closeModal={() => setShowModal(!showModal)}
-            title={'Terms of Use & Privacy Policy'}/>}
-        <View style={styles.passwordRulesContainer}>
-          <Text style={{fontSize: 12, color: '#949494', textAlign: 'left'}}>
-            Follow the Password validation rules:{' '}
-          </Text>
-          {generatePasswordRules()}
+        <View style={[styles.formContainer, 
+          {marginTop: 10, borderColor: '#8D8D8D', borderWidth: 0.8, width: orientation === 'potrait' ? '90%' : '50%', backgroundColor: 'white'}]}>
+            <Text style={styles.headerText}>Password</Text>
+            {generateForm()}
+            { userData?.principal?.mustChangePass && !userData?.principal?.isCustomerConsent
+            && <ModalTermCondition 
+                showModal={showModal} 
+                closeModal={() => setShowModal(!showModal)}
+                title={'Terms of Use & Privacy Policy'}/>}
+            <View style={styles.passwordRulesContainer}>
+              <Text style={{fontSize: 12, color: '#949494', textAlign: 'left'}}>
+                Follow the Password validation rules:{' '}
+              </Text>
+              {generatePasswordRules()}
+            </View>
         </View>
-      </View>
+      {
+        !isCreate &&
         <View style={[styles.buttonGroupContainer, { width: orientation === 'potrait' ? '80%' : '40%' }]}>
           <TouchableOpacity
             onPress={goBack}
@@ -219,7 +278,7 @@ const PasswordInput = ({submitHandler, requestLoading, navigation, orientation})
           </TouchableOpacity>
           <TouchableOpacity
             onPress={() => submitHandler(form)}
-            disabled={!formComplete && !privHelper.isHasPriviledge('CP', userData.authority) ? true : false}
+            disabled={!formComplete ? true : false}
             style={[
               styles.buttonGroup,
               {backgroundColor: '#002DBB'},
@@ -231,11 +290,13 @@ const PasswordInput = ({submitHandler, requestLoading, navigation, orientation})
             )}
           </TouchableOpacity>
         </View>
+      }
       </View>
   );
 };
 
 const ButtonShowHide = ({visible, position, passwordForm, setPasswordForm}) => {
+
   const showHide = () => {
     const newForm = [...passwordForm];
     newForm[position].visible = !passwordForm[position].visible;

@@ -1,10 +1,26 @@
-import React from 'react';
+import React, {useState} from 'react';
 import PropTypes from 'prop-types';
-import {TouchableOpacity, View} from 'react-native';
+import {
+  KeyboardAvoidingView,
+  Modal,
+  ScrollView,
+  TouchableOpacity,
+  View,
+} from 'react-native';
 import Text from '../global/text';
 import {defaultHeightCell, defaultWidthCell} from '../../constant/config';
+import Ionicons from 'react-native-vector-icons/Ionicons';
+import styles from '../../style/drawer.style';
+import lod from 'lodash';
+import {inputHybridStyle} from '../../style';
+import {colors} from '../../constant/color';
+
 const TableCellText = (props) => {
-  const {config, onPress, otherInformation} = props || {};
+  const [moreText, setMoreText] = useState(false);
+  const [showMore, setShowMore] = useState(false);
+  const {config, onPress, otherInformation, onPressArrow, item, subItem} =
+    props || {};
+  const {child_api_id} = subItem || '';
   const {
     label,
     width,
@@ -14,45 +30,150 @@ const TableCellText = (props) => {
     backgroundColor,
     key,
     flexStart,
+    visibility,
+    icon,
+    showIcon,
+    isTreeView,
+    treeLevel,
+    textLink,
+    rootConfig,
   } = config || {};
+  const {condition} = rootConfig || {};
+  const createLabel = () => {
+    if (condition) {
+      return condition[`${label}`];
+    }
+    if (label && !child_api_id) {
+      return label;
+    }
+    if (child_api_id) {
+      return label + (child_api_id ? ` ${item[`${child_api_id}`]}` : '');
+    }
+  };
   const TouchView = isTouchable ? TouchableOpacity : View;
   return (
-    <View
-      key={key}
-      style={{
-        width: width || defaultWidthCell,
-        height: height || defaultHeightCell,
-        flexDirection: 'row',
-        alignItems: 'center',
-        backgroundColor: backgroundColor || 'white',
-      }}>
-      <TouchView
-        style={{
-          flex: 1,
-          flexDirection: 'row',
-        }}
-        onPress={() => onPress(otherInformation)}>
+    <React.Fragment>
+      {visibility && (
         <View
+          key={key}
           style={{
-            flex: 1,
-            paddingLeft: flexStart ? 8 : 0,
-            justifyContent: flexStart ? 'flex-start' : 'center',
-            alignItems: 'center',
+            width: width || defaultWidthCell,
+            height: height || defaultHeightCell,
             flexDirection: 'row',
+            alignItems: 'center',
+            backgroundColor: backgroundColor || 'white',
           }}>
-          <Text
-            numberOfLines={1}
+          <TouchView
             style={{
-              color: fontColor || 'black',
-            }}>
-            {label}
-          </Text>
+              flex: 1,
+              flexDirection: 'row',
+            }}
+            onPress={() => onPress(otherInformation)}>
+            <View
+              style={{
+                flex: 1,
+                paddingLeft: flexStart ? 8 : 0,
+                justifyContent: flexStart ? 'flex-start' : 'center',
+                alignItems: 'center',
+                flexDirection: 'row',
+              }}>
+              <TouchableOpacity
+                disabled={!isTreeView}
+                onPress={() => onPressArrow(otherInformation)}>
+                <Text
+                  numberOfLines={1}
+                  onTextLayout={(e) =>
+                    setMoreText(lod.size(e.nativeEvent.lines) > 1)
+                  }
+                  onPress={() => {
+                    if (moreText) {
+                      setShowMore(true);
+                    }
+                    if (!moreText && textLink) {
+                      onPress(otherInformation);
+                    }
+                  }}
+                  style={[
+                    {
+                      paddingLeft:
+                        isTreeView && (treeLevel + (!icon ? 1.6 : 0)) * 10,
+                      color: fontColor || 'black',
+                    },
+                    ,
+                    textLink && {
+                      color: 'blue',
+                      textDecorationLine: 'underline',
+                    },
+                  ]}>
+                  {showIcon && icon && (
+                    <React.Fragment>
+                      <Ionicons
+                        name={icon}
+                        color={'black'}
+                        style={styles.caretMenu}
+                      />
+                      &nbsp;
+                    </React.Fragment>
+                  )}
+                  {createLabel()}
+                </Text>
+              </TouchableOpacity>
+            </View>
+          </TouchView>
         </View>
-      </TouchView>
-    </View>
+      )}
+      {showMore && (
+        <Modal
+          animationType="slide"
+          transparent
+          onRequestClose={() => setShowMore(false)}>
+          <View style={inputHybridStyle.modalBackdrop} />
+          <KeyboardAvoidingView
+            enabled={false}
+            style={inputHybridStyle.modalContainer}>
+            <View style={inputHybridStyle.modalTitleContainer}>
+              <Text style={inputHybridStyle.modalTitleText}>Detail</Text>
+            </View>
+            <ScrollView style={{flex: 1}}>
+              <Text>{createLabel()}</Text>
+            </ScrollView>
+            <View
+              style={{
+                alignItems: 'center',
+                justifyContent: 'center',
+                flexDirection: 'row',
+              }}>
+              <TouchableOpacity
+                style={[
+                  inputHybridStyle.buttonStyle,
+                  {backgroundColor: colors.gray_button_cancel},
+                ]}
+                onPress={() => setShowMore(false)}>
+                <Text style={{color: 'black'}}>Close</Text>
+              </TouchableOpacity>
+              {textLink && (
+                <TouchableOpacity
+                  style={[
+                    inputHybridStyle.buttonStyle,
+                    {backgroundColor: colors.button_color_one},
+                  ]}
+                  onPress={() => {
+                    setShowMore(false);
+                    onPress(otherInformation);
+                  }}>
+                  <Text style={{color: textLink ? 'white' : 'black'}}>
+                    Open Link
+                  </Text>
+                </TouchableOpacity>
+              )}
+            </View>
+          </KeyboardAvoidingView>
+        </Modal>
+      )}
+    </React.Fragment>
   );
 };
-TableCellText.proptTypes = {
+TableCellText.propTypes = {
   config: PropTypes.objectOf({
     label: PropTypes.string,
     width: PropTypes.number,
@@ -61,6 +182,8 @@ TableCellText.proptTypes = {
     backgroundColor: PropTypes.string,
     fontSize: PropTypes.number,
     isTouchable: PropTypes.bool,
+    visibility: PropTypes.bool,
+    icon: PropTypes.string,
   }),
   onPress: PropTypes.func,
   otherInformation: PropTypes.any,

@@ -14,6 +14,7 @@ const Table = (props) => {
     onPressCell,
     onPressCheckHeader,
     onPressCheckCell,
+    onPressTreeArrow,
     loading,
     selectedHeaderOrderSort,
     isScrollView,
@@ -23,6 +24,8 @@ const Table = (props) => {
     onRight,
     isDragNSort,
     onDataChange,
+    onPressEdit,
+    onPressDelete,
   } = props || {};
   const headerScrollView = useRef(ScrollView);
   const rowsScrollView = useRef(ScrollView);
@@ -43,26 +46,29 @@ const Table = (props) => {
             style={{
               flexDirection: 'row',
             }}>
-            {dataHeader && dataHeader.length > 0 && !onRight && (
-              <TableCell
-                sorted={dataHeader[0].formId === formId ? sortBy : null}
-                type={dataHeader[0].cellType || null}
-                dataOption={dataHeader[0].dataOption}
-                onPress={() =>
-                  onPressHeader({
-                    dataSort: selectedHeaderOrderSort,
-                    item: dataHeader[0],
-                  })
-                }
-                onChangeCheck={(value) =>
-                  onPressCheckHeader({
-                    selectedValue: value,
-                    ...dataHeader[0],
-                  })
-                }
-                {...dataHeader[0]}
-              />
-            )}
+            {dataHeader &&
+              dataHeader.length > 0 &&
+              !onRight &&
+              !hideStickySide && (
+                <TableCell
+                  sorted={dataHeader[0].formId === formId ? sortBy : null}
+                  type={dataHeader[0].cellType || null}
+                  dataOption={dataHeader[0].dataOption}
+                  onPress={() =>
+                    onPressHeader({
+                      dataSort: selectedHeaderOrderSort,
+                      item: dataHeader[0],
+                    })
+                  }
+                  onChangeCheck={(value) => {
+                    onPressCheckHeader({
+                      selectedValue: value,
+                      ...dataHeader[0],
+                    });
+                  }}
+                  {...dataHeader[0]}
+                />
+              )}
             <ScrollView
               horizontal={true}
               scrollEnabled={false}
@@ -77,6 +83,7 @@ const Table = (props) => {
                 setRightIsScrolling(false);
               }}>
               {dataHeader &&
+                dataHeader.length > 0 &&
                 dataHeader.map((item, index) => {
                   const {cellType, shown, formId: inFormId} = item || {};
                   if (index > 0 && shown && !item.config.doNotShowOnTable) {
@@ -89,6 +96,7 @@ const Table = (props) => {
                           onPressHeader({
                             dataSort: selectedHeaderOrderSort,
                             item: dataHeader[index],
+                            indexHeader: index,
                           })
                         }
                         onChangeCheck={() => onPressCheckHeader(dataHeader[0])}
@@ -142,8 +150,11 @@ const Table = (props) => {
                 <StickyComponent
                   dataTable={dataTable}
                   onPressCell={onPressCell}
+                  onPressTreeArrow={onPressTreeArrow}
                   onPressCheckCell={onPressCheckCell}
                   borderWidth={borderWidth}
+                  onPressEdit={(e) => onPressEdit(e)}
+                  onPressDelete={(e) => onPressDelete(e)}
                 />
               )}
               <ScrollView
@@ -183,15 +194,26 @@ const Table = (props) => {
                           style={{flexDirection: 'row'}}
                           key={index}>
                           {dataCell.map((subValue, index2) => {
-                            const {cellType} = subValue || {};
+                            const {cellType, valueCheck} = subValue || {};
                             if (index2 > (hideStickySide ? -1 : 0)) {
                               return (
                                 <TableCell
                                   key={index2}
                                   type={cellType}
                                   onPress={() => onPressCell(subValue)}
+                                  onPressArrow={() =>
+                                    onPressTreeArrow(subValue)
+                                  }
                                   onChangeCheck={() =>
-                                    onPressCheckCell(subValue)
+                                    onPressCheckCell({
+                                      ...subValue,
+                                      firstIndex: index,
+                                      secondIndex: index2,
+                                    })
+                                  }
+                                  value={
+                                    cellType === 'TableCellCheckBox' &&
+                                    valueCheck
                                   }
                                   {...subValue}
                                 />
@@ -232,6 +254,9 @@ const Table = (props) => {
                                   key={index2}
                                   type={cellType}
                                   onPress={() => onPressCell(subValue)}
+                                  onPressArrow={() =>
+                                    onPressTreeArrow(subValue)
+                                  }
                                   onChangeCheck={() =>
                                     onPressCheckCell(subValue)
                                   }
@@ -252,9 +277,12 @@ const Table = (props) => {
                 <StickyComponent
                   dataTable={dataTable}
                   onPressCell={onPressCell}
+                  onPressTreeArrow={onPressTreeArrow}
                   onPressCheckCell={onPressCheckCell}
                   borderWidth={borderWidth}
                   onRight={true}
+                  onPressEdit={(e) => onPressEdit(e)}
+                  onPressDelete={(e) => onPressDelete(e)}
                 />
               )}
             </View>
@@ -295,6 +323,9 @@ Table.propTypes = {
   onPressCell: PropTypes.func,
   onPressCheckHeader: PropTypes.func,
   onPressCheckCell: PropTypes.func,
+  onPressTreeArrow: PropTypes.func,
+  onPressEdit: PropTypes.func,
+  onPressDelete: PropTypes.func,
   loading: PropTypes.bool,
   selectedHeaderOrderSort: PropTypes.objectOf({
     formId: PropTypes.string,
@@ -316,18 +347,30 @@ Table.defaultProps = {
   onPressCell: () => {},
   onPressCheckHeader: () => {},
   onPressCheckCell: () => {},
+  onPressTreeArrow: () => {},
   headerOtherLayout: () => <></>,
   onDataChange: () => {},
+  onPressEdit: () => {},
+  onPressDelete: () => {},
 };
 const StickyComponent = (props) => {
-  const {borderWidth, dataTable, onPressCell, onPressCheckCell, onRight} =
-    props || {};
+  const {
+    borderWidth,
+    dataTable,
+    onPressCell,
+    onPressCheckCell,
+    onRight,
+    onPressTreeArrow,
+    onPressEdit,
+    onPressDelete,
+  } = props || {};
   return (
     <View
       style={{
-        elevation: borderWidth ? 5 : 0,
+        elevation: borderWidth && !onRight ? 5 : onRight ? 5 : 0,
         borderRightWidth: !onRight && borderWidth ? 1 : 0,
-        borderColor: 'white',
+        borderLeftWidth: onRight ? 1 : 0,
+        borderColor: 'transparent',
       }}>
       {dataTable &&
         dataTable.map((value, index) => {
@@ -338,9 +381,12 @@ const StickyComponent = (props) => {
               key={index}
               type={dataCell[0].cellType || 'TableCellCheckBox'}
               onPress={() => onPressCell(dataCell[0])}
+              onPressArrow={() => onPressTreeArrow(dataCell[0])}
               onChangeCheck={() =>
                 onPressCheckCell({item: dataCell[0], index: index})
               }
+              onPressEdit={onPressEdit}
+              onPressDelete={onPressDelete}
               {...dataCell[0]}
             />
           );
@@ -354,11 +400,16 @@ StickyComponent.propTypes = {
   dataTable: PropTypes.number,
   onPressCell: PropTypes.func,
   onPressCheckCell: PropTypes.func,
+  onPressTreeArrow: PropTypes.func,
   onRight: PropTypes.bool,
+  onPressEdit: PropTypes.func,
+  onPressDelete: PropTypes.func,
 };
 StickyComponent.defaultProps = {
   borderWidth: 1,
   onPressCell: () => {},
   onPressCheckCell: () => {},
+  onPressEdit: () => {},
+  onPressDelete: () => {},
 };
 export default Table;

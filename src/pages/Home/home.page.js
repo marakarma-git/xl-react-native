@@ -1,5 +1,6 @@
 import React, {useState, useEffect, useCallback} from 'react';
 import Carousel, {Pagination} from 'react-native-snap-carousel';
+import {setHomeLogin} from '../../redux/action/auth_action';
 import {getCarousel} from '../../redux/action/dashboard_action';
 import {callEnterpriseLogo} from '../../redux/action/enterprise_action';
 import {Card} from 'react-native-paper';
@@ -9,8 +10,10 @@ import {
   Image,
   ActivityIndicator,
   Dimensions,
+  Button
 } from 'react-native';
 import {useSelector, useDispatch} from 'react-redux';
+import Notification from '../../notification/controller';
 import {
   HeaderContainer,
   OverlayBackground,
@@ -20,7 +23,6 @@ import Orientation from '../../helpers/orientation';
 
 import style from '../../style/home.style';
 import Text from '../../components/global/text';
-import privHelper from '../../helpers/privHelper';
 
 const LandingPage = ({navigation}) => {
   const dispatch = useDispatch();
@@ -97,6 +99,7 @@ const LandingPage = ({navigation}) => {
 
   useEffect(() => {
     const pageLoad = navigation.addListener('focus', () => {
+      dispatch(setHomeLogin());
       dispatch(getCarousel(userData.access_token));
       dispatch(
         callEnterpriseLogo(
@@ -104,6 +107,9 @@ const LandingPage = ({navigation}) => {
           userData.access_token,
         ),
       );
+
+      // Configure Push Notification
+      Notification.configure(dispatch, navigation);
 
       detectOrientation();
     });
@@ -165,7 +171,7 @@ const LandingPage = ({navigation}) => {
           {pagination()}
         </Card>
       </ScrollView>
-      {isLoggedIn && showModalTermCondition() && privHelper.isHasPriviledge('CC', userData.authority)}
+      {isLoggedIn && showModalTermCondition()}
     </HeaderContainer>
   );
 };

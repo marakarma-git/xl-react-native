@@ -14,7 +14,7 @@ import {inputHybridStyle} from '../../style';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import {base_url} from '../../constant/connection';
 import axios from 'axios';
-import {useDispatch} from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 import {authFailed} from '../../redux/action/auth_action';
 import {device_width} from '../../constant/config';
 import {colors} from '../../constant/color';
@@ -25,11 +25,20 @@ const ModalMapOnly = (props) => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
-  const [longLat, setLongLat] = useState({longitude: '0', latitude: '0'});
+  const [longLat, setLongLat] = useState({longitude: '0.1', latitude: '0.1'});
+  const {access_token} = useSelector((state) => state.auth_reducer?.data) || {};
   useEffect(() => {
+    setError(false);
+    setErrorMessage('');
+    setLoading(true);
     axios
-      .get(`${base_url}/dcp/sim/getSimLocation?inventoryId=${inventoryId}`)
+      .get(`${base_url}/dcp/sim/getSimLocation?inventoryId=${inventoryId}`, {
+        headers: {
+          Authorization: `Bearer ${access_token}`,
+        },
+      })
       .then(({data}) => {
+        console.log(JSON.stringify(data, null, 2));
         const {statusCode, statusDescription, result} = data || {};
         if (statusCode === 0) {
           const {longitude, latitude} = result || '0';
@@ -48,15 +57,13 @@ const ModalMapOnly = (props) => {
         setLoading(false);
         setError(true);
         setErrorMessage(e.message);
-        dispatch(authFailed(e.response.data));
+        // dispatch(authFailed(e.response.data));
       });
-  }, [dispatch, inventoryId]);
+  }, [dispatch, mapData]);
   return (
     <Modal animationType="slide" transparent onRequestClose={onClose}>
       <View style={inputHybridStyle.modalBackdrop} />
-      <KeyboardAvoidingView
-        enabled={false}
-        style={[inputHybridStyle.modalContainer, {padding: 0}]}>
+      <View style={[inputHybridStyle.modalContainer, {padding: 0}]}>
         <View
           style={[
             inputHybridStyle.modalTitleContainer,
@@ -75,69 +82,89 @@ const ModalMapOnly = (props) => {
             />
           </TouchableOpacity>
         </View>
-        <View style={inputHybridStyle.mapContainer}>
-          {loading ? (
-            <ActivityIndicator color={colors.button_color_one} size={'large'} />
-          ) : !error ? (
-            <MapView
-              provider={PROVIDER_GOOGLE}
-              style={{flex: 1}}
-              region={{
-                latitude: parseInt(longLat.latitude),
-                longitude: parseInt(longLat.longitude),
+        <View style={{flex: 1}}>
+          <MapView
+            provider={PROVIDER_GOOGLE}
+            style={{flex: 1}}
+            region={{
+              latitude: parseFloat(longLat.latitude) || 0,
+              longitude: parseFloat(longLat.longitude) || 0,
+              latitudeDelta: 0.07,
+              longitudeDelta: 0.001,
+            }}>
+            <Circle
+              strokeColor={'rgba(62, 153, 237, 1)'}
+              fillColor={'rgba(62, 153, 237, 0.3)'}
+              strokeWidth={3}
+              center={{
+                latitude: parseFloat(longLat.latitude) || 0,
+                longitude: parseFloat(longLat.longitude) || 0,
                 latitudeDelta: 0.07,
                 longitudeDelta: 0.001,
-              }}>
-              <Circle
-                strokeColor={'rgba(62, 153, 237, 1)'}
-                fillColor={'rgba(62, 153, 237, 0.3)'}
-                strokeWidth={3}
-                center={{
-                  latitude: parseInt(longLat.latitude),
-                  longitude: parseInt(longLat.longitude),
-                }}
-                radius={1500}
-              />
-            </MapView>
-          ) : (
-            <>
+              }}
+              radius={1500}
+            />
+          </MapView>
+          {loading ||
+            (error && (
               <View
                 style={{
-                  width: device_width * 0.7,
-                  height: device_width * 0.7,
+                  position: 'absolute',
+                  top: 0,
+                  bottom: 0,
+                  right: 0,
+                  left: 0,
+                  backgroundColor: 'white',
+                  justifyContent: 'center',
+                  alignItems: 'center',
                 }}>
-                <Image
-                  source={require('../../assets/images/404/location-not-found.png')}
-                  style={{
-                    flex: 1,
-                    resizeMode: 'contain',
-                    width: '100%',
-                    height: '100%',
-                  }}
-                />
+                {loading && (
+                  <ActivityIndicator
+                    color={colors.button_color_one}
+                    size={'large'}
+                  />
+                )}
+                {error && errorMessage && (
+                  <>
+                    <View
+                      style={{
+                        width: device_width * 0.7,
+                        height: device_width * 0.7,
+                      }}>
+                      <Image
+                        source={require('../../assets/images/404/location-not-found.png')}
+                        style={{
+                          flex: 1,
+                          resizeMode: 'contain',
+                          width: '100%',
+                          height: '100%',
+                        }}
+                      />
+                    </View>
+                    <Text style={{fontWeight: 'bold'}}>
+                      Sorry, the location could not be displayed
+                    </Text>
+                    <Text style={{marginVertical: 4}}>{errorMessage}</Text>
+                    <TouchableOpacity
+                      onPress={onClose}
+                      style={[
+                        inputHybridStyle.buttonStyle,
+                        {flex: 0, paddingHorizontal: '10%'},
+                      ]}>
+                      <Text style={{color: 'white'}}>Close</Text>
+                    </TouchableOpacity>
+                  </>
+                )}
               </View>
-              <Text style={{fontWeight: 'bold'}}>
-                Sorry, the location could not be displayed
-              </Text>
-              <Text style={{marginVertical: 4}}>{errorMessage}</Text>
-              <TouchableOpacity
-                onPress={onClose}
-                style={inputHybridStyle.buttonStyle}>
-                <Text style={{color: 'white'}}>Close</Text>
-              </TouchableOpacity>
-            </>
-          )}
+            ))}
         </View>
-      </KeyboardAvoidingView>
+      </View>
     </Modal>
   );
 };
 ModalMapOnly.propTypes = {
-  onClose: PropTypes.bool,
-  mapData: PropTypes.objectOf({
-    msisdn: PropTypes.string,
-    inventoryId: PropTypes.string,
-  }),
+  onClose: PropTypes.func,
+  mapData: PropTypes.object,
 };
 ModalMapOnly.defaultProps = {
   onClose: () => {},

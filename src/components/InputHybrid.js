@@ -37,7 +37,12 @@ InputHybrid.propTypes = {
     'DateTimePicker',
     'DropDownType2',
   ]),
+  removeLabel: PropTypes.bool,
+  customStyle: PropTypes.object,
+  customStyleText: PropTypes.object,
+  fullWidthInput: PropTypes.bool,
   label: PropTypes.string,
+  labelLeft: PropTypes.bool,
   disabled: PropTypes.bool,
   loading: PropTypes.bool,
   disableText: PropTypes.string,
@@ -60,44 +65,75 @@ const ContainerInput = (props) => {
     disableText,
     customTouchProps,
     errorText,
+    labelLeft,
+    fullWidthInput,
     customStyle,
+    customStyleText,
+    removeLabel,
   } = props;
   const CustomTouch = isTouchable ? TouchableOpacity : View;
   return (
-    <View style={[inputHybridStyle.containerInput, customStyle]}>
-      <Text style={inputHybridStyle.titleInput}>{label}</Text>
-      <CustomTouch
-        style={inputHybridStyle.innerContainerInput}
-        {...customTouchProps}
-        disabled={loading || disableText || disabled}>
-        {children}
-        {(disabled || loading) && (
-          <View style={inputHybridStyle.disableInput}>
-            {loading && <ActivityIndicator size={'small'} color={'white'} />}
-            {disableText && !loading && <Text>{disableText}</Text>}
-          </View>
-        )}
-      </CustomTouch>
-      <Text style={{fontSize: 10, color: 'red'}} numberOfLines={2}>
-        {errorText && `Error: ${errorText}`}
-      </Text>
+    <View
+      style={[
+        inputHybridStyle.containerInput,
+        labelLeft && inputHybridStyle.customStyle,
+        fullWidthInput && inputHybridStyle.fullWidthInput,
+        customStyle,
+      ]}>
+      {!removeLabel && (
+        <Text
+          style={[
+            inputHybridStyle.titleInput,
+            labelLeft && inputHybridStyle.customStyleText,
+            customStyleText,
+          ]}>
+          {label}
+        </Text>
+      )}
+      <View style={{flex: 1}}>
+        <CustomTouch
+          style={[
+            inputHybridStyle.innerContainerInput,
+            labelLeft && inputHybridStyle.customStyleInnerContainer,
+          ]}
+          {...customTouchProps}
+          disabled={loading || disableText || disabled}>
+          {children}
+          {(disabled || loading) && (
+            <View style={inputHybridStyle.disableInput}>
+              {loading && (
+                <ActivityIndicator
+                  size={'small'}
+                  color={colors.button_color_one}
+                />
+              )}
+              {disableText && !loading && <Text>{disableText}</Text>}
+            </View>
+          )}
+        </CustomTouch>
+        <Text style={{fontSize: 10, color: 'red'}} numberOfLines={2}>
+          {errorText && `Error: ${errorText}`}
+        </Text>
+      </View>
     </View>
   );
 };
 const NormalInput = (props) => {
-  const {onChange, value} = props;
+  const {onChange, value, placeholder} = props;
   return (
     <ContainerInput {...props}>
       <TextInput
         style={inputHybridStyle.textInputStyle}
         onChangeText={onChange}
         value={value}
+        placeholder={placeholder}
       />
     </ContainerInput>
   );
 };
 const SelectInput = (props) => {
   const {value, onChange, data, label} = props;
+  const {label: valueLabel} = value || {};
   const [visible, setVisible] = useState(false);
   return (
     <React.Fragment>
@@ -107,7 +143,7 @@ const SelectInput = (props) => {
         isTouchable
         customTouchProps={{onPress: () => setVisible(true)}}>
         <Text style={{paddingVertical: 8, flex: 1}} numberOfLines={2}>
-          {value.label || 'Please Select'}
+          {valueLabel || 'Please Select'}
         </Text>
         <MaterialCommunityIcons
           name={'chevron-down'}

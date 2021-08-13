@@ -40,6 +40,11 @@ const generateLink = (array = []) => {
               const getConverted = Helper.convertToByte(value, valueSelected);
               return (paramsLink = paramsLink + params + getConverted);
             }
+          case 'ForParamsOnlyDropDown':
+            console.log('Masuk ForParamsOnlyDropDown');
+            count = count + 1;
+            containerData.push(v);
+            return (paramsLink = paramsLink + params + value?.value);
           default:
             return null;
         }

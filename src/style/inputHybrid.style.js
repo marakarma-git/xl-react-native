@@ -30,6 +30,7 @@ export default {
     borderRadius: border_radius - 1,
     justifyContent: 'center',
     alignItems: 'center',
+    opacity: 0.8,
   },
   titleInput: {
     color: colors.gray_0,
@@ -59,6 +60,19 @@ export default {
     backgroundColor: 'white',
     padding: 12,
     borderRadius: border_radius,
+    elevation: 4,
+  },
+  customModalContainer: {
+    marginTop: 200,
+    marginHorizontal: 32,
+    backgroundColor: 'white',
+    padding: 12,
+    borderRadius: border_radius,
+    elevation: 4,
+  },
+  multiSessionModal: {
+    width: '80%',
+    backgroundColor: 'white',
     elevation: 4,
   },
   newModalContainer: {
@@ -106,8 +120,10 @@ export default {
   },
   buttonStyle: {
     backgroundColor: 'blue',
-    paddingHorizontal: 26,
-    paddingVertical: 6,
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    paddingVertical: '2%',
     borderRadius: border_radius,
     margin: 4,
     elevation: 3,
@@ -171,5 +187,22 @@ export default {
     fontSize: 16,
     fontWeight: 'bold',
     color: 'white',
+  },
+  customStyle: {
+    width: '100%',
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  customStyleText: {
+    width: '15%',
+    marginRight: 14,
+  },
+  customStyleInnerContainer: {
+    flex: 1,
+  },
+  fullWidthInput: {
+    width: '100%',
+    marginTop: 16,
+    marginBottom: 0,
   },
 };

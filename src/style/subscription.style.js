@@ -60,7 +60,6 @@ export default {
     alignItems: 'center',
   },
   spacer: {
-    height: '50%',
     width: 1,
     backgroundColor: colors.gray,
     marginHorizontal: 8,
@@ -91,6 +90,37 @@ export default {
   textMenuTotal: {
     color: colors.font_gray,
     flex: 1,
-    marginLeft: 12,
+  },
+  headerButtonContainer: {
+    width: '100%',
+    flexDirection: 'row',
+    justifyContent: 'flex-end',
+    paddingRight: 20,
+  },
+  headerButtonCreate: {
+    paddingVertical: 10,
+    backgroundColor: '#002DBB',
+    width: 150,
+    marginTop: 15,
+  },
+  headerButtonCreateText: {
+    color: 'white',
+    textAlign: 'center',
+  },
+  createButton: {
+    flex: 1,
+    backgroundColor: colors.button_color_one,
+    justifyContent: 'center',
+    alignItems: 'center',
+    paddingVertical: 14,
+    marginRight: 8,
+    borderRadius: border_radius,
+  },
+  wrapperMenuOptionTypeTwo: {
+    justifyContent: 'space-between',
+  },
+  onlyForTypeOne: {
+    flexDirection: 'row',
+    alignItems: 'center',
   },
 };
