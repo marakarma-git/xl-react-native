@@ -82,6 +82,7 @@ const TableCellText = (props) => {
                 onPress={() => onPressArrow(otherInformation)}>
                 <Text
                   numberOfLines={1}
+                  selectable
                   onTextLayout={(e) =>
                     setMoreText(lod.size(e.nativeEvent.lines) > 1)
                   }

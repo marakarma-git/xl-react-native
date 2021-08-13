@@ -1,5 +1,6 @@
 import React from 'react';
-import {TouchableOpacity, View} from 'react-native';
+import {TouchableOpacity, View, ToastAndroid} from 'react-native';
+import Clipboard from '@react-native-community/clipboard';
 import Text from '../global/text';
 import {defaultHeightCell, defaultWidthCell} from '../../constant/config';
 import CustomCheckBox from '../customCheckBox';
@@ -10,6 +11,13 @@ const TableCellCheckBox = (props) => {
   const {label, width, height, isTouchable, fontColor, backgroundColor} =
     config || {};
   const TouchView = isTouchable ? TouchableOpacity : View;
+  const onLongPress = ()=> {
+    Clipboard.setString(label)
+    ToastAndroid.show(
+      'Text copied',
+      ToastAndroid.LONG,
+    );
+  }
   return (
     <View
       key={key}
@@ -30,6 +38,7 @@ const TableCellCheckBox = (props) => {
           flex: 1,
           flexDirection: 'row',
         }}
+        onLongPress={onLongPress}
         onPress={() => onPress(otherInformation)}>
         <View
           style={{
@@ -39,7 +48,7 @@ const TableCellCheckBox = (props) => {
             flexDirection: 'row',
           }}>
           <Text
-            numberOfLines={1}
+            numberOfLines={1} 
             style={{
               color: fontColor || 'black',
             }}>
