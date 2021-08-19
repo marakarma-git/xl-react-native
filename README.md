@@ -1,5 +1,5 @@
-# dcpMobile 4.0 Phase only
-this is only for dcp 4.0 phase development only
+# dcpMobile 5.0 Phase only
+this is only for dcp 5.0 phase development only
 
 # Run Cheatsheet:
 
