@@ -38,6 +38,15 @@ const styles = StyleSheet.create({
     paddingVertical: 5,
     paddingHorizontal: 10,
   },
+  cardFooter: {
+    position: 'absolute',
+    bottom: 30,
+    flexDirection: 'row',
+    justifyContent: 'flex-end',
+    paddingHorizontal: 10,
+    width: '100%',
+    height: 30,
+  },
   filterContainer: {
     width: '100%',
     minHeight: 30,
@@ -60,6 +69,44 @@ const styles = StyleSheet.create({
   },
   filterText: {
     paddingHorizontal: 3,
+  },
+  cardTitleText: {
+    fontSize: 12,
+    color: 'black',
+  },
+  monthText: {
+    fontSize: 12,
+    color: '#0266ff',
+  },
+  actionBar: {
+    alignItems: 'center',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    width: 120,
+    height: 30,
+    borderWidth: 2,
+    borderColor: '#aaa',
+  },
+  actionText: {
+    fontSize: 12,
+    paddingLeft: 5,
+  },
+  actionButton: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    width: 30,
+    height: '100%',
+    borderLeftWidth: 2,
+    borderLeftColor: '#aaa',
+  },
+  navigationButtonFormStep: {
+    paddingVertical: 3,
+    paddingHorizontal: 15,
+    marginHorizontal: 3,
+    backgroundColor: '#002DBB',
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderRadius: 5,
   },
 });
 

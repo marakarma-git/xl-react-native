@@ -675,6 +675,64 @@ class Helper {
     });
     return container;
   };
+
+  static monthlyUsageParams = (monthlyValue, isSubstract, isSum) => {
+    const monthName = [
+      'Jan',
+      'Feb',
+      'Mar',
+      'Apr',
+      'May',
+      'Jun',
+      'Jul',
+      'Aug',
+      'Sep',
+      'Oct',
+      'Nov',
+      'Dec',
+    ];
+
+    const rawValue = monthlyValue.split('-');
+    let monthValue = Number(monthName.indexOf(rawValue[0]) + 1);
+    let yearValue = Number(rawValue[1]);
+
+    if (isSubstract) {
+      if (monthValue > 1) monthValue -= 1;
+      else (yearValue -= 1), (monthValue = 12);
+    }
+
+    if (isSum) {
+      if (monthValue < 12) monthValue += 1;
+      else (yearValue += 1), (monthValue = 1);
+    }
+
+    const month =
+      monthValue < 10 ? String('0' + monthValue) : String(monthValue);
+
+    return String(yearValue) + '-' + month;
+  };
+
+  static numToYearMonth = (monthPeriod) => {
+    const monthName = [
+      'Jan',
+      'Feb',
+      'Mar',
+      'Apr',
+      'May',
+      'Jun',
+      'Jul',
+      'Aug',
+      'Sep',
+      'Oct',
+      'Nov',
+      'Dec',
+    ];
+
+    let rawValue = monthPeriod.split('-');
+    let monthText = monthName[+rawValue[1] - 1];
+
+    return `${monthText}-${rawValue[0]}`;
+  };
 }
 
 export default Helper;

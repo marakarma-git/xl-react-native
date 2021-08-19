@@ -26,6 +26,10 @@ const request12MonthUsage = () => ({
   type: reduxString.REQUEST_12_MONTH_USAGE,
 });
 
+const requestMonthUsage = () => ({
+  type: reduxString.REQUEST_MONTH_USAGE,
+});
+
 const requestAggregatedTraffic = () => ({
   type: reduxString.REQUEST_AGGREGATED_TRAFFIC,
 });
@@ -251,6 +255,35 @@ const set12MonthUsage = (data, params) => {
   };
 };
 
+const setMonthUsage = (data, params) => {
+  const monthUsage = new Array();
+  const cummulative = new Array();
+
+  data.map((datas) => {
+    monthUsage.push({
+      y: datas.volume || 0,
+      x: datas.date || '',
+      symbol: 'round',
+      size: 4,
+    });
+    cummulative.push({
+      y: datas.cumulative || 0,
+      x: datas.date || '',
+      symbol: 'round',
+      size: 4,
+    });
+  });
+
+  return {
+    type: reduxString.SET_MONTH_USAGE,
+    payload: {
+      day: monthUsage,
+      cummulative: cummulative,
+    },
+    params,
+  };
+};
+
 export const requestWidgetData = (
   accessToken,
   item,
@@ -341,7 +374,34 @@ export const get12MonthUsage = (item, filterParams = {}) => {
         }
       }
     } catch (error) {
-      console.log('ERROR', error.response.data);
+      dispatch(setRequestError(error.response.data));
+    }
+  };
+};
+
+export const getMonthUsage = (item, filterParams = {}) => {
+  return async (dispatch, getState) => {
+    const accessToken = getState().auth_reducer.data?.access_token;
+
+    try {
+      dispatch(requestMonthUsage());
+      const {data} = await Axios.post(
+        `${base_url}/dcp/dashboard/v2/getDataSet?datasetId=${item.datasetId}`,
+        filterParams,
+        {
+          headers: dashboardHeaderAuth(accessToken),
+        },
+      );
+
+      console.log(data, item.datasetId, filterParams, ' <<<< get data');
+
+      if (data) {
+        if (data.statusCode === 0) {
+          dispatch(setMonthUsage(data.result.dataset, filterParams));
+        }
+      }
+    } catch (error) {
+      console.log('Error' + error.response.data);
       dispatch(setRequestError(error.response.data));
     }
   };
