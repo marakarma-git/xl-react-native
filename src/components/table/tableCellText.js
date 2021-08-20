@@ -6,6 +6,7 @@ import {
   ScrollView,
   TouchableOpacity,
   View,
+  ToastAndroid,
 } from 'react-native';
 import Text from '../global/text';
 import {defaultHeightCell, defaultWidthCell} from '../../constant/config';
@@ -14,6 +15,7 @@ import styles from '../../style/drawer.style';
 import lod from 'lodash';
 import {inputHybridStyle} from '../../style';
 import {colors} from '../../constant/color';
+import Clipboard from '@react-native-community/clipboard';
 
 const TableCellText = (props) => {
   const [moreText, setMoreText] = useState(false);
@@ -50,6 +52,10 @@ const TableCellText = (props) => {
       return label + (child_api_id ? ` ${item[`${child_api_id}`]}` : '');
     }
   };
+  const onLongPress = () => {
+    Clipboard.setString(label);
+    ToastAndroid.show('Text copied', ToastAndroid.LONG);
+  };
   const TouchView = isTouchable ? TouchableOpacity : View;
   return (
     <React.Fragment>
@@ -82,6 +88,8 @@ const TableCellText = (props) => {
                 onPress={() => onPressArrow(otherInformation)}>
                 <Text
                   numberOfLines={1}
+                  // selectable
+                  onLongPress={() => onLongPress()}
                   onTextLayout={(e) =>
                     setMoreText(lod.size(e.nativeEvent.lines) > 1)
                   }
@@ -135,7 +143,7 @@ const TableCellText = (props) => {
               <Text style={inputHybridStyle.modalTitleText}>Detail</Text>
             </View>
             <ScrollView style={{flex: 1}}>
-              <Text>{createLabel()}</Text>
+              <Text selectable>{createLabel()}</Text>
             </ScrollView>
             <View
               style={{
