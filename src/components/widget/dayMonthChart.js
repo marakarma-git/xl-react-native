@@ -189,18 +189,19 @@ const VolumeChart = ({dataSet}) => {
             </VictoryGroup>
             <VictoryLegend
               y={260}
-              x={Orientation.getWidth() / 2 - 180}
+              x={Orientation.getWidth() / 2 - 140}
               title=""
               centerTitle
               orientation="horizontal"
-              gutter={20}
+              gutter={25}
+              style={{labels: {fontSize: 11}}}
               data={[
                 {
                   name: 'Cumulative Month Values',
                   symbol: {
                     fill: 'white',
                     stroke: '#0E83F4',
-                    strokeWidth: 3,
+                    strokeWidth: 2,
                     symbol: 'round',
                   },
                 },
@@ -299,18 +300,19 @@ const CumulativeMonthChart = ({dataSet}) => {
             </VictoryGroup>
             <VictoryLegend
               y={260}
-              x={Orientation.getWidth() / 2 - 180}
+              x={Orientation.getWidth() / 2 - 140}
               title=""
               centerTitle
               orientation="horizontal"
-              gutter={20}
+              gutter={25}
+              style={{labels: {fontSize: 11}}}
               data={[
                 {
                   name: 'Cumulative Month Values',
                   symbol: {
                     fill: 'white',
                     stroke: '#0E83F4',
-                    strokeWidth: 1,
+                    strokeWidth: 2,
                     symbol: 'round',
                   },
                 },
@@ -423,18 +425,19 @@ const BothChart = ({volumeData, cumulativeData}) => {
             </VictoryGroup>
             <VictoryLegend
               y={260}
-              x={Orientation.getWidth() / 2 - 180}
+              x={Orientation.getWidth() / 2 - 140}
               title=""
               centerTitle
               orientation="horizontal"
-              gutter={20}
+              gutter={25}
+              style={{labels: {fontSize: 11}}}
               data={[
                 {
                   name: 'Cumulative Month Values',
                   symbol: {
                     fill: 'white',
                     stroke: '#0E83F4',
-                    strokeWidth: 3,
+                    strokeWidth: 2,
                     symbol: 'round',
                   },
                 },
