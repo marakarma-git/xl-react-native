@@ -11,10 +11,15 @@ import {
   Last12MonthChart,
   DayMonthChart,
 } from '../../components';
+import {
+  usageAnalyticsDynamicResetSelectedValue,
+  usageAnalyticsGenerateParams,
+} from '../../redux/action/usage_analytics_filter_action';
 
 // Undestruct
 import styles from '../../style/usageAnalytics.style';
 import BarChartComponent from '../../components/widget/barchart';
+import AppliedFilter from '../../components/subscription/appliedFilter';
 import {
   get12MonthUsage,
   getAggregatedTraffic,
@@ -63,6 +68,11 @@ const UsageAnalyticsPage = ({route, navigation}) => {
     loading12MonthUsage,
     loadingMonthUsage,
   } = useSelector((state) => state.dashboard_reducer);
+  const {dataHeader, appliedFilter, generatedParams} = useSelector(
+    (state) => state.usage_analytics_filter_reducer,
+  );
+  const [param1, setParam1] = useState(null);
+  const [param2, setParam2] = useState(null);
   const [param3, setParam3] = useState(30);
   const [param3List, setParam3List] = useState([
     {label: '2 Days ago', value: 2, isDisabled: false, isVisible: true},
@@ -108,11 +118,17 @@ const UsageAnalyticsPage = ({route, navigation}) => {
   };
 
   const callAggregatedTraffic = (params) => {
-    dispatch(getAggregatedTraffic(params[0], {}));
+    let apiParams = {};
+    if (param1) apiParams.param1 = param1;
+    if (param2) apiParams.param2 = param2;
+    dispatch(getAggregatedTraffic(params[0], apiParams));
   };
 
   const callLast12MonthUsage = (params) => {
-    dispatch(get12MonthUsage(params[0], {}));
+    let apiParams = {};
+    if (param1) apiParams.param1 = param1;
+    if (param2) apiParams.param2 = param2;
+    dispatch(get12MonthUsage(params[0], apiParams));
   };
 
   const getWidgetId = (key, widgetData) => {
@@ -139,10 +155,19 @@ const UsageAnalyticsPage = ({route, navigation}) => {
   }, [widgetList]);
 
   useEffect(() => {
+    let splitParams = generatedParams.split(',');
+    setParam1(splitParams[0]);
+    setParam2(splitParams[1]);
+    // dispatch(callWidgetList())
+    // dispatch(resetTopTrafficStatistics());
+  }, [generatedParams]);
+
+  useEffect(() => {
     const pageLoad = navigation.addListener('focus', () => {
       callWidgetList();
       dispatch(resetTopTrafficStatistics());
       setShowMonthUsage(null);
+      // detectParamsChange();
     });
 
     return pageLoad;
@@ -161,7 +186,20 @@ const UsageAnalyticsPage = ({route, navigation}) => {
         <View style={styles.cardContainer}>
           <OverlayBackground />
           <View style={styles.cardWrapper}>
-            <FilterCard />
+            <AppliedFilter
+              withFilterButton
+              onPressFilter={() =>
+                navigation.navigate('UsageAnalyticsFilterPage')
+              }
+              style={{marginLeft: 0, flex: 1}}
+              data={appliedFilter}
+              onDelete={(e) => {
+                console.log(appliedFilter);
+                const {formId} = e || {};
+                dispatch(usageAnalyticsDynamicResetSelectedValue({formId}));
+                dispatch(usageAnalyticsGenerateParams());
+              }}
+            />
             <ContentCard
               loadingContent={loadingTopTraffic ? true : false}
               cardToolbar={
@@ -191,7 +229,11 @@ const UsageAnalyticsPage = ({route, navigation}) => {
                     <BarChartComponent
                       viewType="analytics"
                       item={topTrafficWidget[0]}
-                      filterParams={{param3, param4}}
+                      filterParams={
+                        param1 && param2
+                          ? {param1, param2, param3, param4}
+                          : {param3, param4}
+                      }
                     />
                   )}
                 </>

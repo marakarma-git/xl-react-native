@@ -10,6 +10,7 @@ import {
   VictoryZoomContainer,
   VictoryGroup,
   VictoryScatter,
+  VictoryLegend,
 } from 'victory-native';
 import {View, Dimensions} from 'react-native';
 import {Text} from '../index';
@@ -115,7 +116,7 @@ const VolumeChart = ({dataSet}) => {
         <Svg>
           <VictoryChart
             width={Orientation.getWidth() - 80}
-            padding={{top: 30, left: 70, bottom: 40}}
+            padding={{top: 30, left: 70, bottom: 70}}
             domain={[1, dataSet.length]}
             containerComponent={
               <VictoryZoomContainer
@@ -171,6 +172,12 @@ const VolumeChart = ({dataSet}) => {
               style={{
                 data: {strokeWidth: 1},
               }}>
+              <VictoryArea
+                style={{
+                  data: {fill: 'url(#colorUv)', stroke: '#0E83F4'},
+                }}
+                data={dataSet}
+              />
               <VictoryScatter
                 style={{
                   data: {fill: 'white', stroke: '#0E83F4', strokeWidth: 3},
@@ -179,13 +186,30 @@ const VolumeChart = ({dataSet}) => {
                 data={dataSet}
                 labelComponent={<VictoryTooltip renderInPortal={false} />}
               />
-              <VictoryArea
-                style={{
-                  data: {fill: 'url(#colorUv)', stroke: '#0E83F4'},
-                }}
-                data={dataSet}
-              />
             </VictoryGroup>
+            <VictoryLegend
+              y={260}
+              x={Orientation.getWidth() / 2 - 180}
+              title=""
+              centerTitle
+              orientation="horizontal"
+              gutter={20}
+              data={[
+                {
+                  name: 'Cumulative Month Values',
+                  symbol: {
+                    fill: 'white',
+                    stroke: '#0E83F4',
+                    strokeWidth: 3,
+                    symbol: 'round',
+                  },
+                },
+                {
+                  name: 'Day Volume',
+                  symbol: {fill: 'url(#colorUv)', type: 'square'},
+                },
+              ]}
+            />
           </VictoryChart>
         </Svg>
       ) : (
@@ -202,7 +226,7 @@ const CumulativeMonthChart = ({dataSet}) => {
         <Svg>
           <VictoryChart
             width={Orientation.getWidth() - 80}
-            padding={{top: 30, left: 70, bottom: 40}}
+            padding={{top: 30, left: 70, bottom: 70}}
             domain={[1, dataSet.length]}
             containerComponent={
               <VictoryZoomContainer
@@ -222,6 +246,16 @@ const CumulativeMonthChart = ({dataSet}) => {
                 }}
               />
             }>
+            <LinearGradient
+              id="colorUv"
+              x1="0"
+              y1="0.5"
+              x2="0"
+              y2="0.2"
+              spreadMethod="pad">
+              <Stop offset="20%" stopColor="#0E83F4" />
+              <Stop offset="80%" stopColor="#2BC6DA" />
+            </LinearGradient>
             <VictoryAxis
               dependentAxis
               label={'Data volume'}
@@ -248,6 +282,12 @@ const CumulativeMonthChart = ({dataSet}) => {
               style={{
                 data: {strokeWidth: 1},
               }}>
+              <VictoryLine
+                style={{
+                  data: {strokeWidth: 2, stroke: '#0E83F4'},
+                }}
+                data={dataSet}
+              />
               <VictoryScatter
                 style={{
                   data: {fill: 'white', stroke: '#0E83F4', strokeWidth: 3},
@@ -256,13 +296,30 @@ const CumulativeMonthChart = ({dataSet}) => {
                 data={dataSet}
                 labelComponent={<VictoryTooltip renderInPortal={false} />}
               />
-              <VictoryLine
-                style={{
-                  data: {strokeWidth: 2, stroke: '#0E83F4'},
-                }}
-                data={dataSet}
-              />
             </VictoryGroup>
+            <VictoryLegend
+              y={260}
+              x={Orientation.getWidth() / 2 - 180}
+              title=""
+              centerTitle
+              orientation="horizontal"
+              gutter={20}
+              data={[
+                {
+                  name: 'Cumulative Month Values',
+                  symbol: {
+                    fill: 'white',
+                    stroke: '#0E83F4',
+                    strokeWidth: 1,
+                    symbol: 'round',
+                  },
+                },
+                {
+                  name: 'Day Volume',
+                  symbol: {fill: 'url(#colorUv)', type: 'square'},
+                },
+              ]}
+            />
           </VictoryChart>
         </Svg>
       ) : (
@@ -279,7 +336,7 @@ const BothChart = ({volumeData, cumulativeData}) => {
         <Svg>
           <VictoryChart
             width={Orientation.getWidth() - 80}
-            padding={{top: 30, left: 70, bottom: 40}}
+            padding={{top: 30, left: 70, bottom: 70}}
             domain={[1, cumulativeData.length]}
             containerComponent={
               <VictoryZoomContainer
@@ -335,14 +392,6 @@ const BothChart = ({volumeData, cumulativeData}) => {
               style={{
                 data: {strokeWidth: 1},
               }}>
-              <VictoryScatter
-                style={{
-                  data: {fill: 'white', stroke: '#0E83F4', strokeWidth: 3},
-                }}
-                labels={({datum}) => datum.y}
-                data={cumulativeData}
-                labelComponent={<VictoryTooltip renderInPortal={false} />}
-              />
               <VictoryLine
                 style={{
                   data: {strokeWidth: 2, stroke: '#0E83F4'},
@@ -354,7 +403,7 @@ const BothChart = ({volumeData, cumulativeData}) => {
                   data: {fill: 'white', stroke: '#0E83F4', strokeWidth: 3},
                 }}
                 labels={({datum}) => datum.y}
-                data={volumeData}
+                data={cumulativeData}
                 labelComponent={<VictoryTooltip renderInPortal={false} />}
               />
               <VictoryArea
@@ -363,7 +412,38 @@ const BothChart = ({volumeData, cumulativeData}) => {
                 }}
                 data={volumeData}
               />
+              <VictoryScatter
+                style={{
+                  data: {fill: 'white', stroke: '#0E83F4', strokeWidth: 3},
+                }}
+                labels={({datum}) => datum.y}
+                data={volumeData}
+                labelComponent={<VictoryTooltip renderInPortal={false} />}
+              />
             </VictoryGroup>
+            <VictoryLegend
+              y={260}
+              x={Orientation.getWidth() / 2 - 180}
+              title=""
+              centerTitle
+              orientation="horizontal"
+              gutter={20}
+              data={[
+                {
+                  name: 'Cumulative Month Values',
+                  symbol: {
+                    fill: 'white',
+                    stroke: '#0E83F4',
+                    strokeWidth: 3,
+                    symbol: 'round',
+                  },
+                },
+                {
+                  name: 'Day Volume',
+                  symbol: {fill: 'url(#colorUv)', type: 'square'},
+                },
+              ]}
+            />
           </VictoryChart>
         </Svg>
       ) : (

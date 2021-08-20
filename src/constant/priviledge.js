@@ -31,6 +31,7 @@ import {
   UsageSubscribersAnalyticsPage,
   GeoDistributionFilterPage,
   SimProductivityFilterPage,
+  UsageAnalyticsFilterPage,
 } from '../pages/Home/index';
 
 import {
@@ -47,7 +48,7 @@ export const DRAWER_MENU_PRIVILEDGE = [
     icon: iconHome,
     type: 'initialRoute',
     components: LandingPage,
-    priviledgeIds: []
+    priviledgeIds: [],
   },
   {
     name: 'Dashboard',
@@ -87,7 +88,6 @@ export const DRAWER_MENU_PRIVILEDGE = [
         components: RoleAdministrationPage,
       },
       {
-  
         name: 'Enterprise Management',
         type: 'drawer',
         width: 25,
@@ -95,7 +95,6 @@ export const DRAWER_MENU_PRIVILEDGE = [
         components: EnterpriseManagementPage,
       },
       {
-  
         name: 'Subscription Package',
         type: 'drawer',
         width: 25,
@@ -103,9 +102,8 @@ export const DRAWER_MENU_PRIVILEDGE = [
         components: SubscriptionPackagePage,
       },
       {
-  
         name: 'SmsA2p Configuration',
-        icon: "",
+        icon: '',
         type: 'drawer',
         components: SmsA2pPage,
       },
@@ -118,7 +116,7 @@ export const DRAWER_MENU_PRIVILEDGE = [
     components: AutomationPage,
     priviledgeIds: AUTOMATION_PRIVILEDGE_ID,
   },
-    {
+  {
     name: 'Analytics',
     icon: iconAdmin,
     type: 'drawer',
@@ -128,7 +126,6 @@ export const DRAWER_MENU_PRIVILEDGE = [
     priviledgeIds: ANALYTICS_PRIVILEDGE_ID,
     subMenu: [
       {
-  
         name: 'Sim Productivity',
         type: 'drawer',
         width: 25,
@@ -136,7 +133,6 @@ export const DRAWER_MENU_PRIVILEDGE = [
         components: SimProductivityPage,
       },
       {
-  
         name: 'Usage Analytics',
         type: 'drawer',
         width: 25,
@@ -144,7 +140,6 @@ export const DRAWER_MENU_PRIVILEDGE = [
         components: UsageAnalyticsPage,
       },
       {
-  
         name: 'Usage & Subscribers Analytics',
         type: 'drawer',
         width: 25,
@@ -152,7 +147,6 @@ export const DRAWER_MENU_PRIVILEDGE = [
         components: UsageSubscribersAnalyticsPage,
       },
       {
-  
         name: 'Geo Distribution',
         type: 'drawer',
         width: 25,
@@ -295,5 +289,13 @@ export const DRAWER_MENU_PRIVILEDGE = [
     width: 25,
     height: 25,
     components: SimProductivityFilterPage,
-  }
+  },
+  {
+    name: 'UsageAnalyticsFilterPage',
+    icon: '',
+    type: 'non-drawer',
+    width: 25,
+    height: 25,
+    components: UsageAnalyticsFilterPage,
+  },
 ];

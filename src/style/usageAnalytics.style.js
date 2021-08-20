@@ -56,9 +56,9 @@ const styles = StyleSheet.create({
     paddingVertical: 10,
   },
   filterLabelContainer: {
-    flexDirection: 'row',
     flexWrap: 'wrap',
     width: '90%',
+    justifyContent: 'space-around',
   },
   link: {
     paddingHorizontal: 1,
