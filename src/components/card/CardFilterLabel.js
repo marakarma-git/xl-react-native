@@ -5,22 +5,23 @@ import {Text} from '../../components';
 
 // Undestruct
 import PropTypes from 'prop-types';
-import MaterialCommunityIcon from 'react-native-vector-icons/MaterialCommunityIcons'
+import MaterialCommunityIcon from 'react-native-vector-icons/MaterialCommunityIcons';
 
 const FilterLabelComponent = (props) => {
-  return(
+  return (
     <View
       style={{
         backgroundColor: colors.green_filter_text,
         height: 20,
         marginRight: 5,
+        marginBottom: 5,
         borderRadius: 7,
         paddingVertical: 2,
         paddingHorizontal: 6,
         flexDirection: 'row',
-        alignItems: 'center'
+        alignItems: 'center',
       }}>
-      <Text style={{ color: 'white' }}>{`${props.title}: ${props.value}`}</Text>
+      <Text style={{color: 'white'}}>{`${props.title}: ${props.value}`}</Text>
       <TouchableOpacity style={{paddingLeft: 6}}>
         <MaterialCommunityIcon
           name={'close-circle'}
@@ -29,16 +30,16 @@ const FilterLabelComponent = (props) => {
         />
       </TouchableOpacity>
     </View>
-  )
-}
+  );
+};
 
 FilterLabelComponent.propTypes = {
   title: PropTypes.string,
-  value: PropTypes.string
+  value: PropTypes.string,
 };
 FilterLabelComponent.defaultProps = {
-  title: "",
-  value: ""
+  title: '',
+  value: '',
 };
 
 export default FilterLabelComponent;

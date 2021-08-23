@@ -148,8 +148,8 @@ const Login = ({navigation}) => {
           orientation === 'landscape'
             ? {
                 height: errorText
-                  ? Orientation.getHeight() + 100
-                  : Orientation.getHeight() + 70,
+                  ? Orientation.getHeight() + 120
+                  : Orientation.getHeight() + 90,
                 backgroundColor: 'transparent',
               }
             : {

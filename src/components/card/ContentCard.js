@@ -12,11 +12,15 @@ const ContentCard = (props) => {
     <Card style={[styles.cardSection, {marginTop: '3%'}]}>
       <Card.Content style={styles.cardContentWrapper}>
         <View style={[styles.cardTitleContainer]}>
-          <Text
-            fontType="bold"
-            style={[{fontSize: 12, color: 'black'}, props.titleStyle]}>
-            {props.cardTitle}
-          </Text>
+          {props.cardTitle ? (
+            <Text
+              fontType="bold"
+              style={[{fontSize: 12, color: 'black'}, props.titleStyle]}>
+              {props.cardTitle}
+            </Text>
+          ) : (
+            <>{props.cardTitleComponent}</>
+          )}
           <View style={{flexDirection: 'row', justifyContent: 'flex-end'}}>
             {props.cardToolbar}
           </View>
@@ -37,6 +41,9 @@ const ContentCard = (props) => {
         ) : (
           props.cardContent
         )}
+        {!props.loadingContent && props.cardFooter && (
+          <View style={styles.cardFooter}>{props.cardFooter}</View>
+        )}
       </Card.Content>
     </Card>
   );
@@ -49,6 +56,8 @@ ContentCard.propTypes = {
   cardToolbar: PropTypes.node,
   cardContent: PropTypes.node,
   loadingContent: PropTypes.bool,
+  cardTitleComponent: PropTypes.node,
+  cardFooter: PropTypes.node,
 };
 ContentCard.defaultProps = {
   cardTitle: '',
