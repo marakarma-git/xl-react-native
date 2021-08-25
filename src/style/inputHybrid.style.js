@@ -143,7 +143,6 @@ export default {
   contentWrapper: {
     width: '100%',
     padding: 20,
-    height: 300,
     justifyContent: 'space-between',
   },
   tcText: {

@@ -10,7 +10,7 @@ import {
   Image,
   ActivityIndicator,
   Dimensions,
-  Button
+  Button,
 } from 'react-native';
 import {useSelector, useDispatch} from 'react-redux';
 import Notification from '../../notification/controller';
@@ -72,7 +72,7 @@ const LandingPage = ({navigation}) => {
   };
 
   const showModalTermCondition = () => {
-    if (!userData.principal.isCustomerConsent) {
+    if (userData.principal.isCustomerConsent) {
       return (
         <ModalTermCondition
           showModal={showModal}
