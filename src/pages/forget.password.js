@@ -69,8 +69,9 @@ const ChangePasswordPage = ({navigation}) => {
         },
       );
       if (typeof data === 'object') {
-        ToastAndroid.show(data.result, ToastAndroid.LONG);
-        if (data.statusCode === 0) {
+        const {statusCode, statusDescription, result} = data || {};
+        ToastAndroid.show(result || statusDescription, ToastAndroid.LONG);
+        if (statusCode === 0) {
           navigation.replace('Login');
         }
       }
