@@ -102,7 +102,7 @@ const ModalTermCondition = (props) => {
                   </Text>
                   : We take due care when TRANSFERRING YOUR PERSONAL DATA to
                   third parties such as vendors, contractors, business partners
-                  and government authorities.us.
+                  and government authorities.
                 </Text>
               </View>
             </ScrollView>
