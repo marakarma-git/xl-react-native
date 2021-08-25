@@ -28,17 +28,12 @@ const busolLogo = require('../assets/images/logo/xl-busol-inverted.png');
 const ChangePasswordPage = ({navigation}) => {
   const year = new Date().getFullYear();
   const [username, setUsername] = useState('');
-  const [errorText, setErrorText] = useState(null);
   const [requestLoading, setRequestLoading] = useState(false);
   const [orientation, setOrientation] = useState('potrait');
 
   const recaptchaRef = useRef();
   const send = (value) => {
-    if (username.length > 0) {
-      recaptchaRef.current.open();
-    } else {
-      setErrorText('Please fill your username!');
-    }
+    recaptchaRef.current.open();
   };
   const onVerify = (token) => {
     requestChangePassword(token);
@@ -97,8 +92,8 @@ const ChangePasswordPage = ({navigation}) => {
   return (
     <ScrollView style={{backgroundColor: 'white'}}>
       <Header notifications={false} orientation={orientation} />
+      <NavbarTitle title={'Reset Password'} />
       <KeyboardAvoidingView
-        keyboardVerticalOffset={-60}
         style={
           orientation === 'landscape'
             ? {
@@ -106,12 +101,11 @@ const ChangePasswordPage = ({navigation}) => {
                 backgroundColor: 'transparent',
               }
             : {
-                height: Orientation.getHeight() - 150,
+                height: Orientation.getHeight() - 20,
                 backgroundColor: 'transparent',
               }
         }
         behavior={'padding'}>
-        <NavbarTitle title={'Reset Password'} />
         <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
           <View
             style={[
@@ -160,18 +154,6 @@ const ChangePasswordPage = ({navigation}) => {
                 your account. We will send you an email that will allow you to
                 reset your password.
               </Text>
-              {errorText && (
-                <Text
-                  style={[
-                    loginStyle.errorText,
-                    {
-                      paddingBottom: 5,
-                      fontSize: orientation === 'landscape' ? 12 : 14,
-                    },
-                  ]}>
-                  {errorText}
-                </Text>
-              )}
               <View style={inputloginStyle.formGroup}>
                 <Text style={(inputloginStyle.label, {color: '#747474'})}>
                   Username
@@ -265,16 +247,6 @@ const ChangePasswordPage = ({navigation}) => {
           </View>
         </TouchableWithoutFeedback>
       </KeyboardAvoidingView>
-      {/*<View style={(loginStyle.footer, {alignItems: 'center'})}>*/}
-      {/*  <Text*/}
-      {/*    style={{*/}
-      {/*      color: '#707070',*/}
-      {/*      fontSize: 12,*/}
-      {/*      bottom: orientation === 'potrait' ? 30 : 5,*/}
-      {/*    }}>*/}
-      {/*    &copy; {`${year} PT. XL Axiata Tbk. All Right Reserved `}*/}
-      {/*  </Text>*/}
-      {/*</View>*/}
       <View
         style={
           (loginStyle.footer,
@@ -323,5 +295,3 @@ const ChangePasswordPage = ({navigation}) => {
     </ScrollView>
   );
 };
-
-export default ChangePasswordPage;
