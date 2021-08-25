@@ -15,7 +15,9 @@ const AboutPage = ({navigation}) => {
   const {imageBase64} = useSelector((state) => state.enterprise_reducer);
   const {titleVersion} = useSelector((state) => state.auth_reducer);
   const [orientation, setOrientation] = useState('potrait');
-  const versionLabel = titleVersion ? titleVersion?.appsTitle + ' ' + titleVersion?.versionNumber : '-'
+  const versionLabel = titleVersion
+    ? titleVersion?.appsTitle + ' ' + titleVersion?.versionNumber
+    : '-';
 
   const detectOrientation = useCallback(() => {
     if (Orientation.getHeight() <= Orientation.getWidth()) {
@@ -54,13 +56,12 @@ const AboutPage = ({navigation}) => {
               />
             </View>
             <Text style={style.aboutText}>
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-              eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut
-              enim ad minim veniam, quis nostrud exercitation ullamco laboris
-              nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in
-              reprehenderit in voluptate velit esse cillum dolore eu fugiat
-              nulla pariatur. Excepteur sint occaecat cupidatat non proident,
-              sunt in culpa qui officia deserunt mollit anim id est laborum.
+              Smart Connectivity Dashboard Monitoring Application for you to
+              manage your IoT Devices in easy way, available in Mobile & Web
+              Application. Provide lot of features from Summary Dashboard,
+              Subscription Inventory Management with Custom Label & Geo Location
+              Map, Report & Analytics, Automation / Trigger Management and
+              Real-time Diagnostics.
             </Text>
             <Text fontType={'bold'} style={style.aboutTitle}>
               Powered by:

@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React from 'react';
 import {
   Modal,
   ScrollView,
@@ -14,7 +14,7 @@ import PropTypes from 'prop-types';
 import {useNavigation} from '@react-navigation/native';
 import {useDispatch, useSelector} from 'react-redux';
 import {
-  authLogout,
+  manualLogout,
   updateCustomerConsent,
 } from '../../redux/action/auth_action';
 
@@ -30,7 +30,7 @@ const ModalTermCondition = (props) => {
 
   const logoutHandler = () => {
     props.closeModal();
-    dispatch(authLogout());
+    dispatch(manualLogout());
     // if(props.afterLogin){
     navigation.replace('Auth');
     // }
@@ -54,12 +54,55 @@ const ModalTermCondition = (props) => {
             <ScrollView style={{flex: 1}}>
               <View style={inputHybridStyle.contentWrapper}>
                 <Text style={inputHybridStyle.tcText}>
-                  Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed
-                  do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-                  Ut enim ad minim veniam, quis nostrud exercitation ullamco
-                  laboris nisi ut aliquip ex ea commodo consequat. Duis aute
-                  irure dolor in reprehenderit in voluptate velit esse cillum
-                  dolore eu fugiat nulla pariatur
+                  PT XL Axiata Tbk.{' '}
+                  <Text fontType="bold" style={inputHybridStyle.tcText}>
+                    (“XL Axiata”)
+                  </Text>{' '}
+                  is a part of Axiata Group Berhad (here in after shall be
+                  referred to as “XL Axiata”, “us” or “we” or “our”). Respecting
+                  and protecting your privacy is an integral part of our
+                  business and we do not view this as an obligation, but rather
+                  as a commitment to maintain your confidence and trust. Our
+                  Privacy Position can be summarized by our below guiding
+                  Privacy and Data Protection principles:
+                </Text>
+                <Text style={[inputHybridStyle.tcText, {paddingVertical: 10}]}>
+                  <Text fontType="bold" style={inputHybridStyle.tcText}>
+                    TRANSPARENT
+                  </Text>
+                  : We are TRANSPARENT about what, why and how we collect and
+                  protect YOUR PERSONAL DATA so that YOU can make informed
+                  decisions.
+                </Text>
+                <Text style={[inputHybridStyle.tcText, {paddingVertical: 10}]}>
+                  <Text fontType="bold" style={inputHybridStyle.tcText}>
+                    RIGHTS
+                  </Text>
+                  : We respect YOUR RIGHTS as individuals, so YOU are in control
+                  of YOUR PERSONAL DATA.
+                </Text>
+                <Text style={[inputHybridStyle.tcText, {paddingVertical: 10}]}>
+                  <Text fontType="bold" style={inputHybridStyle.tcText}>
+                    USE
+                  </Text>
+                  : We USE YOUR PERSONAL DATA for specific and stated purposes
+                  and keep it for as long as required only.
+                </Text>
+                <Text style={[inputHybridStyle.tcText, {paddingVertical: 10}]}>
+                  <Text fontType="bold" style={inputHybridStyle.tcText}>
+                    SECURITY
+                  </Text>
+                  : We have established robust CYBER SECURITY PRACTICES in line
+                  with leading industry standards to protect YOUR PERSONAL DATA
+                  that YOU have shared with us.
+                </Text>
+                <Text style={[inputHybridStyle.tcText, {paddingVertical: 10}]}>
+                  <Text fontType="bold" style={inputHybridStyle.tcText}>
+                    TRANSFER
+                  </Text>
+                  : We take due care when TRANSFERRING YOUR PERSONAL DATA to
+                  third parties such as vendors, contractors, business partners
+                  and government authorities.us.
                 </Text>
               </View>
             </ScrollView>
