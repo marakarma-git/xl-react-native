@@ -39,7 +39,7 @@ const ChangePasswordPage = ({navigation}) => {
     requestChangePassword(token);
   };
   const onExpire = () => {
-    alert('Captcha expired');
+    ToastAndroid.show('captcha expired', ToastAndroid.LONG);
   };
 
   const detectOrientation = useCallback(() => {
