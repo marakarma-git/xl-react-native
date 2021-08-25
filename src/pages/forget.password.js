@@ -17,7 +17,7 @@ import {
 } from 'react-native';
 import Recaptcha from '../components/googleCaptcha/recaptcha';
 import {Header, NavbarTitle} from '../components';
-import {API_URL, RECAPTCHA_TOKEN} from '../../env.json';
+import {API_URL, RECAPTCHA_TOKEN, RECAPTCHA_SECRET_KEY} from '../../env.json';
 import Axios from 'axios';
 import inputloginStyle from '../style/account.style';
 import loginStyle from '../style/login.style';
@@ -36,7 +36,7 @@ const ChangePasswordPage = ({navigation}) => {
     recaptchaRef.current.open();
   };
   const onVerify = (token) => {
-    requestChangePassword();
+    requestChangePassword(token);
   };
   const onExpire = () => {
     alert('Captcha expired');
@@ -51,17 +51,26 @@ const ChangePasswordPage = ({navigation}) => {
     });
   }, [Dimensions]);
 
-  const requestChangePassword = async () => {
+  const requestChangePassword = async (verifyToken) => {
     try {
       const {data} = await Axios.post(
         `${base_url}/user/usr/resetPassword?username=${username}`,
+        {},
+        {
+          headers: {
+            captchaToken: verifyToken,
+            captchaId: RECAPTCHA_SECRET_KEY,
+          },
+        },
       );
-
-      if (data) {
+      if (typeof data === 'object') {
+        ToastAndroid.show(data.result, ToastAndroid.LONG);
         if (data.statusCode === 0) {
-          ToastAndroid.show(data.result, ToastAndroid.LONG);
           navigation.replace('Login');
         }
+      }
+      if (typeof data !== 'object') {
+        ToastAndroid.show('invalid token', ToastAndroid.LONG);
       }
     } catch (error) {
       setRequestLoading(false);
