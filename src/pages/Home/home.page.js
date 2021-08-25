@@ -72,7 +72,7 @@ const LandingPage = ({navigation}) => {
   };
 
   const showModalTermCondition = () => {
-    if (userData.principal.isCustomerConsent) {
+    if (!userData.principal.isCustomerConsent) {
       return (
         <ModalTermCondition
           showModal={showModal}
