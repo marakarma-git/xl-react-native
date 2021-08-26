@@ -76,28 +76,33 @@ const userAdministrationResetAppliedHeaderSort = () => {
   };
 };
 
-const userAdministrationUpdateUser = (dataUser, dataUserGenerated, removeUser) => ({
+const userAdministrationUpdateUser = (
+  dataUser,
+  dataUserGenerated,
+  removeUser,
+) => ({
   type: reduxString.USER_ADMINISTRATION_UPDATE_LOCK_UNLOCK_USER,
   dataUser,
   dataUserGenerated,
-  removeUser
+  removeUser,
 });
 
 const userAdministrationCreateUser = () => ({
-  type: reduxString.USER_ADMINISTRATION_CREATE_USER
+  type: reduxString.USER_ADMINISTRATION_CREATE_USER,
 });
 
 const callUserAdministrationDeleteUser = (userId) => {
   return (dispatch, getState) => {
     const {data_user} = getState().user_administration_get_user_reducer;
     const {content} = data_user?.result;
-    const {dataHeader} = getState().user_administration_array_header_reducer || {};
-    
+    const {dataHeader} =
+      getState().user_administration_array_header_reducer || {};
+
     let contentLength = content.length;
 
     userId.map((id) => {
-      for (let i = 0; i < contentLength; i++){
-        if(id === content[i].userId){
+      for (let i = 0; i < contentLength; i++) {
+        if (id === content[i].userId) {
           content.splice(i, 1);
           isDelete = true;
           break;
@@ -106,20 +111,22 @@ const callUserAdministrationDeleteUser = (userId) => {
     });
 
     const generateTable = dataMatcherArray2D(content, dataHeader);
-    dispatch(userAdministrationUpdateUser(data_user, generateTable, userId.length));
-
-  }
-}
+    dispatch(
+      userAdministrationUpdateUser(data_user, generateTable, userId.length),
+    );
+  };
+};
 
 const callUserAdministrationUpdateLockUnlockUser = (userId, lockStatus) => {
   return (dispatch, getState) => {
     let updateUserIndex = 0;
     const {data_user} = getState().user_administration_get_user_reducer;
-    const { content } = data_user?.result;
-    const {dataHeader} = getState().user_administration_array_header_reducer || {};
+    const {content} = data_user?.result;
+    const {dataHeader} =
+      getState().user_administration_array_header_reducer || {};
 
     content.map((data, index) => {
-      if(data.userId === userId){
+      if (data.userId === userId) {
         updateUserIndex = +index;
         data.lockStatus = lockStatus;
       }
@@ -130,8 +137,8 @@ const callUserAdministrationUpdateLockUnlockUser = (userId, lockStatus) => {
     generateTable[updateUserIndex].is_checked_root = true;
 
     dispatch(userAdministrationUpdateUser(data_user, generateTable, 0));
-  }
-}
+  };
+};
 
 const callUserAdministrationGetUser = (paginate) => {
   return async (dispatch, getState) => {
@@ -172,17 +179,21 @@ const callUserAdministrationGetUser = (paginate) => {
       }
     };
     console.log(
-      `${base_url}/user/usr/getUserList?page=${getPage}&size=${getSize}&keyword=${searchText}${
-        getSortBy() ? `&order=${getSortBy()}` : ''
-      }${getSortBy() ? `&sort=${getOrderBy()}` : ''}${generatedParams}`
+      `${base_url}/user/usr/getUserList?page=${getPage}&size=${getSize}${
+        searchText ? `&keyword=${searchText}` : ''
+      }${getSortBy() ? `&order=${getSortBy()}` : ''}${
+        getSortBy() ? `&sort=${getOrderBy()}` : ''
+      }${generatedParams}`
         .split(' ')
         .join('+'),
     );
     axios
       .get(
-        `${base_url}/user/usr/getUserList?page=${getPage}&size=${getSize}&keyword=${searchText}${
-          getSortBy() ? `&order=${getSortBy()}` : ''
-        }${getSortBy() ? `&sort=${getOrderBy()}` : ''}${generatedParams}`
+        `${base_url}/user/usr/getUserList?page=${getPage}&size=${getSize}${
+          searchText ? `&keyword=${searchText}` : ''
+        }${getSortBy() ? `&order=${getSortBy()}` : ''}${
+          getSortBy() ? `&sort=${getOrderBy()}` : ''
+        }${generatedParams}`
           .split(' ')
           .join('+'),
         {
@@ -248,5 +259,5 @@ export {
   userAdministrationResetAppliedHeaderSort,
   callUserAdministrationUpdateLockUnlockUser,
   callUserAdministrationDeleteUser,
-  userAdministrationCreateUser
+  userAdministrationCreateUser,
 };

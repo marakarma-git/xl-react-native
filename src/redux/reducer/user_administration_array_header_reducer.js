@@ -25,7 +25,7 @@ const dataHeaderFilter = [
     child_api_id: 'lastName',
     value: '',
     typeInput: 'TextInput',
-    params: '&userName=',
+    params: '&name=',
     cellType: 'TableCellHeaderAscDesc',
     cellRowType: 'TableCellText',
     config: {
@@ -69,7 +69,7 @@ const dataHeaderFilter = [
     formId: 'lock-status-hard-code',
     api_id: 'lockStatus',
     value: {},
-    typeInput: 'DropDown',
+    // typeInput: 'DropDown',
     data: [
       {
         value: true,
@@ -101,7 +101,7 @@ const dataHeaderFilter = [
     value: {},
     typeInput: 'DropDown',
     data: [],
-    params: '&roleName=',
+    params: '&roleId=',
     cellType: 'TableCellHeader',
     cellRowType: 'TableCellText',
     config: {
@@ -138,7 +138,7 @@ const dataHeaderFilter = [
     cellType: 'TableCellHeaderAscDesc',
     cellRowType: 'TableCellText',
     config: {
-      label: 'Email',
+      label: 'Email Address',
       isTouchable: true,
     },
     shown: true,
