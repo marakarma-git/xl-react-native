@@ -102,7 +102,7 @@ const dataHeaderFilter = [
     typeInput: 'DropDown',
     data: [],
     params: '&roleName=',
-    cellType: 'TableCellHeaderAscDesc',
+    cellType: 'TableCellHeader',
     cellRowType: 'TableCellText',
     config: {
       label: 'Role',
