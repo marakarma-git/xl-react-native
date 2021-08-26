@@ -28,7 +28,7 @@ const UserAdministrationFilterPage = () => {
     (state) => state.user_administration_array_header_reducer,
   );
   useEffect(() => {
-    dispatch(getActiveRole());
+    // dispatch(getActiveRole());
     dispatch(getActiveEnterprise());
     const timer = setTimeout(() => {
       setTestWidth(device_width * 0.41);
@@ -61,6 +61,7 @@ const UserAdministrationFilterPage = () => {
                 loading,
                 data,
                 errorText,
+                disabled,
               } = e || {};
               const {label} = config || {};
               return (
@@ -71,7 +72,7 @@ const UserAdministrationFilterPage = () => {
                   loading={loading}
                   data={data}
                   errorText={errorText}
-                  disabled={errorText}
+                  disabled={errorText || disabled}
                   label={label}
                   onChange={(e) => {
                     if (typeInput === 'TextInput') {

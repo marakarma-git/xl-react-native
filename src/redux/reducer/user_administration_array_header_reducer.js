@@ -98,6 +98,7 @@ const dataHeaderFilter = [
   {
     formId: 'role-hard-code',
     api_id: 'roleName',
+    disabled: true,
     value: {},
     typeInput: 'DropDown',
     data: [],
