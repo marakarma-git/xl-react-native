@@ -159,9 +159,7 @@ const TableCellText = (props) => {
                   return <Text selectable>{textPerBaris}</Text>;
                 })
               ) : (
-                <Text selectable>
-                  {createLabel() + JSON.stringify(props, null, 2)}
-                </Text>
+                <Text selectable>{createLabel()}</Text>
               )}
             </ScrollView>
             <View

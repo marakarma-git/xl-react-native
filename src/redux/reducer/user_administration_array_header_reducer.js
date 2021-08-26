@@ -17,7 +17,7 @@ const dataHeaderFilter = [
     },
     valueCheck: false,
     shown: true,
-    sort_by_filter: 0,
+    sort_by_filter: 1,
   },
   {
     formId: 'user-name-hard-coded',
@@ -33,7 +33,7 @@ const dataHeaderFilter = [
       isTouchable: true,
     },
     shown: true,
-    sort_by_filter: 1,
+    sort_by_filter: 2,
   },
   {
     formId: 'active-status-hard-code',
@@ -93,7 +93,7 @@ const dataHeaderFilter = [
       },
     },
     shown: true,
-    sort_by_filter: 5,
+    sort_by_filter: null,
   },
   {
     formId: 'role-hard-code',
@@ -111,7 +111,7 @@ const dataHeaderFilter = [
     },
     shown: true,
     errorText: '',
-    sort_by_filter: 2,
+    sort_by_filter: 4,
   },
   {
     formId: 'organizations-hard-code',
@@ -128,7 +128,7 @@ const dataHeaderFilter = [
     },
     errorText: '',
     shown: true,
-    sort_by_filter: 4,
+    sort_by_filter: 3,
   },
   {
     formId: 'email-hard-code',
@@ -143,7 +143,7 @@ const dataHeaderFilter = [
       isTouchable: true,
     },
     shown: true,
-    sort_by_filter: 3,
+    sort_by_filter: 6,
   },
 ];
 const initialState = {
