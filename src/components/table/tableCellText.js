@@ -20,6 +20,7 @@ import Clipboard from '@react-native-community/clipboard';
 const TableCellText = (props) => {
   const [moreText, setMoreText] = useState(false);
   const [showMore, setShowMore] = useState(false);
+  const [textRaw, setTextRaw] = useState('');
   const {config, onPress, otherInformation, onPressArrow, item, subItem} =
     props || {};
   const {child_api_id} = subItem || '';
@@ -52,9 +53,18 @@ const TableCellText = (props) => {
       return label + (child_api_id ? ` ${item[`${child_api_id}`]}` : '');
     }
   };
+  const mergingText = (arrayText) => {
+    let stringRawText = '';
+    arrayText.map(({text}) => {
+      stringRawText = stringRawText + text;
+    });
+    return stringRawText;
+  };
   const onLongPress = () => {
-    Clipboard.setString(label);
-    ToastAndroid.show('Text copied', ToastAndroid.LONG);
+    if (!moreText) {
+      Clipboard.setString(mergingText(textRaw.lines));
+      ToastAndroid.show('Text copied', ToastAndroid.LONG);
+    }
   };
   const TouchView = isTouchable ? TouchableOpacity : View;
   return (
@@ -90,9 +100,10 @@ const TableCellText = (props) => {
                   numberOfLines={1}
                   // selectable
                   onLongPress={() => onLongPress()}
-                  onTextLayout={(e) =>
-                    setMoreText(lod.size(e.nativeEvent.lines) > 1)
-                  }
+                  onTextLayout={(e) => {
+                    setTextRaw(e.nativeEvent);
+                    setMoreText(lod.size(e.nativeEvent.lines) > 1);
+                  }}
                   onPress={() => {
                     if (moreText) {
                       setShowMore(true);
