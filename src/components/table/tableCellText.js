@@ -154,7 +154,15 @@ const TableCellText = (props) => {
               <Text style={inputHybridStyle.modalTitleText}>Detail</Text>
             </View>
             <ScrollView style={{flex: 1}}>
-              <Text selectable>{createLabel()}</Text>
+              {Array.isArray(label) ? (
+                label.map((textPerBaris) => {
+                  return <Text selectable>{textPerBaris}</Text>;
+                })
+              ) : (
+                <Text selectable>
+                  {createLabel() + JSON.stringify(props, null, 2)}
+                </Text>
+              )}
             </ScrollView>
             <View
               style={{
