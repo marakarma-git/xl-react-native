@@ -126,6 +126,9 @@ const dataHeaderFilter = [
       label: 'Organizations',
       isTouchable: true,
     },
+    generatedConfig: {
+      usedFrom: 'label',
+    },
     errorText: '',
     shown: true,
     sort_by_filter: 3,

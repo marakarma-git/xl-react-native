@@ -14,7 +14,15 @@ const generateLink = (array = []) => {
   let count = 0;
   try {
     array.map((v) => {
-      const {value, params, typeInput: type, isSelected, selectedValue} = v;
+      const {
+        value,
+        params,
+        typeInput: type,
+        isSelected,
+        selectedValue,
+        generatedConfig,
+      } = v;
+      const {usedFrom} = generatedConfig || {};
       if (type === 'DateTimePicker' && isSelected && !lod.isEmpty(type)) {
         paramsLink = paramsLink + params + dayjs(value).format('YYYY-MM-DD');
         containerData.push(v);
@@ -29,7 +37,10 @@ const generateLink = (array = []) => {
           case 'DropDown':
             count = count + 1;
             containerData.push(v);
-            return (paramsLink = paramsLink + params + value.value);
+            return (paramsLink =
+              paramsLink +
+              params +
+              (!usedFrom ? value.value : value[`${usedFrom}`]));
           case 'DropDownType2':
             count = count + 1;
             containerData.push(v);
