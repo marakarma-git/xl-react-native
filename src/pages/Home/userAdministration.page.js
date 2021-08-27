@@ -15,6 +15,7 @@ import SearchHeader from '../../components/subscription/searchHeader';
 import AppliedFilter from '../../components/subscription/appliedFilter';
 import FilterActionLabel from '../../components/subscription/filterActionLabel';
 import {
+  userAdministrationDynamicDisabled,
   userAdministrationDynamicReset,
   userAdministrationGenerateParams,
   userAdministrationSetSearchText,
@@ -417,6 +418,13 @@ const UserAdministrationPage = ({route}) => {
                     const {formId} = e || {};
                     dispatch(userAdministrationDynamicReset({formId}));
                     dispatch(userAdministrationGenerateParams());
+                    if (formId === 'organizations-hard-code') {
+                      dispatch(
+                        userAdministrationDynamicDisabled({
+                          formId: 'role-hard-code',
+                        }),
+                      );
+                    }
                   }}
                 />
                 <FilterActionLabel

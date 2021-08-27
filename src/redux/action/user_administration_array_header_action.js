@@ -47,6 +47,13 @@ const userAdministrationDynamicReset = (value) => {
     formId: formId,
   };
 };
+const userAdministrationDynamicDisabled = (value) => {
+  const {formId} = value || {};
+  return {
+    type: reduxString.USER_ADMINISTRATION_DYNAMIC_DISABLED,
+    formId: formId,
+  };
+};
 const userAdministrationResetAllValue = () => {
   return {
     type: reduxString.USER_ADMINISTRATION_RESET_ALL_VALUE,
@@ -198,6 +205,7 @@ export {
   userAdministrationResetSearchText,
   userAdministrationUpdateBundleArray,
   userAdministrationDynamicReset,
+  userAdministrationDynamicDisabled,
   callActiveEnterprise,
   getActiveRole,
   getActiveEnterprise,

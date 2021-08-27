@@ -232,6 +232,15 @@ const user_administration_array_header_reducer = (
         dataHeader: state.dataHeader,
       };
     }
+    case reduxString.USER_ADMINISTRATION_DYNAMIC_DISABLED: {
+      const index =
+        state.dataHeader.findIndex((f) => f.formId === action.formId) || 0;
+      state.dataHeader[index].disabled = true;
+      return {
+        ...state,
+        dataHeader: state.dataHeader,
+      };
+    }
     case reduxString.USER_ADMINISTRATION_RESET_ALL_VALUE:
       const resetValue = Helper.resetAllForm(initialState.dataHeader);
       return {
