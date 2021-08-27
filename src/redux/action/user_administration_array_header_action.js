@@ -113,12 +113,10 @@ const getActiveRole = (data) => {
       .then(({data}) => {
         const {result, statusCode} = data || {};
         if (statusCode === 0) {
-          const changeArray = result.map(
-            ({enterpriseId: thisEnterprise, roleName}) => ({
-              value: thisEnterprise,
-              label: roleName,
-            }),
-          );
+          const changeArray = result.map(({roleId, roleName}) => ({
+            value: roleId,
+            label: roleName,
+          }));
           dispatch(
             userAdministrationDynamicSuccess({
               formId: 'role-hard-code',
