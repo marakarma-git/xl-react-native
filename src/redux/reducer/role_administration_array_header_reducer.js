@@ -16,7 +16,7 @@ const dataRoleHeader = [
     config: {
       label: 'Role',
       doNotShowOnFilter: true,
-      isTouchable: true,
+      // isTouchable: true,
     },
     shown: true,
     sort_by_filter: 0,

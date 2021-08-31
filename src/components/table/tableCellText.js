@@ -16,7 +16,13 @@ import lod from 'lodash';
 import {inputHybridStyle} from '../../style';
 import {colors} from '../../constant/color';
 import Clipboard from '@react-native-community/clipboard';
-
+const mergingText = (arrayText) => {
+  let stringRawText = '';
+  arrayText.map(({text}) => {
+    stringRawText = stringRawText + text;
+  });
+  return stringRawText;
+};
 const TableCellText = (props) => {
   const [moreText, setMoreText] = useState(false);
   const [showMore, setShowMore] = useState(false);
@@ -52,13 +58,6 @@ const TableCellText = (props) => {
     if (child_api_id) {
       return label + (child_api_id ? ` ${item[`${child_api_id}`]}` : '');
     }
-  };
-  const mergingText = (arrayText) => {
-    let stringRawText = '';
-    arrayText.map(({text}) => {
-      stringRawText = stringRawText + text;
-    });
-    return stringRawText;
   };
   const onLongPress = () => {
     if (!moreText) {
@@ -216,3 +215,4 @@ TableCellText.propTypes = {
   superType: PropTypes.oneOf(['BYTE', 'DATE']),
 };
 export default TableCellText;
+export {mergingText};
