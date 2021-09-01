@@ -204,7 +204,11 @@ class Helper {
             });
           }
         }
+
         if (type == 'drawer') {
+          if (drawer.type == 'initialRoute') {
+            drawerMenu.push(drawer);
+          }
           if (drawer.type == 'drawer') {
             drawerMenu.push(drawer);
           }
