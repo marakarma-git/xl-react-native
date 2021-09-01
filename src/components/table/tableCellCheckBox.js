@@ -1,23 +1,34 @@
-import React from 'react';
-import {TouchableOpacity, View, ToastAndroid} from 'react-native';
+import React, {useState} from 'react';
+import {
+  TouchableOpacity,
+  View,
+  ToastAndroid,
+  Modal,
+  KeyboardAvoidingView,
+  ScrollView,
+} from 'react-native';
 import Clipboard from '@react-native-community/clipboard';
 import Text from '../global/text';
 import {defaultHeightCell, defaultWidthCell} from '../../constant/config';
 import CustomCheckBox from '../customCheckBox';
 import PropTypes from 'prop-types';
+import {inputHybridStyle} from '../../style';
+import {colors} from '../../constant/color';
+import lod from 'lodash';
 const TableCellCheckBox = (props) => {
+  const [moreText, setMoreText] = useState(false);
+  const [showMore, setShowMore] = useState(false);
+  const [textRaw, setTextRaw] = useState('');
   const {config, onPress, onChangeCheck, otherInformation, value, key} =
     props || {};
   const {label, width, height, isTouchable, fontColor, backgroundColor} =
     config || {};
   const TouchView = isTouchable ? TouchableOpacity : View;
-  const onLongPress = ()=> {
-    Clipboard.setString(label)
-    ToastAndroid.show(
-      'Text copied',
-      ToastAndroid.LONG,
-    );
-  }
+  const onLongPress = () => {
+    console.log('onLongPress');
+    Clipboard.setString(label);
+    ToastAndroid.show('Text copied', ToastAndroid.LONG);
+  };
   return (
     <View
       key={key}
@@ -47,15 +58,67 @@ const TableCellCheckBox = (props) => {
             alignItems: 'center',
             flexDirection: 'row',
           }}>
-          <Text
-            numberOfLines={1} 
-            style={{
-              color: fontColor || 'black',
+          <TouchableOpacity
+            disabled={isTouchable}
+            onLongPress={() => onLongPress()}
+            onPress={() => {
+              if (moreText) {
+                setShowMore(true);
+              }
             }}>
-            {label}
-          </Text>
+            <Text
+              numberOfLines={1}
+              onTextLayout={(e) => {
+                setTextRaw(e.nativeEvent);
+                setMoreText(lod.size(e.nativeEvent.lines) > 1);
+              }}
+              style={{
+                color: fontColor || 'black',
+              }}>
+              {label}
+            </Text>
+          </TouchableOpacity>
         </View>
       </TouchView>
+      {showMore && (
+        <Modal
+          animationType="slide"
+          transparent
+          onRequestClose={() => setShowMore(false)}>
+          <View style={inputHybridStyle.modalBackdrop} />
+          <KeyboardAvoidingView
+            enabled={false}
+            style={inputHybridStyle.modalContainer}>
+            <View style={inputHybridStyle.modalTitleContainer}>
+              <Text style={inputHybridStyle.modalTitleText}>Detail</Text>
+            </View>
+            <ScrollView style={{flex: 1}}>
+              {Array.isArray(label) ? (
+                label.map((textPerBaris) => {
+                  return <Text selectable>{textPerBaris}</Text>;
+                })
+              ) : (
+                <Text selectable>{label}</Text>
+              )}
+            </ScrollView>
+            <View
+              style={{
+                alignItems: 'center',
+                justifyContent: 'center',
+                flexDirection: 'row',
+              }}>
+              <TouchableOpacity
+                style={[
+                  inputHybridStyle.buttonStyle,
+                  {backgroundColor: colors.gray_button_cancel},
+                ]}
+                onPress={() => setShowMore(false)}>
+                <Text style={{color: 'black'}}>Close</Text>
+              </TouchableOpacity>
+            </View>
+          </KeyboardAvoidingView>
+        </Modal>
+      )}
     </View>
   );
 };

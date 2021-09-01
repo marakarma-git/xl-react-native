@@ -26,7 +26,7 @@ const dataHeaderFilter = [
     config: {
       label: 'ID',
       doNotShowOnFilter: true,
-      isTouchable: true,
+      // isTouchable: true,
       width: 180,
     },
     valueCheck: false,

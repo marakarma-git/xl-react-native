@@ -13,7 +13,7 @@ const dataHeaderFilter = [
     config: {
       label: 'User ID',
       doNotShowOnFilter: true,
-      isTouchable: true,
+      // isTouchable: true,
     },
     valueCheck: false,
     shown: true,
