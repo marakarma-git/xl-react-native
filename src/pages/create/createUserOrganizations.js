@@ -1,92 +1,165 @@
-import React, { useEffect, useState } from 'react';
+import React, {useEffect, useState} from 'react';
 import PropTypes from 'prop-types';
 import {View} from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
-import {Text, CustomRadioButtonComponent, GridComponent} from '../../components';
+import {
+  Text,
+  CustomRadioButtonComponent,
+  GridComponent,
+} from '../../components';
 
 import styles from '../../style/create.style';
-import { 
-  enterpriseManagementRequestData, 
-  enterpriseManagementRequestDataEnd, 
-  getActiveEnterpriseList, 
+import {
+  enterpriseManagementRequestData,
+  enterpriseManagementRequestDataEnd,
+  getActiveEnterpriseList,
 } from '../../redux/action/enterprise_management_action';
-import { useCallback } from 'react';
+import {useCallback} from 'react';
 
 const gridOptionsArray = [
-  {bgColor: "#F4F3F4", headerColor: "#707070", width: '80%', cellAlign: 'center', headerAlign: 'center', label: "Organization", field: "enterpriseName", cellType: "treeViewWithCheckBox", headerType: "text"},
-  {bgColor: "#F4F3F4", headerColor: "#707070", width: '20%', cellAlign: 'center', headerAlign: 'center', label: "Children", field: "childrenCnt", cellType: "text", headerType: "text"},
+  {
+    bgColor: '#F4F3F4',
+    headerColor: '#707070',
+    width: '80%',
+    cellAlign: 'center',
+    headerAlign: 'center',
+    label: 'Organization',
+    field: 'enterpriseName',
+    cellType: 'treeViewWithCheckBox',
+    headerType: 'text',
+  },
+  {
+    bgColor: '#F4F3F4',
+    headerColor: '#707070',
+    width: '20%',
+    cellAlign: 'center',
+    headerAlign: 'center',
+    label: 'Children',
+    field: 'childrenCnt',
+    cellType: 'text',
+    headerType: 'text',
+  },
 ];
 
 const CreateOrganization = (props) => {
   const dispatch = useDispatch();
-  const { data_active_enterprise, loading } = useSelector(state => state.enterprise_management_get_enterprise_reducer);
+  const {data_active_enterprise, loading} = useSelector(
+    (state) => state.enterprise_management_get_enterprise_reducer,
+  );
 
   const [gridData, setGridData] = useState([]);
   const [gridOptions, setGridOptions] = useState(gridOptionsArray);
 
-    const treeViewToggle = (cellId) => {
-      const newData = new Array();
-      
-      let isRoot = false;
-      gridData.map((data) => {
-        if(data.enterpriseId == cellId){
-          if(data.enterpriseParentId === null){
-            isRoot = true;
+  const treeViewToggle = (cellId) => {
+    const newData = new Array();
+
+    let isRoot = false;
+    gridData.map((data) => {
+      if (data.enterpriseId == cellId) {
+        if (data.enterpriseParentId === null) {
+          isRoot = true;
+        }
+      }
+
+      if (isRoot) {
+        if (data.enterpriseId !== cellId) {
+          data.visibility = !data.collapse;
+          data.collapse = !data.collapse;
+        }
+      } else {
+        if (data.enterpriseParentId === cellId) {
+          data.visibility = !data.visibility;
+        }
+      }
+
+      if (data.icon) {
+        data.icon = data.icon == 'caret-down' ? 'caret-up' : 'caret-down';
+      }
+
+      newData.push(data);
+    });
+
+    setGridData(newData);
+  };
+
+  const checkBoxToggle = (cellId) => {
+    const newData = new Array();
+    let isRoot = false;
+    let parentCheck = false;
+
+    gridData.map((data) => {
+      if (data.enterpriseId == cellId) {
+        if (data.enterpriseParentId === null) {
+          isRoot = true;
+        }
+        parentCheck = !data.treeCheck;
+        data.treeCheck = !data.treeCheck;
+      }
+
+      if (isRoot) {
+        if (data.enterpriseId !== cellId) {
+          if (props.selectedRadio === 1) {
+            data.isDisabled = !data.isDisabled;
+          }
+          data.treeCheck = parentCheck;
+        }
+      } else {
+        if (data.enterpriseParentId === cellId) {
+          if (props.selectedRadio === 1) {
+            data.isDisabled = !data.isDisabled;
+          }
+          data.treeCheck = parentCheck;
+        } else {
+          if (props.selectedRadio === 1) {
+            if (data.enterpriseId !== cellId) {
+              data.isDisabled = !data.isDisabled;
+            }
           }
         }
+      }
 
-        if(isRoot){
-          if(data.enterpriseId !== cellId){
-              data.visibility = !data.collapse;
-              data.collapse = !data.collapse;          
-          }
+      newData.push(data);
+    });
 
-        }else{
-          if(data.enterpriseParentId === cellId){
-            data.visibility = !data.visibility;
-          }
+    setGridData(newData);
+    checkSelectedData(newData);
+  };
+
+  const checkSelectedOrganization = (data, selectedOrganization) => {
+    let parentSelected = false;
+    const newData = new Array();
+
+    data.map((data, index) => {
+      data.isDisabled = false;
+      selectedOrganization.map((organization) => {
+        if (organization == data.enterpriseId) {
+          data.treeCheck = true;
         }
-
-        if (data.icon) {
-          data.icon = data.icon == 'caret-down' ? 'caret-up' : 'caret-down';
-        }
-
-        newData.push(data);
       });
-      
-      setGridData(newData);
-    };
 
-    const checkBoxToggle = (cellId) => {
+      if (data.treeCheck) {
+        if (props.selectedRadio == 1) {
+          if (parentSelected) {
+            data.isDisabled = true;
+          }
+        }
+        parentSelected = true;
+      }
+
+      newData.push(data);
+    });
+
+    setGridData(newData);
+    checkSelectedData(newData);
+  };
+
+  const resetGridData = useCallback(() => {
+    if (gridData.length > 0) {
       const newData = new Array();
-      let isRoot = false;
-      let parentCheck = false;
-
       gridData.map((data) => {
-        if(data.enterpriseId == cellId){
-          if(data.enterpriseParentId === null){
-            isRoot = true;
-          }
-          parentCheck = !data.treeCheck;
-          data.treeCheck = !data.treeCheck;
-        }
-
-        if(isRoot){
-          if(data.enterpriseId !== cellId){
-              if(props.selectedRadio === 1){
-                data.isDisabled = !data.isDisabled;
-              }
-              data.treeCheck = parentCheck;
-          }
-
-        }else{
-          if(data.enterpriseParentId === cellId){
-              if(props.selectedRadio === 1){
-                data.isDisabled = !data.isDisabled;
-              }
-              data.treeCheck = parentCheck;
-          }
-        }
+        data.treeCheck = false;
+        data.isSelect = false;
+        data.isDisabled = false;
 
         newData.push(data);
       });
@@ -94,129 +167,90 @@ const CreateOrganization = (props) => {
       setGridData(newData);
       checkSelectedData(newData);
     }
+  }, [gridData]);
 
-    const checkSelectedOrganization = (data, selectedOrganization) => {
-      let parentSelected = false;
-        const newData = new Array();
+  const checkSelectedData = (newData) => {
+    const selectedData = new Array();
+    newData.map((data, index) => {
+      if (data.treeCheck) {
+        selectedData.push(data);
+      }
+    });
 
-        data.map((data, index) => {
-          data.isDisabled = false;
-          selectedOrganization.map((organization) => {
-            if(organization == data.enterpriseId){
-              data.treeCheck  = true;
-            }
-          });
+    props.setSelectedOrganization(selectedData);
+  };
 
-          if(data.treeCheck){
-            if(props.selectedRadio == 1){
-              if(parentSelected){
-                data.isDisabled = true;
-              }
-            }
-            parentSelected = true;
-          }
+  useEffect(() => {
+    if (props.selectedOrganization.length > 0) {
+      props.setIsComplete(true);
+    } else {
+      props.setIsComplete(false);
+    }
+  }, [props.selectedOrganization]);
 
-          newData.push(data);
-        });
+  useEffect(() => {
+    // wait for selected radio re render
+    dispatch(enterpriseManagementRequestData());
+    resetGridData();
+    setTimeout(() => {
+      dispatch(enterpriseManagementRequestDataEnd());
+    }, 1500);
+  }, [props.selectedRadio]);
 
-        setGridData(newData);
-        checkSelectedData(newData);
+  useEffect(() => {
+    if (data_active_enterprise.length <= 0) {
+      dispatch(getActiveEnterpriseList());
     }
 
-    const resetGridData = useCallback(() => {
-      if(gridData.length > 0){
-        const newData = new Array();
-        gridData.map(data => {
-          data.treeCheck = false;
-          data.isSelect = false;
-          data.isDisabled = false;
-          
-          newData.push(data);
-        });
+    if (data_active_enterprise.length > 0) {
+      props.defaultParentId(data_active_enterprise[0].enterpriseId); //this useful if user choose xl user
 
-        setGridData(newData);
-        checkSelectedData(newData);
+      if (props.isUpdate) {
+        checkSelectedOrganization(
+          data_active_enterprise,
+          props.selectedOrganization,
+        );
+      } else {
+        setGridData(data_active_enterprise);
       }
-    }, [gridData]);
-
-    const checkSelectedData = (newData) => {
-      const selectedData = new Array();
-      newData.map((data, index) => {
-        if(data.treeCheck){
-          selectedData.push(data);
-        }
-      });
-
-      props.setSelectedOrganization(selectedData);
     }
+  }, [data_active_enterprise]);
 
-    useEffect(() => {
-      if(props.selectedOrganization.length > 0){
-        props.setIsComplete(true);
-      }else{
-        props.setIsComplete(false);
-      }
-    }, [props.selectedOrganization]);
-
-    useEffect(() => {
-      // wait for selected radio re render
-      dispatch(enterpriseManagementRequestData());
-      resetGridData();
-      setTimeout(() => {
-        dispatch(enterpriseManagementRequestDataEnd());
-      }, 1500);
-
-    }, [props.selectedRadio]);
-
-    useEffect(() => {
-      if(data_active_enterprise.length <= 0){
-        dispatch(getActiveEnterpriseList());
-      }
-
-      if(data_active_enterprise.length > 0){
-        props.defaultParentId(data_active_enterprise[0].enterpriseId); //this useful if user choose xl user
-        
-        if(props.isUpdate){
-          checkSelectedOrganization(data_active_enterprise, props.selectedOrganization);
-        }else{
-          setGridData(data_active_enterprise);
-        }
-      }
-
-    }, [data_active_enterprise]);
-
-  return(
+  return (
     <View
-     onStartShouldSetResponderCapture={props.detectOffset}
-     style={{ flexDirection: 'row', flexWrap: 'wrap' }}>
+      onStartShouldSetResponderCapture={props.detectOffset}
+      style={{flexDirection: 'row', flexWrap: 'wrap'}}>
       <CustomRadioButtonComponent
         onPressRadio={() => props.setSelectedRadio(0)}
         label="XL User"
         radioValue="XL User"
-        status={props.selectedRadio === 0 ? "checked" : "unchecked"}
+        status={props.selectedRadio === 0 ? 'checked' : 'unchecked'}
       />
       <CustomRadioButtonComponent
         onPressRadio={() => props.setSelectedRadio(1)}
         label="Non XL User"
         radioValue="Non XL User"
-        status={props.selectedRadio === 1 ? "checked" : "unchecked"}
+        status={props.selectedRadio === 1 ? 'checked' : 'unchecked'}
       />
       <View style={styles.menuBarContainer}>
-        <Text style={{ color: "#707070" }}>Total: {gridData.length} | Selected: {props.selectedOrganization.length}</Text>
+        <Text style={{color: '#707070'}}>
+          Total: {gridData.length} | Selected:{' '}
+          {props.selectedOrganization.length}
+        </Text>
       </View>
-        <GridComponent
-          loading={loading}
-          gridOptions={gridOptions}
-          gridData={gridData}
-          colHeight={30}
-          tableMaxHeight={250}
-          keyExtractor="enterpriseId"
-          onPressTree={treeViewToggle}
-          onPressCheckBox={checkBoxToggle}
-        />
+      <GridComponent
+        loading={loading}
+        gridOptions={gridOptions}
+        gridData={gridData}
+        colHeight={30}
+        tableMaxHeight={250}
+        keyExtractor="enterpriseId"
+        onPressTree={treeViewToggle}
+        onPressCheckBox={checkBoxToggle}
+      />
     </View>
-  )
-}
+  );
+};
 
 CreateOrganization.propTypes = {
   selectedRadio: PropTypes.array,
@@ -226,7 +260,7 @@ CreateOrganization.propTypes = {
   selectedOrganization: PropTypes.array,
   setSelectedOrganization: PropTypes.func,
   isUpdate: PropTypes.bool,
-  defaultParentId: PropTypes.func
+  defaultParentId: PropTypes.func,
 };
 
 CreateOrganization.defaultProps = {
@@ -237,7 +271,7 @@ CreateOrganization.defaultProps = {
   detectOffset: () => {},
   selectedOrganization: [],
   setSelectedOrganization: () => {},
-  defaultParentId: () => {}
-}
+  defaultParentId: () => {},
+};
 
 export default CreateOrganization;

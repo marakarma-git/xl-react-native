@@ -92,6 +92,7 @@ const UserAdministrationPage = ({route}) => {
   const [selectedUser, setSelectedUser] = useState([]);
   const [isFilterVisible, setIsFilterVisible] = useState(true);
   const {imageBase64} = useSelector((state) => state.enterprise_reducer);
+  const [isCheckHeader, setIsCheckHeader] = useState(false);
   const accessToken = useSelector(
     (state) => state.auth_reducer.data.access_token,
   );
@@ -296,21 +297,33 @@ const UserAdministrationPage = ({route}) => {
     }
   };
 
-  const selectUserToggle = (data, index) => {
+  const selectUserToggle = ([...data], index = 0, type = 'cell') => {
     let isUnique = true;
     let selectedData = data[index];
 
     const dataUser = selectedUser.slice();
 
-    dataUser.map((user, index) => {
-      if (selectedData.userId === user.userId) {
-        isUnique = false;
-        dataUser.splice(index, 1);
+    if (type === 'header') {
+      if (!isCheckHeader) {
+        data.map((datas) => {
+          dataUser.push(datas);
+        });
+        setIsCheckHeader(true);
+      } else {
+        dataUser.splice(0, dataUser.length);
+        setIsCheckHeader(false);
       }
-    });
+    } else {
+      dataUser.map((user, index) => {
+        if (selectedData.userId === user.userId) {
+          isUnique = false;
+          dataUser.splice(index, 1);
+        }
+      });
 
-    if (isUnique) {
-      dataUser.push(selectedData);
+      if (isUnique) {
+        dataUser.push(selectedData);
+      }
     }
 
     updateActionAccess(dataUser);
@@ -484,6 +497,7 @@ const UserAdministrationPage = ({route}) => {
           }}
           onPressCheckHeader={(e) => {
             const {valueCheck} = e || {};
+            selectUserToggle(data_user?.result?.content || [], 0, 'header');
             dispatch(userAdministrationChangeCheckHeader());
             dispatch(userAdministrationCheckAllDataUser(valueCheck));
           }}
