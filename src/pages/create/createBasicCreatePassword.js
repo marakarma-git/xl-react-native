@@ -1,7 +1,7 @@
-import React, { useState, useEffect } from 'react';
+import React, {useState, useEffect} from 'react';
 import PropTypes from 'prop-types';
 import {View} from 'react-native';
-import { FormPassword } from '../../components';
+import {FormPassword} from '../../components';
 
 const CreateBasicCreatePassword = (props) => {
   const inputHandler = (name, value, validation) => {
@@ -24,10 +24,11 @@ const CreateBasicCreatePassword = (props) => {
     newPasswordRules[1].valid = /(?=.*[0-9])/.test(value) ? true : false;
     newPasswordRules[2].valid = /(?=.*[a-z])/.test(value) ? true : false;
     newPasswordRules[3].valid = /(?=.*[A-Z])/.test(value) ? true : false;
-    newPasswordRules[4].valid = /(.)\1{3,}/.test(value) ? false : true;
-    newPasswordRules[5].valid = /([a-z]){4}/.test(value) ? false : true;
-    newPasswordRules[6].valid =
-      /^[a-zA-Z0-9#*!?+&@.$%\-,():;/]+$/.test(value) || isEmpty ? true : false;
+    newPasswordRules[4].valid = /(?=.?[/\!@#?\$%\\&\,\)\(+-])/.test(value)
+      ? true
+      : false;
+    newPasswordRules[5].valid = /(.)\1{3,}/.test(value) ? false : true;
+    newPasswordRules[6].valid = /([a-z]){4}/.test(value) ? false : true;
 
     props.setPasswordRules(newPasswordRules);
   };
@@ -35,8 +36,9 @@ const CreateBasicCreatePassword = (props) => {
   const matchConfirmPassword = () => {
     const newPasswordRules = [...props.passwordRules];
 
-    newPasswordRules[7].valid = props.userPassword.password == props.userPassword.confirmPassword;
- 
+    newPasswordRules[7].valid =
+      props.userPassword.password == props.userPassword.confirmPassword;
+
     props.setPasswordRules(newPasswordRules);
     checkFormComplete();
   };
@@ -59,10 +61,10 @@ const CreateBasicCreatePassword = (props) => {
   useEffect(() => {
     matchConfirmPassword();
   }, [props.userPassword]);
-  
-  return(
-    <View style={{ alignItems: 'center' }}>
-      <FormPassword 
+
+  return (
+    <View style={{alignItems: 'center'}}>
+      <FormPassword
         form={props.userPassword}
         passwordForm={props.passwordForm}
         setPasswordForm={props.setPasswordForm}
@@ -72,7 +74,7 @@ const CreateBasicCreatePassword = (props) => {
       />
     </View>
   );
-}
+};
 
 CreateBasicCreatePassword.propTypes = {
   passwordForm: PropTypes.object,
@@ -92,6 +94,6 @@ CreateBasicCreatePassword.defaultProps = {
   setUserPassword: () => {},
   setPasswordForm: () => {},
   setPasswordRules: () => {},
-}
+};
 
 export default CreateBasicCreatePassword;

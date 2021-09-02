@@ -152,7 +152,7 @@ const CreateBasicUserInformation = (props) => {
   useEffect(() => {
     validateForm();
 
-    if (Object.keys(formError) <= 0) {
+    if (Object.keys(formError) <= 0 && touchForm) {
       props.setIsComplete(true);
     } else {
       props.setIsComplete(false);

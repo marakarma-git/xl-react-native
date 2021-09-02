@@ -92,6 +92,7 @@ const UserAdministrationPage = ({route}) => {
   const [selectedUser, setSelectedUser] = useState([]);
   const [isFilterVisible, setIsFilterVisible] = useState(true);
   const {imageBase64} = useSelector((state) => state.enterprise_reducer);
+  const [selectIndex, setSelectIndex] = useState([]);
   const [isCheckHeader, setIsCheckHeader] = useState(false);
   const accessToken = useSelector(
     (state) => state.auth_reducer.data.access_token,
@@ -278,7 +279,10 @@ const UserAdministrationPage = ({route}) => {
             showToast: true,
             position: 'top',
           });
-
+          let currentSelectedUser = [...selectedUser];
+          currentSelectedUser[0].lockStatus = !currentSelectedUser[0]
+            .lockStatus;
+          updateActionAccess(currentSelectedUser);
           dispatch(
             callUserAdministrationUpdateLockUnlockUser(roleId[0], lockUser),
           );
@@ -332,11 +336,14 @@ const UserAdministrationPage = ({route}) => {
 
   const updateActionAccess = (dataUser) => {
     const dataAction = actionData.slice();
+    const lockStatus = dataUser[0]?.lockStatus ? true : false;
 
     dataAction[1].isDisabled = dataUser.length === 1 ? false : true;
     dataAction[2].isDisabled = dataUser.length > 0 ? false : true;
-    dataAction[3].isDisabled = dataUser.length === 1 ? false : true;
-    dataAction[4].isDisabled = dataUser.length === 1 ? false : true;
+    dataAction[3].isDisabled =
+      dataUser.length === 1 && !lockStatus ? false : true;
+    dataAction[4].isDisabled =
+      dataUser.length === 1 && lockStatus ? false : true;
 
     setActionData((prevState) => (prevState = dataAction));
   };
@@ -503,6 +510,7 @@ const UserAdministrationPage = ({route}) => {
           }}
           onPressCheckCell={({index}) => {
             selectUserToggle(data_user?.result?.content || [], index);
+            setSelectIndex((prevState) => [...prevState, index]);
             dispatch(userAdministrationDynamicCheckDataUser(index));
           }}
           selectedHeaderOrderSort={applied_header_sort}

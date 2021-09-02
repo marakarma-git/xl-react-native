@@ -106,6 +106,7 @@ const RoleAdministrationCreatePage = ({route, navigation}) => {
               setFirstRender={setRolePropertiesFirstRender}
               currentEnterprise={currentEnterprise}
               selectedOwnership={selectedOwnership}
+              setCurrentEnterprise={setCurrentEnterprise}
               setSelectedOwnership={setSelectedOwnership}
               setIsComplete={setIsRolesPropertiesOwnershipComplete}
               setScrollView={setScrollViewEnabled}
@@ -377,6 +378,9 @@ const RoleAdministrationCreatePage = ({route, navigation}) => {
       setIsRolesPropertiesDetailComplete(false);
       setIsRolesPropertiesOwnershipComplete(false);
       setIsRolesPermissionComplete(false);
+
+      // Reset
+      setCurrentEnterprise('');
     });
 
     return pageLoad;
