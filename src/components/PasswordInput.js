@@ -18,23 +18,23 @@ import { authLogout } from '../redux/action/auth_action';
 
 const passwordRulesArray = [
   {label: 'Be between 8 and 30 characters', valid: false},
-  {label: 'contain at least 1 number 0-9', valid: false},
-  {label: 'contain at least 1 lower case letter (a-z)', valid: false},
-  {label: 'contain at least 1 upper case letter (A-Z)', valid: false},
-  {
-    label: 'not contain more than 3 consecutives identical characters',
-    valid: true,
-  },
-  {
-    label: 'not contain more than 3 consecutives lower-case characters',
-    valid: true,
-  },
+  {label: 'Contain at least 1 number 0-9', valid: false},
+  {label: 'Contain at least 1 lower case letter (a-z)', valid: false},
+  {label: 'Contain at least 1 upper case letter (A-Z)', valid: false},
   {
     label:
-      'contain only the following characters a-z, A-Z, 0-9, #, -, !, @, %, &, /, (, ), ?, + *',
+      'Contain at least 1 special character (#, -, !, @, %, &, /, (, ), ?, +, *)',
+    valid: false,
+  },
+  {
+    label: 'Not contain more than 3 consecutives identical characters',
     valid: true,
   },
-  {label: "match the entry in 'Confrim Password'", valid: true},
+  {
+    label: 'Not contain more than 3 consecutives lower-case characters',
+    valid: true,
+  },
+  {label: "Match the entry in 'Confrim Password'", valid: true},
 ];
 
 const passwordFormArray = [
@@ -109,11 +109,9 @@ const PasswordInput = ({submitHandler, requestLoading, navigation, orientation, 
     newPasswordRules[1].valid = /(?=.*[0-9])/.test(value) ? true : false;
     newPasswordRules[2].valid = /(?=.*[a-z])/.test(value) ? true : false;
     newPasswordRules[3].valid = /(?=.*[A-Z])/.test(value) ? true : false;
-    newPasswordRules[4].valid = /(.)\1{3,}/.test(value) ? false : true;
-    newPasswordRules[5].valid = /([a-z]){4}/.test(value) ? false : true;
-    newPasswordRules[6].valid =
-      /^[a-zA-Z0-9#*!?+&@.$%\-,():;/]+$/.test(value) || isEmpty ? true : false;
-
+    newPasswordRules[4].valid = /(?=.*?[#?!@$%^&*-])/.test(value) ? true : false;
+    newPasswordRules[5].valid = /(.)\1{3,}/.test(value) ? false : true;
+    newPasswordRules[6].valid = /([a-z]){4}/.test(value) ? false : true;
     setPasswordRules(newPasswordRules);
   };
 
@@ -226,24 +224,24 @@ const PasswordInput = ({submitHandler, requestLoading, navigation, orientation, 
         },
       ]);
       setPasswordRules([
-          {label: 'Be between 8 and 30 characters', valid: false},
-          {label: 'contain at least 1 number 0-9', valid: false},
-          {label: 'contain at least 1 lower case letter (a-z)', valid: false},
-          {label: 'contain at least 1 upper case letter (A-Z)', valid: false},
-          {
-            label: 'not contain more than 3 consecutives identical characters',
-            valid: true,
-          },
-          {
-            label: 'not contain more than 3 consecutives lower-case characters',
-            valid: true,
-          },
-          {
-            label:
-              'contain only the following characters a-z, A-Z, 0-9, #, -, !, @, %, &, /, (, ), ?, + *',
-            valid: true,
-          },
-          {label: "match the entry in 'Confrim Password'", valid: true},
+        {label: 'Be between 8 and 30 characters', valid: false},
+        {label: 'Contain at least 1 number 0-9', valid: false},
+        {label: 'Contain at least 1 lower case letter (a-z)', valid: false},
+        {label: 'Contain at least 1 upper case letter (A-Z)', valid: false},
+        {
+          label:
+            'Contain at least 1 special character (#, -, !, @, %, &, /, (, ), ?, +, *)',
+          valid: false,
+        },
+        {
+          label: 'Not contain more than 3 consecutives identical characters',
+          valid: true,
+        },
+        {
+          label: 'Not contain more than 3 consecutives lower-case characters',
+          valid: true,
+        },
+        {label: "Match the entry in 'Confrim Password'", valid: true},
       ]);
     });
 
