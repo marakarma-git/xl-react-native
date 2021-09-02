@@ -204,7 +204,11 @@ class Helper {
             });
           }
         }
+
         if (type == 'drawer') {
+          if (drawer.type == 'initialRoute') {
+            drawerMenu.push(drawer);
+          }
           if (drawer.type == 'drawer') {
             drawerMenu.push(drawer);
           }
@@ -503,6 +507,14 @@ class Helper {
             data.isDisabled = !data.isDisabled;
           }
           data.treeCheck = parentCheck;
+        } else {
+          if (cellId) {
+            if (selectedRadio === 1) {
+              if (data.enterpriseId !== cellId) {
+                data.isDisabled = !data.isDisabled;
+              }
+            }
+          }
         }
       }
 

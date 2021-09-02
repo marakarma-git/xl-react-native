@@ -28,44 +28,44 @@ import Helper from '../../helpers/helper';
 import TableFooter from '../../components/subscription/tableFooter';
 import Loading from '../../components/loading';
 import axios from 'axios';
-import { setRequestError } from '../../redux/action/dashboard_action';
-import { base_url } from '../../constant/connection';
-import { useToastHooks } from '../../customHooks/customHooks';
-import { ADMINISTRATION_PRIVILEDGE_ID } from '../../constant/actionPriv';
-import { saveActivityLog } from '../../redux/action/save_activity_log_action';
+import {setRequestError} from '../../redux/action/dashboard_action';
+import {base_url} from '../../constant/connection';
+import {useToastHooks} from '../../customHooks/customHooks';
+import {ADMINISTRATION_PRIVILEDGE_ID} from '../../constant/actionPriv';
+import {saveActivityLog} from '../../redux/action/save_activity_log_action';
 
 const actionDataArray = [
   {
     value: '0',
-    actionName: "Create",
+    actionName: 'Create',
     label: 'Create new role...',
     isDisabled: false,
     isVisible: true,
   },
   {
     value: '1',
-    actionName: "Edit",
+    actionName: 'Edit',
     label: 'Edit role...',
     isDisabled: true,
     isVisible: true,
   },
   {
     value: '2',
-    actionName: "Delete",
+    actionName: 'Delete',
     label: 'Delete role(s)...',
     isDisabled: true,
     isVisible: true,
   },
   {
     value: '3',
-    actionName: "Copy",
+    actionName: 'Copy',
     label: 'Copy role...',
     isDisabled: true,
-    isVisible: true
+    isVisible: true,
   },
 ];
 
-const RoleAdministrationPage = ({ route, navigation }) => {
+const RoleAdministrationPage = ({route, navigation}) => {
   const dispatch = useDispatch();
   const showToast = useToastHooks();
   const [actionData, setActionData] = useState(actionDataArray);
@@ -95,10 +95,11 @@ const RoleAdministrationPage = ({ route, navigation }) => {
     role_applied_filter,
     role_params_applied_activity_log,
   } = useSelector((state) => state.role_administration_get_all_role_reducer);
+  const [isCheckHeader, setIsCheckHeader] = useState(false);
   const accessToken = useSelector(
     (state) => state.auth_reducer.data.access_token,
   );
-  const { data } = useSelector((state) => state.auth_reducer);
+  const {data} = useSelector((state) => state.auth_reducer);
 
   const customConfirmAlert = (
     title,
@@ -135,12 +136,12 @@ const RoleAdministrationPage = ({ route, navigation }) => {
         });
         break;
       case '1':
-        if(selectedRoles.length > 0){
+        if (selectedRoles.length > 0) {
           dispatch(roleAdministrationCrudActiveMenu('edit'));
           navigation.navigate('RoleAdministrationCreate', {
             roleId: selectedRoles[0].roleId,
           });
-        }else{
+        } else {
           ToastAndroid.show('Please select at least 1 role', ToastAndroid.LONG);
         }
         break;
@@ -148,12 +149,12 @@ const RoleAdministrationPage = ({ route, navigation }) => {
         setShowModal(true);
         break;
       case '3':
-        if(selectedRoles.length === 1){
+        if (selectedRoles.length === 1) {
           dispatch(roleAdministrationCrudActiveMenu('copy'));
           navigation.navigate('RoleAdministrationCreate', {
             roleId: selectedRoles[0].roleId,
           });
-        }else{
+        } else {
           ToastAndroid.show('Please select 1 role', ToastAndroid.LONG);
         }
         break;
@@ -194,7 +195,7 @@ const RoleAdministrationPage = ({ route, navigation }) => {
             message: 'Selected role(s) has been deleted',
             duration: 4500,
             showToast: true,
-            position: 'top'
+            position: 'top',
           });
 
           setSelectedRoles([]);
@@ -220,7 +221,7 @@ const RoleAdministrationPage = ({ route, navigation }) => {
         message: error.response.data.error_description || error.message,
         duration: 4500,
         showToast: true,
-        position: 'bottom'
+        position: 'bottom',
       });
     }
   };
@@ -235,21 +236,33 @@ const RoleAdministrationPage = ({ route, navigation }) => {
     setActionData((prevState) => (prevState = dataAction));
   };
 
-  const selectRoleToggle = (data, index) => {
+  const selectRoleToggle = ([...data], index = 0, type = 'cell') => {
     let isUnique = true;
     let selectedData = data[index];
 
     const dataRole = selectedRoles.slice();
 
-    dataRole.map((role, index) => {
-      if (selectedData.roleId === role.roleId) {
-        isUnique = false;
-        dataRole.splice(index, 1);
+    if (type === 'header') {
+      if (!isCheckHeader) {
+        data.map((datas) => {
+          dataRole.push(datas);
+        });
+        setIsCheckHeader(true);
+      } else {
+        dataRole.splice(0, dataRole.length);
+        setIsCheckHeader(false);
       }
-    });
+    } else {
+      dataRole.map((role, index) => {
+        if (selectedData.roleId === role.roleId) {
+          isUnique = false;
+          dataRole.splice(index, 1);
+        }
+      });
 
-    if (isUnique) {
-      dataRole.push(selectedData);
+      if (isUnique) {
+        dataRole.push(selectedData);
+      }
     }
 
     updateActionAccess(dataRole);
@@ -271,16 +284,16 @@ const RoleAdministrationPage = ({ route, navigation }) => {
 
     dataAction.map((action) => {
       let isVisible = Helper.findAndReturnPriviledge(
-          route.name,
-          action.actionName, 
-          data?.authority || [], 
-          ADMINISTRATION_PRIVILEDGE_ID
+        route.name,
+        action.actionName,
+        data?.authority || [],
+        ADMINISTRATION_PRIVILEDGE_ID,
       );
       action.isVisible = isVisible;
     });
 
     setActionData(dataAction);
-  }
+  };
 
   useEffect(() => {
     reFetchListAction(data_role?.result?.content || []);
@@ -401,6 +414,7 @@ const RoleAdministrationPage = ({ route, navigation }) => {
           }}
           onPressCheckHeader={(e) => {
             const {valueCheck} = e || {};
+            selectRoleToggle(data_role?.result?.content || [], 0, 'header');
             dispatch(roleAdministrationChangeCheckHeader());
             dispatch(roleAdministrationCheckAlDataRole({valueCheck}));
           }}
@@ -453,21 +467,19 @@ const RoleAdministrationPage = ({ route, navigation }) => {
           onClose={() => setShowMenu((state) => !state)}
         />
       )}
-      {
-        showModal &&
+      {showModal && (
         <ModalConfirmation
           showModal={showModal}
-          loading={deleteLoading} 
-          closeModal={() =>  setShowModal(false)}
+          loading={deleteLoading}
+          closeModal={() => setShowModal(false)}
           title="Delete Role"
           description="Are you sure want to delete selected role(s)?"
           confirmText="Delete"
           confirmAction={deleteFunction}
         />
-      }
+      )}
     </HeaderContainer>
   );
 };
 
 export default RoleAdministrationPage;
-
