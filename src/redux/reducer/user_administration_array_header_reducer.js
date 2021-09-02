@@ -121,10 +121,11 @@ const dataHeaderFilter = [
     data: [],
     params: '&enterpriseName=',
     cellType: 'TableCellHeaderAscDesc',
-    cellRowType: 'TableCellText',
+    cellRowType: 'TableCellUserAdministrationOrganization',
     config: {
       label: 'Organizations',
       isTouchable: true,
+      width: 220,
     },
     generatedConfig: {
       usedFrom: 'label',
