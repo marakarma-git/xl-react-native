@@ -60,23 +60,23 @@ const passwordFormArray = [
 
 const passwordRulesArray = [
   {label: 'Be between 8 and 30 characters', valid: false},
-  {label: 'contain at least 1 number 0-9', valid: false},
-  {label: 'contain at least 1 lower case letter (a-z)', valid: false},
-  {label: 'contain at least 1 upper case letter (A-Z)', valid: false},
-  {
-    label: 'not contain more than 3 consecutives identical characters',
-    valid: true,
-  },
-  {
-    label: 'not contain more than 3 consecutives lower-case characters',
-    valid: true,
-  },
+  {label: 'Contain at least 1 number 0-9', valid: false},
+  {label: 'Contain at least 1 lower case letter (a-z)', valid: false},
+  {label: 'Contain at least 1 upper case letter (A-Z)', valid: false},
   {
     label:
-      'contain only the following characters a-z, A-Z, 0-9, #, -, !, @, %, &, /, (, ), ?, + *',
+      'Contain at least 1 special character (#, -, !, @, %, &, /, (, ), ?, +, *)',
+    valid: false,
+  },
+  {
+    label: 'Not contain more than 3 consecutives identical characters',
     valid: true,
   },
-  {label: "match the entry in 'Confrim Password'", valid: true},
+  {
+    label: 'Not contain more than 3 consecutives lower-case characters',
+    valid: true,
+  },
+  {label: "Match the entry in 'Confirm Password'", valid: true},
 ];
 
 const CreateNewUserPage = ({route, navigation}) => {
@@ -477,23 +477,23 @@ const CreateNewUserPage = ({route, navigation}) => {
       ]);
       setPasswordRules([
         {label: 'Be between 8 and 30 characters', valid: false},
-        {label: 'contain at least 1 number 0-9', valid: false},
-        {label: 'contain at least 1 lower case letter (a-z)', valid: false},
-        {label: 'contain at least 1 upper case letter (A-Z)', valid: false},
-        {
-          label: 'not contain more than 3 consecutives identical characters',
-          valid: true,
-        },
-        {
-          label: 'not contain more than 3 consecutives lower-case characters',
-          valid: true,
-        },
+        {label: 'Contain at least 1 number 0-9', valid: false},
+        {label: 'Contain at least 1 lower case letter (a-z)', valid: false},
+        {label: 'Contain at least 1 upper case letter (A-Z)', valid: false},
         {
           label:
-            'contain only the following characters a-z, A-Z, 0-9, #, -, !, @, %, &, /, (, ), ?, + *',
+            'Contain at least 1 special character (#, -, !, @, %, &, /, (, ), ?, +, *)',
+          valid: false,
+        },
+        {
+          label: 'Not contain more than 3 consecutives identical characters',
           valid: true,
         },
-        {label: "match the entry in 'Confrim Password'", valid: true},
+        {
+          label: 'Not contain more than 3 consecutives lower-case characters',
+          valid: true,
+        },
+        {label: "Match the entry in 'Confirm Password'", valid: true},
       ]);
     });
 

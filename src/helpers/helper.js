@@ -507,6 +507,14 @@ class Helper {
             data.isDisabled = !data.isDisabled;
           }
           data.treeCheck = parentCheck;
+        } else {
+          if (cellId) {
+            if (selectedRadio === 1) {
+              if (data.enterpriseId !== cellId) {
+                data.isDisabled = !data.isDisabled;
+              }
+            }
+          }
         }
       }
 
