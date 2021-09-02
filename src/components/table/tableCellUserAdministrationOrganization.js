@@ -5,6 +5,7 @@ import {
   KeyboardAvoidingView,
   Modal,
   ScrollView,
+  ToastAndroid,
   TouchableOpacity,
   View,
 } from 'react-native';
@@ -17,6 +18,7 @@ import axios from 'axios';
 import {useSelector} from 'react-redux';
 import {base_url} from '../../constant/connection';
 import {stickyNotesIcon} from '../../assets/images';
+import Clipboard from '@react-native-community/clipboard';
 
 const TableCellUserAdministrationOrganization = (props) => {
   const [moreText, setMoreText] = useState(false);
@@ -48,6 +50,10 @@ const TableCellUserAdministrationOrganization = (props) => {
         setLoading(false);
       });
   };
+  const onLongPress = () => {
+    Clipboard.setString(label);
+    ToastAndroid.show('Text copied', ToastAndroid.LONG);
+  };
   return (
     <React.Fragment>
       <TouchableOpacity
@@ -61,6 +67,7 @@ const TableCellUserAdministrationOrganization = (props) => {
             }
           }
         }}
+        onLongPress={() => onLongPress()}
         style={{
           width: width || defaultWidthCell,
           height: height || defaultHeightCell,
@@ -109,11 +116,16 @@ const TableCellUserAdministrationOrganization = (props) => {
               {loading && <ActivityIndicator color="#002DBB" size="small" />}
             </View>
             <ScrollView style={{flex: 1}}>
-              {!xlUser && <Text>{label}</Text>}
+              {!xlUser && <Text selectable>{label}</Text>}
               {xlUser && (
                 <React.Fragment>
-                  <Text fontType={'semi-bold'}>Organization Name: {label}</Text>
-                  <Text fontType={'semi-bold'} style={{marginTop: 10}}>
+                  <Text selectable fontType={'semi-bold'}>
+                    Organization Name: {label}
+                  </Text>
+                  <Text
+                    selectable
+                    fontType={'semi-bold'}
+                    style={{marginTop: 10}}>
                     Sub Organization:
                     {' ' + `${subOrganization.length === 0 ? '-' : ''}`}
                   </Text>
@@ -122,6 +134,7 @@ const TableCellUserAdministrationOrganization = (props) => {
                     subOrganization.map(({enterpriseName}) => {
                       return (
                         <Text
+                          selectable
                           style={{
                             marginTop: 8,
                           }}>{`- ${enterpriseName}`}</Text>
