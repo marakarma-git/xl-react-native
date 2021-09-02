@@ -114,7 +114,7 @@ const PasswordInput = ({
     newPasswordRules[1].valid = /(?=.*[0-9])/.test(value) ? true : false;
     newPasswordRules[2].valid = /(?=.*[a-z])/.test(value) ? true : false;
     newPasswordRules[3].valid = /(?=.*[A-Z])/.test(value) ? true : false;
-    newPasswordRules[4].valid = /(?=.?[/\!@#?\$%\\&\,\)\(+-])/.test(value)
+    newPasswordRules[4].valid = /(?=.?[/\!@#*?\$%\\&\,\)\(+-])/.test(value)
       ? true
       : false;
     newPasswordRules[5].valid = /(.)\1{3,}/.test(value) ? false : true;
