@@ -34,7 +34,7 @@ const passwordRulesArray = [
       'contain only the following characters a-z, A-Z, 0-9, #, -, !, @, %, &, /, (, ), ?, + *',
     valid: true,
   },
-  {label: "match the entry in 'Confrim Password'", valid: true},
+  {label: "match the entry in 'Confirm Password'", valid: true},
 ];
 
 const passwordFormArray = [
@@ -243,7 +243,7 @@ const PasswordInput = ({submitHandler, requestLoading, navigation, orientation, 
               'contain only the following characters a-z, A-Z, 0-9, #, -, !, @, %, &, /, (, ), ?, + *',
             valid: true,
           },
-          {label: "match the entry in 'Confrim Password'", valid: true},
+          {label: "match the entry in 'Confirm Password'", valid: true},
       ]);
     });
 
