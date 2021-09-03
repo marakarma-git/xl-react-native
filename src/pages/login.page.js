@@ -28,6 +28,35 @@ import {ModalMultiSession} from '../components';
 import DropDownPicker from 'react-native-dropdown-picker';
 const busolLogo = require('../assets/images/logo/xl-busol-inverted.png');
 
+const config = {
+  dropDownPicker: {
+    width: 230,
+    height: 30,
+    fontSize: 12,
+  },
+  formPassword: {
+    height: 40,
+    marginVertical: 10,
+    fontSize: 14,
+  },
+  butonLogin: {
+    height: 40,
+  },
+  cardTitle: {
+    marginVertical: '3%',
+  },
+  busolLogo: {
+    height: 100,
+  },
+  errorText: {
+    fontSize: 14,
+  },
+  contentWrapper: {
+    flexDirection: 'row',
+    marginTop: 10,
+  },
+};
+
 const Login = ({navigation}) => {
   const year = new Date().getFullYear();
   const [rememberMe, setRememberMe] = useState(false);
@@ -37,6 +66,7 @@ const Login = ({navigation}) => {
   const [errorText, setErrorText] = useState(null);
   const [orientation, setOrientation] = useState('potrait');
   const [isSubmit, setIsSubmit] = useState(false);
+  const [screenConfig, setScreenConfig] = useState({...config});
   const dispatch = useDispatch();
   const {
     data,
@@ -53,6 +83,32 @@ const Login = ({navigation}) => {
     {label: 'DCP Connect (default)', value: 0},
     {label: 'IoT Connectivity +', value: 1},
   ]);
+
+  const adjustScreen = useCallback(() => {
+    const screenWidth = Orientation.getWidth();
+    let customConfig = {...screenConfig};
+    let isChange = false;
+
+    // Width
+    if (screenWidth <= 320) {
+      isChange = true;
+      console.log(screenWidth, ' <<< screen width');
+      customConfig.dropDownPicker.width = 170;
+      customConfig.dropDownPicker.height = 25;
+      customConfig.dropDownPicker.fontSize = 11;
+      customConfig.formPassword.height = 32;
+      customConfig.formPassword.marginVertical = 0;
+      customConfig.formPassword.fontSize = 10;
+      customConfig.butonLogin.height = 30;
+      customConfig.cardTitle.marginVertical = '1%';
+      customConfig.busolLogo.height = 50;
+      customConfig.errorText.fontSize = 11;
+      customConfig.contentWrapper.flexDirection = 'column';
+      screenConfig.contentWrapper.marginTop = 5;
+    }
+
+    if (isChange) setScreenConfig(customConfig);
+  }, [Dimensions]);
 
   const detectOrientation = useCallback(() => {
     if (Orientation.getHeight() <= Orientation.getWidth()) {
@@ -90,6 +146,7 @@ const Login = ({navigation}) => {
     }
     dispatch(setIsErricson(loginDropDownValue === 0 ? true : false));
     detectOrientation();
+    adjustScreen();
   }, [data, error, isLoggedIn]);
 
   const onSubmit = () => {
@@ -153,7 +210,7 @@ const Login = ({navigation}) => {
                 backgroundColor: 'transparent',
               }
             : {
-                height: Orientation.getHeight() - 100,
+                height: Orientation.getHeight() - 70,
                 backgroundColor: 'transparent',
               }
         }
@@ -169,7 +226,11 @@ const Login = ({navigation}) => {
             <View
               style={[
                 styles.imageContainer,
-                {height: 100, justifyContent: 'center', alignItems: 'center'},
+                {
+                  height: screenConfig?.busolLogo?.height,
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                },
               ]}>
               <Image
                 resizeMode="contain"
@@ -207,7 +268,10 @@ const Login = ({navigation}) => {
                   ...styles.loginDesc,
                   ...{
                     fontSize: orientation === 'landscape' ? 14 : 16,
-                    marginVertical: orientation === 'landscape' ? 2 : '3%',
+                    marginVertical:
+                      orientation === 'landscape'
+                        ? 2
+                        : screenConfig?.cardTitle?.marginVertical,
                   },
                 }}>
                 Sign in to your account:
@@ -218,7 +282,10 @@ const Login = ({navigation}) => {
                     styles.errorText,
                     {
                       paddingBottom: 5,
-                      fontSize: orientation === 'landscape' ? 12 : 14,
+                      fontSize:
+                        orientation === 'landscape'
+                          ? 12
+                          : screenConfig?.errorText?.fontSize,
                     },
                   ]}>
                   {errorText}
@@ -232,8 +299,19 @@ const Login = ({navigation}) => {
                   placeholderColor="#c4c3cb"
                   style={
                     orientation === 'landscape'
-                      ? styles.textInputContainerLandscape
-                      : styles.textInputContainer
+                      ? [
+                          styles.textInputContainerLandscape,
+                          {height: screenConfig?.formPassword?.height - 5},
+                        ]
+                      : [
+                          styles.textInputContainer,
+                          {
+                            height: screenConfig?.formPassword?.height,
+                            marginVertical:
+                              screenConfig?.formPassword?.marginVertical,
+                            fontSize: screenConfig?.formPassword?.fontSize,
+                          },
+                        ]
                   }
                   onChangeText={(e) => setUsername(e)}
                 />
@@ -247,8 +325,19 @@ const Login = ({navigation}) => {
                   secureTextEntry
                   style={
                     orientation === 'landscape'
-                      ? styles.textInputContainerLandscape
-                      : styles.textInputContainer
+                      ? [
+                          styles.textInputContainerLandscape,
+                          {height: screenConfig?.formPassword?.height - 5},
+                        ]
+                      : [
+                          styles.textInputContainer,
+                          {
+                            height: screenConfig?.formPassword?.height,
+                            marginVertical:
+                              screenConfig?.formPassword?.marginVertical,
+                            fontSize: screenConfig?.formPassword?.fontSize,
+                          },
+                        ]
                   }
                   onChangeText={(e) => setPassword(e)}
                   onSubmitEditing={() => onSubmit()}
@@ -268,7 +357,6 @@ const Login = ({navigation}) => {
                       fontSize: 11,
                       color: '#747474',
                       fontWeight: '200',
-                      letterSpacing: 0.5,
                     }}>
                     Remember me
                   </Text>
@@ -292,9 +380,20 @@ const Login = ({navigation}) => {
                   </Text>
                   <DropDownPicker
                     dropDownDirection="BOTTOM"
-                    style={styles.dropDownStyle}
+                    style={[
+                      styles.dropDownStyle,
+                      {
+                        width: screenConfig?.dropDownPicker?.width,
+                        height: screenConfig?.dropDownPicker?.height,
+                      },
+                    ]}
                     dropDownContainerStyle={styles.containerDropDown}
-                    customItemContainerStyle={{height: 30}}
+                    customItemContainerStyle={{
+                      height: screenConfig?.dropDownPicker?.height,
+                    }}
+                    textStyle={{
+                      fontSize: screenConfig?.dropDownPicker?.fontSize,
+                    }}
                     open={open}
                     value={loginDropDownValue}
                     items={items}
@@ -337,17 +436,28 @@ const Login = ({navigation}) => {
               ) : (
                 <TouchableOpacity
                   onPress={onSubmit}
-                  style={[
+                  style={
                     orientation === 'landscape'
-                      ? styles.buttonBlockLandscape
-                      : styles.buttonBlock,
-                  ]}>
+                      ? [
+                          styles.buttonBlockLandscape,
+                          {height: screenConfig?.butonLogin?.height - 5},
+                        ]
+                      : [
+                          styles.buttonBlockLandscape,
+                          {height: screenConfig?.butonLogin?.height},
+                        ]
+                  }>
                   <Text style={styles.buttonText}>
                     <Text style={styles.buttonText}>LOGIN</Text>
                   </Text>
                 </TouchableOpacity>
               )}
-              <View style={[styles.loginSettingWrapper, {marginTop: 10}]}>
+              <View
+                style={[
+                  styles.loginSettingWrapper,
+                  {flexDirection: screenConfig?.contentWrapper?.flexDirection},
+                  {marginTop: screenConfig?.contentWrapper?.marginTop},
+                ]}>
                 <Text style={[styles.label, {fontSize: 11, color: '#23282C'}]}>
                   Need support?
                 </Text>
@@ -384,7 +494,7 @@ const Login = ({navigation}) => {
           &copy; {`${year} PT. XL Axiata Tbk. All Right Reserved `}
         </Text>
         <View
-          style={{alignItems: 'center', marginTop: 12, flexDirection: 'row'}}>
+          style={{alignItems: 'center', marginTop: 5, flexDirection: 'row'}}>
           <Text
             onPress={() =>
               Linking.openURL('https://www.xl.co.id/en/terms-and-conditions ')
