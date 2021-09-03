@@ -119,7 +119,7 @@ export default {
     flexDirection: 'row',
   },
   buttonStyle: {
-    backgroundColor: 'blue',
+    backgroundColor: colors.button_color_one,
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',

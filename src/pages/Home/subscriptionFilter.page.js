@@ -149,7 +149,7 @@ const SubscriptionFilter = () => {
                 paddingVertical: 10,
                 alignItems: 'center',
               }}>
-              <ActivityIndicator color="#002DBB" size="large" />
+              <ActivityIndicator color={colors.button_color_one} size="large" />
             </View>
           )}
         </Container>

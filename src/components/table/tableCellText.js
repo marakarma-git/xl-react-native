@@ -119,7 +119,7 @@ const TableCellText = (props) => {
                     },
                     ,
                     textLink && {
-                      color: 'blue',
+                      color: colors.button_color_one,
                       textDecorationLine: 'underline',
                     },
                   ]}>

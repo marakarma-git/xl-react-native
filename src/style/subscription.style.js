@@ -99,7 +99,7 @@ export default {
   },
   headerButtonCreate: {
     paddingVertical: 10,
-    backgroundColor: '#002DBB',
+    backgroundColor: colors.button_color_one,
     width: 150,
     marginTop: 15,
   },

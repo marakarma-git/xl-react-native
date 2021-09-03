@@ -6,6 +6,7 @@ import {Text} from '../../components';
 // Undestruct
 import PropTypes from 'prop-types';
 import styles from '../../style/usageAnalytics.style';
+import {colors} from '../../constant/color';
 
 const ContentCard = (props) => {
   return (
@@ -27,7 +28,7 @@ const ContentCard = (props) => {
         </View>
         {props.loadingContent ? (
           <View style={{justifyContent: 'center', height: 100}}>
-            <ActivityIndicator size="large" color="#002DBB" />
+            <ActivityIndicator size="large" color={colors.button_color_one} />
             <Text
               fontType="bold"
               style={{

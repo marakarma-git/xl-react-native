@@ -121,7 +121,7 @@ export default {
     justifyContent: 'center',
     alignItems: 'center',
     marginVertical: 10,
-    backgroundColor: '#002DBB',
+    backgroundColor: colors.button_color_one,
   },
   buttonBlockLandscape: {
     width: '90%',
@@ -129,7 +129,7 @@ export default {
     marginVertical: 5,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#002DBB',
+    backgroundColor: colors.button_color_one,
   },
   buttonText: {
     fontSize: 16,

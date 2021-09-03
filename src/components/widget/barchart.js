@@ -17,6 +17,7 @@ import Orientation from '../../helpers/orientation';
 import Helper from '../../helpers/helper';
 import style from '../../style/home.style';
 import {NoDataText} from '..';
+import {colors} from '../../constant/color';
 
 const BarChartComponent = ({
   item,
@@ -113,7 +114,7 @@ const BarChartComponent = ({
           <Card.Content style={[style.cardContentWrapper, {flex: 1}]}>
             <Title>{item.jsonData?.title?.text || ''}</Title>
             {loadingTopTraffic ? (
-              <ActivityIndicator color="#002DBB" size="large" />
+              <ActivityIndicator color={colors.button_color_one} size="large" />
             ) : (
               <>{dataSet && generateChart()}</>
             )}

@@ -8,6 +8,7 @@ import {Card, Title} from 'react-native-paper';
 import Axios from 'axios';
 import Helper from '../../helpers/helper';
 import style from '../../style/home.style';
+import {colors} from '../../constant/color';
 
 const title = [
   'From start of month, Total Volume',
@@ -96,7 +97,7 @@ const AggregateTrafficComponent = ({item, navigation, filterParams = {}}) => {
       <Card.Content style={style.cardContentWrapper}>
         <Title>{item.jsonData.title.text}</Title>
         {loading ? (
-          <ActivityIndicator color="#002DBB" size="large" />
+          <ActivityIndicator color={colors.button_color_one} size="large" />
         ) : (
           <View style={style.containerPie} pointerEvents="none">
             {dataSet && parseData()}

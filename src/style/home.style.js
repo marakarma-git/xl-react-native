@@ -167,7 +167,7 @@ export default {
   },
   carouselWrapper: {
     flex: 1,
-    backgroundColor: '#002DBB',
+    backgroundColor: colors.button_color_one,
     alignItems: 'center',
     justifyContent: 'center',
   },
@@ -183,59 +183,59 @@ export default {
     fontSize: 14,
   },
   notifCircle: {
-    height: 15, 
-    width: 15, 
-    borderRadius: 50, 
-    position: 'absolute', 
-    right: 3, 
-    backgroundColor: 'red', 
-    justifyContent: 'center', 
-    alignItems: 'center'
+    height: 15,
+    width: 15,
+    borderRadius: 50,
+    position: 'absolute',
+    right: 3,
+    backgroundColor: 'red',
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   notifText: {
-    fontSize: 10, 
-    color: 'white'
+    fontSize: 10,
+    color: 'white',
   },
   notifCardHeader: {
-    flexDirection: 'row', 
-    justifyContent: 'space-between', 
-    paddingHorizontal: 5, 
-    paddingBottom: 10
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    paddingHorizontal: 5,
+    paddingBottom: 10,
   },
   formStepContainer: {
-    flex: 1
+    flex: 1,
   },
-  cancelButtonFormStep: { 
-    paddingVertical: 5, 
-    width: 100, 
-    backgroundColor: '#CbC9C9', 
-    justifyContent: 'center', 
+  cancelButtonFormStep: {
+    paddingVertical: 5,
+    width: 100,
+    backgroundColor: '#CbC9C9',
+    justifyContent: 'center',
     alignItems: 'center',
-    borderRadius: 5 
-  } ,
+    borderRadius: 5,
+  },
   navigationButtonFormStep: {
-    paddingVertical: 5, 
+    paddingVertical: 5,
     paddingHorizontal: 10,
     marginHorizontal: 3,
-    backgroundColor: '#002DBB', 
-    justifyContent: 'center', 
+    backgroundColor: colors.button_color_one,
+    justifyContent: 'center',
     alignItems: 'center',
-    borderRadius: 5 
+    borderRadius: 5,
   },
   formStepHeader: {
-    flexDirection: 'row', 
+    flexDirection: 'row',
   },
   formStepHeaderText: {
     flexDirection: 'column',
-    marginHorizontal: 20
+    marginHorizontal: 20,
   },
   formStepHeaderTextTitle: {
-    fontSize: 18, 
-    paddingBottom: 5
+    fontSize: 18,
+    paddingBottom: 5,
   },
   formStepHeaderTextBody: {
-    fontSize: 12, 
-    color: "#707070", 
-    width: '90%'
-  }
+    fontSize: 12,
+    color: '#707070',
+    width: '90%',
+  },
 };

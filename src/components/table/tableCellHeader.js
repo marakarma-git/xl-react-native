@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import {View} from 'react-native';
 import Text from '../global/text';
 import {defaultHeightCell, defaultWidthCell} from '../../constant/config';
+import {colors} from '../../constant/color';
 const TableCellHeader = (props) => {
   const {config, key} = props || {};
   const {label, width, height, fontColor, backgroundColor} = config || {};
@@ -13,7 +14,7 @@ const TableCellHeader = (props) => {
         width: width || defaultWidthCell,
         height: height || defaultHeightCell,
         flexDirection: 'row',
-        backgroundColor: backgroundColor || 'blue',
+        backgroundColor: backgroundColor || colors.button_color_one,
       }}>
       <View
         style={{

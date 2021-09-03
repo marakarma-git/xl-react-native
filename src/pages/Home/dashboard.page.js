@@ -16,6 +16,7 @@ import {
 import Orientation from '../../helpers/orientation';
 
 import style from '../../style/home.style';
+import {colors} from '../../constant/color';
 
 const DashboardPage = ({navigation}) => {
   const dispatch = useDispatch();
@@ -78,7 +79,10 @@ const DashboardPage = ({navigation}) => {
             <Card style={[style.cardSection, {marginTop: '3%'}]}>
               <Card.Content style={style.cardContentWrapper}>
                 {loading ? (
-                  <ActivityIndicator color="#002DBB" size="large" />
+                  <ActivityIndicator
+                    color={colors.button_color_one}
+                    size="large"
+                  />
                 ) : (
                   <FlatList
                     data={summaryDashboardData}

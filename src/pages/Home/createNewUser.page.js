@@ -26,6 +26,7 @@ import {userAdministrationCreateUser} from '../../redux/action/user_administrati
 import {useToastHooks} from '../../customHooks/customHooks';
 import {saveActivityLog} from '../../redux/action/save_activity_log_action';
 import {ADMINISTRATION_PRIVILEDGE_ID} from '../../constant/actionPriv';
+import {colors} from '../../constant/color';
 
 const passwordFormBody = {
   password: '',
@@ -516,7 +517,7 @@ const CreateNewUserPage = ({route, navigation}) => {
         <View>
           {loadingUserDetail ? (
             <View style={{justifyContent: 'center', height: 100}}>
-              <ActivityIndicator color="#002DBB" />
+              <ActivityIndicator color={colors.button_color_one} />
               <Text
                 style={{
                   textAlign: 'center',

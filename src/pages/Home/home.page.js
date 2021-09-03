@@ -23,6 +23,7 @@ import Orientation from '../../helpers/orientation';
 
 import style from '../../style/home.style';
 import Text from '../../components/global/text';
+import {colors} from '../../constant/color';
 
 const LandingPage = ({navigation}) => {
   const dispatch = useDispatch();
@@ -157,7 +158,7 @@ const LandingPage = ({navigation}) => {
             </View>
           ) : (
             <View>
-              <ActivityIndicator color="#002DBB" size="large" />
+              <ActivityIndicator color={colors.button_color_one} size="large" />
               <Text
                 style={{
                   textAlign: 'center',

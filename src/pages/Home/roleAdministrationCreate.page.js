@@ -28,6 +28,7 @@ import {roleAdministrationCopyRoleList} from '../../redux/action/role_administra
 import {saveActivityLog} from '../../redux/action/save_activity_log_action';
 import {ADMINISTRATION_PRIVILEDGE_ID} from '../../constant/actionPriv';
 import {getActiveEnterpriseList} from '../../redux/action/enterprise_management_action';
+import {colors} from '../../constant/color';
 
 const formBody = {
   roleName: '',
@@ -262,9 +263,15 @@ const RoleAdministrationCreatePage = ({route, navigation}) => {
       if (data) {
         let wording = '';
         if (data.statusCode === 0) {
-          if (activeMenu === 'create') wording = 'Create new role success';
-          if (activeMenu === 'copy') wording = 'Copy role success';
-          if (activeMenu === 'edit') wording = 'Update role success';
+          if (activeMenu === 'create') {
+            wording = 'Create new role success';
+          }
+          if (activeMenu === 'copy') {
+            wording = 'Copy role success';
+          }
+          if (activeMenu === 'edit') {
+            wording = 'Update role success';
+          }
 
           if (activeMenu !== 'create') {
             dispatch(roleAdministrationCopyRoleList());
@@ -412,7 +419,7 @@ const RoleAdministrationCreatePage = ({route, navigation}) => {
         <View>
           {loadingUserDetail ? (
             <View style={{justifyContent: 'center', height: 100}}>
-              <ActivityIndicator color="#002DBB" />
+              <ActivityIndicator color={colors.button_color_one} />
               <Text
                 style={{
                   textAlign: 'center',

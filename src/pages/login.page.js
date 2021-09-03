@@ -26,6 +26,7 @@ import CheckBox from '@react-native-community/checkbox';
 import Orientation from '../helpers/orientation';
 import {ModalMultiSession} from '../components';
 import DropDownPicker from 'react-native-dropdown-picker';
+import {colors} from '../constant/color';
 const busolLogo = require('../assets/images/logo/xl-busol-inverted.png');
 
 const Login = ({navigation}) => {
@@ -260,7 +261,7 @@ const Login = ({navigation}) => {
                     lineWidth={0.1}
                     disabled={false}
                     value={rememberMe}
-                    onCheckColor="#002DBB"
+                    onCheckColor={colors.button_color_one}
                     onValueChange={(value) => setRememberMe(value)}
                   />
                   <Text

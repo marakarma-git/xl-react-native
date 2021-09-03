@@ -8,6 +8,7 @@ import {VictoryPie, VictoryTheme, VictoryLabel} from 'victory-native';
 
 import ChartLegend from './chartlegend';
 import style from '../../style/home.style';
+import {colors} from '../../constant/color';
 
 const PieChartComponent = ({item, filterParams = {}}) => {
   const dispatch = useDispatch();
@@ -84,7 +85,7 @@ const PieChartComponent = ({item, filterParams = {}}) => {
       <Card.Content style={style.cardContentWrapper}>
         <Title>{item.jsonData.title.text}</Title>
         {loading ? (
-          <ActivityIndicator color="#002DBB" size="large" />
+          <ActivityIndicator color={colors.button_color_one} size="large" />
         ) : (
           <>{dataSet && generateChart()}</>
         )}

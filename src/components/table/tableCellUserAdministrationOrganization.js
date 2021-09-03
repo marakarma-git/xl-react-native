@@ -113,7 +113,12 @@ const TableCellUserAdministrationOrganization = (props) => {
               <Text style={inputHybridStyle.modalTitleText}>
                 Organization Details
               </Text>
-              {loading && <ActivityIndicator color="#002DBB" size="small" />}
+              {loading && (
+                <ActivityIndicator
+                  color={colors.button_color_one}
+                  size="small"
+                />
+              )}
             </View>
             <ScrollView style={{flex: 1}}>
               {!xlUser && <Text selectable>{label}</Text>}

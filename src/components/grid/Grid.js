@@ -10,6 +10,7 @@ import {
 
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import CustomCheckBox from '../grid/GridCheckBox';
+import {colors} from '../../constant/color';
 
 const GridComponent = (props) => {
   return (
@@ -23,7 +24,7 @@ const GridComponent = (props) => {
       </View>
       {props.loading ? (
         <View style={{justifyContent: 'center', height: 100}}>
-          <ActivityIndicator color="#002DBB" />
+          <ActivityIndicator color={colors.button_color_one} />
           <Text
             style={{
               textAlign: 'center',
@@ -257,7 +258,7 @@ const CellTreeViewCheckBoxComponent = (props) => {
           />
         </TouchableOpacity>
       ) : (
-        <Text style={{paddingLeft: props.level * 10 + 8}}></Text>
+        <Text style={{paddingLeft: props.level * 10 + 8}} />
       )}
       <CustomCheckBox
         disabled={props.isDisabled}
@@ -298,7 +299,7 @@ const CellTreeViewComponent = (props) => {
           />
         </TouchableOpacity>
       ) : (
-        <Text style={{paddingLeft: props.level * 10 + 8}}></Text>
+        <Text style={{paddingLeft: props.level * 10 + 8}} />
       )}
       <Text style={{color: props.headerColor || 'black', fontSize: 12}}>
         {props.data.length > 30

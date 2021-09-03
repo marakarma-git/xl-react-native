@@ -81,7 +81,7 @@ export default {
   },
   linkText: {
     fontSize: 14,
-    color: '#002DBB',
+    color: colors.button_color_one,
     paddingHorizontal: 15,
   },
   footer: {
@@ -161,10 +161,10 @@ export default {
     color: 'white',
   },
   headerText: {
-    textAlign: 'left', 
-    width: '90%', 
-    fontSize: 18, 
+    textAlign: 'left',
+    width: '90%',
+    fontSize: 18,
     fontWeight: 'bold',
-    paddingVertical: 10
-  }
+    paddingVertical: 10,
+  },
 };

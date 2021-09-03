@@ -4,6 +4,7 @@ import {CustomDrawerContent} from '../components/index';
 import {createDrawerNavigator} from '@react-navigation/drawer';
 import {useSelector} from 'react-redux';
 import Helper from '../helpers/helper';
+import {colors} from '../constant/color';
 
 const Drawer = createDrawerNavigator();
 
@@ -20,7 +21,7 @@ const Home = () => {
   return (
     <Drawer.Navigator
       initialRouteName="Home"
-      drawerStyle={{backgroundColor: '#002DBB'}}
+      drawerStyle={{backgroundColor: colors.button_color_one}}
       drawerContent={(props) => <CustomDrawerContent {...props} />}>
       {generateHomeScreen()}
     </Drawer.Navigator>

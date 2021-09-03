@@ -23,6 +23,7 @@ import inputloginStyle from '../style/account.style';
 import loginStyle from '../style/login.style';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import Orientation from '../helpers/orientation';
+import {colors} from '../constant/color';
 const busolLogo = require('../assets/images/logo/xl-busol-inverted.png');
 
 const ChangePasswordPage = ({navigation}) => {
@@ -181,7 +182,9 @@ const ChangePasswordPage = ({navigation}) => {
                 style={[
                   inputloginStyle.buttonBlock,
                   {
-                    backgroundColor: requestLoading ? '#949494' : '#002DBB',
+                    backgroundColor: requestLoading
+                      ? '#949494'
+                      : colors.button_color_one,
                     borderRadius: 0,
                   },
                 ]}>

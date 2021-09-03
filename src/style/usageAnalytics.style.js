@@ -1,4 +1,5 @@
 import {StyleSheet} from 'react-native';
+import {colors} from '../constant/color';
 
 const styles = StyleSheet.create({
   scrollContainer: {
@@ -103,7 +104,7 @@ const styles = StyleSheet.create({
     paddingVertical: 3,
     paddingHorizontal: 15,
     marginHorizontal: 3,
-    backgroundColor: '#002DBB',
+    backgroundColor: colors.button_color_one,
     justifyContent: 'center',
     alignItems: 'center',
     borderRadius: 5,

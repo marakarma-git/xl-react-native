@@ -23,7 +23,7 @@ const TableCellHeaderOptionCheckBox = (props) => {
         height: height || defaultHeightCell,
         flexDirection: 'row',
         alignItems: 'center',
-        backgroundColor: backgroundColor || 'blue',
+        backgroundColor: backgroundColor || colors.button_color_one,
       }}>
       <CustomCheckBox
         style={{marginLeft: 16}}

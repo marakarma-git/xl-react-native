@@ -14,6 +14,7 @@ import Entypo from 'react-native-vector-icons/Entypo';
 import Feather from 'react-native-vector-icons/Feather';
 import styles from '../style/account.style';
 import {authLogout} from '../redux/action/auth_action';
+import {colors} from '../constant/color';
 
 const passwordRulesArray = [
   {label: 'Be between 8 and 30 characters', valid: false},
@@ -298,7 +299,10 @@ const PasswordInput = ({
           <TouchableOpacity
             onPress={() => submitHandler(form)}
             disabled={!formComplete ? true : false}
-            style={[styles.buttonGroup, {backgroundColor: '#002DBB'}]}>
+            style={[
+              styles.buttonGroup,
+              {backgroundColor: colors.button_color_one},
+            ]}>
             {requestLoading ? (
               <ActivityIndicator color={'#fff'} style={styles.buttonText} />
             ) : (

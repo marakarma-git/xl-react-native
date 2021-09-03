@@ -24,7 +24,7 @@ const TableCellHeaderAscDesc = (props) => {
         width: width || defaultWidthCell,
         height: height || defaultHeightCell,
         flexDirection: 'row',
-        backgroundColor: backgroundColor || 'blue',
+        backgroundColor: backgroundColor || colors.button_color_one,
       }}>
       <TouchView
         style={{
