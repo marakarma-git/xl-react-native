@@ -9,6 +9,7 @@ import bell from './icons/bell.png';
 import arrowBack from './icons/arrow-back.png';
 import filter from './icons/filter.png';
 import magnifyingGlass from './icons/magnifying-glass.png';
+import stickyNotesIcon from './icons/sticky_notes_icon.png';
 
 // Drawer Assets
 import burgerMenu from './drawer/burger-menu.png';
@@ -34,6 +35,7 @@ export {
   arrowBack,
   filter,
   magnifyingGlass,
+  stickyNotesIcon,
   burgerMenu,
   iconUser,
   iconHome,
@@ -43,5 +45,5 @@ export {
   framerBanner,
   locationNotFound,
   iconAboutus,
-  iconAdmin
+  iconAdmin,
 };
