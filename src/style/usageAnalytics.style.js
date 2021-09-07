@@ -109,6 +109,44 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     borderRadius: 5,
   },
+  detailContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    paddingHorizontal: 5,
+    width: '95%',
+    borderColor: colors.gray,
+    borderRadius: 3,
+    borderWidth: 2,
+    height: 60,
+  },
+  detailLeftWrapper: {
+    width: '70%',
+    height: '100%',
+    justifyContent: 'center',
+  },
+  detailRightWrapper: {
+    width: '30%',
+    height: '100%',
+    justifyContent: 'center',
+  },
+  detailChartTitle: {
+    fontSize: 12,
+  },
+  detailChartText: {
+    fontSize: 11,
+  },
+  buttonDaily: {
+    backgroundColor: colors.gray,
+    height: 30,
+    paddingHorizontal: 2,
+    borderRadius: 3,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  buttonText: {
+    color: 'white',
+    fontSize: 10,
+  },
 });
 
 export default styles;

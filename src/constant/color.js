@@ -23,4 +23,7 @@ export const colors = {
   black: '',
   white: '',
   white_header_asc_desc: '#2392FF',
+  chart_axis_stroke: '#e6e6e6',
+  chart_line_red: '#f86c6b',
+  chart_line_blue: '#0E83F4',
 };

@@ -156,11 +156,12 @@ const UsageAnalyticsPage = ({route, navigation}) => {
 
   useEffect(() => {
     let splitParams = generatedParams.split(',');
-    setParam1(splitParams[0]);
-    setParam2(splitParams[1]);
-    // dispatch(callWidgetList())
+    setParam1(splitParams[0] || '');
+    setParam2(splitParams[1] || '');
+    console.log('tes');
+    // dispatch(callWidgetList());
     // dispatch(resetTopTrafficStatistics());
-  }, [generatedParams]);
+  }, [generatedParams, appliedFilter]);
 
   useEffect(() => {
     const pageLoad = navigation.addListener('focus', () => {

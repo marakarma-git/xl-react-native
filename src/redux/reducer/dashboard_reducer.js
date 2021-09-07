@@ -9,12 +9,14 @@ const initialState = {
   loadingAggregated: false,
   loading12MonthUsage: false,
   loadingMonthUsage: false,
+  loadingSubsAnalytics: false,
   error: '',
   simStatistics: null,
   topTrafficStatistics: null,
   aggregatedTraffic: null,
   last12MonthUsage: null,
   monthUsage: null,
+  subsAnalytics: [],
   cummulativeMonthUsage: null,
 };
 const dashboard_reducer = (state = initialState, action) => {
@@ -61,6 +63,12 @@ const dashboard_reducer = (state = initialState, action) => {
         loading12MonthUsage: false,
         last12MonthUsage: action.payload,
       };
+    case reduxString.SET_SUBS_ANALYTICS:
+      return {
+        ...state,
+        loadingSubsAnalytics: false,
+        subsAnalytics: action.payload,
+      };
     case reduxString.SET_MONTH_USAGE:
       return {
         ...state,
@@ -76,6 +84,7 @@ const dashboard_reducer = (state = initialState, action) => {
         loadingAggregated: false,
         loading12MonthUsage: false,
         loadingMonthUsage: false,
+        loadingSubsAnalytics: false,
         error: action.payload,
       };
     case reduxString.REQUEST_DASHBOARD_DATA:
@@ -102,6 +111,11 @@ const dashboard_reducer = (state = initialState, action) => {
       return {
         ...state,
         loadingTopTraffic: true,
+      };
+    case reduxString.REQUEST_SUBS_ANALYTICS:
+      return {
+        ...state,
+        loadingSubsAnalytics: true,
       };
     case reduxString.RESET_TOP_TRAFFIC_STATISTICS:
       return {

@@ -34,6 +34,10 @@ const requestAggregatedTraffic = () => ({
   type: reduxString.REQUEST_AGGREGATED_TRAFFIC,
 });
 
+const requestSubsAnalytics = () => ({
+  type: reduxString.REQUEST_SUBS_ANALYTICS,
+});
+
 export const setRequestError = (error) => ({
   type: reduxString.REQUEST_ERROR,
   payload: error,
@@ -284,6 +288,20 @@ const setMonthUsage = (data, params) => {
   };
 };
 
+const setSubsAnalytics = (data, params) => {
+  const subsData = [...data].map((datas) => {
+    return {x: datas.monthperiod, y: datas.totalactive || 0};
+  });
+  const usageData = [...data].map((datas) => {
+    return {x: datas.monthperiod, y: datas.traffic || 0};
+  });
+
+  return {
+    type: reduxString.SET_SUBS_ANALYTICS,
+    payload: [[...usageData], [...subsData]],
+  };
+};
+
 export const requestWidgetData = (
   accessToken,
   item,
@@ -393,8 +411,6 @@ export const getMonthUsage = (item, filterParams = {}) => {
         },
       );
 
-      console.log(data, item.datasetId, filterParams, ' <<<< get data');
-
       if (data) {
         if (data.statusCode === 0) {
           dispatch(setMonthUsage(data.result.dataset, filterParams));
@@ -402,6 +418,33 @@ export const getMonthUsage = (item, filterParams = {}) => {
       }
     } catch (error) {
       console.log('Error' + error.response.data);
+      dispatch(setRequestError(error.response.data));
+    }
+  };
+};
+
+export const getSubsAnalytics = (item, filterParams = {}) => {
+  return async (dispatch, getState) => {
+    const accessToken = getState().auth_reducer.data?.access_token;
+
+    try {
+      dispatch(requestSubsAnalytics());
+      console.log(item, ' <<< item ya');
+      const {data} = await Axios.post(
+        `${base_url}/dcp/dashboard/v2/getDataSet?datasetId=${item.datasetId}`,
+        filterParams,
+        {
+          headers: dashboardHeaderAuth(accessToken),
+        },
+      );
+
+      if (data) {
+        if (data.statusCode === 0) {
+          dispatch(setSubsAnalytics(data.result.dataset, filterParams));
+        }
+      }
+    } catch (error) {
+      console.log('Error' + error);
       dispatch(setRequestError(error.response.data));
     }
   };
