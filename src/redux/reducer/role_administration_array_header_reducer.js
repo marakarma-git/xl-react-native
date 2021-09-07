@@ -29,7 +29,7 @@ const dataRoleHeader = [
     errorText: '',
     typeInput: 'DropDown',
     data: [],
-    params: '&organizations=',
+    params: '&enterpriseId=',
     cellType: 'TableCellHeaderAscDesc',
     cellRowType: 'TableCellText',
     config: {
