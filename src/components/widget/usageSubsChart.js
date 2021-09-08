@@ -212,10 +212,7 @@ const UsageSubsChart = (props) => {
       {dataSet && _generateChart()}
       {chartDetail && (
         <View
-          style={[
-            styles.detailContainer,
-            {borderColor: chartDetail?.baseColor},
-          ]}>
+          style={[styles.detailContainer, {borderColor: colors.card_border}]}>
           <View style={styles.detailLeftWrapper}>
             <Text fontType="bold" style={styles.detailChartTitle}>
               {chartDetail?.title || '-'}

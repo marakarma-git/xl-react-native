@@ -15,6 +15,7 @@ export const colors = {
   green_status: '#92d050',
   border_color: '#eaeaea',
   background_color: '#fafafa',
+  card_border: '#8D8D8D',
   // button_color_one: '#164396',
   button_color_one: '#002DBB',
   imsi_blue: '#40a9ff',

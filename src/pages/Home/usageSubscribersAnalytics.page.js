@@ -6,6 +6,7 @@ import {
   HeaderContainer,
   OverlayBackground,
   UsageSubsChart,
+  Text,
 } from '../../components';
 import {
   usageSubscribersAnalyticsDynamicResetSelectedValue,
@@ -121,7 +122,6 @@ const UsageSubscribersAnalyticsPage = ({route, navigation}) => {
               }}
             />
             <ContentCard
-              cardTitle={``}
               loadingContent={loadingSubsAnalytics}
               cardContent={
                 <>

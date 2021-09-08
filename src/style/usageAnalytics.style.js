@@ -116,7 +116,7 @@ const styles = StyleSheet.create({
     width: '95%',
     borderColor: colors.gray,
     borderRadius: 3,
-    borderWidth: 2,
+    borderWidth: 1,
     height: 60,
   },
   detailLeftWrapper: {
