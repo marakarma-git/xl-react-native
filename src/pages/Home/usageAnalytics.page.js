@@ -158,7 +158,6 @@ const UsageAnalyticsPage = ({route, navigation}) => {
     let splitParams = generatedParams.split(',');
     setParam1(splitParams[0] || '');
     setParam2(splitParams[1] || '');
-    console.log('tes');
     // dispatch(callWidgetList());
     // dispatch(resetTopTrafficStatistics());
   }, [generatedParams, appliedFilter]);

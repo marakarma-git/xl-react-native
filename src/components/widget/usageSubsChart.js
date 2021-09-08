@@ -17,7 +17,6 @@ import {
   createContainer,
 } from 'victory-native';
 import {colors} from '../../constant/color';
-import {Touchable} from 'react-native';
 import {TouchableOpacity} from 'react-native';
 import {useSelector} from 'react-redux';
 
@@ -138,7 +137,7 @@ const legendData = [
     name: 'Active Subs',
     symbol: {
       fill: 'white',
-      stroke: '#0E83F4',
+      stroke: colors.chart_line_blue,
       strokeWidth: 3,
       symbol: 'round',
     },
@@ -147,7 +146,7 @@ const legendData = [
     name: 'Usage (GB)',
     symbol: {
       fill: 'white',
-      stroke: '#f86c6b',
+      stroke: colors.chart_line_red,
       strokeWidth: 3,
       symbol: 'round',
     },
@@ -156,12 +155,25 @@ const legendData = [
 
 const UsageSubsChart = (props) => {
   const tickValues = [0, 0.25, 0.5, 0.75, 1, 1.25];
-  const dataSet = useSelector((state) => state.dashboard_reducer.subsAnalytics);
+  const dataSet =
+    useSelector((state) => state.dashboard_reducer.subsAnalytics) || [];
+  const minValue = useSelector(
+    (state) => state.dashboard_reducer.minSubsAnalyticValue,
+  );
   const [orientation, setOrientation] = useState('potrait');
   const [chartDetail, setChartDetail] = useState(null);
+  const [chartType, setChartType] = useState('monthly');
 
   // Create Custom Chart Container
   const VictoryVoronoiZoomContainer = createContainer('voronoi', 'zoom');
+
+  // Call Function
+  const _callDailyChart = (param) => {
+    props.getDailyChart(props.dailyWidget[0], {
+      param3: Helper.monthlyUsageParams(param),
+    });
+    setChartDetail(null);
+  };
 
   //Normalize Function
   const maxima = dataSet.map((dataset) => Math.max(...dataset.map((d) => d.y)));
@@ -171,16 +183,27 @@ const UsageSubsChart = (props) => {
     let xValue = Helper.convertUnit(y);
     let baseColor = colors.chart_line_red;
     if (childName === 'actSubs') {
-      title = 'Active Subs';
+      title = 'Active Sub';
       xValue = Helper.formatAmount(y);
       baseColor = colors.chart_line_blue;
     }
-    setChartDetail({
-      title,
-      month: x,
-      value: xValue,
-      baseColor,
-    });
+    console.log(dataSet[0].length);
+    if (dataSet[0].length <= 13) {
+      setChartDetail({
+        title,
+        month: x,
+        value: xValue,
+        baseColor,
+      });
+    }
+  };
+  const manipulateValue = (datum, normalize) => {
+    let normalizeVal = normalize > 0 ? normalize : 1;
+    if (datum.y > 0) {
+      return datum?.y / normalizeVal;
+    } else {
+      return null;
+    }
   };
 
   // Render Function
@@ -203,6 +226,7 @@ const UsageSubsChart = (props) => {
           </View>
           <View style={styles.detailRightWrapper}>
             <TouchableOpacity
+              onPress={() => _callDailyChart(chartDetail?.month)}
               style={[
                 styles.buttonDaily,
                 {backgroundColor: chartDetail?.baseColor},
@@ -224,7 +248,6 @@ const UsageSubsChart = (props) => {
             }
             containerComponent={
               <VictoryVoronoiZoomContainer
-                mouseFollowTooltips
                 allowZoom={true}
                 zoomDimension="x"
                 zoomDomain={{x: [1, 6]}}
@@ -234,13 +257,14 @@ const UsageSubsChart = (props) => {
             }>
             <VictoryAxis
               dependentAxis
-              label="Usage (GB)"
+              label={`Usage (GB)`}
               standalone={true}
               tickFormat={(t) => Helper.convertUnit(t * maxima[0])}
               axisLabelComponent={
                 <VictoryLabel angle dy={-110} style={{fontSize: 10}} />
               }
-              tickValues={tickValues}
+              domain={{y: [0.5, 1.5]}}
+              tickValues={maxima[0] === 0 && [0]}
               style={{
                 axis: {stroke: colors.chart_axis_stroke},
                 axisLabels: {fontSize: 10},
@@ -252,14 +276,16 @@ const UsageSubsChart = (props) => {
             <VictoryAxis
               dependentAxis
               offsetX={330}
-              label="Total Active Subscribers"
+              label={`Total Active Subscribers`}
               standalone={true}
+              domain={{y: [0.5, 1.5]}}
+              tickValues={maxima[1] === 0 && [0]}
               axisLabelComponent={<VictoryLabel angle dy={-110} />}
-              tickValues={tickValues}
               tickFormat={(t) => Helper.formatAmount(t * maxima[1])}
               style={{
                 axis: {stroke: colors.chart_axis_stroke},
                 axisLabel: {fontSize: 10},
+                grid: {stroke: colors.chart_axis_stroke},
                 ticks: {padding: -15},
                 tickLabels: {
                   fill: colors.gray,
@@ -274,6 +300,10 @@ const UsageSubsChart = (props) => {
                 axis: {stroke: '#e6e6e6'},
                 tickLabels: {fill: 'grey', fontSize: 10},
               }}
+              t
+              tickLabelComponent={
+                <VictoryLabel dx={-10} angle={-15} style={{fontSize: 10}} />
+              }
             />
             <VictoryLine
               name="line1"
@@ -281,7 +311,7 @@ const UsageSubsChart = (props) => {
                 data: {strokeWidth: 1, stroke: colors.chart_line_blue},
               }}
               data={dataSet[1]}
-              y={(datum) => datum.y / maxima[1]}
+              y={(datum) => manipulateValue(datum, maxima[1])}
             />
             <VictoryScatter
               name="actSubs"
@@ -293,7 +323,7 @@ const UsageSubsChart = (props) => {
                 },
               }}
               data={dataSet[1]}
-              y={(datum) => datum.y / maxima[1]}
+              y={(datum) => manipulateValue(datum, maxima[1])}
               labels={(datum) =>
                 `Active Subs\n ${
                   datum.data[datum.index].x
@@ -301,6 +331,7 @@ const UsageSubsChart = (props) => {
               }
               labelComponent={
                 <VictoryTooltip
+                  constrainToVisibleArea
                   renderInPortal={false}
                   flyoutStyle={{
                     fill: 'white',
@@ -318,7 +349,7 @@ const UsageSubsChart = (props) => {
                 data: {strokeWidth: 1, stroke: colors.chart_line_red},
               }}
               data={dataSet[0]}
-              y={(datum) => datum.y / maxima[0]}
+              y={(datum) => manipulateValue(datum, maxima[0])}
             />
             <VictoryScatter
               name="usage"
@@ -330,7 +361,7 @@ const UsageSubsChart = (props) => {
                 },
               }}
               data={dataSet[0]}
-              y={(datum) => datum.y / maxima[0]}
+              y={(datum) => manipulateValue(datum, maxima[0])}
               labels={(datum) =>
                 `Usage (GB)\n ${
                   datum.data[datum.index].x
@@ -338,6 +369,7 @@ const UsageSubsChart = (props) => {
               }
               labelComponent={
                 <VictoryTooltip
+                  constrainToVisibleArea
                   renderInPortal={false}
                   flyoutStyle={{
                     width: 100,
@@ -369,23 +401,13 @@ const UsageSubsChart = (props) => {
   return <>{_generateView()}</>;
 };
 
-// Custom Component
-const CustomToolTip = ({color}) => {
-  return (
-    <VictoryTooltip
-      renderInPortal={false}
-      flyoutStyle={{
-        fill: 'white',
-        stroke: color,
-        strokeWidth: 1,
-        fontSize: 10,
-      }}
-      labelComponent={<VictoryLabel style={{fontSize: 10}} />}
-    />
-  );
+UsageSubsChart.defaultProps = {
+  getDailyChart: () => {},
+  dailyWidget: [],
 };
-
-UsageSubsChart.defaultPrps = {};
-UsageSubsChart.propTypes = {};
+UsageSubsChart.propTypes = {
+  getDailyChart: PropTypes.func,
+  dailyWidget: PropTypes.array,
+};
 
 export default UsageSubsChart;

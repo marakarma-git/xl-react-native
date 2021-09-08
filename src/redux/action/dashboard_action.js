@@ -199,6 +199,10 @@ const setTopTrafficStatistics = (data, params) => {
   };
 };
 
+const resetSubsAnalytics = () => ({
+  type: reduxString.RESET_SUBS_ANALYTIC,
+});
+
 export const resetTopTrafficStatistics = () => ({
   type: reduxString.RESET_TOP_TRAFFIC_STATISTICS,
 });
@@ -289,16 +293,31 @@ const setMonthUsage = (data, params) => {
 };
 
 const setSubsAnalytics = (data, params) => {
+  let minSubsValue = 0;
+  let minUsageValue = 0;
   const subsData = [...data].map((datas) => {
+    if (datas.totalactive !== null && datas.totalactive > 0) {
+      if (datas.totalactive <= minSubsValue || minSubsValue === 0) {
+        minSubsValue = datas.totalactive;
+      }
+    }
     return {x: datas.monthperiod, y: datas.totalactive || 0};
   });
   const usageData = [...data].map((datas) => {
+    if (datas.traffic !== null && datas.traffic > 0) {
+      if (datas.traffic <= minSubsValue || minUsageValue === 0) {
+        minUsageValue = datas.traffic;
+      }
+    }
     return {x: datas.monthperiod, y: datas.traffic || 0};
   });
 
   return {
     type: reduxString.SET_SUBS_ANALYTICS,
-    payload: [[...usageData], [...subsData]],
+    payload: {
+      minValue: {minSubsValue, minUsageValue},
+      data: [[...usageData], [...subsData]],
+    },
   };
 };
 
@@ -426,10 +445,9 @@ export const getMonthUsage = (item, filterParams = {}) => {
 export const getSubsAnalytics = (item, filterParams = {}) => {
   return async (dispatch, getState) => {
     const accessToken = getState().auth_reducer.data?.access_token;
-
     try {
       dispatch(requestSubsAnalytics());
-      console.log(item, ' <<< item ya');
+      dispatch(resetSubsAnalytics());
       const {data} = await Axios.post(
         `${base_url}/dcp/dashboard/v2/getDataSet?datasetId=${item.datasetId}`,
         filterParams,

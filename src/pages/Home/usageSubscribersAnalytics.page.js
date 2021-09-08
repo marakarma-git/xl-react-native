@@ -28,7 +28,7 @@ const UsageSubscribersAnalyticsPage = ({route, navigation}) => {
   const {appliedFilter, generatedParams} = useSelector(
     (state) => state.usage_subscribers_analytics_filter_reducer,
   );
-  const {loadingSubsAnalytics} = useSelector(
+  const {subsAnalytics, loadingSubsAnalytics} = useSelector(
     (state) => state.dashboard_reducer,
   );
 
@@ -46,12 +46,21 @@ const UsageSubscribersAnalyticsPage = ({route, navigation}) => {
     dispatch(getWidgetList(userData.access_token));
   };
 
-  const getMonthlySubs = (params) => {
+  const getMonthlySubs = (params, customParams = {}) => {
     let apiParams = {};
     if (param1) apiParams.param1 = param1;
     if (param2) apiParams.param2 = param2;
     if (params) {
       dispatch(getSubsAnalytics(params[0], apiParams));
+    }
+  };
+
+  const getDailySubs = (widgetId, params) => {
+    let apiParams = {...params};
+    if (param1) apiParams.param1 = param1;
+    if (param2) apiParams.param2 = param2;
+    if (widgetId) {
+      dispatch(getSubsAnalytics(widgetId, apiParams));
     }
   };
 
@@ -114,7 +123,16 @@ const UsageSubscribersAnalyticsPage = ({route, navigation}) => {
             <ContentCard
               cardTitle={``}
               loadingContent={loadingSubsAnalytics}
-              cardContent={<UsageSubsChart />}
+              cardContent={
+                <>
+                  {subsAnalytics.length > 0 && (
+                    <UsageSubsChart
+                      getDailyChart={getDailySubs}
+                      dailyWidget={dailyWidget}
+                    />
+                  )}
+                </>
+              }
             />
           </View>
         </View>

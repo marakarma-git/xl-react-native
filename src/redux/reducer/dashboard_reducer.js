@@ -17,6 +17,7 @@ const initialState = {
   last12MonthUsage: null,
   monthUsage: null,
   subsAnalytics: [],
+  minSubsAnalyticValue: null,
   cummulativeMonthUsage: null,
 };
 const dashboard_reducer = (state = initialState, action) => {
@@ -67,7 +68,8 @@ const dashboard_reducer = (state = initialState, action) => {
       return {
         ...state,
         loadingSubsAnalytics: false,
-        subsAnalytics: action.payload,
+        minSubsAnalyticValue: action.payload.minValue,
+        subsAnalytics: action.payload.data,
       };
     case reduxString.SET_MONTH_USAGE:
       return {
@@ -121,6 +123,12 @@ const dashboard_reducer = (state = initialState, action) => {
       return {
         ...state,
         topTrafficStatistics: null,
+      };
+    case reduxString.RESET_SUBS_ANALYTIC:
+      return {
+        ...state,
+        subsAnalytics: [],
+        minSubsAnalyticValue: null,
       };
     default:
       return state;
