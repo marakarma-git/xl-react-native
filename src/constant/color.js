@@ -1,3 +1,14 @@
+const color_theme_one = {
+  blue: '#164396',
+  cyan: '#20c4f4',
+  red: '#c40042',
+  denim: '#6689AB',
+  torquoise: '#1DBECB',
+  green: '#B3D335',
+  peach: '#F26664',
+  silver: '#BADAD3',
+  grey: '#63717A',
+};
 export const colors = {
   font_gray: '#575757',
   gray: '#707070',
@@ -27,4 +38,10 @@ export const colors = {
   chart_axis_stroke: '#e6e6e6',
   chart_line_red: '#f86c6b',
   chart_line_blue: '#0E83F4',
+
+  main_color: color_theme_one.blue,
+  main_color_overlay: color_theme_one.cyan,
+  tab_edit: color_theme_one.green,
+  delete: color_theme_one.red,
+  disabled_cancel: color_theme_one.silver,
 };

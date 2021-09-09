@@ -117,7 +117,7 @@ const ColumnFilterSearch = ({
   return (
     <>
       {loading ? (
-        <ActivityIndicator size={26} color={colors.button_color_one} />
+        <ActivityIndicator size={26} color={colors.main_color} />
       ) : (
         <TouchableOpacity onPress={onClickFilter}>
           <MaterialCommunityIcon
@@ -134,7 +134,7 @@ const ColumnFilterSearch = ({
         ]}
       />
       {loading ? (
-        <ActivityIndicator size={26} color={colors.button_color_one} />
+        <ActivityIndicator size={26} color={colors.main_color} />
       ) : (
         <TouchableOpacity onPress={onClickColumn}>
           <Ionicons name={'settings-sharp'} size={22} color={colors.gray} />

@@ -56,7 +56,7 @@ const ModalViewMoreText = (props) => {
             <TouchableOpacity
               style={[
                 inputHybridStyle.buttonStyle,
-                {backgroundColor: colors.button_color_one},
+                {backgroundColor: colors.main_color},
               ]}
               onPress={onPressButton}>
               <Text style={{color: 'white'}}>{labelButton}</Text>

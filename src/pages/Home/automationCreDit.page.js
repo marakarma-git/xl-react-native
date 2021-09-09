@@ -99,7 +99,10 @@ const AutomationCreateEditPage = () => {
               'configured for Enterprise that subscribes to Bulk Shared Package.'
             }>
             {error_automation ? (
-              <Text style={{color: 'red'}}>{`Error: ${error_automation}`}</Text>
+              <Text
+                style={{
+                  color: colors.delete,
+                }}>{`Error: ${error_automation}`}</Text>
             ) : (
               <React.Fragment />
             )}
@@ -262,7 +265,7 @@ const LocalButton = ({value, navigation, onPress}) => {
       style={[
         {
           backgroundColor:
-            value === 'Cancel' ? colors.gray_400 : colors.button_color_one,
+            value === 'Cancel' ? colors.gray_400 : colors.main_color,
         },
         subscriptionStyle.buttonStyle,
       ]}

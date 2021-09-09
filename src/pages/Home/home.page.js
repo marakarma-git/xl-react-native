@@ -158,7 +158,7 @@ const LandingPage = ({navigation}) => {
             </View>
           ) : (
             <View>
-              <ActivityIndicator color={colors.button_color_one} size="large" />
+              <ActivityIndicator color={colors.main_color} size="large" />
               <Text
                 style={{
                   textAlign: 'center',

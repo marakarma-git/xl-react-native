@@ -419,7 +419,7 @@ const RoleAdministrationCreatePage = ({route, navigation}) => {
         <View>
           {loadingUserDetail ? (
             <View style={{justifyContent: 'center', height: 100}}>
-              <ActivityIndicator color={colors.button_color_one} />
+              <ActivityIndicator color={colors.main_color} />
               <Text
                 style={{
                   textAlign: 'center',

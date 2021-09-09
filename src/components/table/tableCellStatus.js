@@ -50,13 +50,13 @@ const TableCellStatus = (props) => {
                 : label === 'Pause'
                 ? 'yellow'
                 : label === 'Deactivated'
-                ? 'red'
+                ? colors.delete
                 : label === 'Terminated'
                 ? 'gray'
                 : label === true
                 ? colors.green_status
                 : label === false
-                ? 'red'
+                ? colors.delete
                 : null
             }
             style={{marginRight: 4}}
@@ -82,7 +82,7 @@ TableCellStatus.propTypes = {
     backgroundColor: PropTypes.string,
     fontSize: PropTypes.number,
     isTouchable: PropTypes.bool,
-    ballColor: PropTypes.oneOf(['green', 'yellow', 'lightgray', 'red']),
+    ballColor: PropTypes.oneOf(['green', 'yellow', 'lightgray', colors.delete]),
   }),
   onPress: PropTypes.func,
   otherInformation: PropTypes.any,

@@ -11,6 +11,7 @@ import {TouchableOpacity} from 'react-native';
 
 import Helper from '../../helpers/helper';
 import styles from '../../style/drawer.style';
+import {colors} from '../../constant/color';
 
 const CustomDrawerContent = (props) => {
   const dispatch = useDispatch();
@@ -57,22 +58,23 @@ const CustomDrawerContent = (props) => {
       type={type}
       key={index + 1}
       style={{
-        backgroundColor: type == 'submenu' ? '#122b86' : 'transparent',
+        backgroundColor: type == 'submenu' ? colors.tab_edit : 'transparent',
       }}
       index={index}
       item={item}
       activeMenu={activeMenu}
       submitEvent={() => drawerOnPress(item.name, item.subMenu)}
     />
-  )
+  );
 
   const generateDrawerMenu = (listDrawer, type = 'menu') =>
     listDrawer.map((item, index) => (
       <React.Fragment>
-        {
-          type != 'submenu' ? renderMenu(item, type, index, activeMenu)
-          : <>{item.isVisible && renderMenu(item, type, index, activeMenu)}</>
-        }
+        {type != 'submenu' ? (
+          renderMenu(item, type, index, activeMenu)
+        ) : (
+          <>{item.isVisible && renderMenu(item, type, index, activeMenu)}</>
+        )}
         {item.subMenu &&
           activeMenu == item.name &&
           generateDrawerMenu(item.subMenu, 'submenu')}
@@ -103,7 +105,7 @@ const CustomDrawerContent = (props) => {
               ? userData.principal.firstName + ' ' + userData.principal.lastName
               : ''}
           </Text>
-          <Text style={{color: '#4BC1FD'}}>
+          <Text style={{color: '#4BC1FD', paddingRight: 5}}>
             {userData.principal && `${userData.principal.email || '-'}`}
           </Text>
         </TouchableOpacity>
@@ -129,7 +131,10 @@ const CustomDrawerContent = (props) => {
 const CustomMenu = ({item, style, activeMenu, submitEvent, type = 'menu'}) => {
   return (
     <View
-      style={[style, activeMenu == item.name && {backgroundColor: '#122b86'}]}>
+      style={[
+        style,
+        activeMenu == item.name && {backgroundColor: colors.tab_edit},
+      ]}>
       <DrawerItem
         label={() => (
           <View

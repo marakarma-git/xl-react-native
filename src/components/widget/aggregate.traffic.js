@@ -97,7 +97,7 @@ const AggregateTrafficComponent = ({item, navigation, filterParams = {}}) => {
       <Card.Content style={style.cardContentWrapper}>
         <Title>{item.jsonData.title.text}</Title>
         {loading ? (
-          <ActivityIndicator color={colors.button_color_one} size="large" />
+          <ActivityIndicator color={colors.main_color} size="large" />
         ) : (
           <View style={style.containerPie} pointerEvents="none">
             {dataSet && parseData()}

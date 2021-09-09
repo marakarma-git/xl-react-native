@@ -45,7 +45,7 @@ export default {
   },
   loginButton: {
     width: '90%',
-    backgroundColor: colors.button_color_one,
+    backgroundColor: colors.main_color,
     borderRadius: 5,
     height: 45,
     marginTop: 20,
@@ -59,7 +59,7 @@ export default {
   },
   errorText: {
     fontSize: 14,
-    color: 'red',
+    color: colors.delete,
     textAlign: 'center',
     paddingTop: 10,
     paddingHorizontal: 20,
@@ -121,7 +121,7 @@ export default {
     justifyContent: 'center',
     alignItems: 'center',
     marginVertical: 10,
-    backgroundColor: colors.button_color_one,
+    backgroundColor: colors.main_color,
   },
   buttonBlockLandscape: {
     width: '90%',
@@ -129,7 +129,7 @@ export default {
     marginVertical: 5,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: colors.button_color_one,
+    backgroundColor: colors.main_color,
   },
   buttonText: {
     fontSize: 16,
@@ -201,7 +201,7 @@ export default {
     justifyContent: 'center',
     height: 30,
     borderRadius: 5,
-    backgroundColor: colors.button_color_one,
+    backgroundColor: colors.main_color,
     marginHorizontal: 3,
   },
   containerDropDown: {

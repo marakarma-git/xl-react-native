@@ -108,7 +108,9 @@ const Login = ({navigation}) => {
       screenConfig.contentWrapper.marginTop = 5;
     }
 
-    if (isChange) setScreenConfig(customConfig);
+    if (isChange) {
+      setScreenConfig(customConfig);
+    }
   }, [Dimensions]);
 
   const detectOrientation = useCallback(() => {
@@ -350,7 +352,7 @@ const Login = ({navigation}) => {
                     lineWidth={0.1}
                     disabled={false}
                     value={rememberMe}
-                    onCheckColor={colors.button_color_one}
+                    onCheckColor={colors.main_color}
                     onValueChange={(value) => setRememberMe(value)}
                   />
                   <Text

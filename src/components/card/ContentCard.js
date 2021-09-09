@@ -28,7 +28,7 @@ const ContentCard = (props) => {
         </View>
         {props.loadingContent ? (
           <View style={{justifyContent: 'center', height: 100}}>
-            <ActivityIndicator size="large" color={colors.button_color_one} />
+            <ActivityIndicator size="large" color={colors.main_color} />
             <Text
               fontType="bold"
               style={{

@@ -21,7 +21,7 @@ const Home = () => {
   return (
     <Drawer.Navigator
       initialRouteName="Home"
-      drawerStyle={{backgroundColor: colors.button_color_one}}
+      drawerStyle={{backgroundColor: colors.main_color}}
       drawerContent={(props) => <CustomDrawerContent {...props} />}>
       {generateHomeScreen()}
     </Drawer.Navigator>

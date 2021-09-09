@@ -14,7 +14,7 @@ const TableCellHeader = (props) => {
         width: width || defaultWidthCell,
         height: height || defaultHeightCell,
         flexDirection: 'row',
-        backgroundColor: backgroundColor || colors.button_color_one,
+        backgroundColor: backgroundColor || colors.main_color,
       }}>
       <View
         style={{

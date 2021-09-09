@@ -81,7 +81,7 @@ export default {
   },
   linkText: {
     fontSize: 14,
-    color: colors.button_color_one,
+    color: colors.main_color,
     paddingHorizontal: 15,
   },
   footer: {
@@ -96,7 +96,7 @@ export default {
   },
   blockButton: {
     width: 100,
-    backgroundColor: colors.button_color_one,
+    backgroundColor: colors.main_color,
     borderRadius: 5,
     height: 35,
     marginLeft: 15,
