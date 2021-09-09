@@ -37,6 +37,7 @@ const UsageSubscribersAnalyticsPage = ({route, navigation}) => {
   const [param2, setParam2] = useState(null);
   const [monthlyWidget, setMonthlyWidget] = useState(null);
   const [dailyWidget, setDailyWidget] = useState(null);
+  const [isFirstRender, setIsFirstRender] = useState(true);
 
   const getWidgetId = (key, widgetData) => {
     const widgetId = widgetData.filter((widget) => widget.widgetCode === key);
@@ -72,6 +73,7 @@ const UsageSubscribersAnalyticsPage = ({route, navigation}) => {
       setMonthlyWidget(monthlyData);
       setDailyWidget(dailyData);
       getMonthlySubs(monthlyData);
+      setIsFirstRender(false);
     }
   }, [widgetList]);
 
@@ -83,6 +85,9 @@ const UsageSubscribersAnalyticsPage = ({route, navigation}) => {
     let splitParams = generatedParams.split(',');
     setParam1(splitParams[0]);
     setParam2(splitParams[1]);
+    if (!isFirstRender) {
+      callWidgetList();
+    }
   }, [generatedParams, appliedFilter]);
 
   useEffect(() => {

@@ -268,15 +268,23 @@ const setMonthUsage = (data, params) => {
   const cummulative = new Array();
 
   data.map((datas) => {
+    let splitDate = datas.date.split('-');
+    let tooltipValue = [
+      `${splitDate[2]}.${splitDate[1]}.${splitDate[0]}`,
+      `Cumulative Month Values: ${Helper.formatBytes(datas.cumulative || 0)}`,
+      `Day Volumes: ${Helper.formatBytes(datas.volume || 0)}`,
+    ];
     monthUsage.push({
       y: datas.volume || 0,
       x: datas.date || '',
+      tooltipValue,
       symbol: 'round',
       size: 4,
     });
     cummulative.push({
       y: datas.cumulative || 0,
       x: datas.date || '',
+      tooltipValue,
       symbol: 'round',
       size: 4,
     });
