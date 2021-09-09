@@ -11,6 +11,7 @@ import {
   VictoryGroup,
   VictoryScatter,
   VictoryLegend,
+  createContainer,
 } from 'victory-native';
 import {View, Dimensions} from 'react-native';
 import {Text} from '../index';
@@ -21,6 +22,9 @@ import PropTypes from 'prop-types';
 import Helper from '../../helpers/helper';
 import {NoDataText} from '..';
 import {useNavigation} from '@react-navigation/native';
+import {colors} from '../../constant/color';
+
+const VictoryVoronoiZoomContainer = createContainer('voronoi', 'zoom');
 
 const DayMonthChart = (props) => {
   const navigation = useNavigation();
@@ -119,7 +123,7 @@ const VolumeChart = ({dataSet}) => {
             padding={{top: 30, left: 70, bottom: 70}}
             domain={[1, dataSet.length]}
             containerComponent={
-              <VictoryZoomContainer
+              <VictoryVoronoiZoomContainer
                 allowZoom={false}
                 zoomDimension="x"
                 zoomDomain={{
@@ -134,6 +138,7 @@ const VolumeChart = ({dataSet}) => {
                     ),
                   ],
                 }}
+                voronoiBlacklist={['area']}
               />
             }>
             <LinearGradient
@@ -173,6 +178,7 @@ const VolumeChart = ({dataSet}) => {
                 data: {strokeWidth: 1},
               }}>
               <VictoryArea
+                name="area"
                 style={{
                   data: {fill: 'url(#colorUv)', stroke: '#0E83F4'},
                 }}
@@ -182,9 +188,27 @@ const VolumeChart = ({dataSet}) => {
                 style={{
                   data: {fill: 'white', stroke: '#0E83F4', strokeWidth: 3},
                 }}
-                labels={({datum}) => datum.y}
+                labels={({datum}) => datum.tooltipValue}
                 data={dataSet}
-                labelComponent={<VictoryTooltip renderInPortal={false} />}
+                labelComponent={
+                  <VictoryTooltip
+                    constrainToVisibleArea
+                    renderInPortal={false}
+                    style={[
+                      {fill: '#0E83F4', fontSize: 10},
+                      {fill: 'black', fontSize: 10},
+                      {fill: 'black', fontSize: 10},
+                    ]}
+                    flyoutStyle={{
+                      fill: 'white',
+                      stroke: colors.gray,
+                      strokeWidth: 1,
+                      fontSize: 10,
+                      textAlign: 'left',
+                    }}
+                    flyoutPadding={{left: 10, right: 10}}
+                  />
+                }
               />
             </VictoryGroup>
             <VictoryLegend
@@ -230,7 +254,7 @@ const CumulativeMonthChart = ({dataSet}) => {
             padding={{top: 30, left: 70, bottom: 70}}
             domain={[1, dataSet.length]}
             containerComponent={
-              <VictoryZoomContainer
+              <VictoryVoronoiZoomContainer
                 allowZoom={false}
                 zoomDimension="x"
                 zoomDomain={{
@@ -245,6 +269,7 @@ const CumulativeMonthChart = ({dataSet}) => {
                     ),
                   ],
                 }}
+                voronoiBlacklist={['line1']}
               />
             }>
             <LinearGradient
@@ -284,6 +309,7 @@ const CumulativeMonthChart = ({dataSet}) => {
                 data: {strokeWidth: 1},
               }}>
               <VictoryLine
+                name="line1"
                 style={{
                   data: {strokeWidth: 2, stroke: '#0E83F4'},
                 }}
@@ -293,9 +319,27 @@ const CumulativeMonthChart = ({dataSet}) => {
                 style={{
                   data: {fill: 'white', stroke: '#0E83F4', strokeWidth: 3},
                 }}
-                labels={({datum}) => datum.y}
+                labels={({datum}) => datum.tooltipValue}
                 data={dataSet}
-                labelComponent={<VictoryTooltip renderInPortal={false} />}
+                labelComponent={
+                  <VictoryTooltip
+                    constrainToVisibleArea
+                    renderInPortal={false}
+                    style={[
+                      {fill: '#0E83F4', fontSize: 10},
+                      {fill: 'black', fontSize: 10},
+                      {fill: 'black', fontSize: 10},
+                    ]}
+                    flyoutStyle={{
+                      fill: 'white',
+                      stroke: colors.gray,
+                      strokeWidth: 1,
+                      fontSize: 10,
+                      textAlign: 'left',
+                    }}
+                    flyoutPadding={{left: 10, right: 10}}
+                  />
+                }
               />
             </VictoryGroup>
             <VictoryLegend
@@ -341,7 +385,7 @@ const BothChart = ({volumeData, cumulativeData}) => {
             padding={{top: 30, left: 70, bottom: 70}}
             domain={[1, cumulativeData.length]}
             containerComponent={
-              <VictoryZoomContainer
+              <VictoryVoronoiZoomContainer
                 allowZoom={false}
                 zoomDimension="x"
                 zoomDomain={{
@@ -356,6 +400,7 @@ const BothChart = ({volumeData, cumulativeData}) => {
                     ),
                   ],
                 }}
+                voronoiBlacklist={['line1', 'area1']}
               />
             }>
             <LinearGradient
@@ -386,43 +431,72 @@ const BothChart = ({volumeData, cumulativeData}) => {
                 <VictoryLabel dx={-10} style={{fontSize: 10}} />
               }
             />
-            <VictoryGroup
-              animate={{
-                duration: 2000,
-                onLoad: {duration: 1000},
-              }}
+            <VictoryLine
+              name="line1"
               style={{
-                data: {strokeWidth: 1},
-              }}>
-              <VictoryLine
-                style={{
-                  data: {strokeWidth: 2, stroke: '#0E83F4'},
-                }}
-                data={cumulativeData}
-              />
-              <VictoryScatter
-                style={{
-                  data: {fill: 'white', stroke: '#0E83F4', strokeWidth: 3},
-                }}
-                labels={({datum}) => datum.y}
-                data={cumulativeData}
-                labelComponent={<VictoryTooltip renderInPortal={false} />}
-              />
-              <VictoryArea
-                style={{
-                  data: {fill: 'url(#colorUv)', stroke: '#0E83F4'},
-                }}
-                data={volumeData}
-              />
-              <VictoryScatter
-                style={{
-                  data: {fill: 'white', stroke: '#0E83F4', strokeWidth: 3},
-                }}
-                labels={({datum}) => datum.y}
-                data={volumeData}
-                labelComponent={<VictoryTooltip renderInPortal={false} />}
-              />
-            </VictoryGroup>
+                data: {strokeWidth: 2, stroke: '#0E83F4'},
+              }}
+              data={cumulativeData}
+            />
+            <VictoryScatter
+              style={{
+                data: {fill: 'white', stroke: '#0E83F4', strokeWidth: 3},
+              }}
+              labels={({datum}) => datum.tooltipValue}
+              data={cumulativeData}
+              labelComponent={
+                <VictoryTooltip
+                  constrainToVisibleArea
+                  renderInPortal={false}
+                  style={[
+                    {fill: '#0E83F4', fontSize: 10},
+                    {fill: 'black', fontSize: 10},
+                    {fill: 'black', fontSize: 10},
+                  ]}
+                  flyoutStyle={{
+                    fill: 'white',
+                    stroke: colors.gray,
+                    strokeWidth: 1,
+                    fontSize: 10,
+                    textAlign: 'left',
+                  }}
+                  flyoutPadding={{left: 10, right: 10}}
+                />
+              }
+            />
+            <VictoryArea
+              name="area1"
+              style={{
+                data: {fill: 'url(#colorUv)', stroke: '#0E83F4'},
+              }}
+              data={volumeData}
+            />
+            <VictoryScatter
+              style={{
+                data: {fill: 'white', stroke: '#0E83F4', strokeWidth: 3},
+              }}
+              labels={({datum}) => datum.tooltipValue}
+              data={volumeData}
+              labelComponent={
+                <VictoryTooltip
+                  constrainToVisibleArea
+                  renderInPortal={false}
+                  style={[
+                    {fill: '#0E83F4', fontSize: 10},
+                    {fill: 'black', fontSize: 10},
+                    {fill: 'black', fontSize: 10},
+                  ]}
+                  flyoutStyle={{
+                    fill: 'white',
+                    stroke: colors.gray,
+                    strokeWidth: 1,
+                    fontSize: 10,
+                    textAlign: 'left',
+                  }}
+                  flyoutPadding={{left: 10, right: 10}}
+                />
+              }
+            />
             <VictoryLegend
               y={260}
               x={Orientation.getWidth() / 2 - 140}

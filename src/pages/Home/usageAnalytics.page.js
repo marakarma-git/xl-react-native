@@ -68,7 +68,7 @@ const UsageAnalyticsPage = ({route, navigation}) => {
     loading12MonthUsage,
     loadingMonthUsage,
   } = useSelector((state) => state.dashboard_reducer);
-  const {dataHeader, appliedFilter, generatedParams} = useSelector(
+  const {appliedFilter, generatedParams} = useSelector(
     (state) => state.usage_analytics_filter_reducer,
   );
   const [param1, setParam1] = useState(null);
@@ -102,6 +102,7 @@ const UsageAnalyticsPage = ({route, navigation}) => {
   const [monthUsageId, setMonthUsage] = useState(null);
   const [monthUsageText, setMonthUsageText] = useState('');
   const [showMonthUsage, setShowMonthUsage] = useState(null);
+  const [isFirstRender, setIsFirstRender] = useState(true);
 
   const _showMonthUsage = (monthPeriod, type = 'get') => {
     let isSubstract = type === 'substract' ? true : false;
@@ -151,23 +152,24 @@ const UsageAnalyticsPage = ({route, navigation}) => {
       setMonthUsage(monthUsage);
       callAggregatedTraffic(aggregatedTraffic);
       callLast12MonthUsage(last12MonthUsage);
+      setIsFirstRender(false);
     }
   }, [widgetList]);
 
   useEffect(() => {
     let splitParams = generatedParams.split(',');
-    setParam1(splitParams[0]);
-    setParam2(splitParams[1]);
-    // dispatch(callWidgetList())
-    // dispatch(resetTopTrafficStatistics());
-  }, [generatedParams]);
+    setParam1(splitParams[0] || '');
+    setParam2(splitParams[1] || '');
+    if (!isFirstRender) {
+      callWidgetList();
+    }
+  }, [generatedParams, appliedFilter]);
 
   useEffect(() => {
     const pageLoad = navigation.addListener('focus', () => {
       callWidgetList();
       dispatch(resetTopTrafficStatistics());
       setShowMonthUsage(null);
-      // detectParamsChange();
     });
 
     return pageLoad;

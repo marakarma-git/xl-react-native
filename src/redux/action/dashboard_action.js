@@ -34,6 +34,10 @@ const requestAggregatedTraffic = () => ({
   type: reduxString.REQUEST_AGGREGATED_TRAFFIC,
 });
 
+const requestSubsAnalytics = () => ({
+  type: reduxString.REQUEST_SUBS_ANALYTICS,
+});
+
 export const setRequestError = (error) => ({
   type: reduxString.REQUEST_ERROR,
   payload: error,
@@ -195,6 +199,10 @@ const setTopTrafficStatistics = (data, params) => {
   };
 };
 
+const resetSubsAnalytics = () => ({
+  type: reduxString.RESET_SUBS_ANALYTIC,
+});
+
 export const resetTopTrafficStatistics = () => ({
   type: reduxString.RESET_TOP_TRAFFIC_STATISTICS,
 });
@@ -260,15 +268,23 @@ const setMonthUsage = (data, params) => {
   const cummulative = new Array();
 
   data.map((datas) => {
+    let splitDate = datas.date.split('-');
+    let tooltipValue = [
+      `${splitDate[2]}.${splitDate[1]}.${splitDate[0]}`,
+      `Cumulative Month Values: ${Helper.formatBytes(datas.cumulative || 0)}`,
+      `Day Volumes: ${Helper.formatBytes(datas.volume || 0)}`,
+    ];
     monthUsage.push({
       y: datas.volume || 0,
       x: datas.date || '',
+      tooltipValue,
       symbol: 'round',
       size: 4,
     });
     cummulative.push({
       y: datas.cumulative || 0,
       x: datas.date || '',
+      tooltipValue,
       symbol: 'round',
       size: 4,
     });
@@ -281,6 +297,35 @@ const setMonthUsage = (data, params) => {
       cummulative: cummulative,
     },
     params,
+  };
+};
+
+const setSubsAnalytics = (data, params) => {
+  let minSubsValue = 0;
+  let minUsageValue = 0;
+  const subsData = [...data].map((datas) => {
+    if (datas.totalactive !== null && datas.totalactive > 0) {
+      if (datas.totalactive <= minSubsValue || minSubsValue === 0) {
+        minSubsValue = datas.totalactive;
+      }
+    }
+    return {x: datas.monthperiod, y: datas.totalactive || 0};
+  });
+  const usageData = [...data].map((datas) => {
+    if (datas.traffic !== null && datas.traffic > 0) {
+      if (datas.traffic <= minSubsValue || minUsageValue === 0) {
+        minUsageValue = datas.traffic;
+      }
+    }
+    return {x: datas.monthperiod, y: datas.traffic || 0};
+  });
+
+  return {
+    type: reduxString.SET_SUBS_ANALYTICS,
+    payload: {
+      minValue: {minSubsValue, minUsageValue},
+      data: [[...usageData], [...subsData]],
+    },
   };
 };
 
@@ -393,8 +438,6 @@ export const getMonthUsage = (item, filterParams = {}) => {
         },
       );
 
-      console.log(data, item.datasetId, filterParams, ' <<<< get data');
-
       if (data) {
         if (data.statusCode === 0) {
           dispatch(setMonthUsage(data.result.dataset, filterParams));
@@ -402,6 +445,32 @@ export const getMonthUsage = (item, filterParams = {}) => {
       }
     } catch (error) {
       console.log('Error' + error.response.data);
+      dispatch(setRequestError(error.response.data));
+    }
+  };
+};
+
+export const getSubsAnalytics = (item, filterParams = {}) => {
+  return async (dispatch, getState) => {
+    const accessToken = getState().auth_reducer.data?.access_token;
+    try {
+      dispatch(requestSubsAnalytics());
+      dispatch(resetSubsAnalytics());
+      const {data} = await Axios.post(
+        `${base_url}/dcp/dashboard/v2/getDataSet?datasetId=${item.datasetId}`,
+        filterParams,
+        {
+          headers: dashboardHeaderAuth(accessToken),
+        },
+      );
+
+      if (data) {
+        if (data.statusCode === 0) {
+          dispatch(setSubsAnalytics(data.result.dataset, filterParams));
+        }
+      }
+    } catch (error) {
+      console.log('Error' + error);
       dispatch(setRequestError(error.response.data));
     }
   };

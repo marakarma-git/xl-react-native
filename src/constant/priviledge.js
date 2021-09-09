@@ -32,6 +32,7 @@ import {
   GeoDistributionFilterPage,
   SimProductivityFilterPage,
   UsageAnalyticsFilterPage,
+  UsageSubscribersAnalyticsFilterPage,
 } from '../pages/Home/index';
 
 import {
@@ -297,5 +298,13 @@ export const DRAWER_MENU_PRIVILEDGE = [
     width: 25,
     height: 25,
     components: UsageAnalyticsFilterPage,
+  },
+  {
+    name: 'UsageSubscribersAnalyticsFilterPage',
+    icon: '',
+    type: 'non-drawer',
+    width: 25,
+    height: 25,
+    components: UsageSubscribersAnalyticsFilterPage,
   },
 ];

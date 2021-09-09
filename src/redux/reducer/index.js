@@ -34,6 +34,7 @@ import permission_reducer from './permission_reducer';
 import sim_productivity_filter_reducer from './sim_productivity_filter_reducer';
 import geo_distribution_filter_reducer from './geo_distribution_filter_reducer';
 import usage_analytics_filter_reducer from './usage_analytics_filter_reducer';
+import usage_subscribers_analytics_filter_reducer from './usage_subscribers_analytics_filter_reducer';
 const RootReducers = combineReducers({
   dummy_reducer,
   auth_reducer,
@@ -70,5 +71,6 @@ const RootReducers = combineReducers({
   sim_productivity_filter_reducer,
   geo_distribution_filter_reducer,
   usage_analytics_filter_reducer,
+  usage_subscribers_analytics_filter_reducer,
 });
 export default RootReducers;

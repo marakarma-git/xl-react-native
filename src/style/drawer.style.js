@@ -42,11 +42,11 @@ export default {
     position: 'absolute',
     top: 3,
     right: -25,
-    fontSize: 14
+    fontSize: 14,
   },
   iconDrawer: {
-    width: 20, 
-    height: 20, 
-    resizeMode: 'contain'
-  }
+    width: 20,
+    height: 20,
+    resizeMode: 'contain',
+  },
 };

@@ -26,6 +26,7 @@ export const colors = {
   green_status: '#92d050',
   border_color: '#eaeaea',
   background_color: '#fafafa',
+  card_border: '#8D8D8D',
   // button_color_one: '#164396',
   button_color_one: '#002DBB',
   imsi_blue: '#40a9ff',
@@ -34,6 +35,9 @@ export const colors = {
   black: '',
   white: '',
   white_header_asc_desc: '#2392FF',
+  chart_axis_stroke: '#e6e6e6',
+  chart_line_red: '#f86c6b',
+  chart_line_blue: '#0E83F4',
 
   main_color: color_theme_one.blue,
   main_color_overlay: color_theme_one.cyan,

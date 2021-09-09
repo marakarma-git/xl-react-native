@@ -4,6 +4,7 @@ import {Text} from '../index';
 import DropDownPicker from 'react-native-dropdown-picker';
 
 import styles from '../../style/account.style';
+import {colors} from '../../constant/color';
 
 const AccountFormComponent = ({
   formList,
