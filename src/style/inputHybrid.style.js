@@ -87,14 +87,14 @@ export default {
     marginBottom: 15,
   },
   additionalTitleContainer: {
-    backgroundColor: colors.button_color_one,
+    backgroundColor: colors.main_color,
     borderTopLeftRadius: border_radius,
     borderTopRightRadius: border_radius,
     marginBottom: 0,
     padding: 12,
   },
   tcTitleContainer: {
-    backgroundColor: colors.button_color_one,
+    backgroundColor: colors.main_color,
     marginBottom: 0,
     padding: 12,
   },
@@ -119,7 +119,7 @@ export default {
     flexDirection: 'row',
   },
   buttonStyle: {
-    backgroundColor: colors.button_color_one,
+    backgroundColor: colors.main_color,
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
@@ -179,7 +179,7 @@ export default {
     alignItems: 'center',
     justifyContent: 'center',
     height: 30,
-    backgroundColor: colors.button_color_one,
+    backgroundColor: colors.main_color,
     marginHorizontal: 3,
   },
   buttonText: {

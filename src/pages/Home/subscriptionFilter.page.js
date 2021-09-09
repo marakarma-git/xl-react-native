@@ -149,7 +149,7 @@ const SubscriptionFilter = () => {
                 paddingVertical: 10,
                 alignItems: 'center',
               }}>
-              <ActivityIndicator color={colors.button_color_one} size="large" />
+              <ActivityIndicator color={colors.main_color} size="large" />
             </View>
           )}
         </Container>
@@ -160,9 +160,7 @@ const SubscriptionFilter = () => {
                 style={[
                   {
                     backgroundColor:
-                      value === 'Clear'
-                        ? colors.gray_400
-                        : colors.button_color_one,
+                      value === 'Clear' ? colors.gray_400 : colors.main_color,
                   },
                   subscriptionStyle.buttonStyle,
                 ]}

@@ -16,7 +16,7 @@ const Loading = () => {
         alignItems: 'center',
       }}>
       <View style={inputHybridStyle.modalBackdrop} />
-      <ActivityIndicator size={'large'} color={colors.button_color_one} />
+      <ActivityIndicator size={'large'} color={colors.main_color} />
     </View>
   );
 };

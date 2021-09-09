@@ -26,7 +26,7 @@ const TableCellEditDelete = (props) => {
         style={{
           width: 28,
           height: 28,
-          backgroundColor: colors.background_overlay,
+          backgroundColor: colors.tab_edit,
           marginRight: 8,
           justifyContent: 'center',
           alignItems: 'center',
@@ -39,7 +39,7 @@ const TableCellEditDelete = (props) => {
         style={{
           width: 28,
           height: 28,
-          backgroundColor: 'red',
+          backgroundColor: colors.delete,
           justifyContent: 'center',
           alignItems: 'center',
           borderRadius: border_radius,

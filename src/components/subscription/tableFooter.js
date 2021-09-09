@@ -137,9 +137,7 @@ const TableFooter = (props) => {
           onClose={() => setShowPerPage(false)}
         />
       )}
-      {loading && (
-        <ActivityIndicator color={colors.button_color_one} size={16} />
-      )}
+      {loading && <ActivityIndicator color={colors.main_color} size={16} />}
     </View>
   );
 };

@@ -95,7 +95,7 @@ const ModalSearchPickerCustom = (props) => {
                           ? 'circle-slice-8'
                           : 'circle-outline'
                       }
-                      color={colors.button_color_one}
+                      color={colors.main_color}
                       size={20}
                       style={{marginRight: 5}}
                     />

@@ -99,7 +99,7 @@ export default {
   },
   headerButtonCreate: {
     paddingVertical: 10,
-    backgroundColor: colors.button_color_one,
+    backgroundColor: colors.main_color,
     width: 150,
     marginTop: 15,
   },
@@ -109,7 +109,7 @@ export default {
   },
   createButton: {
     flex: 1,
-    backgroundColor: colors.button_color_one,
+    backgroundColor: colors.main_color,
     justifyContent: 'center',
     alignItems: 'center',
     paddingVertical: 14,

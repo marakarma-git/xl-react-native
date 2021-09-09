@@ -79,10 +79,7 @@ const DashboardPage = ({navigation}) => {
             <Card style={[style.cardSection, {marginTop: '3%'}]}>
               <Card.Content style={style.cardContentWrapper}>
                 {loading ? (
-                  <ActivityIndicator
-                    color={colors.button_color_one}
-                    size="large"
-                  />
+                  <ActivityIndicator color={colors.main_color} size="large" />
                 ) : (
                   <FlatList
                     data={summaryDashboardData}

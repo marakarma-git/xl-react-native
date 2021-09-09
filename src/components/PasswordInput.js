@@ -135,7 +135,7 @@ const PasswordInput = ({
       <View key={index} style={styles.formGroup}>
         <Text style={styles.label}>
           {forms.label}
-          {forms.required && <Text style={{color: 'red'}}> *</Text>}
+          {forms.required && <Text style={{color: colors.delete}}> *</Text>}
         </Text>
         <View style={styles.passwordInputWrapper}>
           <TextInput
@@ -299,10 +299,7 @@ const PasswordInput = ({
           <TouchableOpacity
             onPress={() => submitHandler(form)}
             disabled={!formComplete ? true : false}
-            style={[
-              styles.buttonGroup,
-              {backgroundColor: colors.button_color_one},
-            ]}>
+            style={[styles.buttonGroup, {backgroundColor: colors.main_color}]}>
             {requestLoading ? (
               <ActivityIndicator color={'#fff'} style={styles.buttonText} />
             ) : (

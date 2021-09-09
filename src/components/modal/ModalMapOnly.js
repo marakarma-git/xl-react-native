@@ -119,10 +119,7 @@ const ModalMapOnly = (props) => {
                   alignItems: 'center',
                 }}>
                 {loading && (
-                  <ActivityIndicator
-                    color={colors.button_color_one}
-                    size={'large'}
-                  />
+                  <ActivityIndicator color={colors.main_color} size={'large'} />
                 )}
                 {error && errorMessage && (
                   <>

@@ -104,7 +104,7 @@ const styles = StyleSheet.create({
     paddingVertical: 3,
     paddingHorizontal: 15,
     marginHorizontal: 3,
-    backgroundColor: colors.button_color_one,
+    backgroundColor: colors.main_color,
     justifyContent: 'center',
     alignItems: 'center',
     borderRadius: 5,

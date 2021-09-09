@@ -43,7 +43,7 @@ const App = () => {
     <SafeAreaProvider>
       <Provider store={store}>
         <ToastContextProvider>
-          <StatusBar backgroundColor={colors.button_color_one} />
+          <StatusBar backgroundColor={colors.main_color} />
           <PersistGate persistor={persist}>
             <Route />
           </PersistGate>

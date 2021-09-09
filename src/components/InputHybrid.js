@@ -102,16 +102,13 @@ const ContainerInput = (props) => {
           {(disabled || loading) && (
             <View style={inputHybridStyle.disableInput}>
               {loading && (
-                <ActivityIndicator
-                  size={'small'}
-                  color={colors.button_color_one}
-                />
+                <ActivityIndicator size={'small'} color={colors.main_color} />
               )}
               {disableText && !loading && <Text>{disableText}</Text>}
             </View>
           )}
         </CustomTouch>
-        <Text style={{fontSize: 10, color: 'red'}} numberOfLines={2}>
+        <Text style={{fontSize: 10, color: colors.delete}} numberOfLines={2}>
           {errorText && `Error: ${errorText}`}
         </Text>
       </View>

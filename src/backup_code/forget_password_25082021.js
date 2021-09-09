@@ -184,7 +184,7 @@ const ChangePasswordPage = ({navigation}) => {
                   {
                     backgroundColor: requestLoading
                       ? '#949494'
-                      : colors.button_color_one,
+                      : colors.main_color,
                     borderRadius: 0,
                   },
                 ]}>

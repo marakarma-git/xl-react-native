@@ -114,10 +114,7 @@ const TableCellUserAdministrationOrganization = (props) => {
                 Organization Details
               </Text>
               {loading && (
-                <ActivityIndicator
-                  color={colors.button_color_one}
-                  size="small"
-                />
+                <ActivityIndicator color={colors.main_color} size="small" />
               )}
             </View>
             <ScrollView style={{flex: 1}}>
@@ -145,7 +142,7 @@ const TableCellUserAdministrationOrganization = (props) => {
                           }}>{`- ${enterpriseName}`}</Text>
                       );
                     })}
-                  <Text style={{color: 'red'}}>{`${
+                  <Text style={{color: colors.delete}}>{`${
                     errorText ? `Error: ${errorText}` : ''
                   }`}</Text>
                 </React.Fragment>

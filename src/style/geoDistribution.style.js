@@ -27,7 +27,7 @@ export default {
   },
   containerTitle: {
     width: '100%',
-    backgroundColor: colors.button_color_one,
+    backgroundColor: colors.main_color,
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
@@ -46,13 +46,13 @@ export default {
     padding: 8,
     borderRadius: border_radius,
     flex: 1,
-    backgroundColor: colors.button_color_one,
+    backgroundColor: colors.main_color,
     justifyContent: 'center',
     alignItems: 'center',
   },
 };
 // {loading === true && (
 //   <View style={{position: 'absolute', bottom: 10, right: 10}}>
-//     <ActivityIndicator size={24} color={colors.button_color_one} />
+//     <ActivityIndicator size={24} color={colors.main_color} />
 //   </View>
 // )}

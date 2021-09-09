@@ -113,9 +113,7 @@ const SmsA2pFilter = () => {
                 style={[
                   {
                     backgroundColor:
-                      value === 'Clear'
-                        ? colors.gray_400
-                        : colors.button_color_one,
+                      value === 'Clear' ? colors.gray_400 : colors.main_color,
                   },
                   subscriptionStyle.buttonStyle,
                 ]}

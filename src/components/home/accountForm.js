@@ -12,90 +12,106 @@ const AccountFormComponent = ({
   inputHandler,
   isValidate,
   formError,
-  setIsTouch = () => {}
+  setIsTouch = () => {},
 }) => {
-  
   const formType = (form) => {
-    if(editable){
+    if (editable) {
       switch (form.type) {
-        case "text":
-          return(
+        case 'text':
+          return (
             <TextInput
               onFocus={() => setIsTouch(true)}
               onChangeText={(text) => inputHandler(form.key, text)}
-              style={[styles.textInputContainer, { backgroundColor: form.editable ? 'white' : "#e4e7ea" }]}
+              style={[
+                styles.textInputContainer,
+                {backgroundColor: form.editable ? 'white' : '#e4e7ea'},
+              ]}
               value={value[form.key]}
               editable={form.editable || false}
               placeholder={form.title}
             />
           );
-        case "select":
-          return(
+        case 'select':
+          return (
             <DropDownPicker
               disabled={!editable}
               setValue={form.config?.setValue}
               open={form.config?.isOpen}
               items={form.options}
-              style={styles.textInputContainer} 
+              style={styles.textInputContainer}
               dropDownDirection="TOP"
-              dropDownContainerStyle={{ borderRadius: 3 }}
+              dropDownContainerStyle={{borderRadius: 3}}
               searchable={form.config?.searchable}
               setOpen={form.config?.onClick}
               value={value[form.key] || form.config?.defaultValue}
             />
-          )
-        case "textarea":
-          return(
+          );
+        case 'textarea':
+          return (
             <TextInput
               onFocus={() => setIsTouch(true)}
               onChangeText={(text) => inputHandler(form.key, text)}
-              style={[styles.textInputContainer, { backgroundColor: form.editable ? 'white' : "#e4e7ea", height: 80, textAlignVertical: "top" }]}
+              style={[
+                styles.textInputContainer,
+                {
+                  backgroundColor: form.editable ? 'white' : '#e4e7ea',
+                  height: 80,
+                  textAlignVertical: 'top',
+                },
+              ]}
               numberOfLines={3}
               value={value[form.key]}
               editable={form.editable || false}
               placeholder={form.title}
             />
           );
-      
+
         default:
-          return(
+          return (
             <TextInput
               onFocus={() => setIsTouch(true)}
               onChangeText={(text) => inputHandler(form.key, text)}
-              style={[styles.textInputContainer, { backgroundColor: form.editable ? 'white' : "#e4e7ea" }]}
+              style={[
+                styles.textInputContainer,
+                {backgroundColor: form.editable ? 'white' : '#e4e7ea'},
+              ]}
               value={value[form.key]}
               editable={form.editable || false}
               placeholder={form.title}
             />
           );
       }
-    }else{
-      return(
+    } else {
+      return (
         <TextInput
           onFocus={() => setIsTouch(true)}
           onChangeText={(text) => inputHandler(form.key, text)}
-          style={[styles.textInputContainer, { backgroundColor: form.editable ? 'white' : "#e4e7ea" }]}
+          style={[
+            styles.textInputContainer,
+            {backgroundColor: form.editable ? 'white' : '#e4e7ea'},
+          ]}
           value={value[form.key]}
           editable={editable}
           placeholder={form.title}
         />
       );
     }
-  }
+  };
 
   const generateForm = () => (
     <>
       {formList.map((form, index) => (
         <View key={index} style={styles.formGroup}>
           <Text style={styles.label}>
-              {form.title}
-              {form.isRequired && <Text style={{color: 'red'}}> *</Text>}
+            {form.title}
+            {form.isRequired && <Text style={{color: colors.delete}}> *</Text>}
           </Text>
-          { formType(form) }
-          {
-            isValidate && formError[form.key] &&
-            <Text style={{ color: 'red' }}>{formError[form.key] || " "}</Text>
-          }
+          {formType(form)}
+          {isValidate && formError[form.key] && (
+            <Text style={{color: colors.delete}}>
+              {formError[form.key] || ' '}
+            </Text>
+          )}
         </View>
       ))}
     </>

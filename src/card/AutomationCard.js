@@ -35,9 +35,7 @@ const AutomationCard = (props) => {
         style={[
           cardStyle.containerHeaderRule,
           {
-            backgroundColor: !disabled
-              ? colors.button_color_one
-              : colors.gray_0,
+            backgroundColor: !disabled ? colors.main_color : colors.gray_0,
           },
         ]}>
         <Text numberOfLines={1} style={cardStyle.headerText}>

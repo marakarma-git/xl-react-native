@@ -119,7 +119,7 @@ const TableCellText = (props) => {
                     },
                     ,
                     textLink && {
-                      color: colors.button_color_one,
+                      color: colors.main_color,
                       textDecorationLine: 'underline',
                     },
                   ]}>
@@ -179,7 +179,7 @@ const TableCellText = (props) => {
                 <TouchableOpacity
                   style={[
                     inputHybridStyle.buttonStyle,
-                    {backgroundColor: colors.button_color_one},
+                    {backgroundColor: colors.main_color},
                   ]}
                   onPress={() => {
                     setShowMore(false);
