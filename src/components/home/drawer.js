@@ -133,7 +133,10 @@ const CustomMenu = ({item, style, activeMenu, submitEvent, type = 'menu'}) => {
     <View
       style={[
         style,
-        activeMenu == item.name && {backgroundColor: colors.tab_edit},
+        activeMenu == item.name && {
+          backgroundColor:
+            type === 'menu' ? colors.main_color_overlay : colors.tab_edit,
+        },
       ]}>
       <DrawerItem
         label={() => (
