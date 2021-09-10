@@ -178,12 +178,12 @@ const PasswordInput = ({
 
   const rulesColorValidator = (valid) => {
     if (valid) {
-      return '#048004';
+      return colors.tab_edit;
     }
     if (valid == false) {
-      return '#FF0101';
+      return colors.delete;
     }
-    return '#949494';
+    return colors.disabled_cancel;
   };
 
   const checkFormComplete = () => {

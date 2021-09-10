@@ -18,7 +18,7 @@ const CustomCheckBox = (props) => {
             backgroundColor: disabled
               ? colors.gray
               : value
-              ? colors.green_filter_text
+              ? colors.checked_box
               : colors.gray,
             borderRadius: 4,
             justifyContent: 'center',
@@ -31,7 +31,7 @@ const CustomCheckBox = (props) => {
             backgroundColor: disabled
               ? colors.gray
               : value
-              ? colors.green_filter_text
+              ? colors.checked_box
               : 'white',
             borderRadius: 3,
           }}

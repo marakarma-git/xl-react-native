@@ -36,7 +36,7 @@ export default {
   },
   usernameText: {
     fontSize: 14,
-    color: '#00D3A0',
+    color: colors.main_color_overlay,
     fontWeight: 'bold',
     textAlign: 'center',
   },

@@ -6,6 +6,7 @@ import {Card} from 'react-native-paper';
 import Entypo from 'react-native-vector-icons/Entypo';
 
 import styles from '../../style/home.style';
+import {colors} from '../../constant/color';
 
 const FormStepComponent = (props) => {
   return (
@@ -40,7 +41,7 @@ const FormStepHeaderComponent = (props) => {
       <Card.Content style={styles.formStepHeader}>
         <CircularProgress
           stepPercent={((formPosition + 1) / formLength) * 100}
-          color="#00D3A0"
+          color={colors.main_color_overlay}
           shadowColor="#eee"
           progressText={`${formPosition + 1} of ${formLength}`}
         />
@@ -148,7 +149,7 @@ FormStepComponent.defaultProps = {
   formPosition: 0,
   formLength: 0,
   formTitle: 'Default Form Title',
-  formDescription: "lorem ipsum sit dolor amet orem ipsum dolor",
+  formDescription: 'lorem ipsum sit dolor amet orem ipsum dolor',
   formBody: [],
   onCancel: () => {},
   onNext: () => {},

@@ -84,14 +84,17 @@ const BarChartComponent = ({
               ]}
               horizontal
               style={{
-                data: {fill: '#00D3A0', width: 15},
+                data: {fill: colors.main_color_overlay, width: 15},
               }}
               labelComponent={
                 <VictoryTooltip
                   dx={-30}
                   dy={20}
                   orientation="top"
-                  flyoutStyle={{stroke: '#00D3A0', fill: 'white'}}
+                  flyoutStyle={{
+                    stroke: colors.main_color_overlay,
+                    fill: 'white',
+                  }}
                   flyoutWidth={130}
                   flyoutHeight={40}
                   labelComponent={<CustomLabel />}

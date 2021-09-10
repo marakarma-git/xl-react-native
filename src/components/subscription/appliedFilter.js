@@ -13,7 +13,7 @@ const LocalComponent = (props) => {
   return (
     <View
       style={{
-        backgroundColor: colors.green_filter_text,
+        backgroundColor: colors.checked_box,
         marginRight: 8,
         borderRadius: border_radius,
         paddingVertical: 2,

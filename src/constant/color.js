@@ -44,4 +44,5 @@ export const colors = {
   tab_edit: color_theme_one.green,
   delete: color_theme_one.red,
   disabled_cancel: color_theme_one.silver,
+  checked_box: color_theme_one.green,
 };

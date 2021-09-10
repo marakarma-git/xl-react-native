@@ -11,7 +11,7 @@ const FilterLabelComponent = (props) => {
   return (
     <View
       style={{
-        backgroundColor: colors.green_filter_text,
+        backgroundColor: colors.checked_box,
         height: 20,
         marginRight: 5,
         marginBottom: 5,
