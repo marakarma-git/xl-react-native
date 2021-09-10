@@ -135,7 +135,9 @@ const CustomMenu = ({item, style, activeMenu, submitEvent, type = 'menu'}) => {
         style,
         activeMenu == item.name && {
           backgroundColor:
-            type === 'menu' ? colors.main_color_overlay : colors.tab_edit,
+            type === 'menu' && !item.subMenu
+              ? colors.main_color_overlay
+              : colors.tab_edit,
         },
       ]}>
       <DrawerItem
