@@ -1,4 +1,4 @@
-const color_theme_one = {
+export const color_theme_one = {
   blue: '#164396',
   cyan: '#20c4f4',
   red: '#c40042',
