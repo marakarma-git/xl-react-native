@@ -34,7 +34,7 @@ const TableCellViewMap = (props) => {
             justifyContent: 'center',
             alignItems: 'center',
             flexDirection: 'row',
-            backgroundColor: colors.main_color_overlay,
+            backgroundColor: colors.tab_edit,
             marginHorizontal: '20%',
             paddingVertical: 4,
             borderRadius: border_radius,
