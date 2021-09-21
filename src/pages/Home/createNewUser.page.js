@@ -234,12 +234,9 @@ const CreateNewUserPage = ({route, navigation}) => {
 
   const onNextRules = () => {
     let isComplete = false;
-
     if (formPosition === 0) {
       if (userId) {
-        if (isBasicInformationComplete) {
-          isComplete = true;
-        }
+        isComplete = true;
       } else {
         if (isCreatePasswordComplete && isBasicInformationComplete) {
           isComplete = true;
@@ -258,6 +255,8 @@ const CreateNewUserPage = ({route, navigation}) => {
         isComplete = true;
       }
     }
+
+    console.log(isComplete, ' is complete ');
 
     if (isComplete) {
       setFormPosition((prevState) => prevState + 1);

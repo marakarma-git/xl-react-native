@@ -391,6 +391,8 @@ const UserAdministrationPage = ({route}) => {
   useEffect(() => {
     return navigation.addListener('focus', () => {
       checkActionPriviledge();
+      setSelectedUser([]);
+
       // dispatch(
       //   saveActivityLog(route.name, 'View', ADMINISTRATION_PRIVILEDGE_ID),
       // );

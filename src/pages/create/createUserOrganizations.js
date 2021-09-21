@@ -144,6 +144,10 @@ const CreateOrganization = (props) => {
           }
         }
         parentSelected = true;
+      } else {
+        if (props.selectedRadio === 1) {
+          data.isDisabled = true;
+        }
       }
 
       newData.push(data);

@@ -111,7 +111,6 @@ const CreateRolesPropertiesOwnership = (props) => {
 
   useEffect(() => {
     if (data_active_enterprise.length > 0) {
-      console.log('Change');
       setGridData(Helper.manipulateIsDisabledArray(data_active_enterprise));
     }
   }, [data_active_enterprise]);

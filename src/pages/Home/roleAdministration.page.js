@@ -307,6 +307,7 @@ const RoleAdministrationPage = ({route, navigation}) => {
   useEffect(() => {
     return navigation.addListener('focus', () => {
       checkActionPriviledge();
+      setSelectedRoles([]);
       // dispatch(saveActivityLog(
       //   route.name,
       //   'View',

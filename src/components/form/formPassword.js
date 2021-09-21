@@ -6,6 +6,7 @@ import Feather from 'react-native-vector-icons/Feather';
 import Entypo from 'react-native-vector-icons/Entypo';
 
 import styles from '../../style/account.style';
+import {colors} from '../../constant/color';
 
 const FormPassword = (props) => {
   const rulesColorValidator = (valid) => {

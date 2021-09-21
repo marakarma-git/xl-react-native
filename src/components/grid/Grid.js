@@ -10,16 +10,19 @@ import {
 
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import CustomCheckBox from '../grid/GridCheckBox';
-import {colors} from '../../constant/color';
+import {colors, color_theme_one} from '../../constant/color';
 
 const GridComponent = (props) => {
   return (
     <View style={{width: '100%'}}>
       <View style={{flexDirection: 'row'}}>
         <GridHeaderComponent
+          sortField={props.sortField}
+          sortType={props.sortType}
           gridOptions={props.gridOptions}
           colHeight={props.colHeight}
           onPressHeaderCheckBox={props.onPressHeaderCheckBox}
+          onSort={props.onSort}
         />
       </View>
       {props.loading ? (
@@ -62,6 +65,7 @@ const GridHeaderComponent = (props) => {
             bgColor={option.bgColor}
             headerAlign={option.headerAlign}
             label={option.label}
+            field={option.field}
             {...props}
           />
         );
@@ -75,6 +79,20 @@ const GridHeaderComponent = (props) => {
             headerAlign={option.headerAlign}
             label={option.label}
             isCheck={option.isCheck}
+            field={option.field}
+            {...props}
+          />
+        );
+      case 'sortable':
+        return (
+          <GridHeaderSortableComponent
+            key={index}
+            width={option.width}
+            headerAlign={option.headerAlign}
+            bgColor={option.bgColor}
+            headerAlign={option.headerAlign}
+            label={option.label}
+            field={option.field}
             {...props}
           />
         );
@@ -142,6 +160,50 @@ const GridHeaderCheckBoxComponent = (props) => {
         onPress={() => props.onPressHeaderCheckBox(null)}
       />
     </View>
+  );
+};
+
+const GridHeaderSortableComponent = (props) => {
+  return (
+    <TouchableOpacity
+      key={props.index}
+      onPress={() => props.onSort(props.sortType, props.field)}
+      style={{
+        height: props.colHeight,
+        width: props.width,
+        justifyContent: 'center',
+        alignItems: props.headerAlign,
+        backgroundColor: props.bgColor || '#F4F3F4',
+        borderBottomColor: '#D8D8D8',
+        borderBottomWidth: 1,
+        borderRightColor: 'white',
+        borderRightWidth: 1,
+        flexDirection: 'row',
+      }}>
+      <Text style={{color: props.headerColor || 'black', paddingRight: 3}}>
+        {props.label}{' '}
+      </Text>
+      <View>
+        <Ionicons
+          name="caret-up"
+          size={10}
+          color={
+            props.sortField === props.field && props.sortType === 'asc'
+              ? colors.sorted_table_color
+              : colors.gray
+          }
+        />
+        <Ionicons
+          name="caret-down"
+          size={10}
+          color={
+            props.sortField === props.field && props.sortType === 'desc'
+              ? colors.sorted_table_color
+              : colors.gray
+          }
+        />
+      </View>
+    </TouchableOpacity>
   );
 };
 
@@ -370,6 +432,9 @@ GridComponent.propTypes = {
   colHeight: PropTypes.number,
   keyExtractor: PropTypes.string,
   onPressHeaderCheckBox: PropTypes.func,
+  sortType: PropTypes.string,
+  sortField: PropTypes.string,
+  onSort: PropTypes.func,
 };
 
 GridComponent.defaultProps = {
@@ -379,11 +444,14 @@ GridComponent.defaultProps = {
   gridOptions: [],
   colHeight: 40,
   tableMaxHeight: 100,
+  sortType: null,
+  sortField: null,
   onPressTree: () => {},
   onPressCell: () => {},
   onPressCheckBox: () => {},
   dataSetter: () => {},
   onPressHeaderCheckBox: () => {},
+  onSort: () => {},
 };
 
 export default GridComponent;
