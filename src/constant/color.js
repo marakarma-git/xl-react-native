@@ -38,6 +38,7 @@ export const colors = {
   chart_axis_stroke: '#e6e6e6',
   chart_line_red: '#f86c6b',
   chart_line_blue: '#0E83F4',
+  sorted_table_color: '#20a8d8',
 
   main_color: color_theme_one.blue,
   main_color_overlay: color_theme_one.cyan,

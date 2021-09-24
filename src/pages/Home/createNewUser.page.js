@@ -82,6 +82,7 @@ const passwordRulesArray = [
 
 const CreateNewUserPage = ({route, navigation}) => {
   const userId = route.params?.userId || '';
+  const enterDate = route.params?.enterDate || '';
   const dispatch = useDispatch();
   const showToast = useToastHooks();
   const listViewRef = useRef();
@@ -234,12 +235,9 @@ const CreateNewUserPage = ({route, navigation}) => {
 
   const onNextRules = () => {
     let isComplete = false;
-
     if (formPosition === 0) {
       if (userId) {
-        if (isBasicInformationComplete) {
-          isComplete = true;
-        }
+        isComplete = true;
       } else {
         if (isCreatePasswordComplete && isBasicInformationComplete) {
           isComplete = true;
@@ -258,6 +256,8 @@ const CreateNewUserPage = ({route, navigation}) => {
         isComplete = true;
       }
     }
+
+    console.log(isComplete, ' is complete ');
 
     if (isComplete) {
       setFormPosition((prevState) => prevState + 1);
@@ -422,7 +422,9 @@ const CreateNewUserPage = ({route, navigation}) => {
             }),
         );
         setSelectedRadio(result.xlUser ? 0 : 1);
-        setSelectedOrganization(result.enterpriseScope);
+        setSelectedOrganization(
+          result.xlUser ? result.enterpriseScope : [result.enterpriseId],
+        );
         setDataRoleId(result.roleId);
         setLoadingUserDetail(false);
       }
@@ -444,7 +446,7 @@ const CreateNewUserPage = ({route, navigation}) => {
         setLoadingUserDetail(false);
       }, 1000);
     }
-  }, [userId]);
+  }, [userId, enterDate]);
 
   useEffect(() => {
     const pageLoad = navigation.addListener('focus', () => {

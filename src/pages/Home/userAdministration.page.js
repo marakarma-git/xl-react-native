@@ -134,6 +134,7 @@ const UserAdministrationPage = ({route}) => {
     switch (e.value) {
       case '0':
         navigation.navigate('Create User', {
+          enterDate: new Date(),
           userId: '',
         });
         break;
@@ -141,6 +142,7 @@ const UserAdministrationPage = ({route}) => {
       case '1':
         if (selectedUser.length > 0) {
           navigation.navigate('Create User', {
+            enterDate: new Date(),
             userId: selectedUser[0].userId,
           });
         } else {
@@ -391,6 +393,9 @@ const UserAdministrationPage = ({route}) => {
   useEffect(() => {
     return navigation.addListener('focus', () => {
       checkActionPriviledge();
+      setSelectedUser([]);
+      updateActionAccess([]);
+
       // dispatch(
       //   saveActivityLog(route.name, 'View', ADMINISTRATION_PRIVILEDGE_ID),
       // );
