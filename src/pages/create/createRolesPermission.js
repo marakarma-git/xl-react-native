@@ -110,18 +110,23 @@ const CreateRolesPermission = (props) => {
     }
   };
 
-  const onSort = (sortType, sortField) => {
+  const onSort = (sortType, field) => {
     let isSort = null;
     let newData = [...gridData];
-    if (sortType === null) isSort = 'asc';
-    if (sortType === 'asc') isSort = 'desc';
-    if (sortType === 'desc') isSort = 'asc';
+    if (field === null || field === sortField) {
+      if (sortType === null) isSort = 'asc';
+      if (sortType === 'asc') isSort = 'desc';
+      if (sortType === 'desc') isSort = 'asc';
+    }
+    if (field !== null && field !== sortField) {
+      isSort = 'asc';
+    }
     setSortType(isSort);
-    setSortField(sortField);
+    setSortField(field);
     if (isSort === 'asc')
-      newData.sort((a, b) => (a[sortField] > b[sortField] ? 1 : -1));
+      newData.sort((a, b) => (a[field] > b[field] ? 1 : -1));
     if (isSort === 'desc')
-      newData.sort((a, b) => (a[sortField] < b[sortField] ? 1 : -1));
+      newData.sort((a, b) => (a[field] < b[field] ? 1 : -1));
 
     setGridData((prevState) => (prevState = newData));
   };

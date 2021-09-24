@@ -510,10 +510,7 @@ class Helper {
         } else {
           if (cellId) {
             if (selectedRadio === 1) {
-              if (
-                data.enterpriseId !== cellId &&
-                data.enterpriseParentId !== null
-              ) {
+              if (data.enterpriseId !== cellId) {
                 data.isDisabled = !data.isDisabled;
               }
             }

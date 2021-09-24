@@ -82,6 +82,7 @@ const passwordRulesArray = [
 
 const CreateNewUserPage = ({route, navigation}) => {
   const userId = route.params?.userId || '';
+  const enterDate = route.params?.enterDate || '';
   const dispatch = useDispatch();
   const showToast = useToastHooks();
   const listViewRef = useRef();
@@ -421,7 +422,9 @@ const CreateNewUserPage = ({route, navigation}) => {
             }),
         );
         setSelectedRadio(result.xlUser ? 0 : 1);
-        setSelectedOrganization(result.enterpriseScope);
+        setSelectedOrganization(
+          result.xlUser ? result.enterpriseScope : [result.enterpriseId],
+        );
         setDataRoleId(result.roleId);
         setLoadingUserDetail(false);
       }
@@ -443,7 +446,7 @@ const CreateNewUserPage = ({route, navigation}) => {
         setLoadingUserDetail(false);
       }, 1000);
     }
-  }, [userId]);
+  }, [userId, enterDate]);
 
   useEffect(() => {
     const pageLoad = navigation.addListener('focus', () => {

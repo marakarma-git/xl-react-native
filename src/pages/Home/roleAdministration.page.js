@@ -308,6 +308,8 @@ const RoleAdministrationPage = ({route, navigation}) => {
     return navigation.addListener('focus', () => {
       checkActionPriviledge();
       setSelectedRoles([]);
+      updateActionAccess([]);
+
       // dispatch(saveActivityLog(
       //   route.name,
       //   'View',
