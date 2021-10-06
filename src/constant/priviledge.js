@@ -33,6 +33,8 @@ import {
   SimProductivityFilterPage,
   UsageAnalyticsFilterPage,
   UsageSubscribersAnalyticsFilterPage,
+  SubscriptionPackageEditPage,
+  SmsA2pEditPage,
 } from '../pages/Home/index';
 
 import {
@@ -181,6 +183,12 @@ export const DRAWER_MENU_PRIVILEDGE = [
     components: SmsA2pFilterPage,
   },
   {
+    name: 'SmsA2pEdit',
+    icon: '',
+    type: 'non-drawer',
+    components: SmsA2pEditPage,
+  },
+  {
     name: 'SubscriptionFilter',
     icon: '',
     type: 'non-drawer',
@@ -274,6 +282,14 @@ export const DRAWER_MENU_PRIVILEDGE = [
     width: 25,
     height: 25,
     components: SubscriptionPackageFilterPage,
+  },
+  {
+    name: 'SubscriptionPackageEdit',
+    icon: '',
+    type: 'non-drawer',
+    width: 25,
+    height: 25,
+    components: SubscriptionPackageEditPage,
   },
   {
     name: 'GeoDistributionFilterPage',
