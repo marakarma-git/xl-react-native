@@ -33,3 +33,5 @@ export {default as UsageSubscribersAnalyticsFilterPage} from './usageSubscribers
 export {default as GeoDistributionFilterPage} from './geoDistributionFilter.page';
 export {default as SimProductivityFilterPage} from './simProductivityFilter.page';
 export {default as UsageAnalyticsFilterPage} from './usageAnalyticsFilterPage';
+export {default as SubscriptionPackageEditPage} from './subscriptionPackageEdit.page';
+export {default as SmsA2pEditPage} from './smsA2pEdit.page';
