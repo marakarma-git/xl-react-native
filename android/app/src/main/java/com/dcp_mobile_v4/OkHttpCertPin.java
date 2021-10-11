@@ -11,7 +11,7 @@ private static String hostname = "*.adlsandbox.com";
 @Override
 public OkHttpClient createNewNetworkModuleClient() {
 CertificatePinner certificatePinner = new CertificatePinner.Builder()
-.add(hostname, "sha256/GR14DBuqqPUsBx6/T+aAy0eBowtpGwHc7utgmBFzFsQ=")
+.add(hostname, "sha256/ypLAu5dA18sUQaGqjVkelyn/27G5YG3eQnkIieZt9yg=")
 .build();
 OkHttpClient.Builder client = new OkHttpClient.Builder()
 .connectTimeout(0, TimeUnit.MILLISECONDS)
