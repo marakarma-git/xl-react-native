@@ -10,7 +10,7 @@ import PropTypes from 'prop-types';
 
 const TableCellEditDelete = (props) => {
   const {config, onPressEdit, onPressDelete, item, subItem} = props || {};
-  const {width, height, backgroundColor, key} = config || {};
+  const {width, height, backgroundColor, key, removeDelete} = config || {};
   return (
     <View
       key={key}
@@ -27,7 +27,7 @@ const TableCellEditDelete = (props) => {
           width: 28,
           height: 28,
           backgroundColor: colors.tab_edit,
-          marginRight: 8,
+          marginRight: !removeDelete ? 8 : 0,
           justifyContent: 'center',
           alignItems: 'center',
           borderRadius: border_radius,
@@ -35,18 +35,20 @@ const TableCellEditDelete = (props) => {
         onPress={() => onPressEdit(props)}>
         <Feather name={'edit'} size={20} color={'white'} />
       </TouchableOpacity>
-      <TouchableOpacity
-        style={{
-          width: 28,
-          height: 28,
-          backgroundColor: colors.delete,
-          justifyContent: 'center',
-          alignItems: 'center',
-          borderRadius: border_radius,
-        }}
-        onPress={() => onPressDelete(props)}>
-        <FontAwesome5 name={'trash-alt'} size={20} color={'white'} />
-      </TouchableOpacity>
+      {!removeDelete && (
+        <TouchableOpacity
+          style={{
+            width: 28,
+            height: 28,
+            backgroundColor: colors.delete,
+            justifyContent: 'center',
+            alignItems: 'center',
+            borderRadius: border_radius,
+          }}
+          onPress={() => onPressDelete(props)}>
+          <FontAwesome5 name={'trash-alt'} size={20} color={'white'} />
+        </TouchableOpacity>
+      )}
     </View>
   );
 };

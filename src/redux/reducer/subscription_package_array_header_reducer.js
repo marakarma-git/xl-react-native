@@ -7,11 +7,12 @@ const dataHeaderFilter = [
     formId: 'subscription-dummy-edit-button',
     api_id: '',
     cellType: 'TableCellHeader',
-    cellRowType: 'TableCellText',
+    cellRowType: 'TableCellEditDelete',
     config: {
       label: 'Action',
       doNotShowOnFilter: true,
-      width: 160,
+      width: 65,
+      removeDelete: true, //this is just for tableCellEditDelete Only!
     },
     shown: true,
   },
@@ -20,18 +21,23 @@ const dataHeaderFilter = [
     api_id: 'packageId',
     value: '',
     typeInput: 'TextInput',
-    cellType: 'TableCellHeaderCheckBox',
-    cellRowType: 'TableCellCheckBox',
+    cellType: 'TableCellHeader',
+    cellRowType: 'TableCellText',
     params: '&packageId=',
     config: {
       label: 'ID',
       doNotShowOnFilter: true,
       // isTouchable: true,
-      width: 180,
+      width: 160,
     },
     valueCheck: false,
     shown: true,
     sort_by_filter: 0,
+    on_edit_config: {
+      type_input_edit: 'TextInput',
+      edit_label: 'ID',
+      disabled: true,
+    },
   },
   {
     formId: 'subscription-description-hard-code',
@@ -50,6 +56,11 @@ const dataHeaderFilter = [
     },
     shown: true,
     sort_by_filter: 3,
+    on_edit_config: {
+      type_input_edit: 'Description',
+      edit_label: '',
+      disabled: true,
+    },
   },
   {
     formId: 'subscription-enterprise-hard-code',
@@ -66,16 +77,28 @@ const dataHeaderFilter = [
     },
     shown: true,
     sort_by_filter: 2,
+    on_edit_config: {
+      type_input_edit: 'Enterprise',
+      edit_label: '',
+      disabled: true,
+    },
   },
   {
     formId: 'subscription-quota-internet-hard-code',
     api_id: 'quotaInternet',
+    second_api_id: 'quotaInternetType',
     cellType: 'TableCellHeader',
     cellRowType: 'TableCellText',
     config: {
       label: 'Quota Internet',
     },
     shown: true,
+    on_edit_config: {
+      type_input_edit: 'DropDownType2',
+      edit_label: 'Quota Internet',
+      edit_text_type: 'Currency',
+      noDefaultCurrency: true,
+    },
   },
   {
     formId: 'subscription-quota-sms-hard-code',
@@ -86,6 +109,12 @@ const dataHeaderFilter = [
       label: 'Quota SMS',
     },
     shown: true,
+    on_edit_config: {
+      type_input_edit: 'TextInput',
+      edit_label: 'Quota SMS',
+      edit_text_type: 'Currency',
+      constantLabelRight: 'SMS',
+    },
   },
   {
     formId: 'subscription-price-sim-card-hard-code',
@@ -98,6 +127,12 @@ const dataHeaderFilter = [
       width: 220,
     },
     shown: true,
+    on_edit_config: {
+      type_input_edit: 'TextInput',
+      edit_label: 'Price per SIM Card',
+      edit_text_type: 'Currency',
+      constantLabelLeft: 'IDR',
+    },
   },
   {
     formId: 'subscription-price-bulk-shared-hard-code',
@@ -110,6 +145,12 @@ const dataHeaderFilter = [
       width: 220,
     },
     shown: true,
+    on_edit_config: {
+      type_input_edit: 'TextInput',
+      edit_label: 'Price Bulk Shared',
+      edit_text_type: 'Currency',
+      constantLabelLeft: 'IDR',
+    },
   },
   {
     formId: 'subscription-package-type-hard-code',
@@ -120,6 +161,11 @@ const dataHeaderFilter = [
       label: 'Package Type',
     },
     shown: true,
+    on_edit_config: {
+      type_input_edit: 'DropDown',
+      edit_label: 'Package Type',
+      disabled: false,
+    },
   },
   {
     formId: 'subscription-package-period-hard-code',
@@ -130,6 +176,10 @@ const dataHeaderFilter = [
       label: 'Package Period',
     },
     shown: true,
+    on_edit_config: {
+      type_input_edit: 'DropDown',
+      edit_label: 'Package Period',
+    },
   },
   {
     formId: 'subscription-network-hard-code',
@@ -140,6 +190,10 @@ const dataHeaderFilter = [
       label: 'Network',
     },
     shown: true,
+    on_edit_config: {
+      type_input_edit: 'DropDown',
+      edit_label: 'Network',
+    },
   },
   {
     formId: 'subscription-price-plan-hard-code',
@@ -151,6 +205,10 @@ const dataHeaderFilter = [
       isTouchable: true,
     },
     shown: true,
+    on_edit_config: {
+      type_input_edit: 'TextInput',
+      edit_label: 'Price Plan',
+    },
   },
   {
     formId: 'subscription-bearers-hard-code',
@@ -162,6 +220,11 @@ const dataHeaderFilter = [
       isTouchable: true,
     },
     shown: true,
+    on_edit_config: {
+      type_input_edit: 'TextInput',
+      edit_label: 'Bearers',
+      disabled: true,
+    },
   },
   {
     formId: 'subscription-status-hard-code',
@@ -178,6 +241,11 @@ const dataHeaderFilter = [
     },
     shown: true,
     sort_by_filter: 4,
+    on_edit_config: {
+      type_input_edit: 'TextInput',
+      edit_label: 'Status',
+      disabled: true,
+    },
   },
   {
     formId: 'subscription-trigger-management-hard-code',
@@ -190,6 +258,11 @@ const dataHeaderFilter = [
       width: 220,
     },
     shown: true,
+    on_edit_config: {
+      type_input_edit: 'TextInput',
+      edit_label: 'Trigger Management',
+      disabled: true,
+    },
   },
   {
     formId: 'subscription-contract-id-hard-code',
@@ -206,6 +279,11 @@ const dataHeaderFilter = [
     },
     shown: true,
     sort_by_filter: 1,
+    on_edit_config: {
+      type_input_edit: 'TextInput',
+      edit_label: 'Service Contract ID',
+      disabled: true,
+    },
   },
   {
     formId: 'subscription-excess-fee-hard-code',
@@ -218,6 +296,12 @@ const dataHeaderFilter = [
       width: 260,
     },
     shown: true,
+    on_edit_config: {
+      type_input_edit: 'TextInput',
+      edit_label: 'Excess Fee',
+      edit_text_type: 'Currency',
+      constantLabelLeft: 'IDR',
+    },
   },
 ];
 const initialState = {

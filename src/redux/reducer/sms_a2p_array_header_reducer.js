@@ -8,11 +8,11 @@ const dataSmsHeader = [
     formId: 'sms-a2p-dummy-action',
     api_id: '',
     cellType: 'TableCellHeader',
-    cellRowType: 'TableCellText',
+    cellRowType: 'TableCellEditDelete',
     config: {
       label: 'Action',
       doNotShowOnFilter: true,
-      width: 160,
+      width: 75,
     },
     shown: true,
   },

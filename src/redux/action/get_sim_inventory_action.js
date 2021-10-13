@@ -86,7 +86,8 @@ const dataMatcherArray2D = (listData = [], headerData = []) => {
   listData.map((item, index) => {
     const subGenerated = [];
     headerData.map((subItem) => {
-      const {shown, api_id, config, formId, ...rest} = subItem || {};
+      const {shown, api_id, second_api_id, config, formId, on_edit_config} =
+        subItem || {};
       const {
         width,
         superType,
@@ -113,9 +114,11 @@ const dataMatcherArray2D = (listData = [], headerData = []) => {
             return firstValue;
           }
         };
-        const generateObject = {
+        let generateObject = {
+          position_table_index: index,
           cellType: subItem.cellRowType,
           config: {
+            ...config,
             flexStart: flexStart,
             width: width,
             superType: superType,
@@ -143,6 +146,34 @@ const dataMatcherArray2D = (listData = [], headerData = []) => {
           subItem,
           valueCheck: false,
         };
+        if (on_edit_config) {
+          generateObject.edit_form_id = `edit-${formId}`;
+          let objectEdit = {...on_edit_config};
+          const {type_input_edit} = on_edit_config || {};
+          if (type_input_edit === 'TextInput') {
+            objectEdit.edit_value = item[`${api_id}`];
+          }
+          if (type_input_edit === 'DropDown') {
+            objectEdit.edit_value = {
+              value: item[`${api_id}`],
+              label: item[`${api_id}`],
+            };
+            objectEdit.edit_data_array = [];
+          }
+          if (type_input_edit === 'DropDownType2') {
+            objectEdit.edit_value = {
+              value: item[`${api_id}`],
+              label: item[`${api_id}`],
+            };
+            objectEdit.edit_value2 = {
+              value: item[`${second_api_id}`],
+              label: item[`${second_api_id}`],
+            };
+            objectEdit.edit_data_array = [];
+            objectEdit.edit_data_array_2 = [];
+          }
+          generateObject.for_layout_edit_only = objectEdit;
+        }
         subGenerated.push(generateObject);
       } else {
         return null;

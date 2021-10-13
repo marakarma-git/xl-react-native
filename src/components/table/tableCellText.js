@@ -12,7 +12,7 @@ import Text from '../global/text';
 import {defaultHeightCell, defaultWidthCell} from '../../constant/config';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import styles from '../../style/drawer.style';
-import lod from 'lodash';
+import lod, {isNaN} from 'lodash';
 import {inputHybridStyle} from '../../style';
 import {colors} from '../../constant/color';
 import Clipboard from '@react-native-community/clipboard';
@@ -27,8 +27,15 @@ const TableCellText = (props) => {
   const [moreText, setMoreText] = useState(false);
   const [showMore, setShowMore] = useState(false);
   const [textRaw, setTextRaw] = useState('');
-  const {config, onPress, otherInformation, onPressArrow, item, subItem} =
-    props || {};
+  const {
+    config,
+    onPress,
+    otherInformation,
+    onPressArrow,
+    item,
+    subItem,
+    for_layout_edit_only,
+  } = props || {};
   const {child_api_id} = subItem || '';
   const {
     label,
@@ -48,7 +55,48 @@ const TableCellText = (props) => {
     rootConfig,
   } = config || {};
   const {condition} = rootConfig || {};
+  const createLocalLabel = (editTextType, valueLocal, removeZero) => {
+    if (editTextType === 'Currency') {
+      return valueLocal
+        ? valueLocal.replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1.')
+        : removeZero === true
+        ? ''
+        : '0';
+    } else {
+      return valueLocal || '';
+    }
+  };
   const createLabel = () => {
+    if (for_layout_edit_only) {
+      const {
+        type_input_edit,
+        edit_value,
+        edit_value2,
+        edit_text_type,
+        constantLabelLeft,
+        constantLabelRight,
+        noDefaultCurrency,
+      } = for_layout_edit_only || {};
+      if (type_input_edit === 'TextInput') {
+        return `${
+          constantLabelLeft ? `${constantLabelLeft} ` : ''
+        }${createLocalLabel(
+          edit_text_type,
+          edit_value && edit_value.toString(),
+          noDefaultCurrency,
+        )}${constantLabelRight ? ` ${constantLabelRight}` : ''}`;
+      }
+      if (type_input_edit === 'DropDown') {
+        return edit_value.label;
+      }
+      if (type_input_edit === 'DropDownType2') {
+        return `${createLocalLabel(
+          edit_text_type,
+          edit_value.label,
+          noDefaultCurrency,
+        )} ${edit_value2.label || ''}`;
+      }
+    }
     if (condition) {
       return condition[`${label}`];
     }
@@ -57,6 +105,8 @@ const TableCellText = (props) => {
     }
     if (child_api_id) {
       return label + (child_api_id ? ` ${item[`${child_api_id}`]}` : '');
+    } else {
+      return label;
     }
   };
   const onLongPress = () => {

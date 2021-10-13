@@ -74,6 +74,15 @@ const SubscriptionPackagePage = () => {
       companyLogo={imageBase64}>
       <View style={subscriptionStyle.containerBackground}>
         <Table
+          onPressEdit={({position_table_index}) =>
+            console.log(
+              JSON.stringify(
+                data_subscription_generated[position_table_index],
+                null,
+                2,
+              ),
+            )
+          }
           isScrollView={true}
           stickHeaderIndices={[1]}
           onRight
