@@ -52,6 +52,9 @@ InputHybrid.propTypes = {
   selectedValue: PropTypes.string,
   onChange2: PropTypes.func,
   errorText: PropTypes.string,
+  constantLabelLeft: PropTypes.string,
+  constantLabelRight: PropTypes.string,
+  placeholder: PropTypes.string,
 };
 export default InputHybrid;
 
@@ -116,15 +119,23 @@ const ContainerInput = (props) => {
   );
 };
 const NormalInput = (props) => {
-  const {onChange, value, placeholder} = props;
+  const {
+    onChange,
+    value,
+    placeholder,
+    constantLabelLeft,
+    constantLabelRight,
+  } = props;
   return (
     <ContainerInput {...props}>
+      <Text>{constantLabelLeft || ''}</Text>
       <TextInput
         style={inputHybridStyle.textInputStyle}
         onChangeText={onChange}
         value={value}
         placeholder={placeholder}
       />
+      <Text>{constantLabelRight || ''}</Text>
     </ContainerInput>
   );
 };

@@ -170,7 +170,6 @@ const dataMatcherArray2D = (listData = [], headerData = []) => {
               label: item[`${second_api_id}`],
             };
             objectEdit.edit_data_array = [];
-            objectEdit.edit_data_array_2 = [];
           }
           generateObject.for_layout_edit_only = objectEdit;
         }

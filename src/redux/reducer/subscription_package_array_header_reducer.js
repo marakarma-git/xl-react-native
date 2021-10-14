@@ -27,17 +27,11 @@ const dataHeaderFilter = [
     config: {
       label: 'ID',
       doNotShowOnFilter: true,
-      // isTouchable: true,
       width: 160,
     },
     valueCheck: false,
     shown: true,
     sort_by_filter: 0,
-    on_edit_config: {
-      type_input_edit: 'TextInput',
-      edit_label: 'ID',
-      disabled: true,
-    },
   },
   {
     formId: 'subscription-description-hard-code',
@@ -56,11 +50,6 @@ const dataHeaderFilter = [
     },
     shown: true,
     sort_by_filter: 3,
-    on_edit_config: {
-      type_input_edit: 'Description',
-      edit_label: '',
-      disabled: true,
-    },
   },
   {
     formId: 'subscription-enterprise-hard-code',
@@ -77,11 +66,6 @@ const dataHeaderFilter = [
     },
     shown: true,
     sort_by_filter: 2,
-    on_edit_config: {
-      type_input_edit: 'Enterprise',
-      edit_label: '',
-      disabled: true,
-    },
   },
   {
     formId: 'subscription-quota-internet-hard-code',
@@ -220,11 +204,6 @@ const dataHeaderFilter = [
       isTouchable: true,
     },
     shown: true,
-    on_edit_config: {
-      type_input_edit: 'TextInput',
-      edit_label: 'Bearers',
-      disabled: true,
-    },
   },
   {
     formId: 'subscription-status-hard-code',
@@ -241,11 +220,6 @@ const dataHeaderFilter = [
     },
     shown: true,
     sort_by_filter: 4,
-    on_edit_config: {
-      type_input_edit: 'TextInput',
-      edit_label: 'Status',
-      disabled: true,
-    },
   },
   {
     formId: 'subscription-trigger-management-hard-code',
@@ -258,11 +232,6 @@ const dataHeaderFilter = [
       width: 220,
     },
     shown: true,
-    on_edit_config: {
-      type_input_edit: 'TextInput',
-      edit_label: 'Trigger Management',
-      disabled: true,
-    },
   },
   {
     formId: 'subscription-contract-id-hard-code',
@@ -279,11 +248,6 @@ const dataHeaderFilter = [
     },
     shown: true,
     sort_by_filter: 1,
-    on_edit_config: {
-      type_input_edit: 'TextInput',
-      edit_label: 'Service Contract ID',
-      disabled: true,
-    },
   },
   {
     formId: 'subscription-excess-fee-hard-code',
