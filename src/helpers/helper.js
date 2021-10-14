@@ -709,13 +709,19 @@ class Helper {
     let yearValue = Number(rawValue[1]);
 
     if (isSubstract) {
-      if (monthValue > 1) monthValue -= 1;
-      else (yearValue -= 1), (monthValue = 12);
+      if (monthValue > 1) {
+        monthValue -= 1;
+      } else {
+        (yearValue -= 1), (monthValue = 12);
+      }
     }
 
     if (isSum) {
-      if (monthValue < 12) monthValue += 1;
-      else (yearValue += 1), (monthValue = 1);
+      if (monthValue < 12) {
+        monthValue += 1;
+      } else {
+        (yearValue += 1), (monthValue = 1);
+      }
     }
 
     const month =
@@ -764,6 +770,42 @@ class Helper {
       }
     }
     return (num / si[i].value).toFixed(digits).replace(rx, '$1') + si[i].symbol;
+  };
+
+  static delimiterNumberOnInput = (value, comma) => {
+    let number = value;
+    if (number.charAt(0) === ',') {
+      number = '';
+    } else if (parseFloat(number) === 0 && number.charAt(1) !== ',') {
+      number = '0';
+    } else if (number.charAt(0) === '0') {
+      if (!(number.charAt(1) === ',')) {
+        number = number.charAt(1);
+      }
+    }
+    if (number.includes('.')) {
+      number = number.split('.').join('');
+    }
+    if (comma) {
+      number = number.replace(/[^,\d]/g, '');
+    } else {
+      number = number.replace(/[^\d]/g, '');
+    }
+    number = number.replace(',,', ',');
+    let splitNumber = number.split(',');
+    let valueNumber = '';
+    if (splitNumber[1]) {
+      splitNumber = [splitNumber[0], splitNumber[1]];
+      valueNumber = splitNumber[0]
+        .toString()
+        .replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+      valueNumber = `${valueNumber}${
+        splitNumber[1] ? ',' + splitNumber[1] : ''
+      }`;
+    } else {
+      valueNumber = number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+    }
+    return valueNumber;
   };
 }
 
