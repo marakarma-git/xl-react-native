@@ -61,9 +61,8 @@ const callSubsPackagePredefinedValue = (localVariable) => {
     dispatch(subscriptionPackageEditLoading());
     const {access_token} = (await getState().auth_reducer.data) || {};
     const {data_subscription_generated} =
-      (await getState().subscription_package_get_subscription_reducer()) || {};
+      (await getState().subscription_package_get_subscription_reducer) || {};
     const {indexSelected} = localVariable || {};
-
     axios
       .get(`${base_url}/dcp/package/getPackagePredefinedValue`, {
         headers: {
@@ -73,15 +72,21 @@ const callSubsPackagePredefinedValue = (localVariable) => {
       .then(({data}) => {
         const {result, statusCode} = data || {};
         if (statusCode === 0) {
-          console.log(JSON.stringify(result, null, 2));
-          const getPackageType = [];
-          const getPackagePeriod = [];
-          const getNetwork = [];
+          const {packageType, packagePeriod, network, quotaPackageType} =
+            result || [];
+          const getPackageType =
+            packageType.map((e) => ({value: e, label: e})) || [];
+          const getPackagePeriod =
+            packagePeriod.map((e) => ({value: e, label: e})) || [];
+          const getNetwork = network.map((e) => ({value: e, label: e})) || [];
+          const getQuotaPackageType =
+            quotaPackageType.map((e) => ({value: e, label: e})) || [];
           dispatch(
             subscriptionPackageEditSuccess({
               getPackageType,
               getPackagePeriod,
               getNetwork,
+              getQuotaPackageType,
               rawDataSubscriptionGenerated:
                 data_subscription_generated[indexSelected] || {},
             }),

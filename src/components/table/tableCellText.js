@@ -55,10 +55,27 @@ const TableCellText = (props) => {
     rootConfig,
   } = config || {};
   const {condition} = rootConfig || {};
+  const delimiterNumberOnText = (value) => {
+    let number = value;
+    if (number) {
+      number = number.toString();
+      if (number) {
+        let splitNumber = number.split('.');
+        let valueNumber = splitNumber[0].replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+        valueNumber = `${valueNumber}${
+          splitNumber[1] ? ',' + splitNumber[1] : ''
+        }`;
+        return valueNumber;
+      }
+      return value;
+    } else {
+      return '';
+    }
+  };
   const createLocalLabel = (editTextType, valueLocal, removeZero) => {
     if (editTextType === 'Currency') {
       return valueLocal
-        ? valueLocal.replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1.')
+        ? delimiterNumberOnText(valueLocal)
         : removeZero === true
         ? ''
         : '0';
@@ -92,7 +109,7 @@ const TableCellText = (props) => {
       if (type_input_edit === 'DropDownType2') {
         return `${createLocalLabel(
           edit_text_type,
-          edit_value.label,
+          edit_value,
           noDefaultCurrency,
         )} ${edit_value2.label || ''}`;
       }

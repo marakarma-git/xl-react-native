@@ -149,9 +149,32 @@ const dataMatcherArray2D = (listData = [], headerData = []) => {
         if (on_edit_config) {
           generateObject.edit_form_id = `edit-${formId}`;
           let objectEdit = {...on_edit_config};
-          const {type_input_edit} = on_edit_config || {};
+          const {type_input_edit, edit_text_type} = on_edit_config || {};
+          // const isCurrency = edit_text_type === 'Currency';
+          // let createLabel = item[`${api_id}`];
+
+          // if (createLabel) {
+          //   if(isCurrency){
+          //     createLabel =
+          //   }
+          // } else if (createLabel === 0) {
+          //   createLabel = '0';
+          // } else {
+          //   createLabel = '';
+          // }ateLabel) {
+          //           //   if(isCurrency){
+          //           //     createLabel =
+          //           //   }
+          //           // } else if (createLabel === 0) {
+          //           //   createLabel = '0';
+          //           // } else {
+          //           //   createLabel = '';
+          //           // }
+
           if (type_input_edit === 'TextInput') {
-            objectEdit.edit_value = item[`${api_id}`];
+            objectEdit.edit_value = item[`${api_id}`]
+              ? item[`${api_id}`].toString()
+              : item[`${api_id}`];
           }
           if (type_input_edit === 'DropDown') {
             objectEdit.edit_value = {
@@ -161,10 +184,7 @@ const dataMatcherArray2D = (listData = [], headerData = []) => {
             objectEdit.edit_data_array = [];
           }
           if (type_input_edit === 'DropDownType2') {
-            objectEdit.edit_value = {
-              value: item[`${api_id}`],
-              label: item[`${api_id}`],
-            };
+            objectEdit.edit_value = item[`${api_id}`];
             objectEdit.edit_value2 = {
               value: item[`${second_api_id}`],
               label: item[`${second_api_id}`],

@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect} from 'react';
 import {
   View,
   Text,
@@ -13,30 +13,32 @@ import {colors} from '../../constant/color';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import InputHybrid from '../../components/InputHybrid';
 import {useNavigation} from '@react-navigation/native';
-
-const currencyFormatter = (value = '') => {
-  // const onlyAllowOneComma = value.replace(/^[^0-9,]*,[^,]*$/, '');
-  // console.log('Before: ' + onlyAllowOneComma);
-  // const convertThousandSeparator = onlyAllowOneComma.replace(
-  //   /(\d)(?=(\d{3})+(?!\d))/g,
-  //   '$1.',
-  // );
-  // console.log('after: ' + convertThousandSeparator);
-  const test = value.replace(/^[^0-9,]*,(\d)(?=(\d{3})+(?!\d))/, '$1.');
-  return test;
-};
+import {useDispatch, useSelector} from 'react-redux';
+import callSubsPackagePredefinedValue, {
+  subscriptionPackageEditDropDownType2Edit,
+  subscriptionPackageEditReset,
+  subscriptionPackageEditTextInputEdit,
+} from '../../redux/action/subscription_package_edit_action';
+import Loading from '../../components/loading';
+import Helper from '../../helpers/helper';
+import {value} from 'lodash/seq';
 
 const SubscriptionPackageEdit = ({route}) => {
+  const dispatch = useDispatch();
   const navigation = useNavigation();
   const {params} = route || {};
   const {positionTableIndex} = params || {};
-  const [dummyArray, _] = useState([0]);
-  const [currency, setCurrency] = useState(0);
+  const {dataSubscriptionEdit, loading} = useSelector(
+    (state) => state.subscription_package_edit_reducer,
+  );
 
   useEffect(() => {
     if (positionTableIndex || positionTableIndex === 0) {
-      // console.log(positionTableIndex);
-      // alert(positionTableIndex);
+      dispatch(
+        callSubsPackagePredefinedValue({
+          indexSelected: positionTableIndex,
+        }),
+      );
     }
   }, [positionTableIndex]);
 
@@ -44,6 +46,7 @@ const SubscriptionPackageEdit = ({route}) => {
     navigation.setParams({
       positionTableIndex: undefined,
     });
+    // dispatch(subscriptionPackageEditReset())
   };
   useEffect(() => {
     BackHandler.addEventListener('hardwareBackPress', () => handlingBack());
@@ -64,24 +67,62 @@ const SubscriptionPackageEdit = ({route}) => {
             </TouchableOpacity>
           </View>
           <View style={subscriptionStyle.containerWrap}>
-            {dummyArray.map(() => {
+            {dataSubscriptionEdit.map((item) => {
+              const {for_layout_edit_only, edit_form_id} = item || {};
+              const {
+                edit_value,
+                edit_value2,
+                type_input_edit,
+                edit_text_type,
+                constantLabelLeft,
+                constantLabelRight,
+                edit_label,
+                edit_data_array,
+                disabled,
+              } = for_layout_edit_only || {};
+              const isCurrency = edit_text_type === 'Currency';
               return (
-                <InputHybrid
-                  fullWidthInput={true}
-                  disabled={false}
-                  type={'TextInput'}
-                  value={currency}
-                  loading={false}
-                  data={[]}
-                  errorText={''}
-                  label={'label'}
-                  onChange={(e) => {
-                    setCurrency(currencyFormatter(e));
-                  }}
-                  onChange2={() => {}}
-                  placeholder={'0'}
-                  constantLabelLeft={'IDR'}
-                />
+                <>
+                  <InputHybrid
+                    fullWidthInput={true}
+                    disabled={disabled}
+                    type={type_input_edit}
+                    value={edit_value}
+                    selectedValue={edit_value2}
+                    loading={false}
+                    data={edit_data_array}
+                    errorText={''}
+                    label={edit_label}
+                    onChange={(e) => {
+                      dispatch(
+                        subscriptionPackageEditTextInputEdit({
+                          valueInput: isCurrency
+                            ? Helper.delimiterNumberOnInput(
+                                e,
+                                edit_form_id ===
+                                  'edit-subscription-quota-internet-hard-code',
+                              )
+                            : e,
+                          editFormId: edit_form_id,
+                        }),
+                      );
+                    }}
+                    onChange2={(e) => {
+                      dispatch(
+                        subscriptionPackageEditDropDownType2Edit({
+                          valueInput2: e,
+                          editFormId: edit_form_id,
+                        }),
+                      );
+                    }}
+                    placeholder={isCurrency ? '0' : ''}
+                    constantLabelLeft={constantLabelLeft}
+                    constantLabelRight={constantLabelRight}
+                  />
+                  {for_layout_edit_only && (
+                    <Text>{JSON.stringify(edit_value, null, 2)}</Text>
+                  )}
+                </>
               );
             })}
           </View>
@@ -114,6 +155,7 @@ const SubscriptionPackageEdit = ({route}) => {
           })}
         </View>
       </ScrollView>
+      {/*{loading && <Loading />}*/}
     </HeaderContainer>
   );
 };
