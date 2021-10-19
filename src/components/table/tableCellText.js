@@ -73,7 +73,7 @@ const TableCellText = (props) => {
     }
   };
   const createLocalLabel = (editTextType, valueLocal, removeZero) => {
-    if (editTextType === 'Currency') {
+    if (editTextType === 'force_currency') {
       return valueLocal
         ? delimiterNumberOnText(valueLocal)
         : removeZero === true

@@ -82,47 +82,42 @@ const SubscriptionPackageEdit = ({route}) => {
               } = for_layout_edit_only || {};
               const isCurrency = edit_text_type === 'Currency';
               return (
-                <>
-                  <InputHybrid
-                    fullWidthInput={true}
-                    disabled={disabled}
-                    type={type_input_edit}
-                    value={edit_value}
-                    selectedValue={edit_value2}
-                    loading={false}
-                    data={edit_data_array}
-                    errorText={''}
-                    label={edit_label}
-                    onChange={(e) => {
-                      dispatch(
-                        subscriptionPackageEditTextInputEdit({
-                          valueInput: isCurrency
-                            ? Helper.delimiterNumberOnInput(
-                                e,
-                                edit_form_id ===
-                                  'edit-subscription-quota-internet-hard-code',
-                              )
-                            : e,
-                          editFormId: edit_form_id,
-                        }),
-                      );
-                    }}
-                    onChange2={(e) => {
-                      dispatch(
-                        subscriptionPackageEditDropDownType2Edit({
-                          valueInput2: e,
-                          editFormId: edit_form_id,
-                        }),
-                      );
-                    }}
-                    placeholder={isCurrency ? '0' : ''}
-                    constantLabelLeft={constantLabelLeft}
-                    constantLabelRight={constantLabelRight}
-                  />
-                  {for_layout_edit_only && (
-                    <Text>{JSON.stringify(edit_value, null, 2)}</Text>
-                  )}
-                </>
+                <InputHybrid
+                  fullWidthInput={true}
+                  disabled={disabled}
+                  type={type_input_edit}
+                  value={edit_value}
+                  selectedValue={edit_value2}
+                  loading={false}
+                  data={edit_data_array}
+                  errorText={''}
+                  label={edit_label}
+                  onChange={(e) => {
+                    dispatch(
+                      subscriptionPackageEditTextInputEdit({
+                        valueInput: isCurrency
+                          ? Helper.delimiterNumberOnInput(
+                              e,
+                              edit_form_id ===
+                                'edit-subscription-quota-internet-hard-code',
+                            )
+                          : e,
+                        editFormId: edit_form_id,
+                      }),
+                    );
+                  }}
+                  onChange2={(e) => {
+                    dispatch(
+                      subscriptionPackageEditDropDownType2Edit({
+                        valueInput2: e,
+                        editFormId: edit_form_id,
+                      }),
+                    );
+                  }}
+                  placeholder={isCurrency ? '0' : ''}
+                  constantLabelLeft={constantLabelLeft}
+                  constantLabelRight={constantLabelRight}
+                />
               );
             })}
           </View>

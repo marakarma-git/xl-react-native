@@ -5,6 +5,7 @@ import {base_url} from '../../constant/connection';
 import {authFailed} from './auth_action';
 import dayjs from 'dayjs';
 import Helper from '../../helpers/helper';
+import lod from 'lodash';
 const getSimInventoryLoading = () => {
   return {
     type: reduxString.GET_SIM_INVENTORY_LOADING,
@@ -150,31 +151,17 @@ const dataMatcherArray2D = (listData = [], headerData = []) => {
           generateObject.edit_form_id = `edit-${formId}`;
           let objectEdit = {...on_edit_config};
           const {type_input_edit, edit_text_type} = on_edit_config || {};
-          // const isCurrency = edit_text_type === 'Currency';
-          // let createLabel = item[`${api_id}`];
 
-          // if (createLabel) {
-          //   if(isCurrency){
-          //     createLabel =
-          //   }
-          // } else if (createLabel === 0) {
-          //   createLabel = '0';
-          // } else {
-          //   createLabel = '';
-          // }ateLabel) {
-          //           //   if(isCurrency){
-          //           //     createLabel =
-          //           //   }
-          //           // } else if (createLabel === 0) {
-          //           //   createLabel = '0';
-          //           // } else {
-          //           //   createLabel = '';
-          //           // }
+          let createCurrency = () => {
+            if (edit_text_type === 'Currency') {
+              return Helper.delimiterNumberOnText(item[`${api_id}`]);
+            } else {
+              return item[`${api_id}`];
+            }
+          };
 
           if (type_input_edit === 'TextInput') {
-            objectEdit.edit_value = item[`${api_id}`]
-              ? item[`${api_id}`].toString()
-              : item[`${api_id}`];
+            objectEdit.edit_value = createCurrency();
           }
           if (type_input_edit === 'DropDown') {
             objectEdit.edit_value = {
@@ -184,13 +171,14 @@ const dataMatcherArray2D = (listData = [], headerData = []) => {
             objectEdit.edit_data_array = [];
           }
           if (type_input_edit === 'DropDownType2') {
-            objectEdit.edit_value = item[`${api_id}`];
+            objectEdit.edit_value = createCurrency();
             objectEdit.edit_value2 = {
               value: item[`${second_api_id}`],
               label: item[`${second_api_id}`],
             };
             objectEdit.edit_data_array = [];
           }
+
           generateObject.for_layout_edit_only = objectEdit;
         }
         subGenerated.push(generateObject);

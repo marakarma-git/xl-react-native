@@ -807,6 +807,24 @@ class Helper {
     }
     return valueNumber;
   };
+
+  static delimiterNumberOnText = (value) => {
+    let number = value;
+    if (number) {
+      number = number.toString();
+      if (number) {
+        let splitNumber = number.split('.');
+        let valueNumber = splitNumber[0].replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+        valueNumber = `${valueNumber}${
+          splitNumber[1] ? ',' + splitNumber[1] : ''
+        }`;
+        return valueNumber;
+      }
+      return value;
+    } else {
+      return '0';
+    }
+  };
 }
 
 export default Helper;
