@@ -5,6 +5,7 @@ import {
   TouchableOpacity,
   ScrollView,
   BackHandler,
+  ActivityIndicator,
 } from 'react-native';
 import {HeaderContainer, OverlayBackground} from '../../components';
 import {Container} from './subscriptionFilter.page';
@@ -16,19 +17,16 @@ import {useNavigation} from '@react-navigation/native';
 import {useDispatch, useSelector} from 'react-redux';
 import callSubsPackagePredefinedValue, {
   subscriptionPackageEditDropDownType2Edit,
-  subscriptionPackageEditReset,
   subscriptionPackageEditTextInputEdit,
 } from '../../redux/action/subscription_package_edit_action';
-import Loading from '../../components/loading';
 import Helper from '../../helpers/helper';
-import {value} from 'lodash/seq';
 
 const SubscriptionPackageEdit = ({route}) => {
   const dispatch = useDispatch();
   const navigation = useNavigation();
   const {params} = route || {};
   const {positionTableIndex} = params || {};
-  const {dataSubscriptionEdit, loading} = useSelector(
+  const {dataSubscriptionEdit, loading, errorText} = useSelector(
     (state) => state.subscription_package_edit_reducer,
   );
 
@@ -46,7 +44,6 @@ const SubscriptionPackageEdit = ({route}) => {
     navigation.setParams({
       positionTableIndex: undefined,
     });
-    // dispatch(subscriptionPackageEditReset())
   };
   useEffect(() => {
     BackHandler.addEventListener('hardwareBackPress', () => handlingBack());
@@ -66,6 +63,21 @@ const SubscriptionPackageEdit = ({route}) => {
               />
             </TouchableOpacity>
           </View>
+          {loading && (
+            <View
+              style={{
+                flexDirection: 'row',
+                justifyContent: 'flex-end',
+                flex: 1,
+              }}>
+              <ActivityIndicator size={'small'} color={colors.main_color} />
+            </View>
+          )}
+          {errorText ? (
+            <Text style={{color: colors.delete}}>{`Error: ${errorText}`}</Text>
+          ) : (
+            <></>
+          )}
           <View style={subscriptionStyle.containerWrap}>
             {dataSubscriptionEdit.map((item) => {
               const {for_layout_edit_only, edit_form_id} = item || {};
@@ -150,7 +162,6 @@ const SubscriptionPackageEdit = ({route}) => {
           })}
         </View>
       </ScrollView>
-      {/*{loading && <Loading />}*/}
     </HeaderContainer>
   );
 };
