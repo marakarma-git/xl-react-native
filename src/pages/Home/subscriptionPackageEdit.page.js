@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   View,
   Text,
@@ -20,15 +20,26 @@ import callSubsPackagePredefinedValue, {
   subscriptionPackageEditTextInputEdit,
 } from '../../redux/action/subscription_package_edit_action';
 import Helper from '../../helpers/helper';
+import {subscriptionPackageReplaceCellWithIndex} from '../../redux/action/subscription_package_get_subscription_action';
+import axios from 'axios';
+import {base_url} from '../../constant/connection';
 
 const SubscriptionPackageEdit = ({route}) => {
   const dispatch = useDispatch();
   const navigation = useNavigation();
   const {params} = route || {};
   const {positionTableIndex} = params || {};
-  const {dataSubscriptionEdit, loading, errorText} = useSelector(
-    (state) => state.subscription_package_edit_reducer,
+  const {
+    dataSubscriptionEdit,
+    dataSubscriptionSnapShot,
+    loading,
+    errorText,
+  } = useSelector((state) => state.subscription_package_edit_reducer);
+  const {customerNo, access_token, principal} = useSelector(
+    (state) => state.auth_reducer.data,
   );
+  const {username} = principal || '';
+  const [localLoading, setLocalLoading] = useState(false);
 
   useEffect(() => {
     if (positionTableIndex || positionTableIndex === 0) {
@@ -39,7 +50,55 @@ const SubscriptionPackageEdit = ({route}) => {
       );
     }
   }, [positionTableIndex]);
-
+  const onSubmit = () => {
+    setLocalLoading(true);
+    const getPackageId = dataSubscriptionEdit[4]?.item?.packageId || '';
+    const createData = Helper.createObjectPostEdit(
+      dataSubscriptionEdit,
+      {
+        customerNo,
+        packageId: getPackageId,
+      },
+      true,
+    );
+    axios
+      .post(
+        `${base_url}/dcp/package/updateSubscriptionPackage`,
+        {
+          updateSimPackageReq: createData,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${access_token}`,
+            username: username,
+            'Content-Type': 'application/json',
+          },
+        },
+      )
+      .then(({data}) => {
+        const {statusCode, statusDescription} = data || {};
+        if (statusCode === 0) {
+          dispatch(
+            subscriptionPackageReplaceCellWithIndex({
+              indexToReplace: positionTableIndex,
+              indexReplaceData: {
+                ...dataSubscriptionSnapShot,
+                dataCell: dataSubscriptionEdit,
+              },
+            }),
+          );
+          setLocalLoading(false);
+          alert('Success');
+        } else {
+          setLocalLoading(false);
+          alert(statusDescription);
+        }
+      })
+      .catch((e) => {
+        alert(e);
+        setLocalLoading(false);
+      });
+  };
   const handlingBack = () => {
     navigation.setParams({
       positionTableIndex: undefined,
@@ -63,7 +122,7 @@ const SubscriptionPackageEdit = ({route}) => {
               />
             </TouchableOpacity>
           </View>
-          {loading && (
+          {(loading || localLoading) && (
             <View
               style={{
                 flexDirection: 'row',
@@ -96,7 +155,7 @@ const SubscriptionPackageEdit = ({route}) => {
               return (
                 <InputHybrid
                   fullWidthInput={true}
-                  disabled={disabled}
+                  disabled={disabled || localLoading}
                   type={type_input_edit}
                   value={edit_value}
                   selectedValue={edit_value2}
@@ -148,6 +207,9 @@ const SubscriptionPackageEdit = ({route}) => {
                 onPress={() => {
                   if (value === 'Cancel') {
                     handlingBack();
+                  }
+                  if (value === 'Submit') {
+                    onSubmit();
                   }
                 }}>
                 <Text

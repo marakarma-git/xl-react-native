@@ -825,6 +825,50 @@ class Helper {
       return '0';
     }
   };
+
+  static createObjectPostEdit = (
+    data = [],
+    additionalItem,
+    removeDelimiter,
+  ) => {
+    let containerDataPostEdit = {...additionalItem};
+    data.map((value) => {
+      const {subItem, for_layout_edit_only} = value || {};
+      const {api_id, second_api_id} = subItem || {};
+      const {
+        type_input_edit,
+        edit_value,
+        edit_value2,
+        edit_text_type,
+        convertPOST,
+      } = for_layout_edit_only || {};
+      const isCurrency = edit_text_type === 'Currency';
+      const removeAllCurrencyDelimiter = () => {
+        if (isCurrency && removeDelimiter === true) {
+          const removeAllDot = edit_value.split('.').join('') || '';
+          const replaceCommaToDot = removeAllDot.replace(',', '.');
+          if (convertPOST === 'int') {
+            return parseInt(replaceCommaToDot);
+          }
+          return replaceCommaToDot;
+        }
+        return edit_value;
+      };
+      if (!lod.isEmpty(type_input_edit)) {
+        if (type_input_edit === 'TextInput') {
+          containerDataPostEdit[`${api_id}`] = removeAllCurrencyDelimiter();
+        }
+        if (type_input_edit === 'DropDown') {
+          containerDataPostEdit[`${api_id}`] = edit_value.value || '';
+        }
+        if (type_input_edit === 'DropDownType2') {
+          containerDataPostEdit[`${api_id}`] = removeAllCurrencyDelimiter();
+          containerDataPostEdit[`${second_api_id}`] = edit_value2?.value || '';
+        }
+      }
+    });
+    return containerDataPostEdit;
+  };
 }
 
 export default Helper;

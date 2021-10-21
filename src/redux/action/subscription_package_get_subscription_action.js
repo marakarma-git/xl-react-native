@@ -60,6 +60,16 @@ const subscriptionPackageResetAppliedHeaderSort = () => {
     type: reduxString.SUBSCRIPTION_PACKAGE_RESET_APPLIED_HEADER_SORT,
   };
 };
+const subscriptionPackageReplaceCellWithIndex = ({
+  indexToReplace,
+  indexReplaceData,
+}) => {
+  return {
+    type: reduxString.SUBSCRIPTION_PACKAGE_REPLACE_CELL_WITH_INDEX,
+    indexToReplace,
+    indexReplaceData,
+  };
+};
 const callSubscriptionPackage = (paginate) => {
   return async (dispatch, getState) => {
     dispatch(subscriptionPackageGetSubscriptionLoading());
@@ -116,6 +126,9 @@ const callSubscriptionPackage = (paginate) => {
         },
       )
       .then(({data}) => {
+        console.log(
+          'callSubscriptionPackage: ' + JSON.stringify(data, null, 2),
+        );
         const {result, statusCode} = data || {};
         const {content, totalPages, totalElements} = result || {};
         if (statusCode === 0) {
@@ -165,4 +178,5 @@ export {
   subscriptionPackageCheckAlDataSubscription,
   subscriptionPackageSetAppliedHeaderSort,
   subscriptionPackageResetAppliedHeaderSort,
+  subscriptionPackageReplaceCellWithIndex,
 };

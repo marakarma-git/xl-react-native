@@ -98,6 +98,7 @@ const dataHeaderFilter = [
       edit_label: 'Quota SMS',
       edit_text_type: 'Currency',
       constantLabelRight: 'SMS',
+      convertPOST: 'int',
     },
   },
   {
@@ -116,6 +117,7 @@ const dataHeaderFilter = [
       edit_label: 'Price per SIM Card',
       edit_text_type: 'Currency',
       constantLabelLeft: 'IDR',
+      convertPOST: 'int',
     },
   },
   {
@@ -134,6 +136,7 @@ const dataHeaderFilter = [
       edit_label: 'Price Bulk Shared',
       edit_text_type: 'Currency',
       constantLabelLeft: 'IDR',
+      convertPOST: 'int',
     },
   },
   {
@@ -265,6 +268,7 @@ const dataHeaderFilter = [
       edit_label: 'Excess Fee',
       edit_text_type: 'Currency',
       constantLabelLeft: 'IDR',
+      convertPOST: 'int',
     },
   },
 ];

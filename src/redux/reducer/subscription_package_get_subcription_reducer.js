@@ -115,6 +115,14 @@ const subscription_package_get_subscription_reducer = (
           initialState.subscription_applied_header_sort,
       };
     }
+    case reduxString.SUBSCRIPTION_PACKAGE_REPLACE_CELL_WITH_INDEX: {
+      state.data_subscription_generated[action.indexToReplace] =
+        action.indexReplaceData;
+      return {
+        ...state,
+        data_subscription_generated: state.data_subscription_generated,
+      };
+    }
     default: {
       return state;
     }
