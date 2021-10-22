@@ -61,20 +61,16 @@ const SubscriptionPackageEdit = ({route}) => {
       },
       true,
     );
-    axios
-      .post(
-        `${base_url}/dcp/package/updateSubscriptionPackage`,
-        {
-          updateSimPackageReq: createData,
-        },
-        {
-          headers: {
-            Authorization: `Bearer ${access_token}`,
-            username: username,
-            'Content-Type': 'application/json',
-          },
-        },
-      )
+    axios({
+      method: 'post',
+      url: `${base_url}/dcp/package/updateSubscriptionPackage`,
+      headers: {
+        Authorization: `Bearer ${access_token}`,
+        username: username,
+        'Content-Type': 'application/json',
+      },
+      data: createData,
+    })
       .then(({data}) => {
         const {statusCode, statusDescription} = data || {};
         if (statusCode === 0) {
