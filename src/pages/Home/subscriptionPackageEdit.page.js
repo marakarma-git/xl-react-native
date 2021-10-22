@@ -200,22 +200,29 @@ const SubscriptionPackageEdit = ({route}) => {
                 style={[
                   {
                     backgroundColor:
-                      value === 'Cancel' ? colors.gray_400 : colors.main_color,
+                      value === 'Cancel' || loading || localLoading
+                        ? colors.gray_400
+                        : colors.main_color,
                   },
                   subscriptionStyle.buttonStyle,
                 ]}
                 onPress={() => {
-                  if (value === 'Cancel') {
-                    handlingBack();
-                  }
-                  if (value === 'Submit') {
-                    onSubmit();
+                  if (!localLoading || !loading) {
+                    if (value === 'Cancel') {
+                      handlingBack();
+                    }
+                    if (value === 'Submit') {
+                      onSubmit();
+                    }
                   }
                 }}>
                 <Text
                   fontType={'bold'}
                   style={{
-                    color: value === 'Cancel' ? 'black' : 'white',
+                    color:
+                      value === 'Cancel' || loading || localLoading
+                        ? 'black'
+                        : 'white',
                   }}>
                   {value}
                 </Text>
