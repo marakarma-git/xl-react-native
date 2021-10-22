@@ -66,7 +66,6 @@ const SubscriptionPackageEdit = ({route}) => {
       url: `${base_url}/dcp/package/updateSubscriptionPackage`,
       headers: {
         Authorization: `Bearer ${access_token}`,
-        username: username,
         'Content-Type': 'application/json',
       },
       data: createData,
