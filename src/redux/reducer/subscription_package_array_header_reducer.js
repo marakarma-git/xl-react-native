@@ -82,6 +82,7 @@ const dataHeaderFilter = [
       edit_label: 'Quota Internet',
       edit_text_type: 'Currency',
       noDefaultCurrency: true,
+      convertPOST: 'float',
     },
   },
   {

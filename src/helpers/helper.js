@@ -848,7 +848,10 @@ class Helper {
           const removeAllDot = edit_value.split('.').join('') || '';
           const replaceCommaToDot = removeAllDot.replace(',', '.');
           if (convertPOST === 'int') {
-            return parseInt(replaceCommaToDot);
+            return parseInt(replaceCommaToDot) || 0;
+          }
+          if (convertPOST === 'float') {
+            return parseFloat(replaceCommaToDot) || 0;
           }
           return replaceCommaToDot;
         }
