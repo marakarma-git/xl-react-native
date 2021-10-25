@@ -8,6 +8,7 @@ import {
   CUSTOMER_CONSENT_PRIVILEDGE_ID,
   LOGIN_LOGOUT_PRIVILEDGE_ID,
 } from '../../constant/actionPriv';
+import {unsubscribeTopicNotification} from './notification_action';
 
 const authRequest = () => {
   return {
@@ -67,6 +68,8 @@ const tokenInvalid = () => {
 const authLogout = () => {
   return async (dispatch, getState) => {
     const username = getState().auth_reducer.data?.principal?.username || '';
+    const accessToken = getState().auth_reducer?.data?.access_token;
+    const notifToken = getState().notification_reducer.token;
     // dispatch(
     //   saveActivityLog(
     //     'Logout',
@@ -81,8 +84,7 @@ const authLogout = () => {
         {},
         {
           headers: {
-            Authorization:
-              'Bearer ' + getState().auth_reducer.data.access_token,
+            Authorization: 'Bearer ' + accessToken,
           },
         },
       );
@@ -90,9 +92,9 @@ const authLogout = () => {
       if (data) {
         dispatch(removeEnterPriseLogo());
         dispatch(removeAuth(username));
+        dispatch(unsubscribeTopicNotification(notifToken, accessToken));
       }
     } catch (error) {
-      console.log("Logout")
       dispatch(authFailed(error.response.data));
     }
   };

@@ -444,7 +444,6 @@ export const getMonthUsage = (item, filterParams = {}) => {
         }
       }
     } catch (error) {
-      console.log('Error' + error.response.data);
       dispatch(setRequestError(error.response.data));
     }
   };
@@ -470,7 +469,6 @@ export const getSubsAnalytics = (item, filterParams = {}) => {
         }
       }
     } catch (error) {
-      console.log('Error' + error);
       dispatch(setRequestError(error.response.data));
     }
   };
