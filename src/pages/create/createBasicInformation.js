@@ -87,9 +87,9 @@ const CreateBasicUserInformation = (props) => {
     });
   };
 
-  const validateForm = () => {
+  const validateForm = (isValidate) => {
     const validationError = {};
-    if (touchForm) {
+    if (isValidate) {
       userForm.map((form) => {
         if (form.validation) {
           formValidation(
@@ -150,9 +150,18 @@ const CreateBasicUserInformation = (props) => {
   };
 
   useEffect(() => {
-    validateForm();
-
-    if (Object.keys(formError) <= 0 && touchForm) {
+    if (!touchForm) {
+      let notEmptyData = 0;
+      Object.keys(props.basicInformation).map((key) => {
+        if (key !== 'language' && key !== 'phoneNumber') {
+          if (props.basicInformation[key].length > 0) notEmptyData++;
+        }
+      });
+      if (notEmptyData > 0) validateForm(true);
+    } else {
+      validateForm(touchForm);
+    }
+    if (Object.keys(formError).length <= 0) {
       props.setIsComplete(true);
     } else {
       props.setIsComplete(false);
@@ -181,13 +190,14 @@ const CreateBasicUserInformation = (props) => {
       editable={props.isEditable}
       setIsTouch={setTouchForm}
       value={props.basicInformation}
-      formError={formError}
+      formError={formError || {}}
       inputHandler={inputHandler}
     />
   );
 };
 
 CreateBasicUserInformation.propTypes = {
+  formPosition: PropTypes.number,
   isUpdate: PropTypes.string,
   isEditable: PropTypes.bool,
   basicInformation: PropTypes.array,
@@ -196,6 +206,7 @@ CreateBasicUserInformation.propTypes = {
 };
 
 CreateBasicUserInformation.defaultProps = {
+  formPosition: null,
   isUpdate: '',
   isEditable: false,
   basicInformation: [],

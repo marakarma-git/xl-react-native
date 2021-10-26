@@ -33,7 +33,7 @@ const passwordFormBody = {
   confirmPassword: '',
 };
 
-const basicInformationArray = {
+const basicInformationObject = {
   firstName: '',
   lastName: '',
   username: '',
@@ -98,7 +98,7 @@ const CreateNewUserPage = ({route, navigation}) => {
   const [selectedRadio, setSelectedRadio] = useState(-1);
   const [userPassword, setUserPassword] = useState(passwordFormBody);
   const [basicInformation, setBasicInformation] = useState(
-    basicInformationArray,
+    basicInformationObject,
   );
   const [selectedOrganization, setSelectedOrganization] = useState([]);
   const [selectedRoles, setSelectedRoles] = useState([]);
@@ -130,6 +130,7 @@ const CreateNewUserPage = ({route, navigation}) => {
         {
           component: (
             <CreateBasicInformation
+              formPosition={formPosition}
               isUpdate={userId}
               setIsComplete={setIsBasicInformationComplete}
               basicInformation={basicInformation}
@@ -184,6 +185,7 @@ const CreateNewUserPage = ({route, navigation}) => {
         {
           component: (
             <CreateUserRoles
+              formPosition={formPosition}
               selectedRoles={selectedRoles}
               setSelectedRoles={setSelectedRoles}
               enterpriseId={selectedOrganization[0]?.enterpriseId}
@@ -256,8 +258,6 @@ const CreateNewUserPage = ({route, navigation}) => {
         isComplete = true;
       }
     }
-
-    console.log(isComplete, ' is complete ');
 
     if (isComplete) {
       setFormPosition((prevState) => prevState + 1);
@@ -382,7 +382,6 @@ const CreateNewUserPage = ({route, navigation}) => {
         setSubmitLoading(false);
       }
     } catch (error) {
-      console.log(error, error.response.data, ' <<< erorr');
       setSubmitLoading(false);
       dispatch(setRequestError(error.response.data));
       showToast({
@@ -427,6 +426,7 @@ const CreateNewUserPage = ({route, navigation}) => {
         );
         setDataRoleId(result.roleId);
         setLoadingUserDetail(false);
+        setIsBasicInformationComplete(true);
       }
     } catch (error) {
       dispatch(setRequestError(error.response.data));
@@ -452,7 +452,7 @@ const CreateNewUserPage = ({route, navigation}) => {
     const pageLoad = navigation.addListener('focus', () => {
       setFormPosition(0);
       setUserPassword(passwordFormBody);
-      setBasicInformation(basicInformationArray);
+      setBasicInformation(basicInformationObject);
       setSelectedRadio(-1);
       setSelectedOrganization([]);
       setSelectedRoles([]);

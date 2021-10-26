@@ -16,7 +16,7 @@ class Notification {
         dispatch(savePushNotifToken(token?.token));
         dispatch(
           getListTopicByEnterprise(
-            '07000039', // sementara
+            userData.customerNo, // sementara
             userData.access_token,
             userData?.principal?.username,
             token?.token,

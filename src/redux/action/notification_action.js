@@ -90,8 +90,9 @@ const getListTopicByEnterprise = (custNo, token, username, notifToken) => {
           tokens: notifToken,
           topics: result,
         };
+        console.log(result, ' <<< ');
         if (statusCode === 0) {
-          if (Array.isArray(result)) {
+          if (typeof result == 'object') {
             if (result.length > 0) {
               dispatch(subscribeTopicNotification(params, username, token));
             }
