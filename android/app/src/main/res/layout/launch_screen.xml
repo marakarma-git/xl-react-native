@@ -6,7 +6,7 @@
     android:orientation="vertical"
     >
     <ImageView
-        android:src="@drawable/launcher_original_ratio_3x"
+        android:src="@drawable/splash_screen_x3_up"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:scaleType="centerCrop"
