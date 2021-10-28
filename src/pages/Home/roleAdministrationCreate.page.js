@@ -25,7 +25,6 @@ import {
 import Helper from '../../helpers/helper';
 import {setRequestError} from '../../redux/action/dashboard_action';
 import {roleAdministrationCopyRoleList} from '../../redux/action/role_administration_get_all_role_action';
-import {saveActivityLog} from '../../redux/action/save_activity_log_action';
 import {ADMINISTRATION_PRIVILEDGE_ID} from '../../constant/actionPriv';
 import {getActiveEnterpriseList} from '../../redux/action/enterprise_management_action';
 import {colors} from '../../constant/color';
@@ -291,14 +290,6 @@ const RoleAdministrationCreatePage = ({route, navigation}) => {
         let capitalActiveMenu = Helper.makeCapital(activeMenu);
 
         setSubmitLoading(false);
-        // dispatch(
-        //   saveActivityLog(
-        //     'Role Administration',
-        //     capitalActiveMenu,
-        //     ADMINISTRATION_PRIVILEDGE_ID,
-        //     `${capitalActiveMenu} for data: ${dataRaw.roleName}`,
-        //   ),
-        // );
       }
     } catch (error) {
       setSubmitLoading(false);

@@ -55,6 +55,7 @@ const RootStack = () => {
   );
 };
 const Route = () => {
+  const [isSetTitle, setIsSetTitle] = useState(false);
   const dispatch = useDispatch();
   const isLoggedIn = useSelector((state) => state.auth_reducer.isLoggedIn);
   const {titleVersion} = useSelector((state) => state.auth_reducer);
@@ -65,7 +66,10 @@ const Route = () => {
     BackHandler.exitApp();
   };
   useEffect(() => {
-    dispatch(getTitleVersion());
+    if (!isSetTitle) {
+      dispatch(getTitleVersion());
+      setIsSetTitle(true);
+    }
   }, [titleVersion]);
   return (
     <NavigationContainer linking={{prefixes: ['dcp4.adlsandbox.com://app']}}>

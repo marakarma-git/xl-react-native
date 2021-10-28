@@ -22,10 +22,7 @@ const persistConfig = {
   transforms: [
     encryptTransform({
       secretKey: headerAuth,
-      onError: function (error) {
-        // console.log(error, "error transform encrypt")
-        // Handle the error.
-      },
+      onError: function (error) {},
     }),
   ],
 };

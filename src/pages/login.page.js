@@ -93,7 +93,6 @@ const Login = ({navigation}) => {
     // Width
     if (screenWidth <= 320) {
       isChange = true;
-      console.log(screenWidth, ' <<< screen width');
       customConfig.dropDownPicker.width = 170;
       customConfig.dropDownPicker.height = 25;
       customConfig.dropDownPicker.fontSize = 11;

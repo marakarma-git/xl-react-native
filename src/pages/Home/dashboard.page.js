@@ -58,10 +58,10 @@ const DashboardPage = ({navigation}) => {
 
   useEffect(() => {
     return navigation.addListener('focus', () => {
-      dispatch(getDashboardSummary(userData.access_token));
-      dispatch(getWidgetList(userData.access_token));
+      dispatch(getDashboardSummary());
+      dispatch(getWidgetList());
     });
-  }, [dispatch, navigation, userData.access_token]);
+  }, [dispatch, navigation]);
 
   return (
     <View>

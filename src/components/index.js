@@ -40,3 +40,4 @@ export {default as ToastComponent} from './toast/ToastComponent';
 // Card
 export {default as ContentCard} from './card/ContentCard';
 export {default as FilterCard} from './card/FilterCard';
+export {default as NotificationCard} from './card/NotificationCard';

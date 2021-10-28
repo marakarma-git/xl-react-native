@@ -54,7 +54,9 @@ const BarChartComponent = ({
               style={{axis: {stroke: 'none'}}}
               standalone={false}
               tickFormat={(t) => Helper.formatBytes(t)}
-              tickLabelComponent={<VictoryLabel style={{fontSize: 10}} />}
+              tickLabelComponent={
+                <VictoryLabel angle={-10} dy={10} style={{fontSize: 10}} />
+              }
             />
             <VictoryBar
               data={dataSet}
@@ -84,7 +86,7 @@ const BarChartComponent = ({
               ]}
               horizontal
               style={{
-                data: {fill: colors.main_color_overlay, width: 15},
+                data: {fill: colors.tab_edit, width: 15},
               }}
               labelComponent={
                 <VictoryTooltip
@@ -92,7 +94,7 @@ const BarChartComponent = ({
                   dy={20}
                   orientation="top"
                   flyoutStyle={{
-                    stroke: colors.main_color_overlay,
+                    stroke: colors.tab_edit,
                     fill: 'white',
                   }}
                   flyoutWidth={130}

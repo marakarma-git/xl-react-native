@@ -3,11 +3,7 @@ import Helper from '../../helpers/helper';
 import reduxString from '../reduxString';
 import {base_url} from '../../constant/connection';
 import {dashboardHeaderAuth} from '../../constant/headers';
-import {saveActivityLog} from './save_activity_log_action';
-import {
-  DASHBOARD_PRIVILEDGE_ID,
-  LOGIN_LOGOUT_PRIVILEDGE_ID,
-} from '../../constant/actionPriv';
+import httpRequest from '../../constant/axiosInstance';
 
 const setDashboardSummary = (data) => ({
   type: reduxString.SET_DASHBOARD_SUMMARY,
@@ -43,20 +39,18 @@ export const setRequestError = (error) => ({
   payload: error,
 });
 
-export const getDashboardSummary = (accessToken) => {
+export const getDashboardSummary = () => {
   return async (dispatch) => {
+    const customHeaders = {
+      headers: {
+        activityId: 'DP-2',
+      },
+    };
     try {
       dispatch(requestDashboardData());
-      // dispatch(
-      //   saveActivityLog('Dashboard', 'Summary', DASHBOARD_PRIVILEDGE_ID, ''),
-      // );
-      const {data} = await Axios.get(
-        `${base_url}/dcp/dashboard/getSummaryDashboard`,
-        {
-          headers: {
-            Authorization: 'Bearer ' + accessToken,
-          },
-        },
+      const {data} = await httpRequest.get(
+        `/dcp/dashboard/getSummaryDashboard`,
+        customHeaders,
       );
       if (data) {
         if (data.statusCode === 0) {
@@ -97,14 +91,7 @@ export const getWidgetList = (accessToken) => {
   return async (dispatch) => {
     try {
       dispatch(requestDashboardData());
-      const {data} = await Axios.get(
-        `${base_url}/dcp/dashboard/getWidgetList`,
-        {
-          headers: {
-            Authorization: 'Bearer ' + accessToken,
-          },
-        },
-      );
+      const {data} = await httpRequest.get(`/dcp/dashboard/getWidgetList`);
 
       if (data) {
         if (data.statusCode === 0) {
@@ -126,14 +113,17 @@ const setCarousel = (data) => ({
 
 export const getCarousel = (accessToken) => {
   return async (dispatch) => {
+    const customHeaders = {
+      headers: {
+        activityId: 'LLP-3',
+      },
+    };
     dispatch(requestDashboardData());
-    // dispatch(saveActivityLog('Home', 'Home', LOGIN_LOGOUT_PRIVILEDGE_ID));
     try {
-      const {data} = await Axios.get(`${base_url}/dcp/banner/getListBanner`, {
-        headers: {
-          Authorization: 'Bearer ' + accessToken,
-        },
-      });
+      const {data} = await httpRequest.get(
+        `/dcp/banner/getListBanner`,
+        customHeaders,
+      );
 
       if (data) {
         if (data.statusCode === 0) {
@@ -338,22 +328,16 @@ export const requestWidgetData = (
   return async (dispatch) => {
     if (type === 'sim') dispatch(requestDashboardData());
     if (type === 'top') dispatch(requestTopTraffic());
-    // dispatch(
-    //   saveActivityLog(
-    //     'Dashboard',
-    //     type === 'sim' ? 'Dashboard' : 'TopTraffic',
-    //     DASHBOARD_PRIVILEDGE_ID,
-    //     '',
-    //   ),
-    // );
-
+    const customHeaders = {
+      headers: {
+        activityId: type == 'sim' ? 'DP-1' : 'DP-3',
+      },
+    };
     try {
-      const {data} = await Axios.post(
-        `${base_url}/dcp/dashboard/v2/getDataSet?datasetId=${item.datasetId}`,
+      const {data} = await httpRequest.post(
+        `/dcp/dashboard/v2/getDataSet?datasetId=${item.datasetId}`,
         filterParams,
-        {
-          headers: dashboardHeaderAuth(accessToken),
-        },
+        customHeaders,
       );
 
       if (data) {
@@ -377,16 +361,11 @@ export const requestWidgetData = (
 
 export const getAggregatedTraffic = (item, filterParams = {}) => {
   return async (dispatch, getState) => {
-    const accessToken = getState().auth_reducer.data?.access_token;
-
     try {
       dispatch(requestAggregatedTraffic());
-      const {data} = await Axios.post(
-        `${base_url}/dcp/dashboard/v2/getDataSet?datasetId=${item.datasetId}`,
+      const {data} = await httpRequest.post(
+        `/dcp/dashboard/v2/getDataSet?datasetId=${item.datasetId}`,
         filterParams,
-        {
-          headers: dashboardHeaderAuth(accessToken),
-        },
       );
       if (data) {
         if (data.statusCode === 0) {
@@ -401,16 +380,11 @@ export const getAggregatedTraffic = (item, filterParams = {}) => {
 
 export const get12MonthUsage = (item, filterParams = {}) => {
   return async (dispatch, getState) => {
-    const accessToken = getState().auth_reducer.data?.access_token;
-
     try {
       dispatch(request12MonthUsage());
-      const {data} = await Axios.post(
-        `${base_url}/dcp/dashboard/v2/getDataSet?datasetId=${item.datasetId}`,
+      const {data} = await httpRequest.post(
+        `/dcp/dashboard/v2/getDataSet?datasetId=${item.datasetId}`,
         filterParams,
-        {
-          headers: dashboardHeaderAuth(accessToken),
-        },
       );
 
       if (data) {
@@ -426,16 +400,11 @@ export const get12MonthUsage = (item, filterParams = {}) => {
 
 export const getMonthUsage = (item, filterParams = {}) => {
   return async (dispatch, getState) => {
-    const accessToken = getState().auth_reducer.data?.access_token;
-
     try {
       dispatch(requestMonthUsage());
-      const {data} = await Axios.post(
-        `${base_url}/dcp/dashboard/v2/getDataSet?datasetId=${item.datasetId}`,
+      const {data} = await httpRequest.post(
+        `/dcp/dashboard/v2/getDataSet?datasetId=${item.datasetId}`,
         filterParams,
-        {
-          headers: dashboardHeaderAuth(accessToken),
-        },
       );
 
       if (data) {
@@ -444,7 +413,6 @@ export const getMonthUsage = (item, filterParams = {}) => {
         }
       }
     } catch (error) {
-      console.log('Error' + error.response.data);
       dispatch(setRequestError(error.response.data));
     }
   };
@@ -452,16 +420,12 @@ export const getMonthUsage = (item, filterParams = {}) => {
 
 export const getSubsAnalytics = (item, filterParams = {}) => {
   return async (dispatch, getState) => {
-    const accessToken = getState().auth_reducer.data?.access_token;
     try {
       dispatch(requestSubsAnalytics());
       dispatch(resetSubsAnalytics());
-      const {data} = await Axios.post(
-        `${base_url}/dcp/dashboard/v2/getDataSet?datasetId=${item.datasetId}`,
+      const {data} = await httpRequest.post(
+        `/dcp/dashboard/v2/getDataSet?datasetId=${item.datasetId}`,
         filterParams,
-        {
-          headers: dashboardHeaderAuth(accessToken),
-        },
       );
 
       if (data) {
@@ -470,7 +434,6 @@ export const getSubsAnalytics = (item, filterParams = {}) => {
         }
       }
     } catch (error) {
-      console.log('Error' + error);
       dispatch(setRequestError(error.response.data));
     }
   };

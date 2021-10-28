@@ -33,10 +33,6 @@ const ModalMultiSession = (props) => {
     dispatch(resetMultiSessionDetected());
   };
 
-  useEffect(() => {
-    console.log('Kebuka');
-  }, [props.showModal]);
-
   return (
     <Modal
       animationType="slide"

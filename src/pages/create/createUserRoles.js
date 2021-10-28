@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import {View} from 'react-native';
 import {GridComponent} from '../../components';
 import {useDispatch, useSelector} from 'react-redux';
-import {getActiveRoles} from '../../redux/action/roles_action';
+import {getActiveRoles, resetRolesData} from '../../redux/action/roles_action';
 
 const gridOptionsArray = [
   {
@@ -51,6 +51,7 @@ const CreateUserRoles = (props) => {
 
   const [gridData, setGridData] = useState([]);
   const [gridOptions, setGridOptions] = useState(gridOptionsArray);
+  const [isDataReset, setIsDataReset] = useState(false);
 
   const selectCheckBox = (roleId = null, action = 'general') => {
     if (gridData.length > 0) {
@@ -143,21 +144,27 @@ const CreateUserRoles = (props) => {
   }, [props.selectedRoles]);
 
   useEffect(() => {
-    if (data_active_roles?.length > 0) {
-      if (props.isUpdate) {
-        checkSelectedRoles(data_active_roles, props.dataRoleId);
-      } else {
-        setGridData(data_active_roles);
-      }
+    if (isDataReset) {
+      if (data_active_roles?.length > 0) {
+        if (props.isUpdate) {
+          checkSelectedRoles(data_active_roles, props.dataRoleId);
+        } else {
+          setGridData(data_active_roles);
+        }
 
-      checkHistory();
+        checkHistory();
+      }
     }
-  }, [data_active_roles]);
+  }, [data_active_roles, isDataReset]);
 
   useEffect(() => {
-    console.log(props, ' <<< props');
     dispatch(getActiveRoles(props.enterpriseId));
   }, [props.enterpriseId]);
+
+  useEffect(() => {
+    dispatch(resetRolesData());
+    setIsDataReset(true);
+  }, [props.formPosition]);
 
   return (
     <View onStartShouldSetResponderCapture={props.detectOffset}>
@@ -176,6 +183,7 @@ const CreateUserRoles = (props) => {
 };
 
 CreateUserRoles.propTypes = {
+  formPosition: PropTypes.number,
   isUpdate: PropTypes.bool,
   dataRoleId: PropTypes.array,
   selectedRoles: PropTypes.array,
@@ -186,6 +194,7 @@ CreateUserRoles.propTypes = {
 };
 
 CreateUserRoles.defaultProps = {
+  formPosition: 0,
   isUpdate: false,
   dataRoleId: [],
   selectedRoles: [],

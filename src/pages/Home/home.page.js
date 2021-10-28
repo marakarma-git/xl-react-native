@@ -100,18 +100,12 @@ const LandingPage = ({navigation}) => {
 
   useEffect(() => {
     const pageLoad = navigation.addListener('focus', () => {
+      const {access_token, principal} = userData;
       dispatch(setHomeLogin());
       dispatch(getCarousel(userData.access_token));
-      dispatch(
-        callEnterpriseLogo(
-          userData.principal.enterpriseId,
-          userData.access_token,
-        ),
-      );
-
+      dispatch(callEnterpriseLogo(principal.enterpriseId, access_token));
       // Configure Push Notification
-      Notification.configure(dispatch, navigation);
-
+      Notification.configure(dispatch, userData);
       detectOrientation();
     });
 
