@@ -1,6 +1,3 @@
-import axios from 'axios';
-import {base_url} from '../../constant/connection';
-
 import React, {useState, useRef, useEffect} from 'react';
 import {useSelector} from 'react-redux';
 import {ScrollView, View, ToastAndroid, ActivityIndicator} from 'react-native';
@@ -24,9 +21,9 @@ import {enterpriseManagementClearActiveEnterpriseData} from '../../redux/action/
 import {setRequestError} from '../../redux/action/dashboard_action';
 import {userAdministrationCreateUser} from '../../redux/action/user_administration_get_user_action';
 import {useToastHooks} from '../../customHooks/customHooks';
-import {saveActivityLog} from '../../redux/action/save_activity_log_action';
 import {ADMINISTRATION_PRIVILEDGE_ID} from '../../constant/actionPriv';
 import {colors} from '../../constant/color';
+import httpRequest from '../../constant/axiosInstance';
 
 const passwordFormBody = {
   password: '',
@@ -274,7 +271,7 @@ const CreateNewUserPage = ({route, navigation}) => {
   };
 
   const onSubmit = () => {
-    let url = `${base_url}/user/usr/createUser`;
+    let url = `/user/usr/createUser`;
 
     const dataRaw = {
       email: '',
@@ -317,7 +314,7 @@ const CreateNewUserPage = ({route, navigation}) => {
     }
 
     if (userId) {
-      url = `${base_url}/user/usr/updateUser?userId=${userId}`;
+      url = `/user/usr/updateUser?userId=${userId}`;
       dataRaw.updatedBy = data?.principal?.username;
     } else {
       // Created By
@@ -337,13 +334,14 @@ const CreateNewUserPage = ({route, navigation}) => {
 
   const submitAction = async (dataRaw, url) => {
     try {
-      setSubmitLoading((prevState) => (prevState = true));
-      const {data} = await axios.post(url, dataRaw, {
+      const customHeaders = {
         headers: {
-          Authorization: 'Bearer ' + accessToken,
-          'Content-Type': 'application/json',
+          activityId: userId ? 'AP-5' : 'AP-3',
+          descSuffix: dataRaw.username,
         },
-      });
+      };
+      setSubmitLoading((prevState) => (prevState = true));
+      const {data} = await httpRequest.post(url, dataRaw, customHeaders);
 
       if (data) {
         let wording = '';
@@ -356,14 +354,6 @@ const CreateNewUserPage = ({route, navigation}) => {
           } else {
             wording = 'Update user success';
           }
-          dispatch(
-            saveActivityLog(
-              'User Administration',
-              actionType,
-              ADMINISTRATION_PRIVILEDGE_ID,
-              `${actionType} for data: ${dataRaw.username}`,
-            ),
-          );
           navigation.navigate('User Administration');
         } else if (data.statusCode === 1002) {
           wording = data.statusDescription + ', please use another username! ';
@@ -398,13 +388,8 @@ const CreateNewUserPage = ({route, navigation}) => {
   const getUserDetail = async () => {
     try {
       setLoadingUserDetail(true);
-      const {data} = await axios.get(
-        `${base_url}/user/usr/getUserDetail?userId=${userId}`,
-        {
-          headers: {
-            Authorization: 'Bearer ' + accessToken,
-          },
-        },
+      const {data} = await httpRequest.get(
+        `/user/usr/getUserDetail?userId=${userId}`,
       );
 
       if (data) {

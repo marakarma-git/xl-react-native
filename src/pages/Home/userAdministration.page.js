@@ -34,10 +34,9 @@ import {dataMatcherArray2D} from '../../redux/action/get_sim_inventory_action';
 import Helper from '../../helpers/helper';
 import Loading from '../../components/loading';
 import {setRequestError} from '../../redux/action/dashboard_action';
-import {base_url} from '../../constant/connection';
 import {ADMINISTRATION_PRIVILEDGE_ID} from '../../constant/actionPriv';
-import {saveActivityLog} from '../../redux/action/save_activity_log_action';
 import {useToastHooks} from '../../customHooks/customHooks';
+import httpRequest from '../../constant/axiosInstance';
 
 const actionDataArray = [
   {
@@ -185,24 +184,16 @@ const UserAdministrationPage = ({route}) => {
       roleId.push(user.userId);
       usernameArray.push(user.username);
     });
-
     setModalLoading(true);
 
     try {
-      //dispatch(
-      //   saveActivityLog(
-      //     route.name,
-      //     'Delete',
-      //     ADMINISTRATION_PRIVILEDGE_ID,
-      //     `Delete for data: ${usernameArray.join(', ')}`,
-      //   ),
-      // );
-      const {data} = await axios.post(
-        `${base_url}/user/usr/deleteUser`,
+      const {data} = await httpRequest.post(
+        `/user/usr/deleteUser`,
         {userId: roleId},
         {
           headers: {
-            Authorization: `Bearer ${accessToken}`,
+            activityId: 'AP-10',
+            descSuffix: `Delete for data: ${usernameArray.join(', ')}`,
           },
         },
       );
@@ -240,16 +231,6 @@ const UserAdministrationPage = ({route}) => {
   const lockUnlockFunction = async (lockUser) => {
     try {
       setModalLoading(true);
-      //dispatch(
-      // saveActivityLog(
-      //   route.name,
-      //   lockUser ? 'Lock' : 'Unlock',
-      //   ADMINISTRATION_PRIVILEDGE_ID,
-      //   `${lockUser ? 'Lock' : 'Unlock'} for data: ${usernameArray.join(
-      //     ', ',
-      //   )}`,
-      // ),
-      // );
       const roleId = new Array();
       const usernameArray = new Array();
       let successMessage = lockUser ? 'locked' : 'unlocked';
@@ -259,12 +240,15 @@ const UserAdministrationPage = ({route}) => {
         usernameArray.push(user.username);
       });
 
-      const {data} = await axios.post(
-        `${base_url}/user/usr/updateLock`,
+      const {data} = await httpRequest.post(
+        `/user/usr/updateLock`,
         {lockStatus: lockUser, userId: roleId},
         {
           headers: {
-            Authorization: `Bearer ${accessToken}`,
+            activityId: lockUser ? 'AP-11' : 'AP-12',
+            descSuffix: `${
+              lockUser ? 'Lock' : 'Unlock'
+            } for data: ${usernameArray.join(', ')}`,
           },
         },
       );
@@ -395,10 +379,6 @@ const UserAdministrationPage = ({route}) => {
       checkActionPriviledge();
       setSelectedUser([]);
       updateActionAccess([]);
-
-      // dispatch(
-      //   saveActivityLog(route.name, 'View', ADMINISTRATION_PRIVILEDGE_ID),
-      // );
       dispatch(
         callUserAdministrationGetUser({
           paginate_page: 0,

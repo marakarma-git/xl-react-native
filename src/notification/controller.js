@@ -24,6 +24,7 @@ class Notification {
         );
       },
       onNotification: function (notification) {
+        console.log('NOTIFICATION :', notification);
         const {title, message} = notification.data;
         PushNotification.localNotification({
           channelId: 'fcm_fallback_notification_channel',

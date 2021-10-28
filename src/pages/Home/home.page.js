@@ -24,7 +24,6 @@ import Orientation from '../../helpers/orientation';
 import style from '../../style/home.style';
 import Text from '../../components/global/text';
 import {colors} from '../../constant/color';
-import {getListTopicByEnterprise} from '../../redux/action/notification_action';
 
 const LandingPage = ({navigation}) => {
   const dispatch = useDispatch();
@@ -101,7 +100,7 @@ const LandingPage = ({navigation}) => {
 
   useEffect(() => {
     const pageLoad = navigation.addListener('focus', () => {
-      const {access_token, principal, customerNo} = userData;
+      const {access_token, principal} = userData;
       dispatch(setHomeLogin());
       dispatch(getCarousel(userData.access_token));
       dispatch(callEnterpriseLogo(principal.enterpriseId, access_token));

@@ -32,7 +32,6 @@ import {setRequestError} from '../../redux/action/dashboard_action';
 import {base_url} from '../../constant/connection';
 import {useToastHooks} from '../../customHooks/customHooks';
 import {ADMINISTRATION_PRIVILEDGE_ID} from '../../constant/actionPriv';
-import {saveActivityLog} from '../../redux/action/save_activity_log_action';
 
 const actionDataArray = [
   {
@@ -201,12 +200,6 @@ const RoleAdministrationPage = ({route, navigation}) => {
           setSelectedRoles([]);
           updateActionAccess([]);
           dispatch(callRoleAdministrationDeleteRole(roleId));
-          // dispatch(saveActivityLog(
-          //   route.name,
-          //   'Delete',
-          //   ADMINISTRATION_PRIVILEDGE_ID,
-          //   `Delete data for: ${roleNameArray.join(", ")}`
-          // ))
         }
         setShowModal(false);
         setDeleteLoading(true);
@@ -309,12 +302,6 @@ const RoleAdministrationPage = ({route, navigation}) => {
       checkActionPriviledge();
       setSelectedRoles([]);
       updateActionAccess([]);
-
-      // dispatch(saveActivityLog(
-      //   route.name,
-      //   'View',
-      //   ADMINISTRATION_PRIVILEDGE_ID,
-      // ));
       dispatch(
         callRoleAction({
           page_params: 0,

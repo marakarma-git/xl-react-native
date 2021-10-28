@@ -3,12 +3,8 @@ import reduxString from '../reduxString';
 import subDomain from '../../constant/requestSubPath';
 import {base_url, headerAuth, clientId} from '../../constant/connection';
 import {removeEnterPriseLogo} from './enterprise_action';
-import {saveActivityLog} from './save_activity_log_action';
-import {
-  CUSTOMER_CONSENT_PRIVILEDGE_ID,
-  LOGIN_LOGOUT_PRIVILEDGE_ID,
-} from '../../constant/actionPriv';
 import {unsubscribeTopicNotification} from './notification_action';
+import httpRequest from '../../constant/axiosInstance';
 
 const authRequest = () => {
   return {
@@ -70,23 +66,18 @@ const authLogout = () => {
     const username = getState().auth_reducer.data?.principal?.username || '';
     const accessToken = getState().auth_reducer?.data?.access_token;
     const notifToken = getState().notification_reducer.token;
-    // dispatch(
-    //   saveActivityLog(
-    //     'Logout',
-    //     'Logout',
-    //     LOGIN_LOGOUT_PRIVILEDGE_ID,
-    //     `as ${username}`,
-    //   ),
-    // );
+    const customHeaders = {
+      headers: {
+        activityId: 'LLP-2',
+        descSuffix: ` as ${username}`,
+        isStatic: true,
+      },
+    };
     try {
-      const {data} = await Axios.post(
-        `${base_url}${subDomain.logout}`,
+      const {data} = await httpRequest.post(
+        `${subDomain.logout}`,
         {},
-        {
-          headers: {
-            Authorization: 'Bearer ' + accessToken,
-          },
-        },
+        customHeaders,
       );
 
       if (data) {
@@ -116,17 +107,9 @@ const resetMultiSessionDetected = () => ({
 const checkLogin = (username, password, loginDropDown) => {
   return async (dispatch) => {
     dispatch(authRequest());
-
+    const dataObj = {username, password, clientId: clientId};
     try {
-      const {data} = await Axios.post(
-        `${base_url}${subDomain.checkLogin}`,
-        {username, password, clientId: clientId},
-        {
-          headers: {
-            'Content-Type': 'application/json',
-          },
-        },
-      );
+      const {data} = await httpRequest.post(`${subDomain.checkLogin}`, dataObj);
 
       if (data) {
         dispatch(
@@ -150,6 +133,14 @@ const setIsErricson = (isErricson) => ({
 
 const authLogin = (username, password, loginDropDown) => {
   const formData = new FormData();
+  const customHeaders = {
+    headers: {
+      'Content-Type': 'multipart/form-data',
+      activityId: 'LLP-1',
+      descSuffix: ` as ${username}`,
+      isStatic: true,
+    },
+  };
 
   if (loginDropDown === 0) {
     formData.append('grant_type', 'password');
@@ -167,25 +158,10 @@ const authLogin = (username, password, loginDropDown) => {
   return async (dispatch) => {
     dispatch(authRequest());
     try {
-      // await dispatch(
-      //   saveActivityLog(
-      //     'Login',
-      //     'Login',
-      //     LOGIN_LOGOUT_PRIVILEDGE_ID,
-      //     `as ${username}`,
-      //     [],
-      //     true,
-      //   ),
-      // );
-      const {data} = await Axios.post(
-        `${base_url}${subDomain.fetchLogin}`,
+      const {data} = await httpRequest.post(
+        `${subDomain.fetchLogin}`,
         formData,
-        {
-          headers: {
-            Authorization: headerAuth,
-            'Content-Type': 'multipart/form-data',
-          },
-        },
+        customHeaders,
       );
 
       if (data) {
@@ -203,7 +179,7 @@ const getUserPriviledges = async (access_token) => {
   let userPriviledges = new Array();
 
   try {
-    const {data} = await Axios.get(`${base_url}/user/usr/getUserPrivileges`, {
+    const {data} = await httpRequest.get(`/user/usr/getUserPrivileges`, {
       headers: {
         Authorization: 'Bearer ' + access_token,
       },
@@ -254,11 +230,7 @@ const updateCustomerConsentFail = (error) => ({
 const getTitleVersion = () => {
   return async (dispatch) => {
     try {
-      const {data} = await Axios.get(`${base_url}/user/usr/getUserAppVersion`, {
-        headers: {
-          Authorization: headerAuth,
-        },
-      });
+      const {data} = await httpRequest.get(`/user/usr/getUserAppVersion`);
 
       if (data) {
         const version = {
@@ -274,24 +246,20 @@ const getTitleVersion = () => {
 };
 
 const updateCustomerConsent = (userData) => {
+  const customHeaders = {
+    headers: {
+      activityId: 'CCP-1',
+      descSuffix: `${
+        userData?.principal?.username || ''
+      } Agreed to Costumer Consent`,
+    },
+  };
   return async (dispatch) => {
     try {
-      // dispatch(
-      //   saveActivityLog(
-      //     'Customer Consent',
-      //     'View',
-      //     CUSTOMER_CONSENT_PRIVILEDGE_ID,
-      //     `${userData?.principal?.username || ''} Agreed to Costumer Consent`,
-      //   ),
-      // );
-      const {data} = await Axios.post(
-        `${base_url}/user/usr/updateCustomerConsent?userId=${userData.principal.userId}`,
+      const {data} = await httpRequest.post(
+        `/user/usr/updateCustomerConsent?userId=${userData.principal.userId}`,
         {},
-        {
-          headers: {
-            Authorization: 'Bearer ' + userData.access_token,
-          },
-        },
+        customHeaders,
       );
 
       if (data) {

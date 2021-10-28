@@ -45,7 +45,7 @@ const UsageSubscribersAnalyticsPage = ({route, navigation}) => {
   };
 
   const callWidgetList = () => {
-    dispatch(getWidgetList(userData.access_token));
+    dispatch(getWidgetList());
   };
 
   const getMonthlySubs = (params, customParams = {}) => {

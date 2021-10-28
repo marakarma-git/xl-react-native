@@ -64,6 +64,7 @@ const subscribeTopicNotification = (params, username, token) => {
           },
         },
       );
+      console.log(data, ' <<<< subscribe topic');
     } catch (error) {
       dispatch(setRequestError(error.response.data));
     }
@@ -90,7 +91,7 @@ const getListTopicByEnterprise = (custNo, token, username, notifToken) => {
           tokens: notifToken,
           topics: result,
         };
-        console.log(result, ' <<< ');
+        console.log(data, ' <<< RESULT NIH');
         if (statusCode === 0) {
           if (typeof result == 'object') {
             if (result.length > 0) {

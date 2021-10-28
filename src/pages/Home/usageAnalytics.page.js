@@ -115,7 +115,7 @@ const UsageAnalyticsPage = ({route, navigation}) => {
   };
 
   const callWidgetList = () => {
-    dispatch(getWidgetList(userData.access_token));
+    dispatch(getWidgetList());
   };
 
   const callAggregatedTraffic = (params) => {
