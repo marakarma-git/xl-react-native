@@ -213,7 +213,7 @@ const dataHeaderFilter = [
     formId: 'subscription-status-hard-code',
     api_id: 'packageStatus',
     value: {},
-    data: [],
+    data: [{value: true, label: 'In Used'}],
     typeInput: 'DropDown',
     cellType: 'TableCellHeaderAscDesc',
     cellRowType: 'TableCellText',
