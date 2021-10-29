@@ -106,7 +106,7 @@ const getSubscriptionDescription = (description) => {
           const changeArray = result.map(
             ({packageId, packageDesc}) =>
               ({
-                value: packageId,
+                value: packageDesc,
                 label: packageDesc,
               } || []),
           );
