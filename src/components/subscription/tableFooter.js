@@ -38,6 +38,12 @@ const TableFooter = (props) => {
     loading,
   } = props || {};
   const [showPerPage, setShowPerPage] = useState(false);
+  const getTotalPage = () => {
+    if (totalPage > 0) {
+      return totalPage - 1;
+    }
+    return totalPage;
+  };
   return (
     <View style={tableFooter.tableFooterWrapper}>
       <View style={tableFooter.row}>
@@ -83,8 +89,9 @@ const TableFooter = (props) => {
               </>
             )}
             <TextInput
+              keyboardType={'numeric'}
               placeholder={currentPage + 1 + ''}
-              value={currentPage + 1}
+              value={currentPage === 0 ? currentPage + 1 : currentPage}
               style={tableFooter.textInputPaging}
               maxLength={totalPage?.toString().length || 0}
               onSubmitEditing={(e) => {
@@ -112,7 +119,8 @@ const TableFooter = (props) => {
                     size={28}
                   />
                 </TouchableOpacity>
-                <TouchableOpacity onPress={() => onChangePaging(totalPage)}>
+                <TouchableOpacity
+                  onPress={() => onChangePaging(getTotalPage())}>
                   <MaterialIcons
                     name={'skip-next'}
                     color={colors.gray}
