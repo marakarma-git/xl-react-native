@@ -2,6 +2,7 @@ import axios from 'axios';
 import reduxString from '../reduxString';
 import {base_url} from '../../constant/connection';
 import {dataMatcherArray2D} from './get_sim_inventory_action';
+import httpRequest from '../../constant/axiosInstance';
 
 const userAdministrationGetUserLoading = () => {
   return {
@@ -145,7 +146,6 @@ const callUserAdministrationGetUser = (paginate) => {
     dispatch(userAdministrationGetUserLoading());
     const {paginate_page, paginate_size, data_to_sort} = paginate || {}; // this is the additional params
     const {order_by, sort_by} = data_to_sort || {};
-    const {access_token} = (await getState().auth_reducer.data) || '';
     const {
       page_pagination,
       total_size_pagination,
@@ -187,20 +187,23 @@ const callUserAdministrationGetUser = (paginate) => {
         .split(' ')
         .join('+'),
     );
-    axios
+    const customHeaders = {
+      headers: {
+        activityId: searchText || generatedParams ? 'AP-8' : 'AP-2',
+        showParams: searchText || generatedParams ? true : false,
+        excludeParamsKey: 'page|size',
+      },
+    };
+    httpRequest
       .get(
-        `${base_url}/user/usr/getUserList?page=${getPage}&size=${getSize}${
+        `/user/usr/getUserList?page=${getPage}&size=${getSize}${
           searchText ? `&keyword=${searchText}` : ''
         }${getSortBy() ? `&order=${getSortBy()}` : ''}${
           getSortBy() ? `&sort=${getOrderBy()}` : ''
         }${generatedParams}`
           .split(' ')
           .join('+'),
-        {
-          headers: {
-            Authorization: `Bearer ${access_token}`,
-          },
-        },
+        customHeaders,
       )
       .then(({data}) => {
         const {result, statusCode} = data || {};

@@ -111,11 +111,12 @@ const setCarousel = (data) => ({
   payload: data,
 });
 
-export const getCarousel = (accessToken) => {
+export const getCarousel = () => {
   return async (dispatch) => {
     const customHeaders = {
       headers: {
         activityId: 'LLP-3',
+        isStatic: true,
       },
     };
     dispatch(requestDashboardData());

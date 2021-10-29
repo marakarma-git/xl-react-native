@@ -101,7 +101,7 @@ const ADMINISTRATION_PRIVILEDGE_ID = [
     privId: '4acc9e1a-7245-11ea-bc55-0242ac130003',
     menuName: 'User Administration',
     actionName: 'Create',
-    activityLog: 'Create for data: ',
+    activityLog: 'Create for data ',
   },
   {
     activityId: 'AP-4',
@@ -115,14 +115,14 @@ const ADMINISTRATION_PRIVILEDGE_ID = [
     privId: '4acca338-7245-11ea-bc55-0242ac130003',
     menuName: 'Role Administration',
     actionName: 'Edit',
-    activityLog: 'Edit for data: ',
+    activityLog: 'Edit for data ',
   },
   {
     activityId: 'AP-6',
     privId: '4acca068-7245-11ea-bc55-0242ac130003',
     menuName: 'Role Administration',
     actionName: 'Create',
-    activityLog: '',
+    activityLog: 'Create for data ',
   },
   {
     activityId: 'AP-7',
@@ -136,7 +136,7 @@ const ADMINISTRATION_PRIVILEDGE_ID = [
     privId: '5265e528-96b1-11eb-a8b3-0242ac130003',
     menuName: 'User Administration',
     actionName: 'Filter',
-    activityLog: '',
+    activityLog: 'Search / filter with criteria: ',
   },
   {
     activityId: 'AP-9',
@@ -157,28 +157,28 @@ const ADMINISTRATION_PRIVILEDGE_ID = [
     privId: 'e1dc5ebe-91fa-11eb-a8b3-0242ac130003',
     menuName: 'User Administration',
     actionName: 'Lock',
-    activityLog: '',
+    activityLog: 'Lock for data',
   },
   {
     activityId: 'AP-12',
     privId: 'e1dc5f90-91fa-11eb-a8b3-0242ac130003',
     menuName: 'User Administration',
     actionName: 'Unlock',
-    activityLog: '',
+    activityLog: 'Unlock for data',
   },
   {
     activityId: 'AP-13',
     privId: '31a717d4-9b67-11eb-a8b3-0242ac130003',
     menuName: 'Role Administration',
     actionName: 'Delete',
-    activityLog: '',
+    activityLog: 'Delete for data ',
   },
   {
     activityId: 'AP-14',
     privId: '31a718ba-9b67-11eb-a8b3-0242ac130003',
     menuName: 'Role Administration',
     actionName: 'Copy',
-    activityLog: '',
+    activityLog: 'Copy for data ',
   },
   {
     activityId: 'AP-15',
@@ -463,7 +463,7 @@ const CHANGE_PASSWORD_PRIVILEDGE_ID = [
     privId: '711111aa-643a-11ea-bc55-0242ac130003',
     menuName: 'Change Password',
     actionName: 'ChangePassword',
-    activityLog: 'Change password for: ',
+    activityLog: 'Change password for ',
   },
 ];
 

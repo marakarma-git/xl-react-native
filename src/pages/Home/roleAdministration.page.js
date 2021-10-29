@@ -27,11 +27,10 @@ import FilterActionLabel from '../../components/subscription/filterActionLabel';
 import Helper from '../../helpers/helper';
 import TableFooter from '../../components/subscription/tableFooter';
 import Loading from '../../components/loading';
-import axios from 'axios';
 import {setRequestError} from '../../redux/action/dashboard_action';
-import {base_url} from '../../constant/connection';
 import {useToastHooks} from '../../customHooks/customHooks';
 import {ADMINISTRATION_PRIVILEDGE_ID} from '../../constant/actionPriv';
+import httpRequest from '../../constant/axiosInstance';
 
 const actionDataArray = [
   {
@@ -167,23 +166,22 @@ const RoleAdministrationPage = ({route, navigation}) => {
   const deleteFunction = async () => {
     const roleId = new Array();
     const roleNameArray = new Array();
-
     selectedRoles.map((role) => {
       roleId.push(role.roleId);
       roleNameArray.push(role.roleName);
     });
-
     setDeleteLoading(true);
-
+    const customHeaders = {
+      headers: {
+        activityId: 'AP-13',
+        descSuffix: roleNameArray.join(', '),
+      },
+    };
     try {
-      const {data} = await axios.post(
-        `${base_url}/user/role/deleteRole`,
+      const {data} = await httpRequest.post(
+        `/user/role/deleteRole`,
         {roleId: roleId},
-        {
-          headers: {
-            Authorization: `Bearer ${accessToken}`,
-          },
-        },
+        customHeaders,
       );
 
       if (data) {

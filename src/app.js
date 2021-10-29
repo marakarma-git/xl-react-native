@@ -18,7 +18,7 @@ import {colors} from './constant/color';
 const persistConfig = {
   key: 'root',
   storage: AsyncStorage,
-  whitelist: ['auth_reducer', 'notification_reducer'],
+  whitelist: ['auth_reducer'],
   transforms: [
     encryptTransform({
       secretKey: headerAuth,
