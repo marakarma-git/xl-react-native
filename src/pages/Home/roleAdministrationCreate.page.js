@@ -25,9 +25,9 @@ import {
 import Helper from '../../helpers/helper';
 import {setRequestError} from '../../redux/action/dashboard_action';
 import {roleAdministrationCopyRoleList} from '../../redux/action/role_administration_get_all_role_action';
-import {ADMINISTRATION_PRIVILEDGE_ID} from '../../constant/actionPriv';
 import {getActiveEnterpriseList} from '../../redux/action/enterprise_management_action';
 import {colors} from '../../constant/color';
+import httpRequest from '../../constant/axiosInstance';
 
 const formBody = {
   roleName: '',
@@ -215,10 +215,16 @@ const RoleAdministrationCreatePage = ({route, navigation}) => {
   };
 
   const onSubmit = () => {
-    let url = `${base_url}/user/role/createRole`;
+    let url = `/user/role/createRole`;
+    let activityId = 'AP-6';
 
     if (activeMenu === 'edit') {
-      url = `${base_url}/user/role/updateRole?roleId=${roleId}`;
+      url = `/user/role/updateRole?roleId=${roleId}`;
+      activityId = 'AP-5';
+    }
+
+    if (activeMenu === 'copy') {
+      activityId = 'AP-14';
     }
 
     const dataRaw = {
@@ -245,19 +251,20 @@ const RoleAdministrationCreatePage = ({route, navigation}) => {
     dataRaw.roleOwnership = selectedOwnership[0].enterpriseId;
     dataRaw.showToChild = selectedVisibility == 0 ? false : true;
 
-    submitAction(dataRaw, url);
+    submitAction(dataRaw, url, activityId);
   };
 
-  const submitAction = async (dataRaw, url) => {
+  const submitAction = async (dataRaw, url, activityId) => {
+    const customHeaders = {
+      headers: {
+        activityId,
+        descSuffix: dataRaw.roleName,
+      },
+    };
     try {
       setSubmitLoading((prevState) => (prevState = true));
 
-      const {data} = await axios.post(url, dataRaw, {
-        headers: {
-          Authorization: 'Bearer ' + access_token,
-          'Content-Type': 'application/json',
-        },
-      });
+      const {data} = await httpRequest.post(url, dataRaw, customHeaders);
 
       if (data) {
         let wording = '';

@@ -17,7 +17,6 @@ class Notification {
         dispatch(
           getListTopicByEnterprise(
             userData.customerNo, // sementara
-            userData.access_token,
             userData?.principal?.username,
             token?.token,
           ),
@@ -25,13 +24,13 @@ class Notification {
       },
       onNotification: function (notification) {
         console.log('NOTIFICATION :', notification);
-        const {title, message} = notification.data;
+        const {title, body} = JSON.parse(notification.data.title);
         PushNotification.localNotification({
           channelId: 'fcm_fallback_notification_channel',
           foreground: true,
           userInteraction: false,
           title: title,
-          message: message,
+          message: body,
         });
         dispatch(receivePushNotification(notification));
       },

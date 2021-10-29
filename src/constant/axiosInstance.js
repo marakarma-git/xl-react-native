@@ -22,9 +22,17 @@ const httpRequest = axios.create({
 });
 
 const requestHandler = async (request) => {
-  const {activityId, descSuffix, isStatic, showParams} = request.headers;
+  const {
+    activityId,
+    descSuffix,
+    isStatic,
+    showParams,
+    excludeParamsKey,
+  } = request.headers;
+  let paramsUrl = '';
   const accessToken = await store.getState().auth_reducer.data?.access_token;
   if (accessToken) request.headers.Authorization = `Bearer ${accessToken}`;
+
   if (activityId) {
     const privData = activityLogHandler.getPriviledgeData(activityId);
     const privDetail = activityLogHandler.getPriviledgeDetail(
@@ -32,12 +40,16 @@ const requestHandler = async (request) => {
       privData,
       isStatic || false,
     );
+    if (showParams) {
+      paramsUrl = activityLogHandler.splitFirstUrl(request.url)[1];
+    }
     // ADD HEADERS
     request.headers['X-CHANNEL'] = 'Web Portal';
     request.headers['X-DESCRIPTION'] = activityLogHandler.showDescription(
       privDetail.activityLog,
       descSuffix,
-      showParams || '',
+      paramsUrl,
+      excludeParamsKey || '',
     );
     request.headers['X-Privilege-ID'] = privDetail.privId;
     // DELETE HEADERS
@@ -98,12 +110,46 @@ const activityLogHandler = {
     if (isStatic) isHasPriviledge = true;
     return isHasPriviledge ? dataPriviledge : null;
   },
-  showDescription: (activityLog, descSuffix, filterParams) => {
-    let params = activityLogHandler.serializeParams(filterParams);
+  showDescription: (
+    activityLog,
+    descSuffix,
+    filterParams,
+    excludeParamsKey,
+  ) => {
+    let params =
+      filterParams.length > 0
+        ? activityLogHandler.serializeParams(filterParams, excludeParamsKey)
+        : '';
     return `${activityLog}${params}${descSuffix || ''}`;
   },
-  serializeParams: (filterParams) => {
-    return '';
+  serializeParams: (filterParams, excludeParamsKey) => {
+    let filterData = {};
+    let splitExcludeParams = excludeParamsKey.split('|');
+    let splitFilterParams = filterParams.split('&');
+    splitFilterParams.map((filter) => {
+      let splitFilter = filter.split('=');
+      filterData[splitFilter[0]] = splitFilter[1];
+    });
+    let filterLabel = [];
+    Object.keys(filterData).map((filterKey) => {
+      let isUsed = true;
+      splitExcludeParams.map((paramsKey) => {
+        if (filterKey == paramsKey) isUsed = false;
+      });
+      if (isUsed) filterLabel.push(`${filterKey} : ${filterData[filterKey]}`);
+    });
+    return filterLabel.join(', ');
+  },
+  splitFirstUrl: (url) => {
+    let splitUrl = url.split('');
+    let returnData = [];
+    let isSplit = 0;
+    splitUrl.map((data) => {
+      if (returnData[isSplit] === undefined) returnData.push(data);
+      else returnData[isSplit] += data;
+      if (data === '?') isSplit = 1;
+    });
+    return returnData;
   },
 };
 
