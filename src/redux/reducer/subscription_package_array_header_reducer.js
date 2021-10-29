@@ -360,6 +360,13 @@ const subscription_package_array_header_reducer = (
         state.dataSubscriptionHeader.findIndex(
           (f) => f.formId === action.formId,
         ) || 0;
+      if (action.formId === 'subscription-enterprise-hard-code') {
+        const getIndexDescription = state.dataSubscriptionHeader.findIndex(
+          (f) => f.formId === 'subscription-description-hard-code',
+        );
+        state.dataSubscriptionHeader[getIndexDescription].value = {};
+        state.dataSubscriptionHeader[getIndexDescription].disabled = true;
+      }
       state.dataSubscriptionHeader[getIndex] = Helper.dynamicResetForm(
         state.dataSubscriptionHeader[getIndex],
       );

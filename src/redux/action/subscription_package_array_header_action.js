@@ -150,7 +150,7 @@ const getActiveEnterpriseSubscription = () => {
         if (statusCode === 0) {
           const changeArray = result.map(
             ({enterpriseId: thisEnterprise, enterpriseName}) => ({
-              value: thisEnterprise,
+              value: enterpriseName,
               label: enterpriseName,
             }),
           );

@@ -110,6 +110,15 @@ const callSubscriptionPackage = (paginate) => {
         }
       }
     };
+    console.log(
+      `${base_url}/dcp/package/getSubscriptionPackage?page=${getPage}&size=${getSize}${
+        searchText ? `&keyword=${searchText}` : ''
+      }${getSortBy() ? `&order=${getSortBy()}` : ''}${
+        getSortBy() ? `&sort=${getOrderBy()}` : ''
+      }${generatedParams}`
+        .split(' ')
+        .join('+'),
+    );
     axios
       .get(
         `${base_url}/dcp/package/getSubscriptionPackage?page=${getPage}&size=${getSize}${
@@ -126,9 +135,6 @@ const callSubscriptionPackage = (paginate) => {
         },
       )
       .then(({data}) => {
-        console.log(
-          'callSubscriptionPackage: ' + JSON.stringify(data, null, 2),
-        );
         const {result, statusCode} = data || {};
         const {content, totalPages, totalElements} = result || {};
         if (statusCode === 0) {
