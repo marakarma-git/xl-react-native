@@ -2,6 +2,7 @@ import reduxString from '../reduxString';
 import axios from 'axios';
 import {base_url} from '../../constant/connection';
 import {dataMatcherArray2D} from './get_sim_inventory_action';
+import httpRequest from '../../constant/axiosInstance';
 const roleAdministrationGetRoleLoading = () => {
   return {
     type: reduxString.ROLE_ADMINISTRATION_GET_ROLE_LOADING,
@@ -117,18 +118,21 @@ const callRoleAction = (paginate) => {
         .split(' ')
         .join('+'),
     );
-    axios
+    const customHeaders = {
+      headers: {
+        activityId: searchText || generatedParams ? 'AP-7' : 'AP-4',
+        showParams: searchText || generatedParams ? true : false,
+        excludeParamsKey: 'page|size',
+      },
+    };
+    httpRequest
       .get(
-        `${base_url}/user/role/getAllrole?page=${getPage}&size=${getSize}&keyword=${searchText}${
+        `/user/role/getAllrole?page=${getPage}&size=${getSize}&keyword=${searchText}${
           getSortBy() ? `&order=${getSortBy()}` : ''
         }${getSortBy() ? `&sort=${getOrderBy()}` : ''}${generatedParams}`
           .split(' ')
           .join('+'),
-        {
-          headers: {
-            Authorization: `Bearer ${access_token}`,
-          },
-        },
+        customHeaders,
       )
       .then(({data}) => {
         const {result, statusCode} = data || {};

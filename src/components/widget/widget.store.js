@@ -17,13 +17,7 @@ const WidgetStore = ({widgetList}) => {
       case 'SIM-Statistics':
         return <PieChart item={item} />;
       case 'Top-Traffic':
-        return (
-          <BarChart
-            viewType="dashboard"
-            item={item}
-            filterParams={{param3: 30, param4: 10}}
-          />
-        );
+        return <BarChart viewType="dashboard" item={item} filterParams={{}} />;
       // case 'Aggregated-Traffic':
       //     return(
       //         <AggregateTraffic

@@ -20,6 +20,20 @@ const DASHBOARD_PRIVILEDGE_ID = [
     actionName: 'TopTraffic',
     activityLog: 'Traffic Statistics',
   },
+  {
+    activityId: 'DP-4',
+    privId: '02ac2c76-53ce-11ea-8d77-2e728ce88125',
+    menuName: 'Dashboard',
+    actionName: 'Dashboard',
+    activityLog: 'SIM Statistics with criteria : ',
+  },
+  {
+    activityId: 'DP-5',
+    privId: '02ac2c76-53ce-11ea-8d77-2e728ce88125',
+    menuName: 'Dashboard',
+    actionName: 'TopTraffic',
+    activityLog: 'Traffic Statistics with criteria : ',
+  },
 ];
 
 const SUBSCRIPTION_PRIVILEDGE_ID = [
@@ -129,7 +143,7 @@ const ADMINISTRATION_PRIVILEDGE_ID = [
     privId: 'a7d61538-56ff-11eb-ae93-0242ac130002',
     menuName: 'Role Administration',
     actionName: 'Filter',
-    activityLog: '',
+    activityLog: 'Search / filter with criteria: ',
   },
   {
     activityId: 'AP-8',
@@ -366,14 +380,14 @@ const ANALYTICS_PRIVILEDGE_ID = [
     privId: 'ee1a526a-6439-11eb-ae93-0242ac130002',
     menuName: 'Usage Analytics',
     actionName: 'AggregatedTrafficsView',
-    activityLog: 'Aggregated Traffics',
+    activityLog: 'Aggregate Traffics',
   },
   {
     activityId: 'ANP-8',
     privId: 'ee1a51ac-6439-11eb-ae93-0242ac130002',
     menuName: 'Usage Analytics',
     actionName: 'AggregatedTrafficsFilter',
-    activityLog: 'Aggregated Traffics',
+    activityLog: 'Aggregate Traffics with criteria :',
   },
   {
     activityId: 'ANP-9',
@@ -387,7 +401,7 @@ const ANALYTICS_PRIVILEDGE_ID = [
     privId: 'ee1a51ac-6439-11eb-ae93-0242ac130002',
     menuName: 'Usage Analytics',
     actionName: 'Last12MonthUsageFilter',
-    activityLog: 'Last 12 Month Usage',
+    activityLog: 'Last 12 Month Usage with criteria : ',
   },
   {
     activityId: 'ANP-11',
@@ -401,7 +415,7 @@ const ANALYTICS_PRIVILEDGE_ID = [
     privId: 'ee1a51ac-6439-11eb-ae93-0242ac130002',
     menuName: 'Usage Analytics',
     actionName: 'MonthlyUsageFilter',
-    activityLog: 'Monthly Usage',
+    activityLog: 'Monthly Usage with criteria : ',
   },
   {
     activityId: 'ANP-13',

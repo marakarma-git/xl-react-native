@@ -19,6 +19,7 @@ import {NoDataText} from '..';
 import {useNavigation} from '@react-navigation/native';
 
 import styles from '../../style/usageAnalytics.style';
+import {colors} from '../../constant/color';
 
 const Las12MonthUsageChart = (props) => {
   const navigation = useNavigation();
@@ -91,13 +92,13 @@ const Las12MonthUsageChart = (props) => {
               axisLabelComponent={<VictoryLabel dy={20} />}
               standalone={false}
               tickLabelComponent={
-                <VictoryLabel dx={-10} angle={-13} style={{fontSize: 10}} />
+                <VictoryLabel dx={-10} angle={-20} style={{fontSize: 10}} />
               }
             />
 
             <VictoryBar
               style={{
-                data: {fill: '#0266FF'},
+                data: {fill: colors.main_color},
               }}
               labels={({datum}) => datum}
               data={dataSet}
@@ -138,7 +139,7 @@ const Las12MonthUsageChart = (props) => {
                 <VictoryTooltip
                   activateData={false}
                   orientation="top"
-                  flyoutStyle={{stroke: '#0266FF', fill: 'white'}}
+                  flyoutStyle={{stroke: colors.main_color, fill: 'white'}}
                   flyoutWidth={160}
                   flyoutHeight={30}
                   labelComponent={<CustomLabel />}
@@ -196,7 +197,7 @@ const CustomLabel = (props) => {
       }}>
       <Text style={{fontSize: 12, paddingLeft: 3}}>
         <Text style={{fontWeight: 'bold'}}>
-          <Text style={{color: '#0266FF'}}>
+          <Text style={{color: colors.main_color}}>
             {String(text.x).replace('-', ' ')} :{' '}
           </Text>
           {Helper.tooltipConvertUnit(text.y)}
