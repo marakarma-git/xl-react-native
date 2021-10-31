@@ -45,12 +45,8 @@ const requestHandler = async (request) => {
     );
     if (showParams) {
       if (method === 'get') {
-        console.log(request);
-        console.log('GET METHOD');
         paramsUrl = activityLogHandler.splitFirstUrl(request.url)[1];
       } else {
-        console.log(request);
-        console.log('POST METHOD');
         paramsUrl = request.data;
       }
     }

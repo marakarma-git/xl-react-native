@@ -60,7 +60,6 @@ const UsageAnalyticsPage = ({route, navigation}) => {
   const dispatch = useDispatch();
   const {imageBase64} = useSelector((state) => state.enterprise_reducer);
   const widgetList = useSelector((state) => state.dashboard_reducer.widgetList);
-  const userData = useSelector((state) => state.auth_reducer.data);
   const {
     aggregatedTraffic,
     loadingAggregated,
