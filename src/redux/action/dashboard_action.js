@@ -370,11 +370,22 @@ export const requestWidgetData = (
 
 export const getAggregatedTraffic = (item, filterParams = {}) => {
   return async (dispatch, getState) => {
+    let isHasParams = Object.keys(filterParams).length > 0;
+    const customHeaders = {
+      headers: {
+        activityId: isHasParams ? 'ANP-8' : 'ANP-7',
+        showParams: isHasParams ? true : false,
+        excludeParamsKey: '',
+        paramKeyDescription:
+          'param1:Enterprise Number|param2:Package Name|param3:Period (days)|param4:Count By',
+      },
+    };
     try {
       dispatch(requestAggregatedTraffic());
       const {data} = await httpRequest.post(
         `/dcp/dashboard/v2/getDataSet?datasetId=${item.datasetId}`,
         filterParams,
+        customHeaders,
       );
       if (data) {
         if (data.statusCode === 0) {
@@ -389,11 +400,22 @@ export const getAggregatedTraffic = (item, filterParams = {}) => {
 
 export const get12MonthUsage = (item, filterParams = {}) => {
   return async (dispatch, getState) => {
+    let isHasParams = Object.keys(filterParams).length > 0;
+    const customHeaders = {
+      headers: {
+        activityId: isHasParams ? 'ANP-10' : 'ANP-9',
+        showParams: isHasParams ? true : false,
+        excludeParamsKey: '',
+        paramKeyDescription:
+          'param1:Enterprise Number|param2:Package Name|param3:Period (days)|param4:Count By',
+      },
+    };
     try {
       dispatch(request12MonthUsage());
       const {data} = await httpRequest.post(
         `/dcp/dashboard/v2/getDataSet?datasetId=${item.datasetId}`,
         filterParams,
+        customHeaders,
       );
 
       if (data) {
@@ -409,11 +431,21 @@ export const get12MonthUsage = (item, filterParams = {}) => {
 
 export const getMonthUsage = (item, filterParams = {}) => {
   return async (dispatch, getState) => {
+    let isHasParams = Object.keys(filterParams).length > 0;
+    const customHeaders = {
+      headers: {
+        activityId: isHasParams ? 'ANP-12' : 'ANP-11',
+        showParams: isHasParams ? true : false,
+        excludeParamsKey: '',
+        paramKeyDescription: 'param3:Data in Month',
+      },
+    };
     try {
       dispatch(requestMonthUsage());
       const {data} = await httpRequest.post(
         `/dcp/dashboard/v2/getDataSet?datasetId=${item.datasetId}`,
         filterParams,
+        customHeaders,
       );
 
       if (data) {
@@ -429,12 +461,23 @@ export const getMonthUsage = (item, filterParams = {}) => {
 
 export const getSubsAnalytics = (item, filterParams = {}) => {
   return async (dispatch, getState) => {
+    let isHasParams = Object.keys(filterParams).length > 0;
+    const customHeaders = {
+      headers: {
+        activityId: isHasParams ? 'ANP-13' : 'ANP-14',
+        showParams: isHasParams ? true : false,
+        excludeParamsKey: '',
+        paramKeyDescription:
+          'param1:Enterprise Number|param2:Package Name|param3:Date',
+      },
+    };
     try {
       dispatch(requestSubsAnalytics());
       dispatch(resetSubsAnalytics());
       const {data} = await httpRequest.post(
         `/dcp/dashboard/v2/getDataSet?datasetId=${item.datasetId}`,
         filterParams,
+        customHeaders,
       );
 
       if (data) {
