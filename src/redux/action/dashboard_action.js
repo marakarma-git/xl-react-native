@@ -323,15 +323,23 @@ const setSubsAnalytics = (data, params) => {
 export const requestWidgetData = (
   accessToken,
   item,
-  filterParams,
+  filterParams = {},
   type = 'sim',
 ) => {
   return async (dispatch) => {
+    let isHasParams = Object.keys(filterParams).length > 0;
     if (type === 'sim') dispatch(requestDashboardData());
     if (type === 'top') dispatch(requestTopTraffic());
+    let activityId;
+    if (type === 'sim') activityId = isHasParams ? 'DP-4' : 'DP-1';
+    else if (type === 'top') activityId = isHasParams ? 'DP-5' : 'DP-3';
     const customHeaders = {
       headers: {
-        activityId: type == 'sim' ? 'DP-1' : 'DP-3',
+        activityId,
+        showParams: isHasParams ? true : false,
+        excludeParamsKey: '',
+        paramKeyDescription:
+          'param1:Enterprise Number|param2:Package Name|param3:Period (days)|param4:Count By',
       },
     };
     try {

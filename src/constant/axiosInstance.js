@@ -1,4 +1,5 @@
 import axios from 'axios';
+import {filter} from 'lodash';
 import {API_URL, BASIC_TOKEN} from '../../env.json';
 import {store} from '../app';
 import {
@@ -28,8 +29,10 @@ const requestHandler = async (request) => {
     isStatic,
     showParams,
     excludeParamsKey,
+    paramKeyDescription,
   } = request.headers;
   let paramsUrl = '';
+  let method = request.method.toLowerCase();
   const accessToken = await store.getState().auth_reducer.data?.access_token;
   if (accessToken) request.headers.Authorization = `Bearer ${accessToken}`;
 
@@ -41,7 +44,15 @@ const requestHandler = async (request) => {
       isStatic || false,
     );
     if (showParams) {
-      paramsUrl = activityLogHandler.splitFirstUrl(request.url)[1];
+      if (method === 'get') {
+        console.log(request);
+        console.log('GET METHOD');
+        paramsUrl = activityLogHandler.splitFirstUrl(request.url)[1];
+      } else {
+        console.log(request);
+        console.log('POST METHOD');
+        paramsUrl = request.data;
+      }
     }
     // ADD HEADERS
     request.headers['X-CHANNEL'] = 'Web Portal';
@@ -50,6 +61,8 @@ const requestHandler = async (request) => {
       descSuffix,
       paramsUrl,
       excludeParamsKey || '',
+      method,
+      paramKeyDescription,
     );
     request.headers['X-Privilege-ID'] = privDetail.privId;
     // DELETE HEADERS
@@ -58,8 +71,9 @@ const requestHandler = async (request) => {
     delete request.headers.isStatic;
     delete request.headers.descSuffix;
     delete request.headers.showParams;
+    delete request.headers.excludeParamsKey;
+    delete request.headers.paramKeyDescription;
   }
-  console.log(request);
   return request;
 };
 
@@ -115,14 +129,25 @@ const activityLogHandler = {
     descSuffix,
     filterParams,
     excludeParamsKey,
+    method = 'get',
+    paramKeyDescription = null,
   ) => {
-    let params =
-      filterParams.length > 0
-        ? activityLogHandler.serializeParams(filterParams, excludeParamsKey)
-        : '';
+    let paramsData =
+      method === 'get'
+        ? activityLogHandler.serializeParams(
+            filterParams,
+            excludeParamsKey,
+            paramKeyDescription,
+          )
+        : activityLogHandler.serializeData(
+            filterParams,
+            excludeParamsKey,
+            paramKeyDescription,
+          );
+    let params = filterParams ? paramsData : '';
     return `${activityLog}${params}${descSuffix || ''}`;
   },
-  serializeParams: (filterParams, excludeParamsKey) => {
+  serializeParams: (filterParams, excludeParamsKey, paramKeyDescription) => {
     let filterData = {};
     let splitExcludeParams = excludeParamsKey.split('|');
     let splitFilterParams = filterParams.split('&');
@@ -136,7 +161,41 @@ const activityLogHandler = {
       splitExcludeParams.map((paramsKey) => {
         if (filterKey == paramsKey) isUsed = false;
       });
-      if (isUsed) filterLabel.push(`${filterKey} : ${filterData[filterKey]}`);
+      if (isUsed)
+        filterLabel.push(
+          `${activityLogHandler.getParamKeyDescription(
+            filterKey,
+            paramKeyDescription,
+          )} : ${filterData[filterKey]}`,
+        );
+    });
+    return filterLabel.join(', ');
+  },
+  serializeData: (dataParams, excludeParamsKey, paramKeyDescription) => {
+    if (typeof dataParams !== 'object') {
+      return '';
+    }
+    let filterData = {};
+    let splitExcludeParams = excludeParamsKey.split('|');
+    Object.keys(dataParams).map((key) => {
+      let isObject = typeof dataParams[key] === 'object';
+      Object.assign(filterData, {
+        [key]: isObject ? dataParams[key].join(', ') : dataParams[key],
+      });
+    });
+    let filterLabel = [];
+    Object.keys(filterData).map((filterKey) => {
+      let isUsed = true;
+      splitExcludeParams.map((paramsKey) => {
+        if (filterKey == paramsKey) isUsed = false;
+      });
+      if (isUsed)
+        filterLabel.push(
+          `${activityLogHandler.getParamKeyDescription(
+            filterKey,
+            paramKeyDescription,
+          )} : ${filterData[filterKey]}`,
+        );
     });
     return filterLabel.join(', ');
   },
@@ -150,6 +209,16 @@ const activityLogHandler = {
       if (data === '?') isSplit = 1;
     });
     return returnData;
+  },
+  getParamKeyDescription: (filterKey, paramKeyDescription = null) => {
+    if (!paramKeyDescription) return filterKey;
+    let splitParamDesc = paramKeyDescription.split('|');
+    let returnLabel = filterKey;
+    splitParamDesc.map((params) => {
+      let paramsKey = String(params.split(':')[0]).trim();
+      if (paramsKey === filterKey) returnLabel = String(params.split(':')[1]);
+    });
+    return returnLabel;
   },
 };
 
