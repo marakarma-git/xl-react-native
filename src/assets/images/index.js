@@ -20,6 +20,8 @@ import iconComponents from './drawer/components2.png';
 import iconLogout from './drawer/logout2.png';
 import iconAboutus from './drawer/aboutus.png';
 import iconAdmin from './drawer/admin.png';
+import iconAutomation from './drawer/automation.png';
+import iconAnalytics from './drawer/analytics.png';
 
 // Banner Assets
 import framerBanner from './banners/farmer-banner.png';
@@ -46,4 +48,6 @@ export {
   locationNotFound,
   iconAboutus,
   iconAdmin,
+  iconAutomation,
+  iconAnalytics,
 };
