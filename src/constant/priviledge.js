@@ -1,4 +1,11 @@
-import {iconComponents, iconGrids, iconHome, iconAdmin} from '../assets/images';
+import {
+  iconComponents,
+  iconGrids,
+  iconHome,
+  iconAdmin,
+  iconAutomation,
+  iconAnalytics,
+} from '../assets/images';
 import {
   LandingPage,
   DashboardPage,
@@ -114,14 +121,14 @@ export const DRAWER_MENU_PRIVILEDGE = [
   },
   {
     name: 'Automation',
-    icon: iconHome,
+    icon: iconAutomation,
     type: 'drawer',
     components: AutomationPage,
     priviledgeIds: AUTOMATION_PRIVILEDGE_ID,
   },
   {
     name: 'Analytics',
-    icon: iconAdmin,
+    icon: iconAnalytics,
     type: 'drawer',
     width: 25,
     height: 25,
