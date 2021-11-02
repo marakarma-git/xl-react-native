@@ -394,7 +394,6 @@ class Helper {
     newData = [],
     currentLevel = 0,
   ) {
-    console.log('Re Format');
     data.map((value, index) => {
       value.level = currentLevel;
       value.visibility = true;
@@ -566,8 +565,6 @@ class Helper {
           );
       }
     });
-
-    // console.log(errorValidation)
 
     return errorValidation[formKey];
   }
