@@ -12,18 +12,17 @@ class Notification {
       smallIcon: 'ic_launcher',
       color: 'red',
       onRegister: function (token) {
-        // Subscribe Push Notification
         dispatch(savePushNotifToken(token?.token));
         dispatch(
           getListTopicByEnterprise(
-            userData.customerNo, // sementara
+            userData.customerNo,
             userData?.principal?.username,
             token?.token,
           ),
         );
       },
       onNotification: function (notification) {
-        console.log('NOTIFICATION :', notification);
+        console.log('Notification : ' + JSON.parse(notification.data));
         const {title, body} = JSON.parse(notification.data.title);
         PushNotification.localNotification({
           channelId: 'fcm_fallback_notification_channel',
@@ -34,10 +33,7 @@ class Notification {
         });
         dispatch(receivePushNotification(notification));
       },
-      onAction: function (notification) {
-        console.log('ACTION:', notification.action);
-        // process the action
-      },
+      onAction: function (notification) {},
       onRegistrationError: function (err) {
         console.error(err.message, err);
       },

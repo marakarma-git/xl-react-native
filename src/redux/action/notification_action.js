@@ -31,23 +31,23 @@ const readNotification = (payload) => ({
   payload,
 });
 
-const unsubscribeTopicNotification = (params, username) => {
-  return async (dispatch) => {
-    try {
-      const {data} = await httpRequest.post(
-        `/notif/push-notification/unSubcribeTopic`,
-        params,
-        {
-          headers: {
-            username,
-          },
-        },
-      );
-    } catch (error) {
-      dispatch(setRequestError(error.response.data));
-    }
-  };
-};
+// const unsubscribeTopicNotification = (params, username) => {
+//   return async (dispatch) => {
+//     try {
+//       const {data} = await httpRequest.post(
+//         `/notif/push-notification/unSubcribeTopic`,
+//         params,
+//         {
+//           headers: {
+//             username,
+//           },
+//         },
+//       );
+//     } catch (error) {
+//       dispatch(setRequestError(error.response.data));
+//     }
+//   };
+// };
 
 const subscribeTopicNotification = (params, username) => {
   return async (dispatch) => {
@@ -96,8 +96,6 @@ const getListTopicByEnterprise = (
             if (result.length > 0) {
               if (isSubscribe)
                 dispatch(subscribeTopicNotification(params, username));
-              if (!isSubscribe)
-                dispatch(unsubscribeTopicNotification(params, username));
             }
           }
         }
@@ -113,5 +111,5 @@ export {
   readNotification,
   getListTopicByEnterprise,
   savePushNotifToken,
-  unsubscribeTopicNotification,
+  // unsubscribeTopicNotification,
 };

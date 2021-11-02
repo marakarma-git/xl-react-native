@@ -1,5 +1,4 @@
 import axios from 'axios';
-import {filter} from 'lodash';
 import {API_URL, BASIC_TOKEN} from '../../env.json';
 import {store} from '../app';
 import {

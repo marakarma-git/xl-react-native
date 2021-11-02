@@ -1,8 +1,6 @@
 import Axios from 'axios';
 import Helper from '../../helpers/helper';
 import reduxString from '../reduxString';
-import {base_url} from '../../constant/connection';
-import {dashboardHeaderAuth} from '../../constant/headers';
 import httpRequest from '../../constant/axiosInstance';
 
 const setDashboardSummary = (data) => ({
