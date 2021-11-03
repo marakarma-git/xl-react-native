@@ -1,19 +1,18 @@
 import React, {useState} from 'react';
-import {View, TouchableOpacity, ActivityIndicator} from 'react-native';
+import {View, TouchableOpacity} from 'react-native';
 import Text from '../global/text';
 import PropTypes from 'prop-types';
 import {subscriptionStyle} from '../../style';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import {colors} from '../../constant/color';
 import ModalSearchPicker from '../modal/ModalSearchPicker';
-import MaterialCommunityIcon from 'react-native-paper/src/components/MaterialCommunityIcon';
-import Ionicons from 'react-native-vector-icons/Ionicons';
 import {ColumnFilterSearch} from './searchHeader';
-import {Alert} from 'react-native';
 const actionData = [
   {
-    value: 'abc',
-    label: 'abc',
+    value: 0,
+    label: 'New Configuration',
+    navigationTo: '',
+    isDisabled: false,
   },
 ];
 const FilterActionLabel = (props) => {

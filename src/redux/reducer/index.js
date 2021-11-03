@@ -36,6 +36,8 @@ import geo_distribution_filter_reducer from './geo_distribution_filter_reducer';
 import usage_analytics_filter_reducer from './usage_analytics_filter_reducer';
 import usage_subscribers_analytics_filter_reducer from './usage_subscribers_analytics_filter_reducer';
 import subscription_package_edit_reducer from './subscription_package_edit_reducer';
+import sms_a2p_edit_reducer from './sms_a2p_edit_reducer';
+
 const RootReducers = combineReducers({
   dummy_reducer,
   auth_reducer,
@@ -74,5 +76,6 @@ const RootReducers = combineReducers({
   usage_analytics_filter_reducer,
   usage_subscribers_analytics_filter_reducer,
   subscription_package_edit_reducer,
+  sms_a2p_edit_reducer,
 });
 export default RootReducers;

@@ -33,6 +33,11 @@ const dataSmsHeader = [
       width: 180,
     },
     shown: true,
+    on_edit_config: {
+      type_input_edit: 'TextInput',
+      edit_label: 'Enterprise Name',
+      disabled: true,
+    },
   },
   {
     formId: 'sender-address-hard-code',
@@ -48,6 +53,10 @@ const dataSmsHeader = [
       width: 280,
     },
     shown: true,
+    on_edit_config: {
+      type_input_edit: 'TextInput',
+      edit_label: 'Sender Address \n(A Number)',
+    },
   },
   {
     formId: 'user-name-hard-code',
@@ -62,6 +71,18 @@ const dataSmsHeader = [
       isTouchable: true,
     },
     shown: true,
+    on_edit_config: {
+      type_input_edit: 'TextInput',
+      edit_label: 'Username',
+    },
+  },
+  {
+    formId: 'password-id-hard-code',
+    on_edit_config: {
+      type_input_edit: 'TextInput',
+      edit_label: 'Password',
+      secure_text_entry: true,
+    },
   },
   {
     formId: 'registration-id-hard-code',
@@ -76,6 +97,10 @@ const dataSmsHeader = [
       isTouchable: true,
     },
     shown: true,
+    on_edit_config: {
+      type_input_edit: 'TextInput',
+      edit_label: 'Registration ID',
+    },
   },
   {
     formId: 'date-time-hard-code',

@@ -23,6 +23,7 @@ import Helper from '../../helpers/helper';
 import {subscriptionPackageReplaceCellWithIndex} from '../../redux/action/subscription_package_get_subscription_action';
 import axios from 'axios';
 import {base_url} from '../../constant/connection';
+import {setRequestError} from '../../redux/action/dashboard_action';
 
 const SubscriptionPackageEdit = ({route}) => {
   const dispatch = useDispatch();
@@ -89,14 +90,14 @@ const SubscriptionPackageEdit = ({route}) => {
           alert(statusDescription);
         }
       })
-      .catch((e) => {
-        alert(e);
+      .catch((error) => {
+        dispatch(setRequestError(error));
         setLocalLoading(false);
       });
   };
   const handlingBack = () => {
     navigation.setParams({
-      positionTableIndex: undefined,
+      positionTableIndex: undeined,
     });
   };
   useEffect(() => {
