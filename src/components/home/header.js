@@ -11,22 +11,26 @@ import {useNavigation} from '@react-navigation/native';
 
 const HeaderComponent = (props) => {
   const navigation = useNavigation();
-  const notification = useSelector((state) => state.notification_reducer.pushNotification);
+  const notification = useSelector(
+    (state) => state.notification_reducer.listNotification,
+  );
 
   const generateNotif = () => {
-    if(notification.length > 0){
-      const checkUnreadNotif = notification.filter((notif) => notif.status == 'unread');
-      if(checkUnreadNotif.length > 0){
-        return(
+    if (notification.length > 0) {
+      const checkUnreadNotif = notification.filter(
+        (notif) => notif.readStatus == false,
+      );
+      if (checkUnreadNotif.length > 0) {
+        return (
           <View style={homeStyle.notifCircle}>
             <Text style={homeStyle.notifText}>
-              { checkUnreadNotif.length > 9 ? '9+' : checkUnreadNotif.length }
+              {checkUnreadNotif.length > 99 ? '99+' : checkUnreadNotif.length}
             </Text>
           </View>
         );
       }
     }
-  }
+  };
 
   const {customStyle, notifications} = props || {};
   return (
@@ -42,13 +46,13 @@ const HeaderComponent = (props) => {
         />
       </View>
       {notifications && (
-        <TouchableOpacity onPress={() => navigation.navigate("Notification")}>
+        <TouchableOpacity onPress={() => navigation.navigate('Notification')}>
           <MaterialCommunityIcons
             name={'bell-ring'}
             color={colors.yellow_bell}
             size={30}
           />
-          { generateNotif() }
+          {generateNotif()}
         </TouchableOpacity>
       )}
     </View>

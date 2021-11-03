@@ -31,24 +31,6 @@ const readNotification = (payload) => ({
   payload,
 });
 
-// const unsubscribeTopicNotification = (params, username) => {
-//   return async (dispatch) => {
-//     try {
-//       const {data} = await httpRequest.post(
-//         `/notif/push-notification/unSubcribeTopic`,
-//         params,
-//         {
-//           headers: {
-//             username,
-//           },
-//         },
-//       );
-//     } catch (error) {
-//       dispatch(setRequestError(error.response.data));
-//     }
-//   };
-// };
-
 const subscribeTopicNotification = (params, username) => {
   return async (dispatch) => {
     try {
@@ -106,10 +88,78 @@ const getListTopicByEnterprise = (
   };
 };
 
+const saveNotification = ({message, subject, token}, {username}) => {
+  return async (dispatch) => {
+    try {
+      const {data} = await httpRequest.post(
+        '/notif/push-notification/saveNotification',
+        {
+          message,
+          subject,
+          token,
+        },
+        {
+          headers: username
+        }
+      );
+      if (data) {
+        const {statusCode, result} = data;
+        console.log('Status Code : ', statusCode);
+        console.log('Result : ', result);
+      }
+    } catch (error) {
+      dispatch(setRequestError(error.response.data));
+    }
+  };
+};
+
+const readNotification = ({subject, token}, {username}) => {
+  return async (dispatch) => {
+    try {
+      const {data} = await httpRequest.post(
+        '/notif/push-notification/readNotification',
+        {
+          subject,
+          token,
+        },
+        {
+          headers: username
+        }
+      );
+      if (data) {
+        const {statusCode, result} = data;
+        console.log('Status Code : ', statusCode);
+        console.log('Result : ', result);
+      }
+    } catch (error) {
+      dispatch(setRequestError(error.response.data));
+    }
+  };
+};
+
+const getListNotification = (username) => {
+  return (dispatch) => {
+    try {
+      const {data} = await httpRequest.get('/notif/push-notification/getNotificationList', {
+        headers: {username}
+      });
+      if(data){
+        const {statusCode, result} = data;
+        console.log("Status Code Get List : ", statusCode);
+        console.log("Result Get List : ", result);
+      }
+    } catch (error) {
+      dispatch(setRequestError(error.response.data));
+    }
+  }
+}
+
 export {
   receivePushNotification,
   readNotification,
   getListTopicByEnterprise,
   savePushNotifToken,
-  // unsubscribeTopicNotification,
+  saveNotification,
+  readNotification,
+  getListNotification
 };

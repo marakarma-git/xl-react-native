@@ -1,9 +1,10 @@
 import PushNotification from 'react-native-push-notification';
 import {
   getListTopicByEnterprise,
-  receivePushNotification,
+  saveNotification,
   savePushNotifToken,
 } from '../redux/action/notification_action';
+import {store} from '../app';
 
 class Notification {
   static configure = (dispatch, userData) => {
@@ -22,8 +23,9 @@ class Notification {
         );
       },
       onNotification: function (notification) {
-        console.log('Notification : ' + JSON.parse(notification.data));
         const {title, body} = JSON.parse(notification.data.title);
+        const {token} = store.getState().notification_reducer;
+        const {username} = store.getState().auth_reducer.data;
         PushNotification.localNotification({
           channelId: 'fcm_fallback_notification_channel',
           foreground: true,
@@ -31,7 +33,7 @@ class Notification {
           title: title,
           message: body,
         });
-        dispatch(receivePushNotification(notification));
+        dispatch(saveNotification({body, title, token}, {username}));
       },
       onAction: function (notification) {},
       onRegistrationError: function (err) {
