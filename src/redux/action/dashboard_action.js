@@ -111,11 +111,12 @@ const setCarousel = (data) => ({
   payload: data,
 });
 
-export const getCarousel = (accessToken) => {
+export const getCarousel = () => {
   return async (dispatch) => {
     const customHeaders = {
       headers: {
         activityId: 'LLP-3',
+        isStatic: true,
       },
     };
     dispatch(requestDashboardData());
@@ -322,15 +323,23 @@ const setSubsAnalytics = (data, params) => {
 export const requestWidgetData = (
   accessToken,
   item,
-  filterParams,
+  filterParams = {},
   type = 'sim',
 ) => {
   return async (dispatch) => {
+    let isHasParams = Object.keys(filterParams).length > 0;
     if (type === 'sim') dispatch(requestDashboardData());
     if (type === 'top') dispatch(requestTopTraffic());
+    let activityId;
+    if (type === 'sim') activityId = isHasParams ? 'DP-4' : 'DP-1';
+    else if (type === 'top') activityId = isHasParams ? 'DP-5' : 'DP-3';
     const customHeaders = {
       headers: {
-        activityId: type == 'sim' ? 'DP-1' : 'DP-3',
+        activityId,
+        showParams: isHasParams ? true : false,
+        excludeParamsKey: '',
+        paramKeyDescription:
+          'param1:Enterprise Number|param2:Package Name|param3:Period (days)|param4:Count By',
       },
     };
     try {
@@ -361,11 +370,22 @@ export const requestWidgetData = (
 
 export const getAggregatedTraffic = (item, filterParams = {}) => {
   return async (dispatch, getState) => {
+    let isHasParams = Object.keys(filterParams).length > 0;
+    const customHeaders = {
+      headers: {
+        activityId: isHasParams ? 'ANP-8' : 'ANP-7',
+        showParams: isHasParams ? true : false,
+        excludeParamsKey: '',
+        paramKeyDescription:
+          'param1:Enterprise Number|param2:Package Name|param3:Period (days)|param4:Count By',
+      },
+    };
     try {
       dispatch(requestAggregatedTraffic());
       const {data} = await httpRequest.post(
         `/dcp/dashboard/v2/getDataSet?datasetId=${item.datasetId}`,
         filterParams,
+        customHeaders,
       );
       if (data) {
         if (data.statusCode === 0) {
@@ -380,11 +400,22 @@ export const getAggregatedTraffic = (item, filterParams = {}) => {
 
 export const get12MonthUsage = (item, filterParams = {}) => {
   return async (dispatch, getState) => {
+    let isHasParams = Object.keys(filterParams).length > 0;
+    const customHeaders = {
+      headers: {
+        activityId: isHasParams ? 'ANP-10' : 'ANP-9',
+        showParams: isHasParams ? true : false,
+        excludeParamsKey: '',
+        paramKeyDescription:
+          'param1:Enterprise Number|param2:Package Name|param3:Period (days)|param4:Count By',
+      },
+    };
     try {
       dispatch(request12MonthUsage());
       const {data} = await httpRequest.post(
         `/dcp/dashboard/v2/getDataSet?datasetId=${item.datasetId}`,
         filterParams,
+        customHeaders,
       );
 
       if (data) {
@@ -400,11 +431,21 @@ export const get12MonthUsage = (item, filterParams = {}) => {
 
 export const getMonthUsage = (item, filterParams = {}) => {
   return async (dispatch, getState) => {
+    let isHasParams = Object.keys(filterParams).length > 0;
+    const customHeaders = {
+      headers: {
+        activityId: isHasParams ? 'ANP-12' : 'ANP-11',
+        showParams: isHasParams ? true : false,
+        excludeParamsKey: '',
+        paramKeyDescription: 'param3:Data in Month',
+      },
+    };
     try {
       dispatch(requestMonthUsage());
       const {data} = await httpRequest.post(
         `/dcp/dashboard/v2/getDataSet?datasetId=${item.datasetId}`,
         filterParams,
+        customHeaders,
       );
 
       if (data) {
@@ -420,12 +461,23 @@ export const getMonthUsage = (item, filterParams = {}) => {
 
 export const getSubsAnalytics = (item, filterParams = {}) => {
   return async (dispatch, getState) => {
+    let isHasParams = Object.keys(filterParams).length > 0;
+    const customHeaders = {
+      headers: {
+        activityId: isHasParams ? 'ANP-13' : 'ANP-14',
+        showParams: isHasParams ? true : false,
+        excludeParamsKey: '',
+        paramKeyDescription:
+          'param1:Enterprise Number|param2:Package Name|param3:Date',
+      },
+    };
     try {
       dispatch(requestSubsAnalytics());
       dispatch(resetSubsAnalytics());
       const {data} = await httpRequest.post(
         `/dcp/dashboard/v2/getDataSet?datasetId=${item.datasetId}`,
         filterParams,
+        customHeaders,
       );
 
       if (data) {

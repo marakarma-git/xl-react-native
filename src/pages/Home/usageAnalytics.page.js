@@ -60,7 +60,6 @@ const UsageAnalyticsPage = ({route, navigation}) => {
   const dispatch = useDispatch();
   const {imageBase64} = useSelector((state) => state.enterprise_reducer);
   const widgetList = useSelector((state) => state.dashboard_reducer.widgetList);
-  const userData = useSelector((state) => state.auth_reducer.data);
   const {
     aggregatedTraffic,
     loadingAggregated,
@@ -73,7 +72,7 @@ const UsageAnalyticsPage = ({route, navigation}) => {
   );
   const [param1, setParam1] = useState(null);
   const [param2, setParam2] = useState(null);
-  const [param3, setParam3] = useState(30);
+  const [param3, setParam3] = useState(2);
   const [param3List, setParam3List] = useState([
     {label: '2 Days ago', value: 2, isDisabled: false, isVisible: true},
     {label: '7 Days ago', value: 7, isDisabled: false, isVisible: true},

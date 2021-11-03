@@ -1,4 +1,4 @@
-import {callApi} from '../../constant/connection';
+import httpRequest from '../../constant/axiosInstance';
 import {setRequestError} from './dashboard_action';
 
 const addNotification = (payload) => ({
@@ -31,54 +31,54 @@ const readNotification = (payload) => ({
   payload,
 });
 
-const unsubscribeTopicNotification = (notifToken, token) => {
+const unsubscribeTopicNotification = (params, username) => {
   return async (dispatch) => {
     try {
-      const {data} = await callApi.post(
+      const {data} = await httpRequest.post(
         `/notif/push-notification/unSubcribeTopic`,
-        {tokens: [notifToken]},
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-            'Content-Type': 'application/json',
-          },
-        },
-      );
-    } catch (error) {
-      dispatch(setRequestError(error.response.data));
-    }
-  };
-};
-
-const subscribeTopicNotification = (params, username, token) => {
-  return async (dispatch) => {
-    try {
-      const {data} = await callApi.post(
-        `/notif/push-notification/subcribeTopic`,
         params,
         {
           headers: {
-            Authorization: `Bearer ${token}`,
-            'Content-Type': 'application/json',
             username,
           },
         },
       );
-      console.log(data, ' <<<< subscribe topic');
     } catch (error) {
       dispatch(setRequestError(error.response.data));
     }
   };
 };
 
-const getListTopicByEnterprise = (custNo, token, username, notifToken) => {
+const subscribeTopicNotification = (params, username) => {
   return async (dispatch) => {
     try {
-      const {data} = await callApi.get(
+      const {data} = await httpRequest.post(
+        `/notif/push-notification/subcribeTopic`,
+        params,
+        {
+          headers: {
+            username,
+          },
+        },
+      );
+    } catch (error) {
+      dispatch(setRequestError(error.response.data));
+    }
+  };
+};
+
+const getListTopicByEnterprise = (
+  custNo,
+  username,
+  notifToken,
+  isSubscribe = true,
+) => {
+  return async (dispatch) => {
+    try {
+      const {data} = await httpRequest.get(
         `/notif/push-notification/getListTopicByEnterprise?customerNumber=${custNo}`,
         {
           headers: {
-            Authorization: `Bearer ${token}`,
             username,
           },
         },
@@ -91,11 +91,13 @@ const getListTopicByEnterprise = (custNo, token, username, notifToken) => {
           tokens: notifToken,
           topics: result,
         };
-        console.log(data, ' <<< RESULT NIH');
         if (statusCode === 0) {
           if (typeof result == 'object') {
             if (result.length > 0) {
-              dispatch(subscribeTopicNotification(params, username, token));
+              if (isSubscribe)
+                dispatch(subscribeTopicNotification(params, username));
+              if (!isSubscribe)
+                dispatch(unsubscribeTopicNotification(params, username));
             }
           }
         }

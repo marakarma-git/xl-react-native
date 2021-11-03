@@ -1,4 +1,5 @@
 import axios from 'axios';
+import {filter} from 'lodash';
 import {API_URL, BASIC_TOKEN} from '../../env.json';
 import {store} from '../app';
 import {
@@ -22,9 +23,19 @@ const httpRequest = axios.create({
 });
 
 const requestHandler = async (request) => {
-  const {activityId, descSuffix, isStatic, showParams} = request.headers;
+  const {
+    activityId,
+    descSuffix,
+    isStatic,
+    showParams,
+    excludeParamsKey,
+    paramKeyDescription,
+  } = request.headers;
+  let paramsUrl = '';
+  let method = request.method.toLowerCase();
   const accessToken = await store.getState().auth_reducer.data?.access_token;
   if (accessToken) request.headers.Authorization = `Bearer ${accessToken}`;
+
   if (activityId) {
     const privData = activityLogHandler.getPriviledgeData(activityId);
     const privDetail = activityLogHandler.getPriviledgeDetail(
@@ -32,12 +43,22 @@ const requestHandler = async (request) => {
       privData,
       isStatic || false,
     );
+    if (showParams) {
+      if (method === 'get') {
+        paramsUrl = activityLogHandler.splitFirstUrl(request.url)[1];
+      } else {
+        paramsUrl = request.data;
+      }
+    }
     // ADD HEADERS
     request.headers['X-CHANNEL'] = 'Web Portal';
     request.headers['X-DESCRIPTION'] = activityLogHandler.showDescription(
       privDetail.activityLog,
       descSuffix,
-      showParams || '',
+      paramsUrl,
+      excludeParamsKey || '',
+      method,
+      paramKeyDescription,
     );
     request.headers['X-Privilege-ID'] = privDetail.privId;
     // DELETE HEADERS
@@ -46,8 +67,9 @@ const requestHandler = async (request) => {
     delete request.headers.isStatic;
     delete request.headers.descSuffix;
     delete request.headers.showParams;
+    delete request.headers.excludeParamsKey;
+    delete request.headers.paramKeyDescription;
   }
-  console.log(request);
   return request;
 };
 
@@ -98,12 +120,101 @@ const activityLogHandler = {
     if (isStatic) isHasPriviledge = true;
     return isHasPriviledge ? dataPriviledge : null;
   },
-  showDescription: (activityLog, descSuffix, filterParams) => {
-    let params = activityLogHandler.serializeParams(filterParams);
+  showDescription: (
+    activityLog,
+    descSuffix,
+    filterParams,
+    excludeParamsKey,
+    method = 'get',
+    paramKeyDescription = null,
+  ) => {
+    let paramsData =
+      method === 'get'
+        ? activityLogHandler.serializeParams(
+            filterParams,
+            excludeParamsKey,
+            paramKeyDescription,
+          )
+        : activityLogHandler.serializeData(
+            filterParams,
+            excludeParamsKey,
+            paramKeyDescription,
+          );
+    let params = filterParams ? paramsData : '';
     return `${activityLog}${params}${descSuffix || ''}`;
   },
-  serializeParams: (filterParams) => {
-    return '';
+  serializeParams: (filterParams, excludeParamsKey, paramKeyDescription) => {
+    let filterData = {};
+    let splitExcludeParams = excludeParamsKey.split('|');
+    let splitFilterParams = filterParams.split('&');
+    splitFilterParams.map((filter) => {
+      let splitFilter = filter.split('=');
+      filterData[splitFilter[0]] = splitFilter[1];
+    });
+    let filterLabel = [];
+    Object.keys(filterData).map((filterKey) => {
+      let isUsed = true;
+      splitExcludeParams.map((paramsKey) => {
+        if (filterKey == paramsKey) isUsed = false;
+      });
+      if (isUsed)
+        filterLabel.push(
+          `${activityLogHandler.getParamKeyDescription(
+            filterKey,
+            paramKeyDescription,
+          )} : ${filterData[filterKey]}`,
+        );
+    });
+    return filterLabel.join(', ');
+  },
+  serializeData: (dataParams, excludeParamsKey, paramKeyDescription) => {
+    if (typeof dataParams !== 'object') {
+      return '';
+    }
+    let filterData = {};
+    let splitExcludeParams = excludeParamsKey.split('|');
+    Object.keys(dataParams).map((key) => {
+      let isObject = typeof dataParams[key] === 'object';
+      Object.assign(filterData, {
+        [key]: isObject ? dataParams[key].join(', ') : dataParams[key],
+      });
+    });
+    let filterLabel = [];
+    Object.keys(filterData).map((filterKey) => {
+      let isUsed = true;
+      splitExcludeParams.map((paramsKey) => {
+        if (filterKey == paramsKey) isUsed = false;
+      });
+      if (isUsed)
+        filterLabel.push(
+          `${activityLogHandler.getParamKeyDescription(
+            filterKey,
+            paramKeyDescription,
+          )} : ${filterData[filterKey]}`,
+        );
+    });
+    return filterLabel.join(', ');
+  },
+  splitFirstUrl: (url) => {
+    let splitUrl = url.split('');
+    let returnData = [];
+    let isSplit = 0;
+    splitUrl.map((data) => {
+      if (returnData[isSplit] === undefined) returnData.push(data);
+      else returnData[isSplit] += data;
+      if (data === '?') isSplit = 1;
+    });
+    return returnData;
+  },
+  getParamKeyDescription: (filterKey, paramKeyDescription = null) => {
+    if (!paramKeyDescription) return filterKey;
+    let splitParamDesc = paramKeyDescription.split('|');
+    let returnLabel = filterKey;
+    splitParamDesc.map((params) => {
+      let paramsKey = String(params.split(':')[0]).trim();
+      if (paramsKey === filterKey) returnLabel = String(params.split(':')[1]);
+    });
+    return returnLabel;
   },
 };
 

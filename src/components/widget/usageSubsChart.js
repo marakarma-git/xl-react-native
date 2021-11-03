@@ -154,7 +154,6 @@ const legendData = [
 ];
 
 const UsageSubsChart = (props) => {
-  const tickValues = [0, 0.25, 0.5, 0.75, 1, 1.25];
   const dataSet =
     useSelector((state) => state.dashboard_reducer.subsAnalytics) || [];
   const minValue = useSelector(
@@ -187,7 +186,6 @@ const UsageSubsChart = (props) => {
       xValue = Helper.formatAmount(y);
       baseColor = colors.chart_line_blue;
     }
-    console.log(dataSet[0].length);
     if (dataSet[0].length <= 13) {
       setChartDetail({
         title,
@@ -294,7 +292,7 @@ const UsageSubsChart = (props) => {
             <VictoryAxis
               crossAxis
               style={{
-                axis: {stroke: '#e6e6e6'},
+                axis: {stroke: colors.chart_axis_stroke},
                 tickLabels: {fill: 'grey', fontSize: 10},
               }}
               t

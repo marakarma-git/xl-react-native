@@ -1,9 +1,12 @@
 import Axios from 'axios';
 import reduxString from '../reduxString';
 import subDomain from '../../constant/requestSubPath';
-import {base_url, headerAuth, clientId} from '../../constant/connection';
+import {clientId} from '../../constant/connection';
 import {removeEnterPriseLogo} from './enterprise_action';
-import {unsubscribeTopicNotification} from './notification_action';
+import {
+  getListTopicByEnterprise,
+  unsubscribeTopicNotification,
+} from './notification_action';
 import httpRequest from '../../constant/axiosInstance';
 
 const authRequest = () => {
@@ -63,16 +66,23 @@ const tokenInvalid = () => {
 
 const authLogout = () => {
   return async (dispatch, getState) => {
-    const username = getState().auth_reducer.data?.principal?.username || '';
-    const accessToken = getState().auth_reducer?.data?.access_token;
+    const {customerNo, principal} = getState().auth_reducer.data;
     const notifToken = getState().notification_reducer.token;
     const customHeaders = {
       headers: {
         activityId: 'LLP-2',
-        descSuffix: ` as ${username}`,
+        descSuffix: ` as ${principal?.username}`,
         isStatic: true,
       },
     };
+    await dispatch(
+      getListTopicByEnterprise(
+        customerNo,
+        principal?.username,
+        notifToken,
+        false,
+      ),
+    );
     try {
       const {data} = await httpRequest.post(
         `${subDomain.logout}`,
@@ -82,8 +92,7 @@ const authLogout = () => {
 
       if (data) {
         dispatch(removeEnterPriseLogo());
-        dispatch(removeAuth(username));
-        dispatch(unsubscribeTopicNotification(notifToken, accessToken));
+        dispatch(removeAuth(principal?.username));
       }
     } catch (error) {
       dispatch(authFailed(error.response.data));

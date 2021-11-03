@@ -1,5 +1,5 @@
 import {StyleSheet} from 'react-native';
-import {colors} from '../constant/color';
+import {colors, color_theme_one} from '../constant/color';
 
 const styles = StyleSheet.create({
   scrollContainer: {
@@ -66,7 +66,7 @@ const styles = StyleSheet.create({
   },
   linkText: {
     fontSize: 14,
-    color: '#20A8D8',
+    color: color_theme_one.cyan,
   },
   filterText: {
     paddingHorizontal: 3,

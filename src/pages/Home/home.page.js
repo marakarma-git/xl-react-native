@@ -101,8 +101,10 @@ const LandingPage = ({navigation}) => {
   useEffect(() => {
     const pageLoad = navigation.addListener('focus', () => {
       const {access_token, principal} = userData;
+      console.log(userData.access_token, ' <<< Access Token');
+      console.log(userData.customerNo, ' <<< Customer No');
       dispatch(setHomeLogin());
-      dispatch(getCarousel(userData.access_token));
+      dispatch(getCarousel());
       dispatch(callEnterpriseLogo(principal.enterpriseId, access_token));
       // Configure Push Notification
       Notification.configure(dispatch, userData);
