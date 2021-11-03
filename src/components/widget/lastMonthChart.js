@@ -18,7 +18,6 @@ import Helper from '../../helpers/helper';
 import {NoDataText} from '..';
 import {useNavigation} from '@react-navigation/native';
 
-import styles from '../../style/usageAnalytics.style';
 import {colors} from '../../constant/color';
 
 const Las12MonthUsageChart = (props) => {
