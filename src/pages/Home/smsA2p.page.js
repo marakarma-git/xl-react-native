@@ -21,9 +21,11 @@ import {
 } from '../../redux/action/sms_a2p_array_header_action';
 import TableFooter from '../../components/subscription/tableFooter';
 import Loading from '../../components/loading';
+import {useNavigation} from '@react-navigation/native';
 
 const SmsA2p = () => {
   const dispatch = useDispatch();
+  const navigation = useNavigation();
   const [firstRender, setFirstRender] = useState(true);
   const [showMenu, setShowMenu] = useState(false);
   const {imageBase64} = useSelector((state) => state.enterprise_reducer);
@@ -67,6 +69,12 @@ const SmsA2p = () => {
       <View style={subscriptionStyle.containerBackground}>
         <Table
           onRight
+          onPressEdit={({position_table_index}) => {
+            navigation.navigate('SmsA2pEdit', {
+              position_table_index: position_table_index,
+              layoutType: 'Edit',
+            });
+          }}
           isScrollView={true}
           stickHeaderIndices={[1]}
           headerOtherLayout={() => {
@@ -98,6 +106,8 @@ const SmsA2p = () => {
                   }}
                 />
                 <FilterActionLabel
+                  actionData={[]}
+                  onChange={() => {}}
                   total={Helper.numberWithDot(sms_elements_static)}
                   filtered={
                     sms_applied_filter &&
