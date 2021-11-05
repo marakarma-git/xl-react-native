@@ -22,7 +22,16 @@ import {
 import TableFooter from '../../components/subscription/tableFooter';
 import Loading from '../../components/loading';
 import {useNavigation} from '@react-navigation/native';
-
+const actionDataArray = [
+  {
+    value: '0',
+    actionName: 'Create',
+    navigateTo: 'SmsA2pEdit',
+    label: 'New Configuration',
+    isDisabled: false,
+    isVisible: true,
+  },
+];
 const SmsA2p = () => {
   const dispatch = useDispatch();
   const navigation = useNavigation();
@@ -70,9 +79,12 @@ const SmsA2p = () => {
         <Table
           onRight
           onPressEdit={({position_table_index}) => {
+            const getConfigId =
+              data_sms_generated[position_table_index]?.dataCell[0]?.item;
             navigation.navigate('SmsA2pEdit', {
-              position_table_index: position_table_index,
+              positionTableIndex: position_table_index,
               layoutType: 'Edit',
+              configId: getConfigId,
             });
           }}
           isScrollView={true}
@@ -106,8 +118,15 @@ const SmsA2p = () => {
                   }}
                 />
                 <FilterActionLabel
-                  actionData={[]}
-                  onChange={() => {}}
+                  actionData={actionDataArray}
+                  onChange={(e) => {
+                    const {actionName, navigateTo} = e || {};
+                    if (actionName === 'Create') {
+                      navigation.navigate(navigateTo, {
+                        layoutType: 'Create',
+                      });
+                    }
+                  }}
                   total={Helper.numberWithDot(sms_elements_static)}
                   filtered={
                     sms_applied_filter &&

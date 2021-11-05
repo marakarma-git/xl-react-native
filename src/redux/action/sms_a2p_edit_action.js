@@ -1,6 +1,7 @@
 import reduxString from '../reduxString';
 import axios from 'axios';
 import {base_url} from '../../constant/connection';
+import {callActiveEnterprise} from './user_administration_array_header_action';
 
 const smsA2pEditTextInput = ({valueInput, formId}) => {
   return {
@@ -14,9 +15,10 @@ const smsA2pEditLoading = () => {
     type: reduxString.SMS_A2P_EDIT_LOADING,
   };
 };
-const smsA2pEditSuccess = () => {
+const smsA2pEditSuccess = (value) => {
   return {
     type: reduxString.SMS_A2P_EDIT_SUCCESS,
+    ...value,
   };
 };
 const smsA2pEditFailed = ({errorText}) => {
@@ -30,7 +32,43 @@ const smsA2pEditReset = () => {
     type: reduxString.SMS_A2P_EDIT_RESET,
   };
 };
-
+const getA2pEnterprise = () => {
+  return async (dispatch, getState) => {
+    dispatch(smsA2pEditLoading());
+    const {access_token} = (await getState().auth_reducer.data) || {};
+    callActiveEnterprise({access_token})
+      .then(({data}) => {
+        const {result, statusCode} = data || {};
+        if (statusCode === 0) {
+          const changeArray = result.map(
+            ({customerNumber, enterpriseName}) => ({
+              value: customerNumber,
+              label: enterpriseName,
+            }),
+          );
+          dispatch(
+            smsA2pEditSuccess({
+              dataEnterprise: changeArray,
+            }),
+          );
+        } else {
+          dispatch(
+            smsA2pEditFailed({
+              errorText: 'Error',
+            }),
+          );
+        }
+      })
+      .catch((error) => {
+        dispatch(
+          smsA2pEditFailed({
+            errorText: 'Error',
+            ...error.response.data,
+          }),
+        );
+      });
+  };
+};
 const getA2pEditDetail = (localVariable) => {
   return async (dispatch, getState) => {
     dispatch(smsA2pEditLoading());
@@ -50,6 +88,14 @@ const getA2pEditDetail = (localVariable) => {
       .then(({data}) => {
         const {result, statusCode} = data || {};
         if (statusCode === 0) {
+          dispatch(
+            smsA2pEditSuccess({
+              dataEdit: {
+                dataApi: result,
+                dataArrayNavigate: data_sms_generated[indexSelected],
+              },
+            }),
+          );
         } else {
           dispatch(
             smsA2pEditFailed({
@@ -71,4 +117,10 @@ const getA2pEditDetail = (localVariable) => {
 const deleteSmsA2p = () => {};
 const createSmsA2p = () => {};
 export default getA2pEditDetail;
-export {deleteSmsA2p, createSmsA2p, smsA2pEditTextInput, smsA2pEditReset};
+export {
+  getA2pEnterprise,
+  deleteSmsA2p,
+  createSmsA2p,
+  smsA2pEditTextInput,
+  smsA2pEditReset,
+};

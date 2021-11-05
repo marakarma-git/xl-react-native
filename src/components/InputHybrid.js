@@ -55,6 +55,7 @@ InputHybrid.propTypes = {
   constantLabelLeft: PropTypes.string,
   constantLabelRight: PropTypes.string,
   placeholder: PropTypes.string,
+  isSecureTextEntry: PropTypes.bool,
 };
 export default InputHybrid;
 
@@ -125,7 +126,9 @@ const NormalInput = (props) => {
     placeholder,
     constantLabelLeft,
     constantLabelRight,
+    isSecureTextEntry,
   } = props;
+  const [hidden, setHidden] = useState(true);
   return (
     <ContainerInput {...props}>
       <Text>{constantLabelLeft || ''}</Text>
@@ -134,7 +137,16 @@ const NormalInput = (props) => {
         onChangeText={onChange}
         value={value}
         placeholder={placeholder}
+        secureTextEntry={isSecureTextEntry === true ? hidden : false}
       />
+      {isSecureTextEntry && (
+        <MaterialCommunityIcons
+          name={hidden ? 'eye-off-outline' : 'eye-outline'}
+          color={'black'}
+          size={18}
+          onPress={() => setHidden((state) => !state)}
+        />
+      )}
       <Text>{constantLabelRight || ''}</Text>
     </ContainerInput>
   );
