@@ -14,11 +14,7 @@ import {
 import Text from '../components/global/text';
 import lod from 'lodash';
 import styles from '../style/login.style';
-import {
-  authLogin,
-  checkLogin,
-  setIsErricson,
-} from '../redux/action/auth_action';
+import {checkLogin, setIsErricson} from '../redux/action/auth_action';
 import {useDispatch, useSelector} from 'react-redux';
 import {loginBrand} from '../assets/images/index';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
@@ -194,6 +190,7 @@ const Login = ({navigation}) => {
 
   useEffect(() => {
     const pageLoad = navigation.addListener('focus', () => {
+      setErrorText('');
       setIsSubmit(false);
     });
 

@@ -294,8 +294,6 @@ const RoleAdministrationCreatePage = ({route, navigation}) => {
           showToast: true,
         });
 
-        let capitalActiveMenu = Helper.makeCapital(activeMenu);
-
         setSubmitLoading(false);
       }
     } catch (error) {
@@ -327,7 +325,6 @@ const RoleAdministrationCreatePage = ({route, navigation}) => {
       if (data) {
         const {result} = data;
         if (data.statusCode === 0) {
-          console.log('GET ROLE DETAIL');
           setFormProperties({
             roleName:
               activeMenu === 'copy'

@@ -18,7 +18,6 @@ import Helper from '../../helpers/helper';
 import {NoDataText} from '..';
 import {useNavigation} from '@react-navigation/native';
 
-import styles from '../../style/usageAnalytics.style';
 import {colors} from '../../constant/color';
 
 const Las12MonthUsageChart = (props) => {
@@ -43,8 +42,6 @@ const Las12MonthUsageChart = (props) => {
   };
 
   const _onPressOut = (data) => {
-    // tomorrow developer change chart
-    console.log('change chart', data?.index, data?.datum);
     props.setShowMonthUsage(data?.datum?.x || 'Jan-1990');
     return {active: undefined};
   };
