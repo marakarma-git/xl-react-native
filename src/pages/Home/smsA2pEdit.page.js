@@ -17,23 +17,37 @@ import axios from 'axios';
 import {useDispatch, useSelector} from 'react-redux';
 import {base_url} from '../../constant/connection';
 import {setRequestError} from '../../redux/action/dashboard_action';
+import getA2pEditDetail, {
+  getA2pEnterprise,
+  smsA2pEditReset,
+  smsA2pEditTextInput,
+} from '../../redux/action/sms_a2p_edit_action';
 
 const SmsA2pEdit = ({route}) => {
   const navigation = useNavigation();
   const dispatch = useDispatch();
   const {params} = route || {};
-  const {positionTableIndex, layoutType} = params || {};
+  const {positionTableIndex, layoutType, configId} = params || {};
+  const {dataA2pEdit} =
+    useSelector((state) => state.sms_a2p_edit_reducer) || [];
   const {access_token} = useSelector((state) => state.auth_reducer.data);
   const [localLoading, setLocalLoading] = useState(false);
 
   useEffect(() => {
     if (layoutType === 'Create') {
+      dispatch(getA2pEnterprise());
     }
     if (
       (positionTableIndex || positionTableIndex === 0) &&
-      layoutType === 'Edit'
+      layoutType === 'Edit' &&
+      configId
     ) {
-      // do something here
+      dispatch(
+        getA2pEditDetail({
+          indexSelected: positionTableIndex,
+          configId,
+        }),
+      );
     }
   }, [positionTableIndex, layoutType]);
   const onSubmit = () => {
@@ -60,22 +74,29 @@ const SmsA2pEdit = ({route}) => {
       });
   };
   const handlingBack = () => {
+    dispatch(smsA2pEditReset());
     navigation.setParams({
       positionTableIndex: undefined,
       layoutType: undefined,
+      configId: undefined,
     });
   };
   useEffect(() => {
     BackHandler.addEventListener('hardwareBackPress', () => handlingBack());
-  }, []);
+  }, [navigation]);
   return (
     <HeaderContainer headerTitle={'SMS A2P'} backIcon={true}>
       <ScrollView style={{backgroundColor: 'white'}}>
+        <Text>{JSON.stringify(dataA2pEdit, null, 2)}</Text>
         <OverlayBackground />
         <Container style={{marginTop: 16}}>
           <View style={subscriptionStyle.containerTitle}>
-            <Text style={{fontSize: 16}}>Edit</Text>
-            <TouchableOpacity onPress={() => navigation.goBack()}>
+            <Text style={{fontSize: 16}}>{layoutType || ''}</Text>
+            <TouchableOpacity
+              onPress={() => {
+                handlingBack();
+                navigation.goBack();
+              }}>
               <Ionicons
                 name={'chevron-back-circle'}
                 color={colors.gray}
@@ -84,19 +105,34 @@ const SmsA2pEdit = ({route}) => {
             </TouchableOpacity>
           </View>
           <View style={subscriptionStyle.containerWrap}>
-            {[0, 1].map((item) => {
-              const {for_layout_edit_only, edit_form_id} = item || {};
-              const {edit_value, type_input_edit, edit_label, disabled} =
-                for_layout_edit_only || {};
+            {dataA2pEdit.map((item) => {
+              const {for_layout_edit_only, formId} = item || {};
+              const {
+                edit_value,
+                type_input_edit,
+                edit_label,
+                disabled,
+                secure_text_entry,
+                edit_data_array,
+              } = for_layout_edit_only || {};
               return (
                 <InputHybrid
+                  data={edit_data_array}
                   fullWidthInput={true}
                   disabled={disabled}
                   type={type_input_edit}
                   value={edit_value}
                   errorText={''}
                   label={edit_label}
-                  onChange={() => {}}
+                  onChange={(e) => {
+                    dispatch(
+                      smsA2pEditTextInput({
+                        valueInput: e,
+                        formId: formId,
+                      }),
+                    );
+                  }}
+                  isSecureTextEntry={secure_text_entry}
                 />
               );
             })}
