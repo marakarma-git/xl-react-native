@@ -1,7 +1,7 @@
 import PushNotification from 'react-native-push-notification';
 import {
   getListTopicByEnterprise,
-  saveNotification,
+  saveNotificationApi,
   savePushNotifToken,
 } from '../redux/action/notification_action';
 import {store} from '../app';
@@ -33,7 +33,7 @@ class Notification {
           title: title,
           message: body,
         });
-        dispatch(saveNotification({body, title, token}, {username}));
+        dispatch(saveNotificationApi({body, title, token}, {username}));
       },
       onAction: function (notification) {},
       onRegistrationError: function (err) {

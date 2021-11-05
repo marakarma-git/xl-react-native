@@ -10,7 +10,6 @@ import {
   Image,
   ActivityIndicator,
   Dimensions,
-  Button,
 } from 'react-native';
 import {useSelector, useDispatch} from 'react-redux';
 import Notification from '../../notification/controller';

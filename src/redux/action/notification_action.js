@@ -16,7 +16,6 @@ const receivePushNotification = (notification, navigation) => {
       time: new Date().toString(),
       status: 'unread',
     };
-
     dispatch(addNotification(notificationObject));
   };
 };
@@ -88,7 +87,7 @@ const getListTopicByEnterprise = (
   };
 };
 
-const saveNotification = ({message, subject, token}, {username}) => {
+const saveNotificationApi = ({message, subject, token}, {username}) => {
   return async (dispatch) => {
     try {
       const {data} = await httpRequest.post(
@@ -99,8 +98,8 @@ const saveNotification = ({message, subject, token}, {username}) => {
           token,
         },
         {
-          headers: username
-        }
+          headers: username,
+        },
       );
       if (data) {
         const {statusCode, result} = data;
@@ -113,7 +112,7 @@ const saveNotification = ({message, subject, token}, {username}) => {
   };
 };
 
-const readNotification = ({subject, token}, {username}) => {
+const readNotificationApi = ({subject, token}, {username}) => {
   return async (dispatch) => {
     try {
       const {data} = await httpRequest.post(
@@ -123,8 +122,8 @@ const readNotification = ({subject, token}, {username}) => {
           token,
         },
         {
-          headers: username
-        }
+          headers: username,
+        },
       );
       if (data) {
         const {statusCode, result} = data;
@@ -138,28 +137,31 @@ const readNotification = ({subject, token}, {username}) => {
 };
 
 const getListNotification = (username) => {
-  return (dispatch) => {
+  return async (dispatch) => {
     try {
-      const {data} = await httpRequest.get('/notif/push-notification/getNotificationList', {
-        headers: {username}
-      });
-      if(data){
+      const {data} = await httpRequest.get(
+        '/notif/push-notification/getNotificationList',
+        {
+          headers: {username},
+        },
+      );
+      if (data) {
         const {statusCode, result} = data;
-        console.log("Status Code Get List : ", statusCode);
-        console.log("Result Get List : ", result);
+        console.log('Status Code Get List : ', statusCode);
+        console.log('Result Get List : ', result);
       }
     } catch (error) {
       dispatch(setRequestError(error.response.data));
     }
-  }
-}
+  };
+};
 
 export {
   receivePushNotification,
   readNotification,
   getListTopicByEnterprise,
   savePushNotifToken,
-  saveNotification,
-  readNotification,
-  getListNotification
+  saveNotificationApi,
+  readNotificationApi,
+  getListNotification,
 };
