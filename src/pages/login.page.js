@@ -190,7 +190,7 @@ const Login = ({navigation}) => {
 
   useEffect(() => {
     const pageLoad = navigation.addListener('focus', () => {
-      setErrorText('');
+      setErrorText(null);
       setIsSubmit(false);
     });
 
