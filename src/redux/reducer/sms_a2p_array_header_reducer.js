@@ -78,11 +78,16 @@ const dataSmsHeader = [
   },
   {
     formId: 'password-id-hard-code',
+    api_id: '',
+    config: {
+      doNotShowOnFilter: true,
+    },
     on_edit_config: {
       type_input_edit: 'TextInput',
       edit_label: 'Password',
       secure_text_entry: true,
     },
+    shown: true,
   },
   {
     formId: 'registration-id-hard-code',

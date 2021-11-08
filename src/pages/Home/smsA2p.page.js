@@ -84,7 +84,7 @@ const SmsA2p = () => {
             navigation.navigate('SmsA2pEdit', {
               positionTableIndex: position_table_index,
               layoutType: 'Edit',
-              configId: getConfigId,
+              dataConfig: getConfigId,
             });
           }}
           isScrollView={true}

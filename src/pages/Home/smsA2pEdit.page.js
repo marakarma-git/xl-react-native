@@ -27,7 +27,8 @@ const SmsA2pEdit = ({route}) => {
   const navigation = useNavigation();
   const dispatch = useDispatch();
   const {params} = route || {};
-  const {positionTableIndex, layoutType, configId} = params || {};
+  const {positionTableIndex, layoutType, dataConfig} = params || {};
+  const {configId} = dataConfig || '';
   const {dataA2pEdit} =
     useSelector((state) => state.sms_a2p_edit_reducer) || [];
   const {access_token} = useSelector((state) => state.auth_reducer.data);
@@ -45,7 +46,7 @@ const SmsA2pEdit = ({route}) => {
       dispatch(
         getA2pEditDetail({
           indexSelected: positionTableIndex,
-          configId,
+          configId: configId,
         }),
       );
     }
@@ -87,7 +88,6 @@ const SmsA2pEdit = ({route}) => {
   return (
     <HeaderContainer headerTitle={'SMS A2P'} backIcon={true}>
       <ScrollView style={{backgroundColor: 'white'}}>
-        <Text>{JSON.stringify(dataA2pEdit, null, 2)}</Text>
         <OverlayBackground />
         <Container style={{marginTop: 16}}>
           <View style={subscriptionStyle.containerTitle}>
@@ -105,37 +105,38 @@ const SmsA2pEdit = ({route}) => {
             </TouchableOpacity>
           </View>
           <View style={subscriptionStyle.containerWrap}>
-            {dataA2pEdit.map((item) => {
-              const {for_layout_edit_only, formId} = item || {};
-              const {
-                edit_value,
-                type_input_edit,
-                edit_label,
-                disabled,
-                secure_text_entry,
-                edit_data_array,
-              } = for_layout_edit_only || {};
-              return (
-                <InputHybrid
-                  data={edit_data_array}
-                  fullWidthInput={true}
-                  disabled={disabled}
-                  type={type_input_edit}
-                  value={edit_value}
-                  errorText={''}
-                  label={edit_label}
-                  onChange={(e) => {
-                    dispatch(
-                      smsA2pEditTextInput({
-                        valueInput: e,
-                        formId: formId,
-                      }),
-                    );
-                  }}
-                  isSecureTextEntry={secure_text_entry}
-                />
-              );
-            })}
+            {dataA2pEdit &&
+              dataA2pEdit.map((item) => {
+                const {for_layout_edit_only, formId} = item || {};
+                const {
+                  edit_value,
+                  type_input_edit,
+                  edit_label,
+                  disabled,
+                  secure_text_entry,
+                  edit_data_array,
+                } = for_layout_edit_only || {};
+                return (
+                  <InputHybrid
+                    data={edit_data_array}
+                    fullWidthInput={true}
+                    disabled={disabled}
+                    type={type_input_edit}
+                    value={edit_value}
+                    errorText={''}
+                    label={edit_label}
+                    onChange={(e) => {
+                      dispatch(
+                        smsA2pEditTextInput({
+                          valueInput: e,
+                          formId: formId,
+                        }),
+                      );
+                    }}
+                    isSecureTextEntry={secure_text_entry}
+                  />
+                );
+              })}
           </View>
         </Container>
         <View style={subscriptionStyle.buttonContainer}>

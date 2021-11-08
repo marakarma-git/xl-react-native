@@ -2,7 +2,58 @@ import reduxString from '../reduxString';
 import axios from 'axios';
 import {base_url} from '../../constant/connection';
 import {callActiveEnterprise} from './user_administration_array_header_action';
-
+import lod from 'lodash';
+const dataDefaultTableA2pEdit = [
+  {
+    formId: 'sms-enterprise-name-hard-code',
+    api_id: 'enterpriseName',
+    for_layout_edit_only: {
+      type_input_edit: 'DropDown',
+      edit_label: 'Enterprise Name',
+      edit_value: {
+        label: '',
+        value: '',
+      },
+      edit_data_array: [],
+    },
+  },
+  {
+    formId: 'sender-address-hard-code',
+    api_id: 'senderAddress',
+    for_layout_edit_only: {
+      type_input_edit: 'TextInput',
+      edit_label: 'Sender Address \n(A Number)',
+      edit_value: '',
+    },
+  },
+  {
+    formId: 'user-name-hard-code',
+    api_id: 'username',
+    for_layout_edit_only: {
+      type_input_edit: 'TextInput',
+      edit_label: 'Username',
+      edit_value: '',
+    },
+  },
+  {
+    formId: 'password-id-hard-code',
+    for_layout_edit_only: {
+      type_input_edit: 'TextInput',
+      edit_label: 'Password',
+      edit_value: '',
+      secure_text_entry: true,
+    },
+  },
+  {
+    formId: 'registration-id-hard-code',
+    api_id: 'registrationId',
+    for_layout_edit_only: {
+      type_input_edit: 'TextInput',
+      edit_label: 'Registration ID',
+      edit_value: '',
+    },
+  },
+];
 const smsA2pEditTextInput = ({valueInput, formId}) => {
   return {
     type: reduxString.SMS_A2P_EDIT_TEXT_INPUT,
@@ -46,9 +97,17 @@ const getA2pEnterprise = () => {
               label: enterpriseName,
             }),
           );
+          const findIndex = 'sms-enterprise-name-hard-code';
+          let cloneData = lod.cloneDeep(dataDefaultTableA2pEdit);
+          const getIndex = dataDefaultTableA2pEdit.findIndex(
+            (f) => f.formId === findIndex,
+          );
+          cloneData[
+            getIndex
+          ].for_layout_edit_only.edit_data_array = changeArray;
           dispatch(
             smsA2pEditSuccess({
-              dataEnterprise: changeArray,
+              dataEditCreate: cloneData,
             }),
           );
         } else {
@@ -78,7 +137,7 @@ const getA2pEditDetail = (localVariable) => {
     const {indexSelected, configId} = localVariable || {};
     axios
       .get(
-        `${base_url}/api/dcp/a2pConfiguration/getA2PConfigurationDetail?configId=${configId}`,
+        `${base_url}/dcp/a2pConfiguration/getA2PConfigurationDetail?configId=${configId}`,
         {
           headers: {
             Authorization: `Bearer ${access_token}`,
@@ -88,11 +147,24 @@ const getA2pEditDetail = (localVariable) => {
       .then(({data}) => {
         const {result, statusCode} = data || {};
         if (statusCode === 0) {
+          const {password} = result || '';
+          const {dataCell} = data_sms_generated[indexSelected];
+          let cloneCell = lod.cloneDeep(
+            data_sms_generated[indexSelected].dataCell,
+          );
+          const findIndex = 'password-id-hard-code';
+          const getIndex = dataCell.findIndex(
+            (f) => f.subItem.formId === findIndex,
+          );
+          cloneCell[getIndex].for_layout_edit_only.edit_value = password;
           dispatch(
             smsA2pEditSuccess({
               dataEdit: {
                 dataApi: result,
-                dataArrayNavigate: data_sms_generated[indexSelected],
+                dataArrayNavigate: {
+                  ...data_sms_generated[indexSelected],
+                  dataCell: cloneCell,
+                },
               },
             }),
           );

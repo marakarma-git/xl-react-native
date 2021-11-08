@@ -161,7 +161,7 @@ const dataMatcherArray2D = (listData = [], headerData = []) => {
           };
 
           if (type_input_edit === 'TextInput') {
-            objectEdit.edit_value = createCurrency();
+            objectEdit.edit_value = createCurrency() || '';
           }
           if (type_input_edit === 'DropDown') {
             objectEdit.edit_value = {
