@@ -1,6 +1,11 @@
 const initialState = {
   token: null,
   listNotification: [],
+  severityLevel: {
+    high: 0,
+    medium: 0,
+    low: 0,
+  },
 };
 
 export default (state = initialState, action) => {
@@ -13,7 +18,12 @@ export default (state = initialState, action) => {
     case 'ADD_NOTIFICATION':
       return {
         ...state,
-        listNotification: [...state.listNotification, action.payload],
+        listNotification: action.payload,
+      };
+    case 'COUNT_SEVERITY_LEVEL':
+      return {
+        ...state,
+        severityLevel: action.payload,
       };
     default:
       return state;

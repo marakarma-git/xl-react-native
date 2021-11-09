@@ -74,6 +74,10 @@ export default {
     resizeMode: 'contain',
   },
   //end of don't know why
+  notificationContainer: {
+    flex: 1,
+    backgroundColor: 'white',
+  },
   container: {
     flex: 1,
   },
