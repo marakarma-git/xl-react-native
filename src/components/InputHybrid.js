@@ -56,6 +56,7 @@ InputHybrid.propTypes = {
   constantLabelRight: PropTypes.string,
   placeholder: PropTypes.string,
   isSecureTextEntry: PropTypes.bool,
+  keyboardType: PropTypes.string,
 };
 export default InputHybrid;
 
@@ -127,6 +128,7 @@ const NormalInput = (props) => {
     constantLabelLeft,
     constantLabelRight,
     isSecureTextEntry,
+    keyboardType,
   } = props;
   const [hidden, setHidden] = useState(true);
   return (
@@ -137,6 +139,7 @@ const NormalInput = (props) => {
         onChangeText={onChange}
         value={value}
         placeholder={placeholder}
+        keyboardType={keyboardType}
         secureTextEntry={isSecureTextEntry === true ? hidden : false}
       />
       {isSecureTextEntry && (

@@ -97,7 +97,7 @@ const SubscriptionPackageEdit = ({route}) => {
   };
   const handlingBack = () => {
     navigation.setParams({
-      positionTableIndex: undeined,
+      positionTableIndex: undefined,
     });
   };
   useEffect(() => {

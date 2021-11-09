@@ -6,7 +6,15 @@ import lod from 'lodash';
 const dataDefaultTableA2pEdit = [
   {
     formId: 'sms-enterprise-name-hard-code',
-    api_id: 'enterpriseName',
+    subItem: {
+      api_id: 'enterpriseName',
+      api_force: 'enterpriseId',
+      formId: 'sms-enterprise-name-hard-code',
+      validationRules: {
+        notEmpty: true,
+      },
+      validationError: '',
+    },
     for_layout_edit_only: {
       type_input_edit: 'DropDown',
       edit_label: 'Enterprise Name',
@@ -17,40 +25,50 @@ const dataDefaultTableA2pEdit = [
       edit_data_array: [],
       errorText: '',
     },
-    validationRules: {
-      notEmpty: true,
-    },
-    errorValidation: '',
   },
   {
     formId: 'sender-address-hard-code',
-    api_id: 'senderAddress',
+    subItem: {
+      api_id: 'senderAddress',
+      formId: 'sender-address-hard-code',
+      validationRules: {
+        notEmpty: true,
+      },
+      validationError: '',
+    },
     for_layout_edit_only: {
       type_input_edit: 'TextInput',
       edit_label: 'Sender Address \n(A Number)',
       edit_value: '',
     },
-    validationRules: {
-      notEmpty: true,
-    },
-    validationError: '',
   },
   {
     formId: 'user-name-hard-code',
-    api_id: 'username',
+    subItem: {
+      api_id: 'username',
+      formId: 'user-name-hard-code',
+      validationRules: {
+        notEmpty: true,
+      },
+      validationError: '',
+    },
     for_layout_edit_only: {
       type_input_edit: 'TextInput',
       edit_label: 'Username',
       edit_value: '',
       errorText: '',
     },
-    validationRules: {
-      notEmpty: true,
-    },
-    validationError: '',
   },
   {
     formId: 'password-id-hard-code',
+    subItem: {
+      api_id: 'password',
+      formId: 'password-id-hard-code',
+      validationRules: {
+        notEmpty: true,
+      },
+      validationError: '',
+    },
     for_layout_edit_only: {
       type_input_edit: 'TextInput',
       edit_label: 'Password',
@@ -58,13 +76,17 @@ const dataDefaultTableA2pEdit = [
       secure_text_entry: true,
       errorText: '',
     },
-    validationRules: {
-      notEmpty: true,
-    },
-    validationError: '',
   },
   {
     formId: 'registration-id-hard-code',
+    subItem: {
+      api_id: 'registrationId',
+      formId: 'registration-id-hard-code',
+      validationRules: {
+        notEmpty: true,
+      },
+      validationError: '',
+    },
     api_id: 'registrationId',
     for_layout_edit_only: {
       type_input_edit: 'TextInput',
@@ -72,10 +94,6 @@ const dataDefaultTableA2pEdit = [
       edit_value: '',
       errorText: '',
     },
-    validationRules: {
-      notEmpty: true,
-    },
-    validationError: '',
   },
 ];
 const smsA2pEditTextInput = ({valueInput, formId}) => {
@@ -88,6 +106,11 @@ const smsA2pEditTextInput = ({valueInput, formId}) => {
 const smsA2pEditLoading = () => {
   return {
     type: reduxString.SMS_A2P_EDIT_LOADING,
+  };
+};
+const smsA2pEditRemoveLoading = () => {
+  return {
+    type: reduxString.SMS_A2P_EDIT_REMOVE_LOADING,
   };
 };
 const smsA2pEditSuccess = (value) => {
@@ -122,9 +145,10 @@ const getA2pEnterprise = () => {
         const {result, statusCode} = data || {};
         if (statusCode === 0) {
           const changeArray = result.map(
-            ({customerNumber, enterpriseName}) => ({
+            ({customerNumber, enterpriseName, ...rest}) => ({
               value: customerNumber,
               label: enterpriseName,
+              ...rest,
             }),
           );
           const findIndex = 'sms-enterprise-name-hard-code';
@@ -226,4 +250,5 @@ export {
   smsA2pEditTextInput,
   smsA2pEditReset,
   smsA2pEditDynamicFormFailed,
+  smsA2pEditRemoveLoading,
 };

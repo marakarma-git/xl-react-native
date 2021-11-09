@@ -19,6 +19,7 @@ const dataSmsHeader = [
   {
     formId: 'sms-enterprise-name-hard-code',
     api_id: 'enterpriseName',
+    api_force: 'enterpriseId',
     value: {},
     data: [],
     loading: false,
@@ -34,7 +35,7 @@ const dataSmsHeader = [
     },
     shown: true,
     on_edit_config: {
-      type_input_edit: 'TextInput',
+      type_input_edit: 'DropDown',
       edit_label: 'Enterprise Name',
       disabled: true,
       errorText: '',
@@ -59,6 +60,10 @@ const dataSmsHeader = [
       edit_label: 'Sender Address \n(A Number)',
       errorText: '',
     },
+    validationRules: {
+      notEmpty: true,
+    },
+    validationError: '',
   },
   {
     formId: 'user-name-hard-code',
@@ -78,10 +83,14 @@ const dataSmsHeader = [
       edit_label: 'Username',
       errorText: '',
     },
+    validationRules: {
+      notEmpty: true,
+    },
+    validationError: '',
   },
   {
     formId: 'password-id-hard-code',
-    api_id: '',
+    api_id: 'password',
     config: {
       doNotShowOnFilter: true,
     },
@@ -92,6 +101,10 @@ const dataSmsHeader = [
       errorText: '',
     },
     shown: true,
+    validationRules: {
+      notEmpty: true,
+    },
+    validationError: '',
   },
   {
     formId: 'registration-id-hard-code',
@@ -111,6 +124,10 @@ const dataSmsHeader = [
       edit_label: 'Registration ID',
       errorText: '',
     },
+    validationRules: {
+      notEmpty: true,
+    },
+    validationError: '',
   },
   {
     formId: 'date-time-hard-code',

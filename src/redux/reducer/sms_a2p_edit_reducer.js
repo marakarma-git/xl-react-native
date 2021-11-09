@@ -11,8 +11,9 @@ const initialState = {
 const sms_a2p_edit_reducer = (state = initialState, action) => {
   switch (action.type) {
     case reduxString.SMS_A2P_EDIT_TEXT_INPUT: {
-      const getIndex =
-        state.dataA2pEdit.findIndex((f) => f.formId === action.formId) || 0;
+      const getIndex = state.dataA2pEdit.findIndex(
+        (f) => f.subItem.formId === action.formId,
+      );
       state.dataA2pEdit[getIndex].for_layout_edit_only.edit_value =
         action.valueInput;
       const {data: getSmsData} = Helper.editFormValidator(state.dataA2pEdit);
@@ -26,6 +27,13 @@ const sms_a2p_edit_reducer = (state = initialState, action) => {
         ...state,
         errorText: '',
         loading: true,
+      };
+    }
+    case reduxString.SMS_A2P_EDIT_REMOVE_LOADING: {
+      return {
+        ...state,
+        errorText: '',
+        loading: false,
       };
     }
     case reduxString.SMS_A2P_EDIT_SUCCESS: {

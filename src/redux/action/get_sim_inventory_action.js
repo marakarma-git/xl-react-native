@@ -87,8 +87,15 @@ const dataMatcherArray2D = (listData = [], headerData = []) => {
   listData.map((item, index) => {
     const subGenerated = [];
     headerData.map((subItem) => {
-      const {shown, api_id, second_api_id, config, formId, on_edit_config} =
-        subItem || {};
+      const {
+        shown,
+        api_id,
+        api_force,
+        second_api_id,
+        config,
+        formId,
+        on_edit_config,
+      } = subItem || {};
       const {
         width,
         superType,
@@ -167,6 +174,7 @@ const dataMatcherArray2D = (listData = [], headerData = []) => {
             objectEdit.edit_value = {
               value: item[`${api_id}`],
               label: item[`${api_id}`],
+              [`${api_force}`]: item[`${api_force}`],
             };
             objectEdit.edit_data_array = [];
           }

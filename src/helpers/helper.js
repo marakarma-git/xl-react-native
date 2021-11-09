@@ -831,7 +831,7 @@ class Helper {
     let containerDataPostEdit = {...additionalItem};
     data.map((value) => {
       const {subItem, for_layout_edit_only} = value || {};
-      const {api_id, second_api_id} = subItem || {};
+      const {api_id, api_force, second_api_id} = subItem || {};
       const {
         type_input_edit,
         edit_value,
@@ -861,6 +861,10 @@ class Helper {
         if (type_input_edit === 'DropDown') {
           containerDataPostEdit[`${api_id}`] = edit_value.value || '';
         }
+        if (api_force && type_input_edit === 'DropDown') {
+          containerDataPostEdit[`${api_force}`] =
+            edit_value[`${api_force}`] || '';
+        }
         if (type_input_edit === 'DropDownType2') {
           containerDataPostEdit[`${api_id}`] = removeAllCurrencyDelimiter();
           containerDataPostEdit[`${second_api_id}`] = edit_value2?.value || '';
@@ -887,7 +891,8 @@ class Helper {
     // }
     let countError = 0;
     const getData = data.map((item) => {
-      const {for_layout_edit_only, validationRules} = item || {};
+      const {for_layout_edit_only, subItem} = item || {};
+      const {validationRules} = subItem || {};
       const {edit_value} = for_layout_edit_only || {};
       const {min, max, minLength, maxLength, notEmpty, customValidator} =
         validationRules || {};
@@ -915,7 +920,10 @@ class Helper {
         countError++;
       }
       if (customValidator) {
-        const getCustomError = customValidator(valueContainer);
+        const getCustomError = customValidator({
+          value: valueContainer,
+          allData: item,
+        });
         if (getCustomError) {
           containerErrorText.push(getCustomError);
           countError++;
@@ -923,7 +931,10 @@ class Helper {
       }
       return {
         ...item,
-        validationError: containerErrorText.join(', '),
+        subItem: {
+          ...subItem,
+          validationError: containerErrorText.join(', '),
+        },
       };
     });
     return {

@@ -87,6 +87,13 @@ const sms_a2p_get_all_sms_reducer = (state = initialState, action) => {
         sms_applied_header_sort: initialState.sms_applied_header_sort,
       };
     }
+    case reduxString.SMS_A2P_REPLACE_CELL_WITH_INDEX: {
+      state.data_sms_generated[action.indexToReplace] = action.indexReplaceData;
+      return {
+        ...state,
+        data_sms_generated: state.data_sms_generated,
+      };
+    }
     default: {
       return state;
     }

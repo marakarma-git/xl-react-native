@@ -5,6 +5,7 @@ import {
   BackHandler,
   ScrollView,
   TouchableOpacity,
+  ActivityIndicator,
 } from 'react-native';
 import {useNavigation} from '@react-navigation/native';
 import {HeaderContainer, OverlayBackground} from '../../components';
@@ -20,10 +21,14 @@ import {setRequestError} from '../../redux/action/dashboard_action';
 import getA2pEditDetail, {
   getA2pEnterprise,
   smsA2pEditDynamicFormFailed,
+  smsA2pEditRemoveLoading,
   smsA2pEditReset,
   smsA2pEditTextInput,
 } from '../../redux/action/sms_a2p_edit_action';
 import Helper from '../../helpers/helper';
+import getSmsA2p, {
+  smsA2pReplaceCellWithIndex,
+} from '../../redux/action/sms_a2p_get_all_sms_action';
 
 const SmsA2pEdit = ({route}) => {
   const navigation = useNavigation();
@@ -31,7 +36,7 @@ const SmsA2pEdit = ({route}) => {
   const {params} = route || {};
   const {positionTableIndex, layoutType, dataConfig} = params || {};
   const {configId} = dataConfig || '';
-  const {dataA2pEdit} =
+  const {dataA2pEdit, dataA2pSnapShot, loading} =
     useSelector((state) => state.sms_a2p_edit_reducer) || [];
   const {access_token} = useSelector((state) => state.auth_reducer.data);
   const [localLoading, setLocalLoading] = useState(false);
@@ -53,39 +58,6 @@ const SmsA2pEdit = ({route}) => {
       );
     }
   }, [positionTableIndex, layoutType]);
-  const onSubmit = () => {
-    const {data: getSmsData, errorCount} = Helper.editFormValidator(
-      dataA2pEdit,
-    );
-    alert(JSON.stringify(getSmsData, null, 2));
-    dispatch(
-      smsA2pEditDynamicFormFailed({
-        dataEditArray: getSmsData,
-      }),
-    );
-    // const getValueObject = Helper.createObjectPostEdit(dataA2pEdit);
-    // setLocalLoading(true);
-    // axios({
-    //   method: 'post',
-    //   url: `${base_url}/dcp/a2pConfiguration/updateA2PConfiguration`,
-    //   headers: {
-    //     Authorization: `Bearer ${access_token}`,
-    //     'Content-Type': 'application/json',
-    //   },
-    //   data: '',
-    // })
-    //   .then(({data}) => {
-    //     const {statusCode} = data || {};
-    //     if (statusCode === 0) {
-    //     } else {
-    //     }
-    //   })
-    //   .catch((error) => {
-    //     setLocalLoading(false);
-    //     alert('error');
-    //     dispatch(setRequestError(error));
-    //   });
-  };
   const handlingBack = () => {
     dispatch(smsA2pEditReset());
     navigation.setParams({
@@ -93,6 +65,73 @@ const SmsA2pEdit = ({route}) => {
       layoutType: undefined,
       configId: undefined,
     });
+  };
+  const onSubmit = () => {
+    const {data: getSmsData, errorCount} = Helper.editFormValidator(
+      dataA2pEdit,
+    );
+    if (errorCount > 0) {
+      dispatch(
+        smsA2pEditDynamicFormFailed({
+          dataEditArray: getSmsData,
+        }),
+      );
+    }
+    if (errorCount === 0) {
+      const getValueObject = Helper.createObjectPostEdit(dataA2pEdit);
+      setLocalLoading(true);
+      axios({
+        method: 'post',
+        url: `${base_url}/dcp/a2pConfiguration/${
+          layoutType === 'Create'
+            ? 'create'
+            : layoutType === 'Edit'
+            ? 'update'
+            : ''
+        }A2PConfiguration${
+          layoutType === 'Edit' ? `?configId=${configId}` : ''
+        }`,
+        headers: {
+          Authorization: `Bearer ${access_token}`,
+          'Content-Type': 'application/json',
+        },
+        data: getValueObject,
+      })
+        .then(({data}) => {
+          const {statusCode} = data || {};
+          if (statusCode === 0) {
+            if (layoutType === 'Create') {
+              dispatch(
+                getSmsA2p({
+                  page_params: 0,
+                }),
+              );
+              handlingBack();
+              navigation.goBack();
+            }
+            if (layoutType === 'Edit') {
+              dispatch(
+                smsA2pReplaceCellWithIndex({
+                  indexToReplace: positionTableIndex,
+                  indexReplaceData: {
+                    ...dataA2pSnapShot,
+                    dataCell: dataA2pEdit,
+                  },
+                }),
+              );
+            }
+            setLocalLoading(false);
+            alert('success');
+          } else {
+            setLocalLoading(false);
+          }
+        })
+        .catch((error) => {
+          alert('error');
+          dispatch(setRequestError(error));
+          setLocalLoading(false);
+        });
+    }
   };
   useEffect(() => {
     BackHandler.addEventListener('hardwareBackPress', () => handlingBack());
@@ -116,11 +155,21 @@ const SmsA2pEdit = ({route}) => {
               />
             </TouchableOpacity>
           </View>
+          {(loading || localLoading) && (
+            <View
+              style={{
+                flexDirection: 'row',
+                justifyContent: 'flex-end',
+                flex: 1,
+              }}>
+              <ActivityIndicator size={'small'} color={colors.main_color} />
+            </View>
+          )}
           <View style={subscriptionStyle.containerWrap}>
             {dataA2pEdit &&
               dataA2pEdit.map((item) => {
-                const {for_layout_edit_only, formId, validationError} =
-                  item || {};
+                const {for_layout_edit_only, subItem} = item || {};
+                const {formId, validationError} = subItem || '';
                 const {
                   edit_value,
                   type_input_edit,
@@ -139,13 +188,27 @@ const SmsA2pEdit = ({route}) => {
                     errorText={validationError}
                     label={edit_label}
                     onChange={(e) => {
-                      dispatch(
-                        smsA2pEditTextInput({
-                          valueInput: e,
-                          formId: formId,
-                        }),
-                      );
+                      if (formId !== 'sender-address-hard-code') {
+                        dispatch(
+                          smsA2pEditTextInput({
+                            valueInput: e,
+                            formId: formId,
+                          }),
+                        );
+                      }
+                      /^[0-9]*$/.test(e) &&
+                        dispatch(
+                          smsA2pEditTextInput({
+                            valueInput: e,
+                            formId: formId,
+                          }),
+                        );
                     }}
+                    keyboardType={
+                      formId === 'sender-address-hard-code'
+                        ? 'number-pad'
+                        : undefined
+                    }
                     isSecureTextEntry={secure_text_entry}
                   />
                 );
@@ -166,6 +229,7 @@ const SmsA2pEdit = ({route}) => {
                 onPress={() => {
                   if (value === 'Cancel') {
                     handlingBack();
+                    navigation.goBack();
                   }
                   if (value === 'Submit') {
                     onSubmit();

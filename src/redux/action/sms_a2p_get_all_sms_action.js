@@ -54,6 +54,13 @@ const smsA2pResetAppliedHeaderSort = () => {
     type: reduxString.SMS_A2P_RESET_APPLIED_HEADER_SORT,
   };
 };
+const smsA2pReplaceCellWithIndex = ({indexToReplace, indexReplaceData}) => {
+  return {
+    type: reduxString.SMS_A2P_REPLACE_CELL_WITH_INDEX,
+    indexToReplace,
+    indexReplaceData,
+  };
+};
 const getSmsA2p = (paginate) => {
   return async (dispatch, getState) => {
     dispatch(smsA2pGetSmsLoading());
@@ -158,4 +165,5 @@ export {
   smsA2pResetAppliedHeaderSort,
   smsA2pDynamicCheckDataSms,
   smsA2pSetAppliedHeaderSort,
+  smsA2pReplaceCellWithIndex,
 };
