@@ -15,7 +15,12 @@ const dataDefaultTableA2pEdit = [
         value: '',
       },
       edit_data_array: [],
+      errorText: '',
     },
+    validationRules: {
+      notEmpty: true,
+    },
+    errorValidation: '',
   },
   {
     formId: 'sender-address-hard-code',
@@ -25,6 +30,10 @@ const dataDefaultTableA2pEdit = [
       edit_label: 'Sender Address \n(A Number)',
       edit_value: '',
     },
+    validationRules: {
+      notEmpty: true,
+    },
+    validationError: '',
   },
   {
     formId: 'user-name-hard-code',
@@ -33,7 +42,12 @@ const dataDefaultTableA2pEdit = [
       type_input_edit: 'TextInput',
       edit_label: 'Username',
       edit_value: '',
+      errorText: '',
     },
+    validationRules: {
+      notEmpty: true,
+    },
+    validationError: '',
   },
   {
     formId: 'password-id-hard-code',
@@ -42,7 +56,12 @@ const dataDefaultTableA2pEdit = [
       edit_label: 'Password',
       edit_value: '',
       secure_text_entry: true,
+      errorText: '',
     },
+    validationRules: {
+      notEmpty: true,
+    },
+    validationError: '',
   },
   {
     formId: 'registration-id-hard-code',
@@ -51,7 +70,12 @@ const dataDefaultTableA2pEdit = [
       type_input_edit: 'TextInput',
       edit_label: 'Registration ID',
       edit_value: '',
+      errorText: '',
     },
+    validationRules: {
+      notEmpty: true,
+    },
+    validationError: '',
   },
 ];
 const smsA2pEditTextInput = ({valueInput, formId}) => {
@@ -76,6 +100,12 @@ const smsA2pEditFailed = ({errorText}) => {
   return {
     type: reduxString.SMS_A2P_EDIT_FAILED,
     errorText,
+  };
+};
+const smsA2pEditDynamicFormFailed = ({dataEditArray}) => {
+  return {
+    type: reduxString.SMS_A2P_EDIT_DYNAMIC_FORM_FAILED,
+    dataEditArray,
   };
 };
 const smsA2pEditReset = () => {
@@ -195,4 +225,5 @@ export {
   createSmsA2p,
   smsA2pEditTextInput,
   smsA2pEditReset,
+  smsA2pEditDynamicFormFailed,
 };

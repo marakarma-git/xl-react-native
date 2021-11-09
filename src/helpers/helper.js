@@ -869,6 +869,68 @@ class Helper {
     });
     return containerDataPostEdit;
   };
+
+  static editFormValidator = (data = []) => {
+    //currently just support for editMode
+    // {
+    //   errorText: '',
+    //   for_layout_edit_only:{},
+    //   validationRules:{
+    //     notEmpty: true,
+    //     min: 1,
+    //     max: 2,
+    //     customValidation: (getValue)=>{
+    //       if(getValue === 'something') return 'this is something'
+    //       return ''
+    //     }
+    //   }
+    // }
+    let countError = 0;
+    const getData = data.map((item) => {
+      const {for_layout_edit_only, validationRules} = item || {};
+      const {edit_value} = for_layout_edit_only || {};
+      const {min, max, minLength, maxLength, notEmpty, customValidator} =
+        validationRules || {};
+      const valueContainer =
+        typeof edit_value === 'object' ? edit_value.value : edit_value;
+      let containerErrorText = [];
+      if (notEmpty && lod.isEmpty(valueContainer)) {
+        containerErrorText.push('Cannot Be Empty');
+        countError++;
+      }
+      if (min && valueContainer < min) {
+        containerErrorText.push(`Value min ${min}`);
+        countError++;
+      }
+      if (max && valueContainer > max) {
+        containerErrorText.push(`Value max ${max}`);
+        countError++;
+      }
+      if (minLength && minLength.length < minLength) {
+        containerErrorText.push(`value length min ${min}`);
+        countError++;
+      }
+      if (maxLength && maxLength.length > maxLength) {
+        containerErrorText.push(`value length max ${min}`);
+        countError++;
+      }
+      if (customValidator) {
+        const getCustomError = customValidator(valueContainer);
+        if (getCustomError) {
+          containerErrorText.push(getCustomError);
+          countError++;
+        }
+      }
+      return {
+        ...item,
+        validationError: containerErrorText.join(', '),
+      };
+    });
+    return {
+      data: getData || [],
+      errorCount: countError,
+    };
+  };
 }
 
 export default Helper;

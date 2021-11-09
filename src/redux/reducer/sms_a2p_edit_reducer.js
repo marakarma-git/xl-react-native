@@ -1,5 +1,6 @@
 import reduxString from '../reduxString';
 import lod from 'lodash';
+import Helper from '../../helpers/helper';
 
 const initialState = {
   dataA2pEdit: [],
@@ -14,9 +15,10 @@ const sms_a2p_edit_reducer = (state = initialState, action) => {
         state.dataA2pEdit.findIndex((f) => f.formId === action.formId) || 0;
       state.dataA2pEdit[getIndex].for_layout_edit_only.edit_value =
         action.valueInput;
+      const {data: getSmsData} = Helper.editFormValidator(state.dataA2pEdit);
       return {
         ...state,
-        dataA2pEdit: state.dataA2pEdit,
+        dataA2pEdit: getSmsData,
       };
     }
     case reduxString.SMS_A2P_EDIT_LOADING: {
@@ -58,6 +60,12 @@ const sms_a2p_edit_reducer = (state = initialState, action) => {
         ...state,
         errorText: action.errorText,
         loading: false,
+      };
+    }
+    case reduxString.SMS_A2P_EDIT_DYNAMIC_FORM_FAILED: {
+      return {
+        ...state,
+        dataA2pEdit: action.dataEditArray,
       };
     }
     case reduxString.SMS_A2P_EDIT_RESET: {

@@ -37,6 +37,7 @@ const dataSmsHeader = [
       type_input_edit: 'TextInput',
       edit_label: 'Enterprise Name',
       disabled: true,
+      errorText: '',
     },
   },
   {
@@ -56,6 +57,7 @@ const dataSmsHeader = [
     on_edit_config: {
       type_input_edit: 'TextInput',
       edit_label: 'Sender Address \n(A Number)',
+      errorText: '',
     },
   },
   {
@@ -74,6 +76,7 @@ const dataSmsHeader = [
     on_edit_config: {
       type_input_edit: 'TextInput',
       edit_label: 'Username',
+      errorText: '',
     },
   },
   {
@@ -86,6 +89,7 @@ const dataSmsHeader = [
       type_input_edit: 'TextInput',
       edit_label: 'Password',
       secure_text_entry: true,
+      errorText: '',
     },
     shown: true,
   },
@@ -105,6 +109,7 @@ const dataSmsHeader = [
     on_edit_config: {
       type_input_edit: 'TextInput',
       edit_label: 'Registration ID',
+      errorText: '',
     },
   },
   {
