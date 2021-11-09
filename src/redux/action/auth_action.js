@@ -63,8 +63,7 @@ const tokenInvalid = () => {
 
 const authLogout = () => {
   return async (dispatch, getState) => {
-    const {customerNo, principal} = getState().auth_reducer.data;
-    const notifToken = getState().notification_reducer.token;
+    const {principal} = getState().auth_reducer.data;
     const customHeaders = {
       headers: {
         activityId: 'LLP-2',
@@ -72,14 +71,6 @@ const authLogout = () => {
         isStatic: true,
       },
     };
-    await dispatch(
-      getListTopicByEnterprise(
-        customerNo,
-        principal?.username,
-        notifToken,
-        false,
-      ),
-    );
     try {
       const {data} = await httpRequest.post(
         `${subDomain.logout}`,

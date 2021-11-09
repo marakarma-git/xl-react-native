@@ -6,17 +6,30 @@ const addNotification = (payload) => ({
   payload,
 });
 
-const receivePushNotification = (notification, navigation) => {
-  return (dispatch, getState) => {
-    const {title, message, userInteraction} = notification.data;
-    const notificationObject = {
-      title,
-      message,
-      userInteraction,
-      time: new Date().toString(),
-      status: 'unread',
+const countSeverityLevel = ({high, medium, low}) => ({
+  type: 'COUNT_SEVERITY_LEVEL',
+  payload: {high, medium, low},
+});
+
+const receivePushNotification = (notification) => {
+  return (dispatch) => {
+    const severityLevel = {
+      high: 0,
+      medium: 0,
+      low: 0,
     };
-    dispatch(addNotification(notificationObject));
+    notification.map((notif) => {
+      if (notif.criticalLevel) {
+        const {criticalLevel} = notif;
+        if (criticalLevel === 'high') severityLevel.high++;
+        if (criticalLevel === 'medium') severityLevel.medium++;
+        if (criticalLevel === 'low') severityLevel.low++;
+      } else {
+        severityLevel.low++;
+      }
+    });
+    dispatch(countSeverityLevel(severityLevel));
+    dispatch(addNotification(notification));
   };
 };
 
@@ -30,17 +43,20 @@ const readNotification = (payload) => ({
   payload,
 });
 
-const subscribeTopicNotification = (params, username) => {
+const saveUserToken = (token, username) => {
   return async (dispatch) => {
+    const requestBody = {};
+    const requestHeader = {
+      headers: {
+        username,
+        token,
+      },
+    };
     try {
-      const {data} = await httpRequest.post(
-        `/notif/push-notification/subcribeTopic`,
-        params,
-        {
-          headers: {
-            username,
-          },
-        },
+      await httpRequest.post(
+        `/notif/push-notification/saveUserToken`,
+        requestBody,
+        requestHeader,
       );
     } catch (error) {
       dispatch(setRequestError(error.response.data));
@@ -48,82 +64,18 @@ const subscribeTopicNotification = (params, username) => {
   };
 };
 
-const getListTopicByEnterprise = (
-  custNo,
-  username,
-  notifToken,
-  isSubscribe = true,
-) => {
+const readNotificationApi = (params, username) => {
   return async (dispatch) => {
-    try {
-      const {data} = await httpRequest.get(
-        `/notif/push-notification/getListTopicByEnterprise?customerNumber=${custNo}`,
-        {
-          headers: {
-            username,
-          },
-        },
-      );
-
-      if (data) {
-        const {statusCode, result} = data;
-        const params = {
-          customerNumbers: [custNo],
-          tokens: notifToken,
-          topics: result,
-        };
-        if (statusCode === 0) {
-          if (typeof result == 'object') {
-            if (result.length > 0) {
-              if (isSubscribe)
-                dispatch(subscribeTopicNotification(params, username));
-            }
-          }
-        }
-      }
-    } catch (error) {
-      dispatch(setRequestError(error.response.data));
-    }
-  };
-};
-
-const saveNotificationApi = ({message, subject, token}, {username}) => {
-  return async (dispatch) => {
-    try {
-      const {data} = await httpRequest.post(
-        '/notif/push-notification/saveNotification',
-        {
-          message,
-          subject,
-          token,
-        },
-        {
-          headers: username,
-        },
-      );
-      if (data) {
-        const {statusCode, result} = data;
-        console.log('Status Code : ', statusCode);
-        console.log('Result : ', result);
-      }
-    } catch (error) {
-      dispatch(setRequestError(error.response.data));
-    }
-  };
-};
-
-const readNotificationApi = ({subject, token}, {username}) => {
-  return async (dispatch) => {
+    const customHeaders = {
+      headers: {
+        username,
+      },
+    };
     try {
       const {data} = await httpRequest.post(
         '/notif/push-notification/readNotification',
-        {
-          subject,
-          token,
-        },
-        {
-          headers: username,
-        },
+        params,
+        customHeaders,
       );
       if (data) {
         const {statusCode, result} = data;
@@ -147,8 +99,8 @@ const getListNotification = (username) => {
       );
       if (data) {
         const {statusCode, result} = data;
-        console.log('Status Code Get List : ', statusCode);
-        console.log('Result Get List : ', result);
+        console.log('Status Code : ', statusCode);
+        if (statusCode === 0) dispatch(receivePushNotification(result));
       }
     } catch (error) {
       dispatch(setRequestError(error.response.data));
@@ -159,9 +111,8 @@ const getListNotification = (username) => {
 export {
   receivePushNotification,
   readNotification,
-  getListTopicByEnterprise,
   savePushNotifToken,
-  saveNotificationApi,
   readNotificationApi,
   getListNotification,
+  saveUserToken,
 };

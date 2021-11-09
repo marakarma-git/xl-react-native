@@ -23,6 +23,7 @@ import Orientation from '../../helpers/orientation';
 import style from '../../style/home.style';
 import Text from '../../components/global/text';
 import {colors} from '../../constant/color';
+import {getListNotification} from '../../redux/action/notification_action';
 
 const LandingPage = ({navigation}) => {
   const dispatch = useDispatch();
@@ -103,6 +104,7 @@ const LandingPage = ({navigation}) => {
       dispatch(setHomeLogin());
       dispatch(getCarousel());
       dispatch(callEnterpriseLogo(principal.enterpriseId, access_token));
+      dispatch(getListNotification(userData?.username));
       // Configure Push Notification
       Notification.configure(dispatch, userData);
       detectOrientation();
