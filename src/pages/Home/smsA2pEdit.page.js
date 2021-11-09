@@ -19,9 +19,11 @@ import {base_url} from '../../constant/connection';
 import {setRequestError} from '../../redux/action/dashboard_action';
 import getA2pEditDetail, {
   getA2pEnterprise,
+  smsA2pEditDynamicFormFailed,
   smsA2pEditReset,
   smsA2pEditTextInput,
 } from '../../redux/action/sms_a2p_edit_action';
+import Helper from '../../helpers/helper';
 
 const SmsA2pEdit = ({route}) => {
   const navigation = useNavigation();
@@ -52,27 +54,37 @@ const SmsA2pEdit = ({route}) => {
     }
   }, [positionTableIndex, layoutType]);
   const onSubmit = () => {
-    setLocalLoading(true);
-    axios({
-      method: 'post',
-      url: `${base_url}/dcp/a2pConfiguration/updateA2PConfiguration`,
-      headers: {
-        Authorization: `Bearer ${access_token}`,
-        'Content-Type': 'application/json',
-      },
-      data: '',
-    })
-      .then(({data}) => {
-        const {statusCode} = data || {};
-        if (statusCode === 0) {
-        } else {
-        }
-      })
-      .catch((error) => {
-        setLocalLoading(false);
-        alert('error');
-        dispatch(setRequestError(error));
-      });
+    const {data: getSmsData, errorCount} = Helper.editFormValidator(
+      dataA2pEdit,
+    );
+    alert(JSON.stringify(getSmsData, null, 2));
+    dispatch(
+      smsA2pEditDynamicFormFailed({
+        dataEditArray: getSmsData,
+      }),
+    );
+    // const getValueObject = Helper.createObjectPostEdit(dataA2pEdit);
+    // setLocalLoading(true);
+    // axios({
+    //   method: 'post',
+    //   url: `${base_url}/dcp/a2pConfiguration/updateA2PConfiguration`,
+    //   headers: {
+    //     Authorization: `Bearer ${access_token}`,
+    //     'Content-Type': 'application/json',
+    //   },
+    //   data: '',
+    // })
+    //   .then(({data}) => {
+    //     const {statusCode} = data || {};
+    //     if (statusCode === 0) {
+    //     } else {
+    //     }
+    //   })
+    //   .catch((error) => {
+    //     setLocalLoading(false);
+    //     alert('error');
+    //     dispatch(setRequestError(error));
+    //   });
   };
   const handlingBack = () => {
     dispatch(smsA2pEditReset());
@@ -107,7 +119,8 @@ const SmsA2pEdit = ({route}) => {
           <View style={subscriptionStyle.containerWrap}>
             {dataA2pEdit &&
               dataA2pEdit.map((item) => {
-                const {for_layout_edit_only, formId} = item || {};
+                const {for_layout_edit_only, formId, validationError} =
+                  item || {};
                 const {
                   edit_value,
                   type_input_edit,
@@ -123,7 +136,7 @@ const SmsA2pEdit = ({route}) => {
                     disabled={disabled}
                     type={type_input_edit}
                     value={edit_value}
-                    errorText={''}
+                    errorText={validationError}
                     label={edit_label}
                     onChange={(e) => {
                       dispatch(
@@ -155,7 +168,7 @@ const SmsA2pEdit = ({route}) => {
                     handlingBack();
                   }
                   if (value === 'Submit') {
-                    //do something
+                    onSubmit();
                   }
                 }}>
                 <Text
