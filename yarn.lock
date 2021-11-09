@@ -721,6 +721,13 @@
   dependencies:
     "@types/hammerjs" "^2.0.36"
 
+"@fawazahmed/react-native-read-more@^2.2.0":
+  "integrity" "sha512-RUpEr/slb2d07MgzcIuhlOmW3BtjR4/ZP3+VCnCOUVY0MnQtl7BREFIhdMj66tcWe0silu+8PtwTyRY5Ik91Ew=="
+  "resolved" "https://registry.npmjs.org/@fawazahmed/react-native-read-more/-/react-native-read-more-2.2.0.tgz"
+  "version" "2.2.0"
+  dependencies:
+    "prop-types" "^15.7.2"
+
 "@gradecam/tsenum@1.2.0":
   "integrity" "sha512-61kSGjcgHBncY1WJ1Fc6VwMgHyMWMQ9A8oconZ3iYizWDKKV64JVYDFTRH/vGmaKlTQb0PXAhRzY7qnIBvYikw=="
   "resolved" "https://registry.npmjs.org/@gradecam/tsenum/-/tsenum-1.2.0.tgz"

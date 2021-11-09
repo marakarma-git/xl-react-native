@@ -1,31 +1,25 @@
 import PushNotification from 'react-native-push-notification';
 import {
-  getListTopicByEnterprise,
-  saveNotificationApi,
+  getListNotification,
   savePushNotifToken,
+  saveUserToken,
 } from '../redux/action/notification_action';
-import {store} from '../app';
 
 class Notification {
   static configure = (dispatch, userData) => {
+    const {access_token, principal} = userData;
     PushNotification.configure({
       largeIcon: 'ic_launcher',
       smallIcon: 'ic_launcher',
       color: 'red',
       onRegister: function (token) {
-        dispatch(savePushNotifToken(token?.token));
-        dispatch(
-          getListTopicByEnterprise(
-            userData.customerNo,
-            userData?.principal?.username,
-            token?.token,
-          ),
-        );
+        const notifToken = token?.token;
+        dispatch(savePushNotifToken(notifToken));
+        dispatch(saveUserToken(notifToken, userData?.principal?.username));
+        if (access_token) dispatch(getListNotification(principal?.username));
       },
       onNotification: function (notification) {
         const {title, body} = JSON.parse(notification.data.title);
-        const {token} = store.getState().notification_reducer;
-        const {username} = store.getState().auth_reducer.data;
         PushNotification.localNotification({
           channelId: 'fcm_fallback_notification_channel',
           foreground: true,
@@ -33,7 +27,7 @@ class Notification {
           title: title,
           message: body,
         });
-        dispatch(saveNotificationApi({body, title, token}, {username}));
+        if (access_token) dispatch(getListNotification(principal?.username));
       },
       onAction: function (notification) {},
       onRegistrationError: function (err) {

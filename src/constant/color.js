@@ -39,7 +39,9 @@ export const colors = {
   chart_line_red: color_theme_one.red,
   chart_line_blue: color_theme_one.blue,
   sorted_table_color: '#20a8d8',
-
+  gray_severity_level: '#E2E2E2',
+  red_severity_level: '#FF0000',
+  yellow_severity_level: '#FFFF0E',
   main_color: color_theme_one.blue,
   main_color_overlay: color_theme_one.cyan,
   tab_edit: color_theme_one.green,

@@ -1,64 +1,58 @@
 import React, {useEffect} from 'react';
 import {View, FlatList} from 'react-native';
-import {NotificationCard, Text} from '../../components';
+import {CardSeverityLevel, NotificationCard} from '../../components';
 import {useDispatch, useSelector} from 'react-redux';
-import {readNotification} from '../../redux/action/notification_action';
-import {Card} from 'react-native-paper';
 import {HeaderContainer} from '../../components';
 
 import dayjs from 'dayjs';
 import relativeTime from 'dayjs/plugin/relativeTime';
 import style from '../../style/home.style';
-import Helper from '../../helpers/helper';
 
 dayjs.extend(relativeTime);
 
 const NotificationPage = ({navigation}) => {
   const dispatch = useDispatch();
   const {imageBase64} = useSelector((state) => state.enterprise_reducer);
-  const {pushNotification} = useSelector((state) => state.notification_reducer);
+  const {listNotification, severityLevel} = useSelector(
+    (state) => state.notification_reducer,
+  );
+  const {high, medium, low} = severityLevel;
 
   const notificationList = ({item}) => {
     return (
       <NotificationCard
         message={item.message}
-        title={item.title}
-        time={item.time}
+        title={item.subject}
+        time={item.createdDate}
+        severityLevel={item.severityLevel}
       />
     );
   };
 
   useEffect(() => {
     const pageLoad = navigation.addListener('focus', () => {
-      const newNotification = new Array();
-
-      pushNotification.map((notif) => {
-        newNotification.push({
-          title: notif.title,
-          message: notif.message,
-          time: notif.time,
-          status: 'read',
-        });
-      });
-
-      dispatch(readNotification(newNotification));
+      // Nanti disini buat ngelakuin dispatch api read notif
     });
 
     return pageLoad;
-  }, [navigation, pushNotification]);
+  }, [navigation]);
 
   return (
-    <View>
+    <View style={style.notificationContainer}>
       <HeaderContainer
         navigation={navigation}
         headerTitle={'Notification'}
         companyLogo={imageBase64}
       />
+      <CardSeverityLevel
+        severityHigh={high}
+        severityMedium={medium}
+        severityLow={low}
+      />
       <FlatList
-        style={{marginTop: 5}}
-        data={Helper.sortDescending(pushNotification, 'time')}
+        data={listNotification}
         renderItem={notificationList}
-        keyExtractor={(item) => item.title}
+        keyExtractor={(item) => item.pushMessageNotifId}
       />
     </View>
   );
