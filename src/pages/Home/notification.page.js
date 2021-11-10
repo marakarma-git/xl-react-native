@@ -23,8 +23,8 @@ const NotificationPage = ({navigation}) => {
       <NotificationCard
         message={item.message}
         title={item.subject}
-        time={item.createdDate}
-        severityLevel={item.severityLevel}
+        time={new Date(item.createdDate.split('.')[0])}
+        severityLevel={item.criticalLevel}
       />
     );
   };

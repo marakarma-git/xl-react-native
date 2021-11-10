@@ -18,6 +18,7 @@ const receivePushNotification = (notification) => {
       medium: 0,
       low: 0,
     };
+    console.log('NOTIFICATION', notification);
     notification.map((notif) => {
       if (notif.criticalLevel) {
         const {criticalLevel} = notif;
