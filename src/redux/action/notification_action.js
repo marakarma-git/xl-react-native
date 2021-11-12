@@ -18,7 +18,6 @@ const receivePushNotification = (notification) => {
       medium: 0,
       low: 0,
     };
-    console.log('NOTIFICATION', notification);
     notification.map((notif) => {
       if (notif.criticalLevel) {
         const {criticalLevel} = notif;
@@ -66,10 +65,11 @@ const saveUserToken = (token, username) => {
 };
 
 const readNotificationApi = (username) => {
-  console.log('READ NOTIFICATION');
-
   return async (dispatch, getState) => {
     const {listNotification} = getState().notification_reducer;
+    const pushMessageIds = listNotification.map(
+      (notif) => notif.pushMessageNotifId,
+    );
     const customHeaders = {
       headers: {
         username,
@@ -78,7 +78,7 @@ const readNotificationApi = (username) => {
     try {
       const {data} = await httpRequest.post(
         '/notif/push-notification/readAllNotification',
-        {},
+        pushMessageIds,
         customHeaders,
       );
       if (data) {
@@ -97,8 +97,7 @@ const readNotificationApi = (username) => {
   };
 };
 
-const getListNotification = (username, limit = 1) => {
-  console.log('GET LIST NOTIFICATION');
+const getListNotification = (username, limit = 10) => {
   return async (dispatch) => {
     try {
       const {data} = await httpRequest.get(

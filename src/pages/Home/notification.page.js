@@ -33,7 +33,12 @@ const NotificationPage = ({navigation}) => {
   };
   // Read all notif when user already in notification page.
   useEffect(() => {
-    if (!firstLoad) dispatch(readNotificationApi(username));
+    const checkUnreadNotif = [...listNotification].filter(
+      (notif) => notif.readStatus == false,
+    );
+    if (checkUnreadNotif.length > 0) {
+      if (!firstLoad) dispatch(readNotificationApi(username));
+    }
   }, [listNotification]);
   // Read all when user click bell.
   useEffect(() => {
