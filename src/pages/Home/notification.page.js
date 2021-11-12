@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React, {useEffect, useState} from 'react';
 import {View, FlatList} from 'react-native';
 import {CardSeverityLevel, NotificationCard} from '../../components';
 import {useDispatch, useSelector} from 'react-redux';
@@ -7,12 +7,15 @@ import {HeaderContainer} from '../../components';
 import dayjs from 'dayjs';
 import relativeTime from 'dayjs/plugin/relativeTime';
 import style from '../../style/home.style';
+import {readNotificationApi} from '../../redux/action/notification_action';
 
 dayjs.extend(relativeTime);
 
 const NotificationPage = ({navigation}) => {
   const dispatch = useDispatch();
+  const [firstLoad, setFirstLoad] = useState(true);
   const {imageBase64} = useSelector((state) => state.enterprise_reducer);
+  const {username} = useSelector((state) => state.auth_reducer);
   const {listNotification, severityLevel} = useSelector(
     (state) => state.notification_reducer,
   );
@@ -28,13 +31,29 @@ const NotificationPage = ({navigation}) => {
       />
     );
   };
-
+  // Read all notif when user already in notification page.
+  useEffect(() => {
+    const checkUnreadNotif = [...listNotification].filter(
+      (notif) => notif.readStatus == false,
+    );
+    if (checkUnreadNotif.length > 0) {
+      if (!firstLoad) dispatch(readNotificationApi(username));
+    }
+  }, [listNotification]);
+  // Read all when user click bell.
   useEffect(() => {
     const pageLoad = navigation.addListener('focus', () => {
-      // Nanti disini buat ngelakuin dispatch api read notif
+      dispatch(readNotificationApi(username));
+      setFirstLoad(false);
     });
-
     return pageLoad;
+  }, [navigation]);
+  // Reset State
+  useEffect(() => {
+    const pageBlur = navigation.addListener('blur', () => {
+      setFirstLoad(true);
+    });
+    return pageBlur;
   }, [navigation]);
 
   return (
