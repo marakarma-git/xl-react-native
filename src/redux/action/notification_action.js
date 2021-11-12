@@ -65,8 +65,11 @@ const saveUserToken = (token, username) => {
   };
 };
 
-const readNotificationApi = (params, username) => {
-  return async (dispatch) => {
+const readNotificationApi = (username) => {
+  console.log('READ NOTIFICATION');
+
+  return async (dispatch, getState) => {
+    const {listNotification} = getState().notification_reducer;
     const customHeaders = {
       headers: {
         username,
@@ -74,14 +77,19 @@ const readNotificationApi = (params, username) => {
     };
     try {
       const {data} = await httpRequest.post(
-        '/notif/push-notification/readNotification',
-        params,
+        '/notif/push-notification/readAllNotification',
+        {},
         customHeaders,
       );
       if (data) {
         const {statusCode, result} = data;
-        console.log('Status Code : ', statusCode);
-        console.log('Result : ', result);
+        if (statusCode === 0 && result) {
+          const newNotificationData = [...listNotification];
+          newNotificationData.map((notif) => {
+            notif.readStatus = true;
+          });
+          dispatch(addNotification(newNotificationData));
+        }
       }
     } catch (error) {
       dispatch(setRequestError(error.response.data));
@@ -89,18 +97,18 @@ const readNotificationApi = (params, username) => {
   };
 };
 
-const getListNotification = (username) => {
+const getListNotification = (username, limit = 1) => {
+  console.log('GET LIST NOTIFICATION');
   return async (dispatch) => {
     try {
       const {data} = await httpRequest.get(
-        '/notif/push-notification/getNotificationList',
+        `/notif/push-notification/getNotificationList?limit=${limit}`,
         {
           headers: {username},
         },
       );
       if (data) {
         const {statusCode, result} = data;
-        console.log('Status Code : ', statusCode);
         if (statusCode === 0) dispatch(receivePushNotification(result));
       }
     } catch (error) {
