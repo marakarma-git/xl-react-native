@@ -1,12 +1,19 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import {View, StyleSheet} from 'react-native';
+import {View, StyleSheet, TouchableOpacity} from 'react-native';
 import {Text} from '../index';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import {colors} from '../../constant/color';
 
 const CardSeverityLevel = (props) => {
-  const {severityHigh, severityMedium, severityLow} = props;
+  const {
+    totalMessage,
+    severityHigh,
+    severityMedium,
+    severityLow,
+    activeMenu,
+    setActiveMenu,
+  } = props;
   const {
     red_severity_level,
     yellow_severity_level,
@@ -14,27 +21,70 @@ const CardSeverityLevel = (props) => {
   } = colors;
   return (
     <View style={styles.cardContainer}>
-      <SeverityLevel colors={red_severity_level} totalMessage={severityHigh} />
       <SeverityLevel
-        colors={yellow_severity_level}
-        totalMessage={severityMedium}
+        isActive={activeMenu === 'All'}
+        color={'white'}
+        totalMessage={totalMessage}
+        title={'All'}
+        setActiveMenu={setActiveMenu}
       />
-      <SeverityLevel colors={gray_severity_level} totalMessage={severityLow} />
+      <SeverityLevel
+        isActive={activeMenu === 'High'}
+        color={red_severity_level}
+        totalMessage={severityHigh}
+        title={'High'}
+        setActiveMenu={setActiveMenu}
+      />
+      <SeverityLevel
+        isActive={activeMenu === 'Medium'}
+        color={yellow_severity_level}
+        totalMessage={severityMedium}
+        title={'Medium'}
+        setActiveMenu={setActiveMenu}
+      />
+      <SeverityLevel
+        isActive={activeMenu === 'Low'}
+        color={gray_severity_level}
+        totalMessage={severityLow}
+        title={'Low'}
+        setActiveMenu={setActiveMenu}
+      />
     </View>
   );
 };
 
-const SeverityLevel = ({colors, totalMessage}) => {
+const SeverityLevel = ({
+  color,
+  totalMessage,
+  title,
+  isActive,
+  setActiveMenu,
+}) => {
   return (
-    <View style={styles.severityLevelWrapper}>
-      <FontAwesome
-        name="circle"
-        size={20}
-        color={colors}
-        style={styles.iconMessage}
-      />
-      <Text style={styles.textMessage}>{totalMessage} Message</Text>
-    </View>
+    <TouchableOpacity
+      onPress={() => setActiveMenu(title)}
+      style={[
+        styles.severityLevelWrapper,
+        {
+          borderBottomColor: isActive
+            ? colors.main_color_overlay
+            : 'transparent',
+        },
+      ]}>
+      {color !== 'white' && (
+        <FontAwesome
+          name="circle"
+          size={16}
+          color={color}
+          style={styles.iconMessage}
+        />
+      )}
+      <Text
+        style={[
+          styles.textMessage,
+          {color: isActive ? colors.main_color_overlay : 'black'},
+        ]}>{`${title} (${totalMessage})`}</Text>
+    </TouchableOpacity>
   );
 };
 
@@ -42,17 +92,19 @@ const styles = StyleSheet.create({
   cardContainer: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    width: '94%',
+    width: '100%',
     height: 40,
     backgroundColor: 'white',
-    marginHorizontal: '3%',
+    borderBottomWidth: 1,
+    borderBottomColor: colors.gray_severity_level,
   },
   severityLevelWrapper: {
     flexDirection: 'row',
     alignItems: 'center',
-    justifyContent: 'space-evenly',
-    width: '32%',
+    justifyContent: 'center',
+    width: '25%',
     height: '100%',
+    borderBottomWidth: 3,
   },
   textMessage: {
     fontSize: 13,
