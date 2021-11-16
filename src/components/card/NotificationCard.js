@@ -9,7 +9,7 @@ import {Text} from '../index';
 import {View, StyleSheet} from 'react-native';
 
 const NotificationCard = (props) => {
-  const {message, title, time, userInteraction, severityLevel} = props;
+  const {message, title, time, severityLevel} = props;
 
   const severityColor = (severityLevel) => {
     if (severityLevel === 'high') return colors.red_severity_level;
