@@ -20,6 +20,7 @@ const NotificationPage = ({navigation}) => {
     (state) => state.notification_reducer,
   );
   const {high, medium, low} = severityLevel;
+  const [activeMenu, setActiveMenu] = useState('All');
 
   const notificationList = ({item}) => {
     return (
@@ -31,7 +32,16 @@ const NotificationPage = ({navigation}) => {
       />
     );
   };
-  // Read all notif when user already in notification page.
+  const filterDataBySeverityLevel = (activeMenu) => {
+    const notificationData = [...listNotification];
+    const lowActiveMenu = activeMenu.toLowerCase();
+    if (lowActiveMenu !== 'all') {
+      return notificationData.filter(
+        (data) => data.criticalLevel == lowActiveMenu,
+      );
+    }
+    return notificationData;
+  };
   useEffect(() => {
     const checkUnreadNotif = [...listNotification].filter(
       (notif) => notif.readStatus == false,
@@ -40,7 +50,6 @@ const NotificationPage = ({navigation}) => {
       if (!firstLoad) dispatch(readNotificationApi(username));
     }
   }, [listNotification]);
-  // Read all when user click bell.
   useEffect(() => {
     const pageLoad = navigation.addListener('focus', () => {
       dispatch(readNotificationApi(username));
@@ -48,7 +57,6 @@ const NotificationPage = ({navigation}) => {
     });
     return pageLoad;
   }, [navigation]);
-  // Reset State
   useEffect(() => {
     const pageBlur = navigation.addListener('blur', () => {
       setFirstLoad(true);
@@ -64,12 +72,15 @@ const NotificationPage = ({navigation}) => {
         companyLogo={imageBase64}
       />
       <CardSeverityLevel
+        activeMenu={activeMenu}
+        setActiveMenu={setActiveMenu}
         severityHigh={high}
         severityMedium={medium}
         severityLow={low}
+        totalMessage={listNotification.length}
       />
       <FlatList
-        data={listNotification}
+        data={filterDataBySeverityLevel(activeMenu)}
         renderItem={notificationList}
         keyExtractor={(item) => item.pushMessageNotifId}
       />
