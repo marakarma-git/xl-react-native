@@ -205,7 +205,7 @@ export default {
     marginHorizontal: 3,
   },
   containerDropDown: {
-    width: 200,
+    width: 230,
     color: '#707070',
     borderRadius: 0,
     zIndex: 5000,
