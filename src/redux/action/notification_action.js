@@ -45,11 +45,12 @@ const readNotification = (payload) => ({
 
 const saveUserToken = (token, username) => {
   return async (dispatch) => {
-    const requestBody = {};
+    const requestBody = {
+      token,
+    };
     const requestHeader = {
       headers: {
         username,
-        token,
       },
     };
     try {
