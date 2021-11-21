@@ -2,10 +2,11 @@ import React, {useState, useEffect} from 'react';
 import {useNavigation} from '@react-navigation/native';
 import {requestWidgetData} from '../../redux/action/dashboard_action';
 import {useSelector, useDispatch} from 'react-redux';
-import {Card, Title} from 'react-native-paper';
-import {View, ActivityIndicator, Text} from 'react-native';
+import {Card} from 'react-native-paper';
+import {View, ActivityIndicator} from 'react-native';
 import {VictoryPie, VictoryTheme, VictoryLabel} from 'victory-native';
 
+import {Text} from '../index';
 import ChartLegend from './chartlegend';
 import style from '../../style/home.style';
 import {colors} from '../../constant/color';
@@ -83,7 +84,11 @@ const PieChartComponent = ({item, filterParams = {}}) => {
   return (
     <Card style={style.cardSection}>
       <Card.Content style={style.cardContentWrapper}>
-        <Title>{item.jsonData.title.text}</Title>
+        <View style={style.cardTitleContainer}>
+          <Text fontType="bold" style={{fontSize: 14}}>
+            {item.jsonData?.title?.text || ''}
+          </Text>
+        </View>
         {loading ? (
           <ActivityIndicator color={colors.main_color} size="large" />
         ) : (

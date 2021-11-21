@@ -26,6 +26,9 @@ const ContentCard = (props) => {
             {props.cardToolbar}
           </View>
         </View>
+        {props.cardBody && (
+          <View style={styles.cardBody}>{props.cardBody}</View>
+        )}
         {props.loadingContent ? (
           <View style={{justifyContent: 'center', height: 100}}>
             <ActivityIndicator size="large" color={colors.main_color} />
@@ -54,11 +57,12 @@ ContentCard.propTypes = {
   cardTitle: PropTypes.string,
   cardHeaderStyle: PropTypes.object,
   titleStyle: PropTypes.object,
-  cardToolbar: PropTypes.node,
-  cardContent: PropTypes.node,
+  cardToolbar: PropTypes.element,
+  cardContent: PropTypes.element,
   loadingContent: PropTypes.bool,
-  cardTitleComponent: PropTypes.node,
-  cardFooter: PropTypes.node,
+  cardTitleComponent: PropTypes.element,
+  cardFooter: PropTypes.element,
+  cardBody: PropTypes.element,
 };
 ContentCard.defaultProps = {
   cardTitle: '',

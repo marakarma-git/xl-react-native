@@ -6,10 +6,10 @@ import {
   OverlayBackground,
   Text,
   ContentCard,
-  FilterCard,
   GridComponent,
   Last12MonthChart,
   DayMonthChart,
+  FilterDropdown,
 } from '../../components';
 import {
   usageAnalyticsDynamicResetSelectedValue,
@@ -75,13 +75,23 @@ const UsageAnalyticsPage = ({route, navigation}) => {
   const [param3, setParam3] = useState(2);
   const [param3List, setParam3List] = useState([
     {label: '2 Days ago', value: 2, isDisabled: false, isVisible: true},
-    {label: '7 Days ago', value: 7, isDisabled: false, isVisible: true},
-    {label: '30 Days ago', value: 30, isDisabled: false, isVisible: true},
+    {
+      label: 'Previous 7 Days ago',
+      value: 7,
+      isDisabled: false,
+      isVisible: true,
+    },
+    {
+      label: 'Previous 30 Days ago',
+      value: 30,
+      isDisabled: false,
+      isVisible: true,
+    },
   ]);
   const [param4, setParam4] = useState(10);
   const [param4List, setParam4List] = useState([
-    {label: 'Count is Top 10', value: 10, isDisabled: false, isVisible: true},
-    {label: 'Count is Top 20', value: 20, isDisabled: false, isVisible: true},
+    {label: 'Top 10', value: 10, isDisabled: false, isVisible: true},
+    {label: 'Top 20', value: 20, isDisabled: false, isVisible: true},
   ]);
   const [curveType, setCurveType] = useState('day');
   const [curveTypeOptions, setCurveTypeOptions] = useState([
@@ -94,6 +104,8 @@ const UsageAnalyticsPage = ({route, navigation}) => {
     },
     {label: 'Both', value: 'both', isDisabled: false, isVisible: true},
   ]);
+  const [periodLabel, setPeriodLabel] = useState('2 Days ago');
+  const [countLabel, setCountLabel] = useState('Top 10');
   const [showCurveType, setShowCurveType] = useState(false);
   const [showPeriodFilter, setShowPeriodFilter] = useState(false);
   const [showCountFilter, setShowCountFilter] = useState(false);
@@ -195,7 +207,6 @@ const UsageAnalyticsPage = ({route, navigation}) => {
               style={{marginLeft: 0, flex: 1}}
               data={appliedFilter}
               onDelete={(e) => {
-                console.log(appliedFilter);
                 const {formId} = e || {};
                 dispatch(usageAnalyticsDynamicResetSelectedValue({formId}));
                 dispatch(usageAnalyticsGenerateParams());
@@ -203,25 +214,18 @@ const UsageAnalyticsPage = ({route, navigation}) => {
             />
             <ContentCard
               loadingContent={loadingTopTraffic ? true : false}
-              cardToolbar={
+              cardBody={
                 <>
-                  <TouchableOpacity
-                    style={styles.link}
-                    onPress={() => setShowPeriodFilter(true)}>
-                    <Text fontType="bold" style={styles.linkText}>
-                      By Period
-                    </Text>
-                  </TouchableOpacity>
-                  <Text fontType="bold" style={styles.filterText}>
-                    |
-                  </Text>
-                  <TouchableOpacity
-                    style={styles.link}
-                    onPress={() => setShowCountFilter(true)}>
-                    <Text fontType="bold" style={styles.linkText}>
-                      By Count
-                    </Text>
-                  </TouchableOpacity>
+                  <FilterDropdown
+                    setShowToggle={setShowPeriodFilter}
+                    dropdownText={periodLabel}
+                    dropDownTitle={'Period'}
+                  />
+                  <FilterDropdown
+                    setShowToggle={setShowCountFilter}
+                    dropdownText={countLabel}
+                    dropDownTitle={'Count'}
+                  />
                 </>
               }
               cardContent={
@@ -330,6 +334,7 @@ const UsageAnalyticsPage = ({route, navigation}) => {
             setParam3(e.value);
             dispatch(resetTopTrafficStatistics());
             setShowPeriodFilter(false);
+            setPeriodLabel(e.label);
           }}
           onClose={() => setShowPeriodFilter(false)}
           removeSearch={true}
@@ -345,6 +350,7 @@ const UsageAnalyticsPage = ({route, navigation}) => {
             setParam4(e.value);
             dispatch(resetTopTrafficStatistics());
             setShowCountFilter(false);
+            setCountLabel(e.label);
           }}
           onClose={() => setShowCountFilter(false)}
           removeSearch={true}
