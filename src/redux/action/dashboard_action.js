@@ -325,6 +325,7 @@ export const requestWidgetData = (
   type = 'sim',
 ) => {
   return async (dispatch) => {
+    console.log('PARAMS ', filterParams);
     let isHasParams = Object.keys(filterParams).length > 0;
     if (type === 'sim') dispatch(requestDashboardData());
     if (type === 'top') dispatch(requestTopTraffic());

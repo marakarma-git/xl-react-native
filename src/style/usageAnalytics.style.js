@@ -13,7 +13,7 @@ const styles = StyleSheet.create({
     width: '95%',
     backgroundColor: 'white',
     marginTop: 20,
-    borderColor: '#8D8D8D',
+    borderColor: colors.card_border,
     borderWidth: 0.8,
     borderRadius: 3,
   },
@@ -22,7 +22,7 @@ const styles = StyleSheet.create({
     marginVertical: 5,
     marginHorizontal: '2%',
     borderWidth: 0.8,
-    borderColor: '#8D8D8D',
+    borderColor: colors.card_border,
   },
   cardContentWrapper: {
     marginBottom: 20,
@@ -48,6 +48,21 @@ const styles = StyleSheet.create({
     width: '100%',
     height: 30,
   },
+  dropdownPicker: {
+    paddingHorizontal: 10,
+    paddingVertical: 5,
+    borderWidth: 1,
+    borderColor: colors.gray,
+    borderRadius: 20,
+    marginRight: 5,
+  },
+  cardBody: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    width: '100%',
+    paddingHorizontal: 10,
+    marginBottom: 10,
+  },
   filterContainer: {
     width: '100%',
     minHeight: 30,
@@ -67,6 +82,10 @@ const styles = StyleSheet.create({
   linkText: {
     fontSize: 14,
     color: color_theme_one.cyan,
+  },
+  dropdownPickerText: {
+    fontSize: 12,
+    color: 'black',
   },
   filterText: {
     paddingHorizontal: 3,

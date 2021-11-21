@@ -12,6 +12,7 @@ import {
 import {
   getDashboardSummary,
   getWidgetList,
+  resetTopTrafficStatistics,
 } from '../../redux/action/dashboard_action';
 import Orientation from '../../helpers/orientation';
 
@@ -60,6 +61,7 @@ const DashboardPage = ({navigation}) => {
     return navigation.addListener('focus', () => {
       dispatch(getDashboardSummary());
       dispatch(getWidgetList());
+      dispatch(resetTopTrafficStatistics());
     });
   }, [dispatch, navigation]);
 

@@ -18,6 +18,7 @@ export {default as UsageSubsChart} from './widget/usageSubsChart';
 export {default as PasswordInput} from './PasswordInput';
 export {default as TermCondition} from './termCondition';
 export {default as CustomDropDownPicker} from './form/CustomDropDown';
+export {default as FilterDropdown} from './form/FilterDropdown';
 
 // Modal Component
 export {default as ModalTermCondition} from './modal/ModalTermCondition';

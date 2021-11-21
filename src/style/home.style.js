@@ -242,4 +242,23 @@ export default {
     color: '#707070',
     width: '90%',
   },
+  cardBody: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    width: '100%',
+    marginBottom: 10,
+  },
+  cardTitleContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    width: '100%',
+    height: 40,
+    borderTopLeftRadius: 3,
+    borderTopRightRadius: 3,
+    paddingVertical: 5,
+  },
+  linkText: {
+    textDecorationLine: 'underline',
+    color: '#00F',
+  },
 };
