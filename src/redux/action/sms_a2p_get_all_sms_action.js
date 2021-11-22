@@ -157,6 +157,42 @@ const getSmsA2p = (paginate) => {
       });
   };
 };
+const deleteSmsA2p = (localValue) => {
+  return async (dispatch, getState) => {
+    const {getConfigId} = localValue || '';
+    dispatch(smsA2pGetSmsLoading());
+    const {access_token} = (await getState().auth_reducer.data) || '';
+    console.log([getConfigId]);
+    axios({
+      method: 'post',
+      url: `${base_url}/dcp/a2pConfiguration/DeleteA2PConfiguration`,
+      headers: {Authorization: `Bearer ${access_token}`},
+      data: {
+        configId: [getConfigId],
+      },
+    })
+      .then(({data}) => {
+        const {statusCode} = data || {};
+        if (statusCode === 0) {
+          dispatch(getSmsA2p());
+        } else {
+          dispatch(
+            smsA2pGetSmsFailed({
+              errorText: 'Failed, to delete some list',
+            }),
+          );
+        }
+      })
+      .catch((error) => {
+        dispatch(
+          smsA2pGetSmsFailed({
+            errorText: 'Failed, to delete some list',
+            ...error.response.data,
+          }),
+        );
+      });
+  };
+};
 export default getSmsA2p;
 export {
   smsA2pGetSmsReset,
@@ -166,4 +202,5 @@ export {
   smsA2pDynamicCheckDataSms,
   smsA2pSetAppliedHeaderSort,
   smsA2pReplaceCellWithIndex,
+  deleteSmsA2p,
 };

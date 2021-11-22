@@ -240,13 +240,10 @@ const getA2pEditDetail = (localVariable) => {
       });
   };
 };
-const deleteSmsA2p = () => {};
-const createSmsA2p = () => {};
+
 export default getA2pEditDetail;
 export {
   getA2pEnterprise,
-  deleteSmsA2p,
-  createSmsA2p,
   smsA2pEditTextInput,
   smsA2pEditReset,
   smsA2pEditDynamicFormFailed,

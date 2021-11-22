@@ -2,6 +2,7 @@ import React, {useEffect, useState} from 'react';
 import {View} from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
 import getSmsA2p, {
+  deleteSmsA2p,
   smsA2pSetDataSmsGenerated,
 } from '../../redux/action/sms_a2p_get_all_sms_action';
 import {HeaderContainer, OverlayBackground} from '../../components';
@@ -86,6 +87,10 @@ const SmsA2p = () => {
               layoutType: 'Edit',
               dataConfig: getConfigId,
             });
+          }}
+          onPressDelete={({item}) => {
+            const {configId} = item || '';
+            dispatch(deleteSmsA2p({getConfigId: configId}));
           }}
           isScrollView={true}
           stickHeaderIndices={[1]}
