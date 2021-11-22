@@ -19,7 +19,8 @@ class Notification {
         if (access_token) dispatch(getListNotification(principal?.username));
       },
       onNotification: function (notification) {
-        const {title, body} = JSON.parse(notification.data.title);
+        console.log('NOTIFICATION ', notification);
+        const {title, body} = JSON.parse(notification.data.notification);
         PushNotification.localNotification({
           channelId: 'fcm_fallback_notification_channel',
           foreground: true,
