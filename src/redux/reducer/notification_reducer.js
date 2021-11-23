@@ -1,5 +1,7 @@
 const initialState = {
   token: null,
+  showNotificationLimit: 10,
+  limitedListNotification: [],
   listNotification: [],
   severityLevel: {
     high: 0,
@@ -24,6 +26,21 @@ export default (state = initialState, action) => {
       return {
         ...state,
         severityLevel: action.payload,
+      };
+    case 'INCREASE_NOTIFICATION_LIMIT':
+      return {
+        ...state,
+        showNotificationLimit: state.showNotificationLimit + action.payload,
+      };
+    case 'RESET_NOTIFICATION_LIMIT':
+      return {
+        ...state,
+        showNotificationLimit: 10,
+      };
+    case 'SET_LIMITED_NOTIFICATION':
+      return {
+        ...state,
+        limitedListNotification: action.payload,
       };
     default:
       return state;
