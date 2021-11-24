@@ -1,7 +1,6 @@
-import Axios from 'axios';
 import subDomain from '../../constant/requestSubPath';
 import reduxString from '../reduxString';
-import {base_url} from '../../constant/connection';
+import httpRequest from '../../constant/axiosInstance';
 
 const getEnterpriseLogo = () => {
   return {
@@ -28,11 +27,8 @@ const removeEnterPriseLogo = () => {
 const callEnterpriseLogo = (enterpriseId, token) => {
   return async (dispatch) => {
     dispatch(getEnterpriseLogo());
-    Axios.get(`${base_url}${subDomain.enterpriseLogo}${enterpriseId}`, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    })
+    httpRequest
+      .get(`${subDomain.enterpriseLogo}${enterpriseId}`)
       .then((response) => {
         const {data} = response;
         const {result} = data || {};

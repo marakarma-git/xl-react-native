@@ -1,6 +1,5 @@
 import reduxString from '../reduxString';
-import axios from 'axios';
-import {base_url} from '../../constant/connection';
+import httpRequest from '../../constant/axiosInstance';
 
 const subscriptionPackageEditTextInputEdit = ({valueInput, editFormId}) => {
   return {
@@ -59,16 +58,11 @@ const subscriptionPackageEditReset = () => {
 const callSubsPackagePredefinedValue = (localVariable) => {
   return async (dispatch, getState) => {
     dispatch(subscriptionPackageEditLoading());
-    const {access_token} = (await getState().auth_reducer.data) || {};
     const {data_subscription_generated} =
       (await getState().subscription_package_get_subscription_reducer) || {};
     const {indexSelected} = localVariable || {};
-    axios
-      .get(`${base_url}/dcp/package/getPackagePredefinedValue`, {
-        headers: {
-          Authorization: `Bearer ${access_token}`,
-        },
-      })
+    httpRequest
+      .get('/dcp/package/getPackagePredefinedValue')
       .then(({data}) => {
         const {result, statusCode} = data || {};
         if (statusCode === 0) {

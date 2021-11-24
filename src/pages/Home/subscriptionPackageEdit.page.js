@@ -21,9 +21,8 @@ import callSubsPackagePredefinedValue, {
 } from '../../redux/action/subscription_package_edit_action';
 import Helper from '../../helpers/helper';
 import {subscriptionPackageReplaceCellWithIndex} from '../../redux/action/subscription_package_get_subscription_action';
-import axios from 'axios';
-import {base_url} from '../../constant/connection';
 import {setRequestError} from '../../redux/action/dashboard_action';
+import httpRequest from '../../constant/axiosInstance';
 
 const SubscriptionPackageEdit = ({route}) => {
   const dispatch = useDispatch();
@@ -36,10 +35,7 @@ const SubscriptionPackageEdit = ({route}) => {
     loading,
     errorText,
   } = useSelector((state) => state.subscription_package_edit_reducer);
-  const {customerNo, access_token, principal} = useSelector(
-    (state) => state.auth_reducer.data,
-  );
-  const {username} = principal || '';
+  const {customerNo} = useSelector((state) => state.auth_reducer.data);
   const [localLoading, setLocalLoading] = useState(false);
 
   useEffect(() => {
@@ -62,13 +58,9 @@ const SubscriptionPackageEdit = ({route}) => {
       },
       true,
     );
-    axios({
+    httpRequest({
       method: 'post',
-      url: `${base_url}/dcp/package/updateSubscriptionPackage`,
-      headers: {
-        Authorization: `Bearer ${access_token}`,
-        'Content-Type': 'application/json',
-      },
+      url: '/dcp/package/updateSubscriptionPackage',
       data: createData,
     })
       .then(({data}) => {

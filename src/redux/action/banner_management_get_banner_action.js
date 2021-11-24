@@ -1,7 +1,6 @@
 import reduxString from '../reduxString';
-import axios from 'axios';
-import {base_url} from '../../constant/connection';
 import {dataMatcherArray2D} from './get_sim_inventory_action';
+import httpRequest from '../../constant/axiosInstance';
 
 const bannerManagementGetBannerLoading = () => {
   return {
@@ -33,15 +32,10 @@ const bannerManagementSetDataBannerGenerated = ({dataBannerGenerated}) => {
 const getBannerList = () => {
   return async (dispatch, getState) => {
     dispatch(bannerManagementGetBannerLoading());
-    const {access_token} = (await getState().auth_reducer.data) || '';
     const {dataBannerHeader} =
       (await getState().banner_management_array_header_reducer) || {};
-    axios
-      .get(`${base_url}/dcp/banner/getListBanner`, {
-        headers: {
-          Authorization: `Bearer ${access_token}`,
-        },
-      })
+    httpRequest
+      .get('/dcp/banner/getListBanner')
       .then(({data}) => {
         const {result, statusCode} = data || {};
         if (statusCode === 0) {

@@ -1,9 +1,7 @@
 import reduxString from '../reduxString';
 import {setSomethingToFilter} from './dynamic_array_filter_action';
-import axios from 'axios';
-import {base_url} from '../../constant/connection';
 import {authFailed, authLogout} from './auth_action';
-import {getSimInventoryLoadingFalse} from './get_sim_inventory_action';
+import httpRequest from '../../constant/axiosInstance';
 
 const getEnterprisePackageNameLoading = () => {
   return {
@@ -43,15 +41,9 @@ const getEnterprisePackageName = (enterpriseName, navigation) => {
       ]),
     );
     const {auth_reducer} = getState();
-    const {access_token} = auth_reducer.data || {};
-    axios
+    httpRequest
       .get(
-        `${base_url}/dcp/analytics/getListSubscriptionPackageName?enterpriseName=${enterpriseName}`,
-        {
-          headers: {
-            Authorization: `Bearer ${access_token}`,
-          },
-        },
+        `/dcp/analytics/getListSubscriptionPackageName?enterpriseName=${enterpriseName}`,
       )
       .then(({data}) => {
         if (data.error === 'invalid_token') {

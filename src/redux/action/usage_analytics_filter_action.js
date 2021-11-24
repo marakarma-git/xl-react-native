@@ -1,7 +1,6 @@
 import reduxString from '../reduxString';
 import {callActiveEnterprise} from './user_administration_array_header_action';
-import axios from 'axios';
-import {base_url} from '../../constant/connection';
+import httpRequest from '../../constant/axiosInstance';
 
 const usageAnalyticsDynamicOnchangeDropDown = ({formId, dropDown}) => {
   return {
@@ -70,8 +69,7 @@ const simGetEnterprise = () => {
         formId: 'usage-analytics-enterprise-hard-code',
       }),
     );
-    const {access_token} = (await getState().auth_reducer.data) || {};
-    callActiveEnterprise({access_token})
+    callActiveEnterprise()
       .then(({data}) => {
         const {result, statusCode} = data || {};
         if (statusCode === 0) {
@@ -112,23 +110,17 @@ const simGetEnterprise = () => {
   };
 };
 const simGetEnterprisePackage = ({enterpriseName}) => {
-  return async (dispatch, getState) => {
+  return async (dispatch) => {
     dispatch(
       usageAnalyticsDynamicLoading({
         formId: 'usage-analytics-package-name-hard-code',
       }),
     );
-    const {access_token} = (await getState().auth_reducer.data) || {};
-    axios
+    httpRequest
       .get(
-        `${base_url}/dcp/analytics/getListSubscriptionPackageName?enterpriseName=${enterpriseName}`
+        `/dcp/analytics/getListSubscriptionPackageName?enterpriseName=${enterpriseName}`
           .split(' ')
           .join('+'),
-        {
-          headers: {
-            Authorization: `Bearer ${access_token}`,
-          },
-        },
       )
       .then(({data}) => {
         const {result, statusCode} = data || {};
@@ -153,7 +145,6 @@ const simGetEnterprisePackage = ({enterpriseName}) => {
         }
       })
       .catch((error) => {
-        alert(JSON.stringify(error, null, 2));
         dispatch(
           usageAnalyticsDynamicFailed({
             formId: 'usage-analytics-package-name-hard-code',

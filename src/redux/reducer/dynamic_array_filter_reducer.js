@@ -469,6 +469,9 @@ const dynamicFilter = [
   {
     formId: 'geoLocation-location-params-only-drop-down',
     typeInput: 'ForParamsOnlyDropDown',
+    config: {
+      label: 'City',
+    },
     params: '&city=',
     value: {},
     hard_code: true,

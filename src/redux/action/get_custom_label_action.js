@@ -5,10 +5,9 @@ import {
   setLoadingFilterFalse,
   setLoadingFilterTrue,
 } from './dynamic_array_filter_action';
-import axios from 'axios';
 import lod from 'lodash';
-import {base_url} from '../../constant/connection';
 import {authFailed} from './auth_action';
+import httpRequest from '../../constant/axiosInstance';
 const getCustomLabelLoading = () => {
   return {
     type: reduxString.GET_CUSTOM_LABEL_LOADING,
@@ -20,17 +19,10 @@ const getCustomLabel = () => {
     dispatch(getCustomLabelLoading());
     dispatch(setLoadingFilterTrue());
     const {auth_reducer} = getState();
-    const {access_token, principal} = auth_reducer.data || {};
+    const {principal} = auth_reducer.data || {};
     const {enterpriseId} = principal || {};
-    axios
-      .get(
-        `${base_url}/user/corp/getCustLabelSubscription?enterpriseId=${enterpriseId}`,
-        {
-          headers: {
-            Authorization: `Bearer ${access_token}`,
-          },
-        },
-      )
+    httpRequest
+      .get(`$/user/corp/getCustLabelSubscription?enterpriseId=${enterpriseId}`)
       .then(({data}) => {
         if (data.statusCode === 0) {
           const modifyArray = data.result.map(

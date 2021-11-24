@@ -1,7 +1,6 @@
 import reduxString from '../reduxString';
-import axios from 'axios';
-import {base_url} from '../../constant/connection';
 import lod from 'lodash';
+import httpRequest from '../../constant/axiosInstance';
 
 const getActiveEnterpriseLoading = () => {
   return {
@@ -32,17 +31,12 @@ const automationActiveEnterpriseReset = () => {
   };
 };
 const callAutomationEnterprise = (parameter) => {
-  return async (dispatch, getState) => {
+  return async (dispatch) => {
     const {result: resultParameter} = parameter || {};
     const {enterpriseId: enterpriseIdParameter} = resultParameter || {};
     dispatch(getActiveEnterpriseLoading());
-    const {access_token} = (await getState().auth_reducer.data) || {};
-    axios
-      .get(`${base_url}/user/corp/getActiveEnterprise`, {
-        headers: {
-          Authorization: `Bearer ${access_token}`,
-        },
-      })
+    httpRequest
+      .get('/user/corp/getActiveEnterprise')
       .then(({data}) => {
         const {result, statusCode} = data || {};
         if (statusCode === 0) {

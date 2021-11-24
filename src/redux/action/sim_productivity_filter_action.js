@@ -1,7 +1,6 @@
 import reduxString from '../reduxString';
 import {callActiveEnterprise} from './user_administration_array_header_action';
-import axios from 'axios';
-import {base_url} from '../../constant/connection';
+import httpRequest from '../../constant/axiosInstance';
 
 const simProductivityDynamicOnchangeDropDown = ({formId, dropDown}) => {
   return {
@@ -88,8 +87,7 @@ const simGetEnterprise = () => {
         formId: 'sim-productivity-enterprise-hard-code',
       }),
     );
-    const {access_token} = (await getState().auth_reducer.data) || {};
-    callActiveEnterprise({access_token})
+    callActiveEnterprise()
       .then(({data}) => {
         const {result, statusCode} = data || {};
         if (statusCode === 0) {
@@ -126,23 +124,17 @@ const simGetEnterprise = () => {
   };
 };
 const simGetEnterprisePackage = ({enterpriseName}) => {
-  return async (dispatch, getState) => {
+  return async (dispatch) => {
     dispatch(
       simProductivityDynamicLoading({
         formId: 'sim-productivity-package-name-hard-code',
       }),
     );
-    const {access_token} = (await getState().auth_reducer.data) || {};
-    axios
+    httpRequest
       .get(
-        `${base_url}/dcp/analytics/getListSubscriptionPackageName?enterpriseName=${enterpriseName}`
+        `/dcp/analytics/getListSubscriptionPackageName?enterpriseName=${enterpriseName}`
           .split(' ')
           .join('+'),
-        {
-          headers: {
-            Authorization: `Bearer ${access_token}`,
-          },
-        },
       )
       .then(({data}) => {
         const {result, statusCode} = data || {};
@@ -167,7 +159,6 @@ const simGetEnterprisePackage = ({enterpriseName}) => {
         }
       })
       .catch((error) => {
-        alert(JSON.stringify(error, null, 2));
         dispatch(
           simProductivityDynamicFailed({
             formId: 'sim-productivity-package-name-hard-code',
@@ -181,28 +172,15 @@ const simGetEnterprisePackage = ({enterpriseName}) => {
 const simGetChart = () => {
   return async (dispatch, getState) => {
     dispatch(simProductivityChartLoading());
-    const {access_token} = (await getState().auth_reducer.data) || {};
     const {generatedParams} =
       (await getState().sim_productivity_filter_reducer) || {};
-    console.log(
-      `SIM_GET_CHART_LINK: ${base_url}/dcp/analytics/getSimProductivityStatistics${
-        generatedParams && generatedParams.replace('&', '?')
-      }`
-        .split(' ')
-        .join('+'),
-    );
-    axios
+    httpRequest
       .get(
-        `${base_url}/dcp/analytics/getSimProductivityStatistics${
+        `/dcp/analytics/getSimProductivityStatistics${
           generatedParams && generatedParams.replace('&', '?')
         }`
           .split(' ')
           .join('+'),
-        {
-          headers: {
-            Authorization: `Bearer ${access_token}`,
-          },
-        },
       )
       .then(({data}) => {
         const {result, statusCode} = data || {};

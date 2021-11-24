@@ -1,8 +1,7 @@
 import reduxString from '../reduxString';
 import {callActiveEnterprise} from './user_administration_array_header_action';
-import axios from 'axios';
-import {base_url} from '../../constant/connection';
 import Helper from '../../helpers/helper';
+import httpRequest from '../../constant/axiosInstance';
 
 const geoDistributionDynamicOnchangeDropDown = ({formId, dropDown}) => {
   return {
@@ -76,14 +75,13 @@ const geoDistributionSetDataGeoMarker = ({geoMaker}) => {
 };
 
 const getEnterpriseGeo = () => {
-  return async (dispatch, getState) => {
+  return async (dispatch) => {
     dispatch(
       geoDistributionDynamicLoading({
         formId: 'geo-distribution-enterprise-hard-code',
       }),
     );
-    const {access_token} = (await getState().auth_reducer.data) || {};
-    callActiveEnterprise({access_token})
+    callActiveEnterprise()
       .then(({data}) => {
         const {result, statusCode} = data || {};
         if (statusCode === 0) {
@@ -122,21 +120,15 @@ const getEnterpriseGeo = () => {
 const getGeoProvince = (rootOfMap) => {
   return async (dispatch, getState) => {
     dispatch(geoDistributionLoading());
-    const {access_token} = (await getState().auth_reducer.data) || {};
     const {generatedParams} =
       (await getState().geo_distribution_filter_reducer) || {};
-    axios
+    httpRequest
       .get(
-        `${base_url}/dcp/sim/getTotalSimByLocation?zoomLevel=4${
+        `/dcp/sim/getTotalSimByLocation?zoomLevel=4${
           generatedParams ? generatedParams : ''
         }`
           .split(' ')
           .join('+'),
-        {
-          headers: {
-            Authorization: `Bearer ${access_token}`,
-          },
-        },
       )
       .then(({data}) => {
         const {result, statusCode} = data || {};

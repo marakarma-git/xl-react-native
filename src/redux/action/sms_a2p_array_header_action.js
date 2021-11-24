@@ -89,8 +89,7 @@ const smsA2pResetParams = () => {
 const smsA2pGetActiveEnterprise = () => {
   return async (dispatch, getState) => {
     dispatch(smsA2pDynamicLoading({formId: 'sms-enterprise-name-hard-code'}));
-    const {access_token} = (await getState().auth_reducer.data) || {};
-    callActiveEnterprise({access_token})
+    callActiveEnterprise()
       .then(({data}) => {
         const {result, statusCode} = data || {};
         if (statusCode === 0) {

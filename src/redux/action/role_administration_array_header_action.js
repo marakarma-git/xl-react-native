@@ -86,8 +86,7 @@ const roleAdministrationGetActiveEnterprise = () => {
         formId: 'role-organizations-hard-code',
       }),
     );
-    const {access_token} = (await getState().auth_reducer.data) || {};
-    callActiveEnterprise({access_token})
+    callActiveEnterprise()
       .then(({data}) => {
         const {result, statusCode} = data || {};
         if (statusCode === 0) {

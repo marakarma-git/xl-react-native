@@ -1,11 +1,9 @@
 import reduxString from '../reduxString';
 import {colors} from '../../constant/color';
-import axios from 'axios';
-import {base_url} from '../../constant/connection';
 import {authFailed} from './auth_action';
 import dayjs from 'dayjs';
 import Helper from '../../helpers/helper';
-import lod from 'lodash';
+import httpRequest from '../../constant/axiosInstance';
 const getSimInventoryLoading = () => {
   return {
     type: reduxString.GET_SIM_INVENTORY_LOADING,
@@ -225,17 +223,13 @@ const callSimInventory = (paginate) => {
       page_value,
       size_value,
       selectedHeaderSort: selectedHeaderSortPaginate,
-      simProductivity,
-      geoDistribution,
     } = paginate || {};
     dispatch(getSimInventoryLoading());
-    const {data} = await getState().auth_reducer;
     const {array_filter, searchText, generatedParams} = await getState()
       .dynamic_array_filter_reducer;
     const {orderBy: orderByPaginate, sortBy: sortByPaginate} =
       selectedHeaderSortPaginate || {};
     const {orderBy, sortBy} = selectedHeaderSort || {};
-    const {access_token} = data || {};
     const getPage = () => {
       if (page_value === 0) {
         return 0;
@@ -270,21 +264,11 @@ const callSimInventory = (paginate) => {
         }
       }
     };
-    console.log(
-      `${base_url}/dcp/sim/getSimInventory?page=${getPage()}&size=${getSize}&keyword=${searchText}&sort=${getOrderBy()}&order=${getSortBy()}${generatedParams}`
-        .split(' ')
-        .join('+'),
-    );
-    axios
+    httpRequest
       .get(
-        `${base_url}/dcp/sim/getSimInventory?page=${getPage()}&size=${getSize}&keyword=${searchText}&sort=${getOrderBy()}&order=${getSortBy()}${generatedParams}`
+        `/dcp/sim/getSimInventory?page=${getPage()}&size=${getSize}&keyword=${searchText}&sort=${getOrderBy()}&order=${getSortBy()}${generatedParams}`
           .split(' ')
           .join('+'),
-        {
-          headers: {
-            Authorization: `Bearer ${access_token}`,
-          },
-        },
       )
       .then(({data}) => {
         const {result, statusCode} = data || {};
@@ -314,15 +298,6 @@ const callSimInventory = (paginate) => {
       })
       .catch((error) => {
         dispatch(authFailed(error.response.data));
-        // if (e.response.data) {
-        //   dispatch(authFailed(e.response.data));
-        // } else {
-        //   dispatch(getSimInventoryLoadingFalse());
-        //   alert('Something went wrong went fetching data');
-        //   console.log(
-        //     'error_api_call_sim_inventory: ' + JSON.stringify(e, null, 2),
-        //   );
-        // }
       });
   };
 };

@@ -1,7 +1,6 @@
 import reduxString from '../reduxString';
-import axios from 'axios';
-import {base_url} from '../../constant/connection';
 import {dataMatcherArray2D} from './get_sim_inventory_action';
+import httpRequest from '../../constant/axiosInstance';
 
 const smsA2pGetSmsLoading = () => {
   return {
@@ -67,7 +66,6 @@ const getSmsA2p = (paginate) => {
     const {page_params, size_params, header_sort_params} = paginate || {};
     const {orderBy: order_by_params, sortBy: sort_by_params} =
       header_sort_params || {};
-    const {access_token} = (await getState().auth_reducer.data) || '';
     const {dataSmsHeader, searchText, generatedParams} =
       (await getState().sms_a2p_array_header_reducer) || {};
     const {sms_page, sms_total_size, sms_applied_header_sort} =
@@ -98,25 +96,13 @@ const getSmsA2p = (paginate) => {
         }
       }
     };
-    console.log(
-      `${base_url}/dcp/a2pConfiguration/getA2PConfigurationList?page=${getPage}&size=${getSize}&keyword=${searchText}${
-        getSortBy() ? `&order=${getSortBy()}` : ''
-      }${getSortBy() ? `&sort=${getOrderBy()}` : ''}${generatedParams}`
-        .split(' ')
-        .join('+'),
-    );
-    axios
+    httpRequest
       .get(
-        `${base_url}/dcp/a2pConfiguration/getA2PConfigurationList?page=${getPage}&size=${getSize}&keyword=${searchText}${
+        `/dcp/a2pConfiguration/getA2PConfigurationList?page=${getPage}&size=${getSize}&keyword=${searchText}${
           getSortBy() ? `&order=${getSortBy()}` : ''
         }${getSortBy() ? `&sort=${getOrderBy()}` : ''}${generatedParams}`
           .split(' ')
           .join('+'),
-        {
-          headers: {
-            Authorization: `Bearer ${access_token}`,
-          },
-        },
       )
       .then(({data}) => {
         const {result, statusCode} = data || {};
@@ -158,15 +144,12 @@ const getSmsA2p = (paginate) => {
   };
 };
 const deleteSmsA2p = (localValue) => {
-  return async (dispatch, getState) => {
+  return async (dispatch) => {
     const {getConfigId} = localValue || '';
     dispatch(smsA2pGetSmsLoading());
-    const {access_token} = (await getState().auth_reducer.data) || '';
-    console.log([getConfigId]);
-    axios({
+    httpRequest({
       method: 'post',
-      url: `${base_url}/dcp/a2pConfiguration/DeleteA2PConfiguration`,
-      headers: {Authorization: `Bearer ${access_token}`},
+      url: '/dcp/a2pConfiguration/DeleteA2PConfiguration',
       data: {
         configId: [getConfigId],
       },

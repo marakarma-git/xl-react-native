@@ -2,6 +2,7 @@ import reduxString from '../reduxString';
 import {callActiveEnterprise} from './user_administration_array_header_action';
 import axios from 'axios';
 import {base_url} from '../../constant/connection';
+import httpRequest from '../../constant/axiosInstance';
 
 const subscriptionPackageDynamicOnChangeTextInput = ({formId, textInput}) => {
   return {
@@ -82,23 +83,17 @@ const subscriptionPackageResetParams = () => {
   };
 };
 const getSubscriptionDescription = (description) => {
-  return async (dispatch, getState) => {
+  return async (dispatch) => {
     dispatch(
       subscriptionPackageDynamicLoading({
         formId: 'subscription-description-hard-code',
       }),
     );
-    const {access_token} = (await getState().auth_reducer.data) || {};
-    axios
+    httpRequest
       .get(
-        `${base_url}/dcp/analytics/getListSubscriptionPackageName?enterpriseName=${description}`
+        `/dcp/analytics/getListSubscriptionPackageName?enterpriseName=${description}`
           .split(' ')
           .join('+'),
-        {
-          headers: {
-            Authorization: `Bearer ${access_token}`,
-          },
-        },
       )
       .then(({data}) => {
         const {result, statusCode} = data || {};
@@ -137,14 +132,13 @@ const getSubscriptionDescription = (description) => {
   };
 };
 const getActiveEnterpriseSubscription = () => {
-  return async (dispatch, getState) => {
+  return async (dispatch) => {
     dispatch(
       subscriptionPackageDynamicLoading({
         formId: 'subscription-enterprise-hard-code',
       }),
     );
-    const {access_token} = (await getState().auth_reducer.data) || {};
-    callActiveEnterprise({access_token})
+    callActiveEnterprise()
       .then(({data}) => {
         const {result, statusCode} = data || {};
         if (statusCode === 0) {

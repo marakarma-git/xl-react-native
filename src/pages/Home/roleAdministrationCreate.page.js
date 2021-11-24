@@ -1,6 +1,3 @@
-import axios from 'axios';
-import {base_url} from '../../constant/connection';
-
 import React, {useState, useEffect} from 'react';
 import {useSelector} from 'react-redux';
 import {ScrollView, View, ToastAndroid, ActivityIndicator} from 'react-native';
@@ -215,7 +212,7 @@ const RoleAdministrationCreatePage = ({route, navigation}) => {
   };
 
   const onSubmit = () => {
-    let url = `/user/role/createRole`;
+    let url = '/user/role/createRole';
     let activityId = 'AP-6';
 
     if (activeMenu === 'edit') {
@@ -313,13 +310,8 @@ const RoleAdministrationCreatePage = ({route, navigation}) => {
   const getRoleDetail = async () => {
     try {
       setLoadingUserDetail(true);
-      const {data} = await axios.get(
-        `${base_url}/user/role/getRoleDetail?roleId=${roleId}`,
-        {
-          headers: {
-            Authorization: `Bearer ${access_token}`,
-          },
-        },
+      const {data} = await httpRequest.get(
+        `/user/role/getRoleDetail?roleId=${roleId}`,
       );
 
       if (data) {
