@@ -1,7 +1,6 @@
 import reduxString from '../reduxString';
-import axios from 'axios';
-import {base_url} from '../../constant/connection';
 import {dataMatcherArray2D} from './get_sim_inventory_action';
+import httpRequest from '../../constant/axiosInstance';
 const automationGetAutomationReload = () => {
   return {
     type: reduxString.AUTOMATION_GET_AUTOMATION_RELOAD,
@@ -74,7 +73,6 @@ const getAutomation = (paginate) => {
     const {page_params, size_params, header_sort_params} = paginate || {};
     const {orderBy: order_by_params, sortBy: sort_by_params} =
       header_sort_params || {};
-    const {access_token} = (await getState().auth_reducer.data) || '';
     const {dataAutomationHeader, searchText, generatedParams} =
       (await getState().automation_array_header_reducer) || {};
     const {
@@ -108,25 +106,13 @@ const getAutomation = (paginate) => {
         }
       }
     };
-    console.log(
-      `${base_url}/dcp/automation/getListAutomation?page=${getPage}&size=${getSize}${
-        getSortBy() ? `&order=${getSortBy()}` : ''
-      }${getSortBy() ? `&sort=${getOrderBy()}` : ''}${generatedParams}`
-        .split(' ')
-        .join('+'),
-    );
-    axios
+    httpRequest
       .get(
-        `${base_url}/dcp/automation/getListAutomation?page=${getPage}&size=${getSize}${
+        `/dcp/automation/getListAutomation?page=${getPage}&size=${getSize}${
           getSortBy() ? `&order=${getSortBy()}` : ''
         }${getSortBy() ? `&sort=${getOrderBy()}` : ''}${generatedParams}`
           .split(' ')
           .join('+'),
-        {
-          headers: {
-            Authorization: `Bearer ${access_token}`,
-          },
-        },
       )
       .then(({data}) => {
         const {result, statusCode} = data || {};

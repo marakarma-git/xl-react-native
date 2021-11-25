@@ -14,14 +14,11 @@ import {subscriptionStyle} from '../../style';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import {colors} from '../../constant/color';
 import InputHybrid from '../../components/InputHybrid';
-import axios from 'axios';
 import {useDispatch, useSelector} from 'react-redux';
-import {base_url} from '../../constant/connection';
 import {setRequestError} from '../../redux/action/dashboard_action';
 import getA2pEditDetail, {
   getA2pEnterprise,
   smsA2pEditDynamicFormFailed,
-  smsA2pEditRemoveLoading,
   smsA2pEditReset,
   smsA2pEditTextInput,
 } from '../../redux/action/sms_a2p_edit_action';
@@ -29,6 +26,7 @@ import Helper from '../../helpers/helper';
 import getSmsA2p, {
   smsA2pReplaceCellWithIndex,
 } from '../../redux/action/sms_a2p_get_all_sms_action';
+import httpRequest from '../../constant/axiosInstance';
 
 const SmsA2pEdit = ({route}) => {
   const navigation = useNavigation();
@@ -38,7 +36,6 @@ const SmsA2pEdit = ({route}) => {
   const {configId} = dataConfig || '';
   const {dataA2pEdit, dataA2pSnapShot, loading} =
     useSelector((state) => state.sms_a2p_edit_reducer) || [];
-  const {access_token} = useSelector((state) => state.auth_reducer.data);
   const [localLoading, setLocalLoading] = useState(false);
 
   useEffect(() => {
@@ -80,9 +77,9 @@ const SmsA2pEdit = ({route}) => {
     if (errorCount === 0) {
       const getValueObject = Helper.createObjectPostEdit(dataA2pEdit);
       setLocalLoading(true);
-      axios({
+      httpRequest({
         method: 'post',
-        url: `${base_url}/dcp/a2pConfiguration/${
+        url: `/dcp/a2pConfiguration/${
           layoutType === 'Create'
             ? 'create'
             : layoutType === 'Edit'
@@ -92,7 +89,6 @@ const SmsA2pEdit = ({route}) => {
           layoutType === 'Edit' ? `?configId=${configId}` : ''
         }`,
         headers: {
-          Authorization: `Bearer ${access_token}`,
           'Content-Type': 'application/json',
         },
         data: getValueObject,

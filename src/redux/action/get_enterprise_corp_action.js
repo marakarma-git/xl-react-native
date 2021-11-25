@@ -1,9 +1,8 @@
-import axios from 'axios';
 import reduxString from '../reduxString';
-import {base_url} from '../../constant/connection';
 import {setSomethingToFilter} from './dynamic_array_filter_action';
 import {authLogout} from './auth_action';
 import {CommonActions} from '@react-navigation/native';
+import httpRequest from '../../constant/axiosInstance';
 const getEnterpriseCorpLoading = () => {
   return {
     type: reduxString.GET_ENTERPRISE_CORP_LOADING,
@@ -37,14 +36,8 @@ const getEnterpriseCorp = (navigation) => {
         },
       ]),
     );
-    const {auth_reducer} = getState();
-    const {access_token} = auth_reducer.data || {};
-    axios
-      .get(`${base_url}/user/corp/getActiveEnterprise`, {
-        headers: {
-          Authorization: `Bearer ${access_token}`,
-        },
-      })
+    httpRequest
+      .get('/user/corp/getActiveEnterprise')
       .then(({data}) => {
         if (data.error === 'invalid_token') {
           dispatch(authLogout());

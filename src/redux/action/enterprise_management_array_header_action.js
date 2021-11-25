@@ -1,6 +1,5 @@
 import reduxString from '../reduxString';
-import axios from 'axios';
-import {base_url} from '../../constant/connection';
+import httpRequest from '../../constant/axiosInstance';
 const enterpriseManagementDynamicSuccess = ({formId, data}) => {
   return {
     type: reduxString.ENTERPRISE_MANAGEMENT_DYNAMIC_SUCCESS,
@@ -80,19 +79,14 @@ const enterpriseManagementResetParams = () => {
   };
 };
 const getCustomerType = () => {
-  return async (dispatch, getState) => {
+  return async (dispatch) => {
     dispatch(
       enterpriseManagementDynamicLoading({
         formId: 'customer-type-hard-code',
       }),
     );
-    const {access_token} = (await getState().auth_reducer.data) || {};
-    axios
-      .get(`${base_url}/user/corp/getCustType`, {
-        headers: {
-          Authorization: `Bearer ${access_token}`,
-        },
-      })
+    httpRequest
+      .get('/user/corp/getCustType')
       .then(({data}) => {
         const {result, statusCode} = data || {};
         if (statusCode === 0) {

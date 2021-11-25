@@ -178,15 +178,6 @@ const callUserAdministrationGetUser = (paginate) => {
         }
       }
     };
-    console.log(
-      `${base_url}/user/usr/getUserList?page=${getPage}&size=${getSize}${
-        searchText ? `&keyword=${searchText}` : ''
-      }${getSortBy() ? `&order=${getSortBy()}` : ''}${
-        getSortBy() ? `&sort=${getOrderBy()}` : ''
-      }${generatedParams}`
-        .split(' ')
-        .join('+'),
-    );
     const customHeaders = {
       headers: {
         activityId: searchText || generatedParams ? 'AP-8' : 'AP-2',

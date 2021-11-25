@@ -5,7 +5,11 @@ import getSmsA2p, {
   deleteSmsA2p,
   smsA2pSetDataSmsGenerated,
 } from '../../redux/action/sms_a2p_get_all_sms_action';
-import {HeaderContainer, OverlayBackground} from '../../components';
+import {
+  HeaderContainer,
+  ModalConfirmation,
+  OverlayBackground,
+} from '../../components';
 import {subscriptionStyle} from '../../style';
 import ModalMenuPicker from '../../components/modal/ModalMenuPicker';
 import {dataMatcherArray2D} from '../../redux/action/get_sim_inventory_action';
@@ -38,6 +42,8 @@ const SmsA2p = () => {
   const navigation = useNavigation();
   const [firstRender, setFirstRender] = useState(true);
   const [showMenu, setShowMenu] = useState(false);
+  const [showModal, setShowModal] = useState(false);
+  const [thisConfigId, setThisConfigId] = useState('');
   const {imageBase64} = useSelector((state) => state.enterprise_reducer);
   const {
     dataSmsHeader,
@@ -90,7 +96,8 @@ const SmsA2p = () => {
           }}
           onPressDelete={({item}) => {
             const {configId} = item || '';
-            dispatch(deleteSmsA2p({getConfigId: configId}));
+            setShowModal(true);
+            setThisConfigId(configId);
           }}
           isScrollView={true}
           stickHeaderIndices={[1]}
@@ -226,6 +233,23 @@ const SmsA2p = () => {
             setShowMenu((state) => !state);
           }}
           onClose={() => setShowMenu((state) => !state)}
+        />
+      )}
+      {showModal && (
+        <ModalConfirmation
+          showModal={showModal}
+          closeModal={() => {
+            setShowModal(false);
+            setThisConfigId('');
+          }}
+          title={'Delete SMS A2P Configuration'}
+          description={
+            'Are you sure want to delete this SMS A2P Configuration?'
+          }
+          confirmAction={() => {
+            dispatch(deleteSmsA2p({getConfigId: thisConfigId}));
+            setShowModal(false);
+          }}
         />
       )}
     </HeaderContainer>

@@ -1,7 +1,6 @@
 import reduxString from '../reduxString';
-import axios from 'axios';
-import {base_url} from '../../constant/connection';
 import {dataMatcherArray2D} from './get_sim_inventory_action';
+import httpRequest from '../../constant/axiosInstance';
 
 const subscriptionPackageGetSubscriptionLoading = () => {
   return {
@@ -76,7 +75,6 @@ const callSubscriptionPackage = (paginate) => {
     const {page_params, size_params, header_sort_params} = paginate || {};
     const {orderBy: order_by_params, sortBy: sort_by_params} =
       header_sort_params || {};
-    const {access_token} = (await getState().auth_reducer.data) || '';
     const {dataSubscriptionHeader, searchText, generatedParams} =
       (await getState().subscription_package_array_header_reducer) || {};
     const {
@@ -110,29 +108,15 @@ const callSubscriptionPackage = (paginate) => {
         }
       }
     };
-    console.log(
-      `${base_url}/dcp/package/getSubscriptionPackage?page=${getPage}&size=${getSize}${
-        searchText ? `&keyword=${searchText}` : ''
-      }${getSortBy() ? `&order=${getSortBy()}` : ''}${
-        getSortBy() ? `&sort=${getOrderBy()}` : ''
-      }${generatedParams}`
-        .split(' ')
-        .join('+'),
-    );
-    axios
+    httpRequest
       .get(
-        `${base_url}/dcp/package/getSubscriptionPackage?page=${getPage}&size=${getSize}${
+        `/dcp/package/getSubscriptionPackage?page=${getPage}&size=${getSize}${
           searchText ? `&keyword=${searchText}` : ''
         }${getSortBy() ? `&order=${getSortBy()}` : ''}${
           getSortBy() ? `&sort=${getOrderBy()}` : ''
         }${generatedParams}`
           .split(' ')
           .join('+'),
-        {
-          headers: {
-            Authorization: `Bearer ${access_token}`,
-          },
-        },
       )
       .then(({data}) => {
         const {result, statusCode} = data || {};

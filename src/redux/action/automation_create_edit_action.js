@@ -1,7 +1,6 @@
 import reduxString from '../reduxString';
-import axios from 'axios';
-import {base_url} from '../../constant/connection';
 import lod from 'lodash';
+import httpRequest from '../../constant/axiosInstance';
 const automationSetDataRuleCategoryBulk = ({dataRuleCategory}) => {
   return {
     type: reduxString.AUTOMATION_SET_DATA_RULE_CATEGORY_BULK,
@@ -69,18 +68,12 @@ const automationCreateEditReset = () => {
 const getAutomationCustomerNumber = (value) => {
   return async (dispatch, getState) => {
     dispatch(automationCreateEditLoading());
-    const {access_token} = (await getState().auth_reducer.data) || {};
     const {dataRuleCategory} =
       (await getState().automation_create_edit_reducer) || {};
-    const {customerNumber, from, result: resultParams} = value || {};
-    axios
+    const {customerNumber, result: resultParams} = value || {};
+    httpRequest
       .get(
-        `${base_url}/dcp/automation/getAutomationEnterprise?customerNumber=${customerNumber}`,
-        {
-          headers: {
-            Authorization: `Bearer ${access_token}`,
-          },
-        },
+        `/dcp/automation/getAutomationEnterprise?customerNumber=${customerNumber}`,
       )
       .then(({data}) => {
         const {result, statusCode} = data || {};
@@ -103,7 +96,6 @@ const getAutomationCustomerNumber = (value) => {
                 params_value_api,
                 params_value_api_to,
                 select_api,
-                ...otherValue
               } = itemRuleCategory || {};
               const getAutoFrom = lod.find(
                 result[`${select_api}`],

@@ -1,6 +1,13 @@
 import React, {useEffect, useState} from 'react';
 import {useDispatch, useSelector} from 'react-redux';
-import {BackHandler, Linking, Modal, ScrollView, View} from 'react-native';
+import {
+  BackHandler,
+  Linking,
+  Modal,
+  ScrollView,
+  Text,
+  View,
+} from 'react-native';
 import {useNavigation, useRoute} from '@react-navigation/native';
 import {subscriptionStyle} from '../../style';
 import Table from '../../components/table/Table';
@@ -144,7 +151,7 @@ const Subscription = ({route}) => {
         handlingBack();
       }
     });
-  }, []);
+  }, [BackHandler, navigationFrom]);
   // End for params handling ===============
 
   return (
@@ -168,7 +175,6 @@ const Subscription = ({route}) => {
               return (
                 <>
                   <OverlayBackground />
-
                   <SearchHeader
                     value={searchText}
                     onSubmitEditing={(e) => dispatch(updateDataSearchText(e))}
@@ -318,7 +324,7 @@ const Subscription = ({route}) => {
               );
             }}
           />
-          {loading_array_filter || (loading && <Loading />)}
+          {loading && <Loading />}
         </View>
       </HeaderContainer>
       {showMap && !lod.isEmpty(mapData) && (

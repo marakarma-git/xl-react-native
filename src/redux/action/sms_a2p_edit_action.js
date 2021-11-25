@@ -1,8 +1,7 @@
 import reduxString from '../reduxString';
-import axios from 'axios';
-import {base_url} from '../../constant/connection';
 import {callActiveEnterprise} from './user_administration_array_header_action';
 import lod from 'lodash';
+import httpRequest from '../../constant/axiosInstance';
 const dataDefaultTableA2pEdit = [
   {
     formId: 'sms-enterprise-name-hard-code',
@@ -137,10 +136,9 @@ const smsA2pEditReset = () => {
   };
 };
 const getA2pEnterprise = () => {
-  return async (dispatch, getState) => {
+  return async (dispatch) => {
     dispatch(smsA2pEditLoading());
-    const {access_token} = (await getState().auth_reducer.data) || {};
-    callActiveEnterprise({access_token})
+    callActiveEnterprise()
       .then(({data}) => {
         const {result, statusCode} = data || {};
         if (statusCode === 0) {
@@ -185,18 +183,12 @@ const getA2pEnterprise = () => {
 const getA2pEditDetail = (localVariable) => {
   return async (dispatch, getState) => {
     dispatch(smsA2pEditLoading());
-    const {access_token} = (await getState().auth_reducer.data) || {};
     const {data_sms_generated} =
       (await getState().sms_a2p_get_all_sms_reducer) || {};
     const {indexSelected, configId} = localVariable || {};
-    axios
+    httpRequest
       .get(
-        `${base_url}/dcp/a2pConfiguration/getA2PConfigurationDetail?configId=${configId}`,
-        {
-          headers: {
-            Authorization: `Bearer ${access_token}`,
-          },
-        },
+        `/dcp/a2pConfiguration/getA2PConfigurationDetail?configId=${configId}`,
       )
       .then(({data}) => {
         const {result, statusCode} = data || {};

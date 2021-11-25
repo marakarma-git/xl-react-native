@@ -1,6 +1,5 @@
 import reduxString from '../reduxString';
-import axios from 'axios';
-import {base_url} from '../../constant/connection';
+import httpRequest from '../../constant/axiosInstance';
 const userAdministrationDynamicOnchangeTextInput = (value) => {
   const {formId, textInput} = value || {};
   return {
@@ -97,19 +96,11 @@ const getActiveRole = (data) => {
       }),
     );
     const {thisEnterprise} = data || {};
-    const {principal, access_token} =
-      (await getState().auth_reducer.data) || {};
+    const {principal} = (await getState().auth_reducer.data) || {};
     const {enterpriseId} = principal || {};
     const getEnterprise = thisEnterprise || enterpriseId;
-    await axios
-      .get(
-        `${base_url}/user/role/getActiveRole?enterpriseId=${getEnterprise}`,
-        {
-          headers: {
-            Authorization: `Bearer ${access_token}`,
-          },
-        },
-      )
+    await httpRequest
+      .get(`/user/role/getActiveRole?enterpriseId=${getEnterprise}`)
       .then(({data}) => {
         const {result, statusCode} = data || {};
         if (statusCode === 0) {
@@ -143,12 +134,8 @@ const getActiveRole = (data) => {
       });
   };
 };
-const callActiveEnterprise = ({access_token}) => {
-  return axios.get(`${base_url}/user/corp/getActiveEnterprise`, {
-    headers: {
-      Authorization: `Bearer ${access_token}`,
-    },
-  });
+const callActiveEnterprise = () => {
+  return httpRequest.get('/user/corp/getActiveEnterprise');
 };
 const getActiveEnterprise = () => {
   return async (dispatch, getState) => {
@@ -157,8 +144,7 @@ const getActiveEnterprise = () => {
         formId: 'organizations-hard-code',
       }),
     );
-    const {access_token} = (await getState().auth_reducer.data) || {};
-    callActiveEnterprise({access_token})
+    callActiveEnterprise()
       .then(({data}) => {
         const {result, statusCode} = data || {};
         if (statusCode === 0) {

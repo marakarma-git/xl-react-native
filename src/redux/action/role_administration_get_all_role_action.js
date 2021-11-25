@@ -80,7 +80,6 @@ const callRoleAction = (paginate) => {
     const {page_params, size_params, header_sort_params} = paginate || {};
     const {orderBy: order_by_params, sortBy: sort_by_params} =
       header_sort_params || {};
-    const {access_token} = (await getState().auth_reducer.data) || '';
     const {dataRoleHeader, searchText, generatedParams} =
       (await getState().role_administration_array_header_reducer) || {};
     const {role_page, role_total_size, role_applied_header_sort} =
@@ -111,13 +110,6 @@ const callRoleAction = (paginate) => {
         }
       }
     };
-    console.log(
-      `${base_url}/user/role/getAllrole?page=${getPage}&size=${getSize}&keyword=${searchText}${
-        getSortBy() ? `&order=${getSortBy()}` : ''
-      }${getSortBy() ? `&sort=${getOrderBy()}` : ''}${generatedParams}`
-        .split(' ')
-        .join('+'),
-    );
     const customHeaders = {
       headers: {
         activityId: searchText || generatedParams ? 'AP-7' : 'AP-4',

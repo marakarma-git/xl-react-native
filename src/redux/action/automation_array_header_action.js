@@ -1,7 +1,6 @@
 import reduxString from '../reduxString';
 import {callActiveEnterprise} from './user_administration_array_header_action';
-import axios from 'axios';
-import {base_url} from '../../constant/connection';
+import httpRequest from '../../constant/axiosInstance';
 
 const automationDynamicOnchangeDropDown = (value) => {
   const {formId, dropDown} = value || {};
@@ -82,13 +81,8 @@ const getListRuleCategory = () => {
         formId: 'rule-category-hard-code',
       }),
     );
-    const {access_token} = (await getState().auth_reducer.data) || {};
-    axios
-      .get(`${base_url}/dcp/automation/getListRuleCategory`, {
-        headers: {
-          Authorization: `Bearer ${access_token}`,
-        },
-      })
+    httpRequest
+      .get('/dcp/automation/getListRuleCategory')
       .then(({data}) => {
         const {result, statusCode} = data || {};
         if (statusCode === 0) {
@@ -129,8 +123,7 @@ const getEnterpriseAutomation = () => {
         formId: 'enterprise-name-hard-code',
       }),
     );
-    const {access_token} = (await getState().auth_reducer.data) || {};
-    callActiveEnterprise({access_token})
+    callActiveEnterprise()
       .then(({data}) => {
         const {result, statusCode} = data || {};
         if (statusCode === 0) {

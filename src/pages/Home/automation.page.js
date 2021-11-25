@@ -21,8 +21,7 @@ import {
 import ModalMenuPicker from '../../components/modal/ModalMenuPicker';
 import {dataMatcherArray2D} from '../../redux/action/get_sim_inventory_action';
 import {useNavigation} from '@react-navigation/native';
-import axios from 'axios';
-import {base_url} from '../../constant/connection';
+import httpRequest from '../../constant/axiosInstance';
 
 const AutomationPage = () => {
   const dispatch = useDispatch();
@@ -52,14 +51,10 @@ const AutomationPage = () => {
     automation_applied_filter,
     automation_params_applied_activity_log,
   } = useSelector((state) => state.automation_get_automation_reducer);
-  const {access_token} = useSelector((state) => state.auth_reducer.data) || {};
   const getDetailInfo = ({automationId, from}) => {
     setLoadingDetail(true);
-    axios
-      .get(
-        `${base_url}/dcp/automation/getAutomationDetail?automationId=${automationId}`,
-        {headers: {Authorization: `Bearer ${access_token}`}},
-      )
+    httpRequest
+      .get(`/dcp/automation/getAutomationDetail?automationId=${automationId}`)
       .then(({data}) => {
         const {result, statusCode} = data || {};
         if (statusCode === 0) {
@@ -215,10 +210,9 @@ const AutomationPage = () => {
           onPressDelete={({item}) => {
             const {autoId} = item || {};
             setLoadingDetail(true);
-            axios({
+            httpRequest({
               method: 'post',
-              url: `${base_url}/dcp/automation/deleteAutomation?automationId=${autoId}`,
-              headers: {Authorization: `Bearer ${access_token}`},
+              url: `/dcp/automation/deleteAutomation?automationId=${autoId}`,
             })
               .then(({data}) => {
                 const {statusCode} = data;

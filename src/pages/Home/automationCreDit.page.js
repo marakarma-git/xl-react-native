@@ -22,9 +22,8 @@ import getAutomationCustomerNumber, {
 } from '../../redux/action/automation_create_edit_action';
 import {useNavigation, useRoute} from '@react-navigation/native';
 import {automation_create_edit_logic} from '../../redux/logic/automation_create_edit_logic';
-import axios from 'axios';
 import {automationGetAutomationReload} from '../../redux/action/automation_get_automation_action';
-import {base_url} from '../../constant/connection';
+import httpRequest from '../../constant/axiosInstance';
 
 const AutomationCreateEditPage = () => {
   const dispatch = useDispatch();
@@ -193,19 +192,14 @@ const AutomationCreateEditPage = () => {
                         );
                         if (!lod.isEmpty(generateCreateEdit)) {
                           setLoadingCreDit(true);
-                          axios
+                          httpRequest
                             .post(
-                              `${base_url}/dcp/automation/${
+                              `/dcp/automation/${
                                 from === 'Edit'
                                   ? 'updateAutomation'
                                   : 'createAutomation'
                               }`,
                               generateCreateEdit,
-                              {
-                                headers: {
-                                  Authorization: `Bearer ${access_token}`,
-                                },
-                              },
                             )
                             .then(({data}) => {
                               const {statusCode} = data || {};
