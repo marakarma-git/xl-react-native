@@ -1,7 +1,11 @@
 import React, {useEffect, useState} from 'react';
 import {View} from 'react-native';
 import Table from '../../components/table/Table';
-import {HeaderContainer, OverlayBackground} from '../../components';
+import {
+  ButtonLabelComponent,
+  HeaderContainer,
+  OverlayBackground,
+} from '../../components';
 import {useDispatch, useSelector} from 'react-redux';
 import Loading from '../../components/loading';
 import {subscriptionStyle} from '../../style';
@@ -13,7 +17,6 @@ import {
 } from '../../redux/action/enterprise_management_action';
 import SearchHeader from '../../components/subscription/searchHeader';
 import AppliedFilter from '../../components/subscription/appliedFilter';
-import FilterActionLabel from '../../components/subscription/filterActionLabel';
 import Helper from '../../helpers/helper';
 import {
   enterpriseManagementDynamicReset,
@@ -104,15 +107,13 @@ const EnterpriseManagement = () => {
                     dispatch(enterpriseManagementGenerateParams());
                   }}
                 />
-                <FilterActionLabel
-                  total={Helper.numberWithDot(enterprise_elements_static)}
-                  filtered={
-                    enterprise_applied_filter &&
-                    !loading &&
-                    data_enterprise_generated.length > 0 &&
-                    !errorText &&
-                    Helper.numberWithDot(enterprise_elements_dynamic)
+                <ButtonLabelComponent
+                  buttonText={'Create Enterprise'}
+                  buttonAction={() =>
+                    navigation.navigate('EnterpriseManagementOnboard')
                   }
+                  buttonWidth={150}
+                  buttonStyle={{marginHorizontal: 15}}
                 />
               </>
             );

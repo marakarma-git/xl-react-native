@@ -64,12 +64,12 @@ export default {
     paddingVertical: 5,
   },
   label: {
-    fontSize: 16,
+    fontSize: 12,
     color: '#707070',
   },
   textInputContainer: {
     height: 40,
-    fontSize: 14,
+    fontSize: 12,
     // borderRadius: border_radius,
     borderWidth: 1,
     borderColor: '#A8A8A8',
@@ -166,5 +166,38 @@ export default {
     fontSize: 18,
     fontWeight: 'bold',
     paddingVertical: 10,
+  },
+  documentPickerContainer: {
+    height: 40,
+    fontSize: 12,
+    borderWidth: 1,
+    borderColor: '#A8A8A8',
+    backgroundColor: 'white',
+    borderRadius: 5,
+    marginVertical: 10,
+    flexDirection: 'row',
+  },
+  buttonPicker: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    width: '35%',
+    height: '100%',
+    backgroundColor: colors.main_color,
+    borderRadiusTopLeft: 5,
+    borderRadiusBottomLeft: 5,
+  },
+  buttonPickerText: {
+    fontSize: 12,
+    color: 'white',
+  },
+  pickerPlaceholderContainer: {
+    width: '65%',
+    height: '100%',
+    paddingHorizontal: 5,
+    justifyContent: 'center',
+  },
+  pickerPlaceholderText: {
+    fontSize: 12,
+    color: '#707070',
   },
 };

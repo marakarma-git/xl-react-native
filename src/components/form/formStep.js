@@ -75,6 +75,17 @@ const FormStepBodyComponent = (props) => {
                 style={{paddingLeft: 20, paddingVertical: 5, fontSize: 16}}>
                 {form.componentTitle || '-'}
               </Text>
+              {form.componentDescription && (
+                <Text
+                  style={{
+                    paddingLeft: 20,
+                    paddingVertical: 5,
+                    fontSize: 12,
+                    color: colors.gray_0,
+                  }}>
+                  {form.componentDescription}
+                </Text>
+              )}
               {form.component}
             </Card>
           );

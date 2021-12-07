@@ -73,6 +73,7 @@ const requestHandler = async (request) => {
 };
 
 const errorHandler = (error) => {
+  console.log('ERROR ', error);
   return Promise.reject(error);
 };
 

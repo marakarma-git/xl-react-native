@@ -60,11 +60,11 @@ const TableCellText = (props) => {
             alignItems: 'center',
             backgroundColor: backgroundColor || 'white',
           }}>
-          <CustomCheckBox
+          {/* <CustomCheckBox
             style={{marginLeft: 16}}
             value={treeCheck}
             onPress={() => onChangeCheck(otherInformation)}
-          />
+          /> */}
           <View
             style={{
               flex: 1,
