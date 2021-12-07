@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
 import styles from '../../style/account.style';
-// import DocumentPicker from 'react-native-document-picker';
+import DocumentPicker from 'react-native-document-picker';
 import PropTypes from 'prop-types';
 import {View, TouchableOpacity} from 'react-native';
 import {Text} from '../index';
@@ -8,17 +8,21 @@ import Feather from 'react-native-vector-icons/Feather';
 
 const DocumentPickerComponent = (props) => {
   const {name, type} = props;
+  const [fileName, setFileName] = useState('');
   const pickDocument = async () => {
-    // try {
-    //   const res = await DocumentPicker.pick();
-    //   console.log('RES ', res);
-    // } catch (error) {
-    //   if (DocumentPicker.isCancel(error)) {
-    //     console.log('Cancel by user');
-    //   } else {
-    //     throw error;
-    //   }
-    // }
+    try {
+      const res = await DocumentPicker.pick({
+        type: 'image/png',
+      });
+      setFileName(res.name);
+      console.log('RES ', res);
+    } catch (error) {
+      if (DocumentPicker.isCancel(error)) {
+        console.log('Cancel by user');
+      } else {
+        throw error;
+      }
+    }
   };
   return (
     <View style={styles.documentPickerContainer}>
@@ -30,7 +34,7 @@ const DocumentPickerComponent = (props) => {
       </TouchableOpacity>
       <View style={styles.pickerPlaceholderContainer}>
         <Text style={styles.pickerPlaceholderText}>
-          lorem ipsum dolor amet.png
+          {fileName.length > 20 ? fileName.substring(0, 25) + '...' : fileName}
         </Text>
       </View>
     </View>
