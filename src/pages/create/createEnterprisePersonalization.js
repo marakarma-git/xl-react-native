@@ -1,7 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import {View} from 'react-native';
-import {FormFactory, Text} from '../../components';
+import {FormFactory} from '../../components';
 
 const CreateEnterprisePersonalization = (props) => {
   const {editable, formError, inputHandler, value} = props;
@@ -9,21 +8,39 @@ const CreateEnterprisePersonalization = (props) => {
     {
       title: 'Upload Company Logo',
       name: 'companyLogo',
-      validation: true,
-      isRequired: true,
+      validation: false,
+      isRequired: false,
       type: 'document-picker',
-      validationType: 'required',
+      editable: true,
+      fileType: ['image/png'],
+    },
+    {
+      title: 'Top Bar Colour',
+      name: 'topBarColour',
+      validation: false,
+      isRequired: false,
+      type: 'color-picker',
+      editable: true,
+    },
+    {
+      title: 'Preview',
+      name: 'companyLogo|topBarColour',
+      validation: false,
+      isRequired: false,
+      type: 'image-preview',
       editable: true,
     },
   ];
   return (
     <FormFactory
       formList={formList}
-      isValidate={true}
+      isValidate={false}
       editable={editable}
       formError={formError}
       inputHandler={inputHandler}
       value={value}
+      imagePreview={value.companyLogo}
+      imageBgColor={value.topBarColour}
     />
   );
 };

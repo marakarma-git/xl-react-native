@@ -8,6 +8,8 @@ import Text from '../global/text';
 import {View} from 'react-native';
 import {colors} from '../../constant/color';
 import DocumentPickerComponent from './DocumentPicker';
+import ColorPickerComponent from './ColorPicker';
+import ImagePreviewComponent from './ImagePreview';
 
 const FormFactoryComponent = (props) => {
   const {
@@ -17,54 +19,83 @@ const FormFactoryComponent = (props) => {
     inputHandler,
     isValidate,
     formError,
-    setIsTouch,
+    setFormError,
+    imageBgColor,
+    imagePreview,
   } = props;
   const formType = (form) => {
     if (editable) {
-      console.log(form?.config, ' <<< CONFIG');
       switch (form.type) {
         case 'text':
           return (
             <TextInputComponent
               name={form.name}
-              setIsTouch={setIsTouch}
+              title={form.title}
               inputHandler={inputHandler}
               value={value[form.name]}
               editable={form?.editable}
-              placeholder={form.title}
+              placeholder={form?.title}
+              validation={form?.validation}
+              validationType={form?.validationType}
+              setValidationError={setFormError}
             />
           );
         case 'select':
           return (
             <DropDownPickerComponent
+              name={form.name}
+              title={form?.title}
               disabled={!editable}
               setValue={form?.config?.setValue}
               placeholder={form?.config?.placeholder}
               options={form.options}
               searchable={form?.config?.searchable}
+              validation={form?.validation}
               value={value[form.name] || form?.config?.defaultValue}
+              setValidationError={setFormError}
             />
           );
         case 'textarea':
           return (
             <TextAreaInputComponent
               name={form.name}
-              setIsTouch={setIsTouch}
+              title={form.title}
               inputHandler={inputHandler}
               value={value[form.name]}
               editable={form?.editable}
               placeholder={form.title}
+              validation={form?.validation}
+              validationType={form?.validationType}
+              setValidationError={setFormError}
             />
           );
         case 'document-picker':
-          return <DocumentPickerComponent />;
+          return (
+            <DocumentPickerComponent
+              name={form.name}
+              type={form?.fileType}
+              inputHandler={inputHandler}
+            />
+          );
         case 'color-picker':
-          return;
+          return (
+            <ColorPickerComponent
+              name={form.name}
+              value={value[form.name]}
+              inputHandler={inputHandler}
+            />
+          );
+        case 'image-preview':
+          return (
+            <ImagePreviewComponent
+              image={imagePreview}
+              bgColor={imageBgColor}
+            />
+          );
         default:
           return (
             <TextInputComponent
               name={form.name}
-              setIsTouch={setIsTouch}
               inputHandler={inputHandler}
               value={value[form.name]}
               editable={form?.editable}
@@ -76,7 +107,6 @@ const FormFactoryComponent = (props) => {
       return (
         <TextInputComponent
           name={form.name}
-          setIsTouch={setIsTouch}
           inputHandler={inputHandler}
           value={value[form.name]}
           editable={editable}
@@ -96,7 +126,7 @@ const FormFactoryComponent = (props) => {
           </Text>
           {formType(form)}
           {isValidate && formError[form.name] && (
-            <Text style={{color: colors.delete}}>
+            <Text style={[styles.label, {color: colors.delete}]}>
               {formError[form.name] || ' '}
             </Text>
           )}
@@ -121,7 +151,9 @@ FormFactoryComponent.propTypes = {
         'textarea',
         'document-picker',
         'color-picker',
+        'image-preview',
       ]),
+      fileType: PropTypes.array,
       options: PropTypes.arrayOf(
         PropTypes.shape({
           value: PropTypes.string,
@@ -140,7 +172,10 @@ FormFactoryComponent.propTypes = {
   value: PropTypes.object,
   inputHandler: PropTypes.func,
   isValidate: PropTypes.bool,
-  setIsTouch: PropTypes.func,
+  imagePreview: PropTypes.string,
+  imageBgColor: PropTypes.string,
+  formError: PropTypes.object,
+  setFormError: PropTypes.func,
 };
 FormFactoryComponent.defaultProps = {
   formList: [],
@@ -148,7 +183,7 @@ FormFactoryComponent.defaultProps = {
   value: '',
   inputHandler: () => {},
   isValidate: false,
-  setIsTouch: () => {},
+  setFormError: () => {},
 };
 
 export default FormFactoryComponent;

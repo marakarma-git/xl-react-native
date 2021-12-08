@@ -5,21 +5,31 @@ import PropTypes from 'prop-types';
 import {View, TouchableOpacity} from 'react-native';
 import {Text} from '../index';
 import Feather from 'react-native-vector-icons/Feather';
+import {useToastHooks} from '../../customHooks/customHooks';
 
 const DocumentPickerComponent = (props) => {
-  const {name, type} = props;
+  const showToast = useToastHooks();
+  const {inputHandler, type, name} = props;
   const [fileName, setFileName] = useState('');
   const pickDocument = async () => {
     try {
       const res = await DocumentPicker.pick({
-        type: 'image/png',
+        type: type,
       });
       setFileName(res.name);
-      console.log('RES ', res);
+      inputHandler(name, res.uri);
     } catch (error) {
       if (DocumentPicker.isCancel(error)) {
         console.log('Cancel by user');
       } else {
+        showToast({
+          title: 'Upload Image',
+          type: 'error',
+          message: 'Error when upload image',
+          duration: 4000,
+          showToast: true,
+          position: 'top',
+        });
         throw error;
       }
     }
@@ -42,12 +52,14 @@ const DocumentPickerComponent = (props) => {
 };
 
 DocumentPickerComponent.propTypes = {
-  name: PropTypes.string,
+  inputHandler: PropTypes.func,
   type: PropTypes.array,
+  name: PropTypes.string,
 };
 DocumentPickerComponent.defaultProps = {
-  name: '',
+  inputHandler: () => {},
   type: ['image/png'],
+  name: '',
 };
 
 export default DocumentPickerComponent;

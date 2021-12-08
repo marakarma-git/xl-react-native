@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {View, ScrollView} from 'react-native';
 import {
   HeaderContainer,
@@ -30,8 +30,35 @@ const EnterpriseManagementOnBoardPage = ({route, navigation}) => {
     bpVat: '',
     laNumber: '',
   });
+  const [personalization, setPersonalization] = useState({
+    companyLogo: null,
+    topBarColour: '#FFFFFF',
+  });
   // Validation State
   const [formValidation, setFormValidation] = useState({});
+  //Form Function
+  const onNextRules = () => {
+    setFormPosition((prevState) => prevState + 1);
+  };
+  const onSubmit = () => {};
+  const inputHandler = (name, value) => {
+    setBasicFormation({
+      ...basicInformation,
+      [name]: value,
+    });
+  };
+  const inputHandlerPersonalization = (name, value) => {
+    setPersonalization({
+      ...personalization,
+      [name]: value,
+    });
+  };
+  const setValidationError = (name, error) => {
+    setFormValidation({
+      ...formValidation,
+      [name]: error,
+    });
+  };
   // Form Array
   const formArray = [
     {
@@ -44,6 +71,7 @@ const EnterpriseManagementOnBoardPage = ({route, navigation}) => {
             <CreateEnterpriseBasicInformation
               editable={true}
               formError={formValidation}
+              setFormError={setValidationError}
               inputHandler={inputHandler}
               value={basicInformation}
             />
@@ -53,7 +81,13 @@ const EnterpriseManagementOnBoardPage = ({route, navigation}) => {
           componentTitle: 'Enterprise Personalization',
           componentDescription:
             'Personalize the user interface using the company logo of the new onboarded enterprise and choose the top bar colour preference',
-          component: <CreateEnterprisePersonalization />,
+          component: (
+            <CreateEnterprisePersonalization
+              editable={true}
+              inputHandler={inputHandlerPersonalization}
+              value={personalization}
+            />
+          ),
         },
       ],
     },
@@ -63,7 +97,11 @@ const EnterpriseManagementOnBoardPage = ({route, navigation}) => {
       body: [
         {
           componentTitle: 'Parent Organization',
-          component: <CreateEnterpriseParentOrganization />,
+          componentDescription:
+            'Define parent of the organization, select XL Axiata or one of the existing enterprise as the parent organization',
+          component: (
+            <CreateEnterpriseParentOrganization formPosition={formPosition} />
+          ),
         },
       ],
     },
@@ -79,12 +117,9 @@ const EnterpriseManagementOnBoardPage = ({route, navigation}) => {
     },
   ];
 
-  //Form Function
-  const onNextRules = () => {
-    setFormPosition((prevState) => prevState + 1);
-  };
-  const onSubmit = () => {};
-  const inputHandler = (name, value) => {};
+  useEffect(() => {
+    console.log(formValidation);
+  }, [formValidation]);
 
   return (
     <View style={enterpriseStyle.container}>

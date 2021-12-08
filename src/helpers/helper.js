@@ -569,6 +569,10 @@ class Helper {
     return errorValidation[formKey];
   }
 
+  static requiredValidation(title, value) {
+    return value.trim().length > 0 ? null : `${title} Required`;
+  }
+
   static validationIsRequired(formKey, formTitle, formData) {
     let errorMsg = '';
     if (formData[formKey].length <= 0) {

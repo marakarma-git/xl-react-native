@@ -263,7 +263,7 @@ const GridCellComponent = (props) => {
         <Text
           style={{
             fontSize: 16,
-            paddingVertical: 5,
+            paddingVertical: 10,
             textAlign: 'center',
             fontFamily: 'bold',
           }}>

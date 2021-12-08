@@ -25,6 +25,7 @@ export {default as FormFactory} from './form/FormFactory';
 export {default as ModalTermCondition} from './modal/ModalTermCondition';
 export {default as ModalMultiSession} from './modal/ModalMultiSession';
 export {default as ModalConfirmation} from './modal/ModalConfirmation';
+export {default as ModalColorPallete} from './modal/ModalColorPallete';
 
 //Global Text
 export {default as Text} from './global/text';

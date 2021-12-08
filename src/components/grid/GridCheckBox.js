@@ -30,14 +30,16 @@ const CustomCheckBox = (props) => {
         <MaterialCommunityIcons
           style={{
             backgroundColor: disabled
-              ? colors.gray
+              ? value
+                ? colors.tab_edit
+                : colors.gray
               : value
               ? colors.tab_edit
               : 'white',
             borderRadius: 3,
           }}
           name={'check-bold'}
-          color={'white'}
+          color={disabled ? (value ? colors.gray : 'white') : 'white'}
           size={17}
         />
       </View>
