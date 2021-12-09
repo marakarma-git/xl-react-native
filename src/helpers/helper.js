@@ -21,6 +21,22 @@ class Helper {
     return capitalWord;
   }
 
+  static makeCamelCaseToTitle(value) {
+    let capitalLetter = Helper.makeCapital(value).split('');
+    let result = '';
+    capitalLetter.map((letter) => {
+      let isUpperCase = /^[A-Z]*$/.test(letter);
+      if (isUpperCase) result += ` ${letter}`;
+      else result += letter;
+    });
+    return result;
+  }
+
+  static imageSizeValidation(imageSize, availableSize) {
+    console.log(imageSize, availableSize);
+    return imageSize <= availableSize ? true : false;
+  }
+
   static formatBytes(bytes) {
     if (!isNaN(bytes)) {
       const decimals = 2;

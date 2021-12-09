@@ -16,15 +16,17 @@ const DropDownPickerComponent = (props) => {
     title,
     validation,
     setValidationError,
+    dropDownHeight,
   } = props;
   const [isOpen, setIsOpen] = useState(false);
+  const [isTouch, setIsTouch] = useState(false);
   useEffect(() => {
-    if (validation)
+    if (validation && isTouch) {
       setValidationError(name, Helper.requiredValidation(title, value));
+    }
   }, [value]);
   return (
     <DropDownPicker
-      mode="BADGE"
       disabled={editable}
       setValue={setValue}
       open={isOpen}
@@ -33,12 +35,16 @@ const DropDownPickerComponent = (props) => {
       dropDownDirection="TOP"
       dropDownContainerStyle={{borderRadius: 3}}
       searchable={searchable}
-      setOpen={() => setIsOpen(!isOpen)}
+      setOpen={() => {
+        setIsOpen(!isOpen);
+        setIsTouch(true);
+      }}
       value={value}
       placeholder={placeholder}
       placeholderStyle={{
         color: '#A8A8A8',
       }}
+      listItemContainerStyle={{height: 30}}
     />
   );
 };
@@ -60,6 +66,7 @@ DropDownPickerComponent.propTypes = {
   title: PropTypes.string,
   validation: PropTypes.bool,
   setValidationError: PropTypes.func,
+  dropDownHeight: PropTypes.number,
 };
 DropDownPickerComponent.defaultProps = {
   name: '',
@@ -73,6 +80,7 @@ DropDownPickerComponent.defaultProps = {
   title: '',
   validation: false,
   setValidationError: () => {},
+  dropDownHeight: 100,
 };
 
 export default DropDownPickerComponent;

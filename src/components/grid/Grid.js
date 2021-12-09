@@ -6,50 +6,98 @@ import {
   View,
   TouchableOpacity,
   ActivityIndicator,
+  ScrollView,
 } from 'react-native';
 
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import CustomCheckBox from '../grid/GridCheckBox';
 import {colors, color_theme_one} from '../../constant/color';
+import GridSwitchComponent from './GridSwitch';
 
 const GridComponent = (props) => {
   return (
-    <View style={{width: '100%'}}>
-      <View style={{flexDirection: 'row'}}>
-        <GridHeaderComponent
-          sortField={props.sortField}
-          sortType={props.sortType}
-          gridOptions={props.gridOptions}
-          colHeight={props.colHeight}
-          onPressHeaderCheckBox={props.onPressHeaderCheckBox}
-          onSort={props.onSort}
-        />
-      </View>
-      {props.loading ? (
-        <View style={{justifyContent: 'center', height: 100}}>
-          <ActivityIndicator color={colors.main_color} />
-          <Text
-            style={{
-              textAlign: 'center',
-              fontSize: 14,
-              paddingVertical: 10,
-            }}>
-            Loading...
-          </Text>
-        </View>
+    <>
+      {props.isOverflow ? (
+        <ScrollView
+          style={[{flex: 1}, {...props.customTableStyle}]}
+          contentContainerStyle={{flexDirection: 'column'}}
+          horizontal={true}>
+          <View style={{flexDirection: 'row'}}>
+            <GridHeaderComponent
+              sortField={props.sortField}
+              sortType={props.sortType}
+              gridOptions={props.gridOptions}
+              colHeight={props.colHeight}
+              onPressHeaderCheckBox={props.onPressHeaderCheckBox}
+              onSort={props.onSort}
+            />
+          </View>
+          {props.loading ? (
+            <View style={{justifyContent: 'center', height: 100}}>
+              <ActivityIndicator color={colors.main_color} />
+              <Text
+                style={{
+                  textAlign: 'center',
+                  fontSize: 14,
+                  paddingVertical: 10,
+                }}>
+                Loading...
+              </Text>
+            </View>
+          ) : (
+            <GridCellComponent
+              loading={props.loading}
+              keyExtractor={props.keyExtractor}
+              gridOptions={props.gridOptions}
+              gridData={props.gridData}
+              colHeight={props.colHeight}
+              tableMaxHeight={props.tableMaxHeight}
+              onPressTree={props.onPressTree}
+              onPressCheckBox={props.onPressCheckBox}
+              onSwitch={props.onSwitch}
+              activateDisabledFeature={props.activateDisabledFeature}
+            />
+          )}
+        </ScrollView>
       ) : (
-        <GridCellComponent
-          loading={props.loading}
-          keyExtractor={props.keyExtractor}
-          gridOptions={props.gridOptions}
-          gridData={props.gridData}
-          colHeight={props.colHeight}
-          tableMaxHeight={props.tableMaxHeight}
-          onPressTree={props.onPressTree}
-          onPressCheckBox={props.onPressCheckBox}
-        />
+        <View style={[{flex: 1}, {...props.customTableStyle}]}>
+          <View style={{flexDirection: 'row'}}>
+            <GridHeaderComponent
+              sortField={props.sortField}
+              sortType={props.sortType}
+              gridOptions={props.gridOptions}
+              colHeight={props.colHeight}
+              onPressHeaderCheckBox={props.onPressHeaderCheckBox}
+              onSort={props.onSort}
+            />
+          </View>
+          {props.loading ? (
+            <View style={{justifyContent: 'center', height: 100}}>
+              <ActivityIndicator color={colors.main_color} />
+              <Text
+                style={{
+                  textAlign: 'center',
+                  fontSize: 14,
+                  paddingVertical: 10,
+                }}>
+                Loading...
+              </Text>
+            </View>
+          ) : (
+            <GridCellComponent
+              loading={props.loading}
+              keyExtractor={props.keyExtractor}
+              gridOptions={props.gridOptions}
+              gridData={props.gridData}
+              colHeight={props.colHeight}
+              tableMaxHeight={props.tableMaxHeight}
+              onPressTree={props.onPressTree}
+              onPressCheckBox={props.onPressCheckBox}
+            />
+          )}
+        </View>
       )}
-    </View>
+    </>
   );
 };
 
@@ -63,6 +111,7 @@ const GridHeaderComponent = (props) => {
             width={option.width}
             headerAlign={option.headerAlign}
             bgColor={option.bgColor}
+            headerColor={option.headerColor}
             headerAlign={option.headerAlign}
             label={option.label}
             field={option.field}
@@ -76,6 +125,7 @@ const GridHeaderComponent = (props) => {
             width={option.width}
             headerAlign={option.headerAlign}
             bgColor={option.bgColor}
+            headerColor={option.headerColor}
             headerAlign={option.headerAlign}
             label={option.label}
             isCheck={option.isCheck}
@@ -90,6 +140,7 @@ const GridHeaderComponent = (props) => {
             width={option.width}
             headerAlign={option.headerAlign}
             bgColor={option.bgColor}
+            headerColor={option.headerColor}
             headerAlign={option.headerAlign}
             label={option.label}
             field={option.field}
@@ -104,6 +155,7 @@ const GridHeaderComponent = (props) => {
             width={option.width}
             headerAlign={option.headerAlign}
             bgColor={option.bgColor}
+            headerColor={option.headerColor}
             headerAlign={option.headerAlign}
             label={option.label}
             {...props}
@@ -227,11 +279,14 @@ const GridCellComponent = (props) => {
         {props.gridOptions.map((option, index) => (
           <CellComponent
             key={index}
+            activateDisabledFeature={props.activateDisabledFeature}
             cellId={item[props.keyExtractor]}
             colHeight={props.colHeight}
             width={option.width}
             align={option.headerAlign}
             cellAlign={option.cellAlign}
+            activeText={option?.activeText}
+            inActiveText={option?.inActiveText}
             bgColor={'white'}
             data={item[option.field]}
             headerColor={'black'}
@@ -241,11 +296,14 @@ const GridCellComponent = (props) => {
               item.visibility || item.visibility == undefined ? true : false
             }
             icon={item.icon}
+            isActive={item.switchActive}
+            isCellDisabled={!item.switchActive}
             isSelect={item.treeCheck}
             isCheck={item.isCheck}
             isDisabled={item.isDisabled}
             onPressTree={props.onPressTree}
             onPressCheckBox={props.onPressCheckBox}
+            onSwitch={props.onSwitch}
             cellVisible={
               option.cellVisible == undefined ? true : option.cellVisible
             }
@@ -285,7 +343,8 @@ const CellComponent = (props) => {
         return <CellTreeViewCheckBoxComponent {...props} />;
       case 'checkbox':
         return <CellCheckBoxComponent {...props} />;
-
+      case 'switch':
+        return <CellSwitchComponent {...props} />;
       default:
         return <CellTextComponent {...props} />;
     }
@@ -305,7 +364,11 @@ const CellTreeViewCheckBoxComponent = (props) => {
         width: props?.width,
         justifyContent: 'flex-start',
         alignItems: 'center',
-        backgroundColor: props.bgColor,
+        backgroundColor: props.activateDisabledFeature
+          ? props.isCellDisabled
+            ? colors.disabled_table
+            : props.bgColor
+          : props.bgColor,
         borderBottomColor: '#D8D8D8',
         borderBottomWidth: 1,
         borderRightColor: '#D8D8D8',
@@ -346,7 +409,11 @@ const CellTreeViewComponent = (props) => {
         width: props?.width,
         justifyContent: 'flex-start',
         alignItems: 'center',
-        backgroundColor: props.bgColor,
+        backgroundColor: props.activateDisabledFeature
+          ? props.isCellDisabled
+            ? colors.disabled_table
+            : props.bgColor
+          : props.bgColor,
         borderBottomColor: '#D8D8D8',
         borderBottomWidth: 1,
         borderRightColor: '#D8D8D8',
@@ -380,7 +447,11 @@ const CellTextComponent = (props) => {
         width: props?.width,
         justifyContent: 'center',
         alignItems: props.cellAlign,
-        backgroundColor: props.bgColor,
+        backgroundColor: props.activateDisabledFeature
+          ? props.isCellDisabled
+            ? colors.disabled_table
+            : props.bgColor
+          : props.bgColor,
         borderBottomColor: '#D8D8D8',
         borderBottomWidth: 1,
         borderRightColor: '#D8D8D8',
@@ -389,7 +460,9 @@ const CellTextComponent = (props) => {
       <Text
         numberOfLines={1}
         style={{
-          color: props.headerColor || 'black',
+          color: props.isCellDisabled
+            ? colors.gray
+            : props.headerColor || 'black',
           fontSize: 12,
           paddingLeft: 5,
         }}>
@@ -407,7 +480,11 @@ const CellCheckBoxComponent = (props) => {
         width: props?.width,
         justifyContent: 'center',
         alignItems: props.cellAlign,
-        backgroundColor: props.bgColor,
+        backgroundColor: props.activateDisabledFeature
+          ? props.isCellDisabled
+            ? colors.disabled_table
+            : props.bgColor
+          : props.bgColor,
         borderBottomColor: '#D8D8D8',
         borderBottomWidth: 1,
         borderRightColor: '#D8D8D8',
@@ -422,6 +499,36 @@ const CellCheckBoxComponent = (props) => {
   );
 };
 
+const CellSwitchComponent = (props) => {
+  return (
+    <View
+      style={{
+        height: props.colHeight,
+        width: props?.width,
+        justifyContent: 'center',
+        alignItems: props.cellAlign,
+        backgroundColor: props.activateDisabledFeature
+          ? props.isCellDisabled
+            ? colors.disabled_table
+            : props.bgColor
+          : props.bgColor,
+        borderBottomColor: '#D8D8D8',
+        borderBottomWidth: 1,
+        borderRightColor: '#D8D8D8',
+        borderRightWidth: 1,
+      }}>
+      <GridSwitchComponent
+        value={props.isActive}
+        onSwitch={props.onSwitch}
+        activeText={props.activeText}
+        inActiveText={props.inActiveText}
+        isDisabled={props.isDisabled}
+        dataId={props.cellId}
+      />
+    </View>
+  );
+};
+
 GridComponent.propTypes = {
   loading: PropTypes.bool,
   indexIdentifier: PropTypes.string,
@@ -429,12 +536,16 @@ GridComponent.propTypes = {
   gridOptions: PropTypes.array,
   onPressCell: PropTypes.func,
   onPressCheckBox: PropTypes.func,
+  onSwitch: PropTypes.func,
   colHeight: PropTypes.number,
   keyExtractor: PropTypes.string,
   onPressHeaderCheckBox: PropTypes.func,
   sortType: PropTypes.string,
   sortField: PropTypes.string,
   onSort: PropTypes.func,
+  isOverflow: PropTypes.bool,
+  customTableStyle: PropTypes.object,
+  activateDisabledFeature: PropTypes.bool,
 };
 
 GridComponent.defaultProps = {
@@ -451,7 +562,11 @@ GridComponent.defaultProps = {
   onPressCheckBox: () => {},
   dataSetter: () => {},
   onPressHeaderCheckBox: () => {},
+  onSwitch: () => {},
   onSort: () => {},
+  isOverflow: false,
+  customTableStyle: {},
+  activateDisabledFeature: false,
 };
 
 export default GridComponent;

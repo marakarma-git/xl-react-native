@@ -3,7 +3,6 @@ import {TouchableOpacity, View} from 'react-native';
 import PropTypes from 'prop-types';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import {colors} from '../../constant/color';
-import {color} from 'react-native-reanimated';
 const CustomCheckBox = (props) => {
   const {value, onPress, style, disabled, children} = props || {};
   return (

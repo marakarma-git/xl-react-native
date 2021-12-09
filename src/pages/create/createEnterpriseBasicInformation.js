@@ -4,7 +4,14 @@ import {FormFactory} from '../../components';
 
 const CreateEnterpriseBasicInformation = (props) => {
   const [dropDownValue, setDropDownValue] = useState(null);
-  const {editable, formError, inputHandler, value, setFormError} = props;
+  const {
+    editable,
+    formError,
+    inputHandler,
+    value,
+    setFormError,
+    dropDownData,
+  } = props;
   const formList = [
     {
       title: 'Enterprise Name',
@@ -86,18 +93,12 @@ const CreateEnterpriseBasicInformation = (props) => {
       type: 'select',
       validationType: 'required',
       editable: true,
-      options: [
-        {value: '', label: 'Choose Business Category'},
-        {value: 'Banking EDC', label: 'Banking EDC'},
-        {value: 'GPS Tracker', label: 'GPS Tracker'},
-        {value: 'Vending Machine', label: 'Vending Machine'},
-        {value: 'AMR', label: 'AMR'},
-        {value: 'General', label: 'General'},
-      ],
+      options: dropDownData || [{value: '', label: ''}],
       config: {
         searchable: false,
         setValue: setDropDownValue,
         placeholder: 'Choose Business Category',
+        dropDownHeight: 350,
       },
     },
   ];
@@ -125,6 +126,7 @@ CreateEnterpriseBasicInformation.propTypes = {
   setFormError: PropTypes.func,
   inputHandler: PropTypes.func,
   value: PropTypes.object,
+  dropDownData: PropTypes.array,
 };
 CreateEnterpriseBasicInformation.defaultProps = {
   editable: false,
@@ -132,6 +134,7 @@ CreateEnterpriseBasicInformation.defaultProps = {
   setFormError: () => {},
   inputHandler: () => {},
   value: {},
+  dropDownData: [{value: '', label: ''}],
 };
 
 export default CreateEnterpriseBasicInformation;

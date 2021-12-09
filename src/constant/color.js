@@ -48,6 +48,7 @@ export const colors = {
   delete: color_theme_one.red,
   disabled_cancel: color_theme_one.silver,
   checked_box: color_theme_one.green,
+  disabled_table: '#eee',
 };
 
 export const preDefineColorPallete = [

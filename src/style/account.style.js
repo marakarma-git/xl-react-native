@@ -313,4 +313,10 @@ export default {
     color: 'black',
     fontSize: 12,
   },
+  customTable: {
+    width: '95%',
+    marginHorizontal: '2.5%',
+    borderWidth: 1,
+    borderColor: '#A8A8A8',
+  },
 };

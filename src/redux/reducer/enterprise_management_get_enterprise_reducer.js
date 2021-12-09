@@ -18,6 +18,9 @@ const initialState = {
     sortBy: '',
   },
   enterprise_params_applied_activity_log: '',
+  business_category: null,
+  business_category_field_type: null,
+  custom_label: null,
 };
 
 const enterprise_management_get_enterprise_reducer = (
@@ -76,7 +79,7 @@ const enterprise_management_get_enterprise_reducer = (
         ...state,
         loading: false,
         errorText: '',
-        data_active_enterprise: action.payload
+        data_active_enterprise: action.payload,
       };
     }
     case reduxString.ENTERPRISE_MANAGEMENT_CLEAR_ACTIVE_ENTERPRISE_DATA: {
@@ -84,7 +87,7 @@ const enterprise_management_get_enterprise_reducer = (
         ...state,
         loading: false,
         errorText: '',
-        data_active_enterprise: []
+        data_active_enterprise: [],
       };
     }
     case reduxString.ENTERPRISE_MANAGEMENT_GET_DATA_FAIL: {
@@ -115,6 +118,24 @@ const enterprise_management_get_enterprise_reducer = (
         ...state,
         enterprise_applied_header_sort:
           initialState.enterprise_applied_header_sort,
+      };
+    }
+    case reduxString.SAVE_BUSINESS_CATEGORY: {
+      return {
+        ...state,
+        business_category: action.payload,
+      };
+    }
+    case reduxString.SAVE_BUSINESS_CATEGORY_FIELD_TYPE: {
+      return {
+        ...state,
+        business_category_field_type: action.payload,
+      };
+    }
+    case reduxString.SAVE_CUSTOM_LABEL: {
+      return {
+        ...state,
+        custom_label: action.payload,
       };
     }
     default: {

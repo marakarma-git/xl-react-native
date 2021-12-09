@@ -53,6 +53,7 @@ const FormFactoryComponent = (props) => {
               validation={form?.validation}
               value={value[form.name] || form?.config?.defaultValue}
               setValidationError={setFormError}
+              dropDownHeight={form?.config?.dropDownHeight}
             />
           );
         case 'textarea':
@@ -164,6 +165,7 @@ FormFactoryComponent.propTypes = {
         searchable: PropTypes.bool,
         setValue: PropTypes.func,
         placeholder: PropTypes.string,
+        dropDownHeight: PropTypes.number,
       }),
       editable: PropTypes.bool,
     }),

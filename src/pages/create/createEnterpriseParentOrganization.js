@@ -36,7 +36,11 @@ const gridOptionsArray = [
 
 const CreateEnterpriseParentOrganization = (props) => {
   const dispatch = useDispatch();
-  const {formPosition, selectedParentOrganization} = props;
+  const {
+    formPosition,
+    selectedParentOrganization,
+    setSelectedParentOrganization,
+  } = props;
   const [gridOptions, setGridOptions] = useState(gridOptionsArray);
   const [showFilterModal, setShowFilterModal] = useState(false);
   const [gridData, setGridData] = useState([]);
@@ -60,19 +64,24 @@ const CreateEnterpriseParentOrganization = (props) => {
   };
   const dataManipulation = (data) => {
     const resData = [...data];
+    const dataGrid = resData.map((data) => {
+      data.isDisabled = false;
+      return data;
+    });
     if (selectedParentOrganization.length > 0) {
-    } else {
-      setGridData(
-        resData.map((data) => {
-          data.isDisabled = false;
-          return data;
-        }),
+      checkboxToggle(
+        selectedParentOrganization[0].enterpriseId,
+        'checkbox',
+        dataGrid,
       );
+    } else {
+      setGridData(dataGrid);
     }
   };
-  const checkboxToggle = (cellId, actionType = 'checkbox') => {
-    const resData = [...gridData];
+  const checkboxToggle = (cellId, actionType = 'checkbox', data) => {
+    const resData = [...data];
     const selectedData = resData.find((data) => data.enterpriseId === cellId);
+    // check kenapa ga kepanggil
     const isCheck = selectedData.treeCheck;
     const parentId = selectedData.enterpriseParentId;
     const visibility = selectedData.visibility;
@@ -86,6 +95,10 @@ const CreateEnterpriseParentOrganization = (props) => {
         ? onCheck(resData, cellId, enterpriseStatus, isCheck, parentId)
         : onCellHide(resData, cellId, enterpriseStatus, visibility);
     setGridData(newData);
+    const getCheckedData = [...newData].filter(
+      (data) => data.treeCheck === true,
+    );
+    setSelectedParentOrganization(getCheckedData);
   };
   const onCheck = (data, cellId, enterpriseStatus, isCheck, parentId) => {
     data.map((data) => {
@@ -196,9 +209,12 @@ const CreateEnterpriseParentOrganization = (props) => {
         tableMaxHeight={250}
         keyExtractor="enterpriseId"
         onPressCheckBox={(enterpriseId) =>
-          checkboxToggle(enterpriseId, 'checkbox')
+          checkboxToggle(enterpriseId, 'checkbox', gridData)
         }
-        onPressTree={(enterpriseId) => checkboxToggle(enterpriseId, 'tree')}
+        onPressTree={(enterpriseId) =>
+          checkboxToggle(enterpriseId, 'tree', gridData)
+        }
+        customTableStyle={styles.customTable}
       />
       {showFilterModal && (
         <ModalSearchPicker
@@ -227,10 +243,12 @@ const CreateEnterpriseParentOrganization = (props) => {
 CreateEnterpriseParentOrganization.propTypes = {
   formPosition: PropTypes.number,
   selectedParentOrganization: PropTypes.array,
+  setSelectedParentOrganization: PropTypes.func,
 };
 CreateEnterpriseParentOrganization.defaultProps = {
   formPosition: 0,
   selectedParentOrganization: [],
+  setSelectedParentOrganization: () => {},
 };
 
 export default CreateEnterpriseParentOrganization;

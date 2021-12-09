@@ -6,6 +6,7 @@ import {View, TouchableOpacity} from 'react-native';
 import {Text} from '../index';
 import Feather from 'react-native-vector-icons/Feather';
 import {useToastHooks} from '../../customHooks/customHooks';
+import Helper from '../../helpers/helper';
 
 const DocumentPickerComponent = (props) => {
   const showToast = useToastHooks();
@@ -16,8 +17,20 @@ const DocumentPickerComponent = (props) => {
       const res = await DocumentPicker.pick({
         type: type,
       });
-      setFileName(res.name);
-      inputHandler(name, res.uri);
+      const isAvailableSize = Helper.imageSizeValidation(res.size, 1024000);
+      if (isAvailableSize) {
+        setFileName(res.name);
+        inputHandler(name, res.uri);
+      } else {
+        showToast({
+          title: 'Upload Image',
+          type: 'warning',
+          message: 'Max image size 1mb',
+          duration: 3000,
+          showToast: true,
+          position: 'top',
+        });
+      }
     } catch (error) {
       if (DocumentPicker.isCancel(error)) {
         console.log('Cancel by user');
