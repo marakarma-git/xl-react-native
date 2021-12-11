@@ -21,6 +21,9 @@ import {
   getBusinessFieldType,
 } from '../../redux/action/enterprise_management_action';
 import {colors} from '../../constant/color';
+import {setRequestError} from '../../redux/action/dashboard_action';
+import httpRequest from '../../constant/axiosInstance';
+import {enterpriseManagementSetSearchText} from '../../redux/action/enterprise_management_array_header_action';
 
 const basicInformationObj = {
   enterpriseName: '',
@@ -35,6 +38,7 @@ const basicInformationObj = {
 };
 const personalizationObj = {
   companyLogo: null,
+  fileName: '',
   topBarColour: '#FFFFFF',
 };
 
@@ -58,6 +62,8 @@ const EnterpriseManagementOnBoardPage = ({route, navigation}) => {
   const [selectedParentOrganization, setSelectedParentOrganization] = useState(
     [],
   );
+  const [customLabel, setCustomLabel] = useState([]);
+  const [changesLabelRow, setChangesLabelRow] = useState([]);
   // Validation State
   const [formValidation, setFormValidation] = useState({});
   //Form Function
@@ -82,6 +88,7 @@ const EnterpriseManagementOnBoardPage = ({route, navigation}) => {
   };
   const onNextRules = () => {
     let isComplete = false;
+    dispatch(enterpriseManagementSetSearchText({searchText: ''}));
     if (formPosition === 0) {
       const validation = stepValidation();
       if (validation.errorCnt > 0) setFormValidation(validation.formError);
@@ -100,18 +107,117 @@ const EnterpriseManagementOnBoardPage = ({route, navigation}) => {
         position: 'top',
       });
   };
-  const onSubmit = () => {};
+  const onSubmit = async () => {
+    const dataObj = {
+      agreementNumber: '',
+      bpHo: '',
+      bpPayer: '',
+      businessCat: '',
+      colorCode: '',
+      customLabels: [],
+      customerNumber: '',
+      enterpriseName: '',
+      enterpriseParentId: '',
+      fileName: '',
+      bpVat: '',
+      laNumber: '',
+      organizationalUnit: '',
+      imageLogo: '',
+    };
+
+    dataObj.agreementNumber = basicInformation?.agreementNumber;
+    dataObj.bpHo = basicInformation?.bpHo;
+    dataObj.bpPayer = basicInformation?.bpPayer;
+    dataObj.bpVat = basicInformation?.bpVat;
+    dataObj.businessCat = basicInformation?.businessCategory;
+    dataObj.colorCode = personalization?.topBarColour;
+    dataObj.customerNumber = basicInformation?.customerNumber;
+    dataObj.enterpriseName = basicInformation?.enterpriseName;
+    dataObj.enterpriseParentId =
+      selectedParentOrganization[0]?.enterpriseParentId;
+    dataObj.fileName = personalization?.fileName;
+    dataObj.laNumber = basicInformation?.laNumber;
+    dataObj.organizationalUnit = basicInformation?.organizationalUnit;
+    dataObj.imageLogo = personalization?.companyLogo;
+
+    customLabel.map((data) => {
+      dataObj.customLabels.push({
+        activeStatus: data.activeStatus,
+        customLabel: data.customLabel,
+        customLabelId: '',
+        customValue: data.customValue,
+        fieldType: data.fieldType,
+        labelNumber: data.labelNumber,
+      });
+    });
+
+    try {
+      const customHeader = {
+        headers: {
+          activityId: 'AP-17',
+          descSuffix: dataObj.enterpriseName,
+        },
+      };
+      const {data} = await httpRequest.post(
+        '/user/corp/createEnterprise',
+        dataObj,
+        customHeader,
+      );
+      if (data) {
+        const {statusCode, statusDescription} = data;
+        if (statusCode === 0) {
+          showToast({
+            title: 'Create Onboard Enterprise',
+            type: 'success',
+            message: 'Onboard new enterprise success',
+            duration: 3500,
+            showToast: true,
+            position: 'top',
+          });
+          navigation.goBack();
+        } else {
+          showToast({
+            title: 'Create Onboard Enterprise',
+            type: 'error',
+            message: statusDescription,
+            duration: 3500,
+            showToast: true,
+            position: 'top',
+          });
+          setFormPosition(0);
+        }
+      }
+    } catch (error) {
+      dispatch(setRequestError(error.response.data));
+      showToast({
+        title: 'Create Onboard Enterprise',
+        type: 'error',
+        message: error.response.data,
+        duration: 3500,
+        showToast: true,
+        position: 'top',
+      });
+    }
+  };
   const inputHandler = (name, value) => {
     setBasicFormation({
       ...basicInformation,
       [name]: value,
     });
   };
-  const inputHandlerPersonalization = (name, value) => {
-    setPersonalization({
-      ...personalization,
-      [name]: value,
-    });
+  const inputHandlerPersonalization = (name, value, type = 'string') => {
+    if (type === 'string') {
+      setPersonalization({
+        ...personalization,
+        [name]: value,
+      });
+    } else {
+      const personalizationData = {...personalization};
+      name.map((key, index) => {
+        personalizationData[key] = value[index];
+      });
+      setPersonalization(personalizationData);
+    }
   };
   const setValidationError = (name, error) => {
     setFormValidation({
@@ -182,6 +288,9 @@ const EnterpriseManagementOnBoardPage = ({route, navigation}) => {
             <CreateEnterpriseCustomLabel
               formPosition={formPosition}
               businessCategory={basicInformation.businessCategory}
+              setCustomLabel={setCustomLabel}
+              changesLabelRow={changesLabelRow}
+              setChangesLabelRow={setChangesLabelRow}
             />
           ),
         },
@@ -203,9 +312,14 @@ const EnterpriseManagementOnBoardPage = ({route, navigation}) => {
       setPersonalization({...personalizationObj});
       setSelectedParentOrganization([]);
       setFormValidation({});
+      setChangesLabelRow([]);
+      setCustomLabel([]);
     });
     return pageBlur;
   }, [navigation]);
+  useEffect(() => {
+    setChangesLabelRow([]);
+  }, [basicInformation.businessCategory]);
   return (
     <View style={enterpriseStyle.container}>
       <HeaderContainer

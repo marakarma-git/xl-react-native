@@ -55,7 +55,7 @@ const CreateEnterpriseParentOrganization = (props) => {
       isVisible: true,
     },
   ]);
-  const {loading, data_enterprise} = useSelector(
+  const {loading, data_enterprise, searchText} = useSelector(
     (state) => state.enterprise_management_get_enterprise_reducer,
   );
   const filterData = (searchText) => {
@@ -81,24 +81,27 @@ const CreateEnterpriseParentOrganization = (props) => {
   const checkboxToggle = (cellId, actionType = 'checkbox', data) => {
     const resData = [...data];
     const selectedData = resData.find((data) => data.enterpriseId === cellId);
-    // check kenapa ga kepanggil
-    const isCheck = selectedData.treeCheck;
-    const parentId = selectedData.enterpriseParentId;
-    const visibility = selectedData.visibility;
-    let enterpriseStatus = 'root';
-    if (selectedData.enterpriseParentId) {
-      if (selectedData.childrenCnt > 0) enterpriseStatus = 'parent';
-      else enterpriseStatus = 'child';
+    if (selectedData) {
+      const isCheck = selectedData?.treeCheck;
+      const parentId = selectedData?.enterpriseParentId;
+      const visibility = selectedData?.visibility;
+      let enterpriseStatus = 'root';
+      if (selectedData.enterpriseParentId) {
+        if (selectedData.childrenCnt > 0) enterpriseStatus = 'parent';
+        else enterpriseStatus = 'child';
+      }
+      const newData =
+        actionType === 'checkbox'
+          ? onCheck(resData, cellId, enterpriseStatus, isCheck, parentId)
+          : onCellHide(resData, cellId, enterpriseStatus, visibility);
+      setGridData(newData);
+      const getCheckedData = [...newData].filter(
+        (data) => data.treeCheck === true,
+      );
+      setSelectedParentOrganization(getCheckedData);
+    } else {
+      setGridData(resData);
     }
-    const newData =
-      actionType === 'checkbox'
-        ? onCheck(resData, cellId, enterpriseStatus, isCheck, parentId)
-        : onCellHide(resData, cellId, enterpriseStatus, visibility);
-    setGridData(newData);
-    const getCheckedData = [...newData].filter(
-      (data) => data.treeCheck === true,
-    );
-    setSelectedParentOrganization(getCheckedData);
   };
   const onCheck = (data, cellId, enterpriseStatus, isCheck, parentId) => {
     data.map((data) => {
@@ -154,6 +157,7 @@ const CreateEnterpriseParentOrganization = (props) => {
       setIsReady(true);
     } else {
       setIsReady(false);
+      setKeyword(null);
     }
   }, [formPosition]);
   useEffect(() => {
@@ -185,6 +189,8 @@ const CreateEnterpriseParentOrganization = (props) => {
                   return data;
                 }),
               );
+              dispatch(enterpriseManagementSetSearchText({searchText: ''}));
+              dispatch(getEnterpriseList());
             }}>
             <AntDesign name="close" size={14} color="black" />
           </TouchableOpacity>
@@ -195,8 +201,8 @@ const CreateEnterpriseParentOrganization = (props) => {
             value={keyword}
             onChangeText={(text) => {
               setKeyword(text);
-              filterData(text);
             }}
+            onBlur={() => filterData(keyword)}
             style={styles.filterTextInput}
           />
         </View>

@@ -76,6 +76,8 @@ const FormFactoryComponent = (props) => {
               name={form.name}
               type={form?.fileType}
               inputHandler={inputHandler}
+              fieldForFilename={form?.fieldForFilename}
+              value={value}
             />
           );
         case 'color-picker':
@@ -155,6 +157,7 @@ FormFactoryComponent.propTypes = {
         'image-preview',
       ]),
       fileType: PropTypes.array,
+      fieldForFilename: PropTypes.string,
       options: PropTypes.arrayOf(
         PropTypes.shape({
           value: PropTypes.string,
@@ -186,6 +189,7 @@ FormFactoryComponent.defaultProps = {
   inputHandler: () => {},
   isValidate: false,
   setFormError: () => {},
+  fieldForFilename: '',
 };
 
 export default FormFactoryComponent;

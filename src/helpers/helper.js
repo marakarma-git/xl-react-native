@@ -1,6 +1,7 @@
 import {DRAWER_MENU_PRIVILEDGE} from '../constant/priviledge';
 import dayjs from 'dayjs';
 import lod from 'lodash';
+import {FileSystem} from 'react-native-file-access';
 
 class Helper {
   static numberFormat(value, symbol, type = 'number') {
@@ -33,7 +34,6 @@ class Helper {
   }
 
   static imageSizeValidation(imageSize, availableSize) {
-    console.log(imageSize, availableSize);
     return imageSize <= availableSize ? true : false;
   }
 

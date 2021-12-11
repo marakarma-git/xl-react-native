@@ -13,6 +13,7 @@ const CreateEnterprisePersonalization = (props) => {
       type: 'document-picker',
       editable: true,
       fileType: ['image/png'],
+      fieldForFilename: 'fileName',
     },
     {
       title: 'Top Bar Colour',

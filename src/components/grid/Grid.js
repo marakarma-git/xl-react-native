@@ -13,6 +13,8 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import CustomCheckBox from '../grid/GridCheckBox';
 import {colors, color_theme_one} from '../../constant/color';
 import GridSwitchComponent from './GridSwitch';
+import GridDropDownComponent from './GridDropDown';
+import GridTextInputComponent from './GridTextInput';
 
 const GridComponent = (props) => {
   return (
@@ -55,6 +57,8 @@ const GridComponent = (props) => {
               onPressTree={props.onPressTree}
               onPressCheckBox={props.onPressCheckBox}
               onSwitch={props.onSwitch}
+              onPickItem={props.onPickItem}
+              onChangeText={props.onChangeText}
               activateDisabledFeature={props.activateDisabledFeature}
             />
           )}
@@ -278,7 +282,11 @@ const GridCellComponent = (props) => {
       <View style={{flexDirection: 'row'}}>
         {props.gridOptions.map((option, index) => (
           <CellComponent
+            activeIfValue={option?.activeIfValue}
+            keyToActivateField={option?.keyToActivateField}
             key={index}
+            keyName={option.field}
+            formRequired={option?.formRequired}
             activateDisabledFeature={props.activateDisabledFeature}
             cellId={item[props.keyExtractor]}
             colHeight={props.colHeight}
@@ -287,8 +295,11 @@ const GridCellComponent = (props) => {
             cellAlign={option.cellAlign}
             activeText={option?.activeText}
             inActiveText={option?.inActiveText}
+            placeholder={option?.placeholder}
             bgColor={'white'}
             data={item[option.field]}
+            dataObj={item}
+            options={item[option.optionField]}
             headerColor={'black'}
             cellType={option.cellType}
             level={item.level ? item.level : 0}
@@ -304,6 +315,8 @@ const GridCellComponent = (props) => {
             onPressTree={props.onPressTree}
             onPressCheckBox={props.onPressCheckBox}
             onSwitch={props.onSwitch}
+            onPickItem={props.onPickItem}
+            onChangeText={props.onChangeText}
             cellVisible={
               option.cellVisible == undefined ? true : option.cellVisible
             }
@@ -345,6 +358,10 @@ const CellComponent = (props) => {
         return <CellCheckBoxComponent {...props} />;
       case 'switch':
         return <CellSwitchComponent {...props} />;
+      case 'dropdown':
+        return <CellDropDownComponent {...props} />;
+      case 'textinput':
+        return <CellTextInputComponent {...props} />;
       default:
         return <CellTextComponent {...props} />;
     }
@@ -529,6 +546,78 @@ const CellSwitchComponent = (props) => {
   );
 };
 
+const CellDropDownComponent = (props) => {
+  return (
+    <View
+      style={{
+        height: props.colHeight,
+        width: props?.width,
+        justifyContent: 'center',
+        alignItems: props.cellAlign,
+        backgroundColor: props.activateDisabledFeature
+          ? props.isCellDisabled
+            ? colors.disabled_table
+            : props.bgColor
+          : props.bgColor,
+        borderBottomColor: '#D8D8D8',
+        borderBottomWidth: 1,
+        borderRightColor: '#D8D8D8',
+        borderRightWidth: 1,
+      }}>
+      <GridDropDownComponent
+        isDisabled={props.isCellDisabled}
+        dataId={props.cellId}
+        items={props.options}
+        color={
+          props.isCellDisabled ? colors.gray : props.headerColor || 'black'
+        }
+        onPickItem={props.onPickItem}
+        value={props.data}
+      />
+    </View>
+  );
+};
+
+const CellTextInputComponent = (props) => {
+  const isEditable = () => {
+    if (props.activeIfValue && props.keyToActivateField) {
+      return props.dataObj[props.keyToActivateField] === props.activeIfValue;
+    }
+    return !props.isCellDisabled;
+  };
+  return (
+    <View
+      style={{
+        height: props.colHeight,
+        width: props?.width,
+        justifyContent: 'center',
+        alignItems: props.cellAlign,
+        backgroundColor: props.activateDisabledFeature
+          ? props.isCellDisabled
+            ? colors.disabled_table
+            : props.bgColor
+          : props.bgColor,
+        borderBottomColor: '#D8D8D8',
+        borderBottomWidth: 1,
+        borderRightColor: '#D8D8D8',
+        borderRightWidth: 1,
+      }}>
+      <GridTextInputComponent
+        isEditable={isEditable()}
+        dataId={props.cellId}
+        onChangeText={props.onChangeText}
+        color={
+          props.isCellDisabled ? colors.gray : props.headerColor || 'black'
+        }
+        value={props.data}
+        keyName={props.keyName}
+        placeholder={props.placeholder}
+        isRequired={props.formRequired}
+      />
+    </View>
+  );
+};
+
 GridComponent.propTypes = {
   loading: PropTypes.bool,
   indexIdentifier: PropTypes.string,
@@ -537,6 +626,8 @@ GridComponent.propTypes = {
   onPressCell: PropTypes.func,
   onPressCheckBox: PropTypes.func,
   onSwitch: PropTypes.func,
+  onPickItem: PropTypes.func,
+  onChangeText: PropTypes.func,
   colHeight: PropTypes.number,
   keyExtractor: PropTypes.string,
   onPressHeaderCheckBox: PropTypes.func,
@@ -560,9 +651,11 @@ GridComponent.defaultProps = {
   onPressTree: () => {},
   onPressCell: () => {},
   onPressCheckBox: () => {},
+  onChangeText: () => {},
   dataSetter: () => {},
   onPressHeaderCheckBox: () => {},
   onSwitch: () => {},
+  onPickItem: () => {},
   onSort: () => {},
   isOverflow: false,
   customTableStyle: {},

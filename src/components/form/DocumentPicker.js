@@ -7,20 +7,26 @@ import {Text} from '../index';
 import Feather from 'react-native-vector-icons/Feather';
 import {useToastHooks} from '../../customHooks/customHooks';
 import Helper from '../../helpers/helper';
+import {FileSystem} from 'react-native-file-access';
 
 const DocumentPickerComponent = (props) => {
   const showToast = useToastHooks();
-  const {inputHandler, type, name} = props;
+  const {value, inputHandler, type, name, fieldForFilename} = props;
   const [fileName, setFileName] = useState('');
   const pickDocument = async () => {
     try {
       const res = await DocumentPicker.pick({
         type: type,
       });
+      const imageFile = await FileSystem.readFile(res.uri, 'base64');
+      const base64File = `data:image/png;base64,${imageFile}`;
       const isAvailableSize = Helper.imageSizeValidation(res.size, 1024000);
       if (isAvailableSize) {
-        setFileName(res.name);
-        inputHandler(name, res.uri);
+        inputHandler(
+          [name, fieldForFilename],
+          [base64File, res.name],
+          'arrayInput',
+        );
       } else {
         showToast({
           title: 'Upload Image',
@@ -57,7 +63,13 @@ const DocumentPickerComponent = (props) => {
       </TouchableOpacity>
       <View style={styles.pickerPlaceholderContainer}>
         <Text style={styles.pickerPlaceholderText}>
-          {fileName.length > 20 ? fileName.substring(0, 25) + '...' : fileName}
+          {fileName
+            ? fileName.length > 20
+              ? fileName.substring(0, 20)
+              : fileName
+            : value[fieldForFilename].length > 20
+            ? value[fieldForFilename].substring(0, 20)
+            : value[fieldForFilename]}
         </Text>
       </View>
     </View>
@@ -68,11 +80,15 @@ DocumentPickerComponent.propTypes = {
   inputHandler: PropTypes.func,
   type: PropTypes.array,
   name: PropTypes.string,
+  fieldForFilename: PropTypes.string,
+  value: PropTypes.string,
 };
 DocumentPickerComponent.defaultProps = {
   inputHandler: () => {},
   type: ['image/png'],
   name: '',
+  fieldForFilename: '',
+  value: '',
 };
 
 export default DocumentPickerComponent;

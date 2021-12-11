@@ -319,4 +319,32 @@ export default {
     borderWidth: 1,
     borderColor: '#A8A8A8',
   },
+  tableDropDown: {
+    width: '100%',
+    height: '100%',
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  tableDropDownTextContainer: {
+    paddingHorizontal: 10,
+    justifyContent: 'center',
+    width: '80%',
+    height: '100%',
+  },
+  tableDropDownButton: {
+    backgroundColor: '#f5f5f5',
+    width: '18%',
+    height: '95%',
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderWidth: 1,
+    borderColor: '#A8A8A8',
+    borderRadius: 5,
+  },
+  tableTextInput: {
+    width: '100%',
+    height: '100%',
+    paddingHorizontal: 10,
+    alignItems: 'center',
+  },
 };

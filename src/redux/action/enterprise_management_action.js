@@ -356,7 +356,9 @@ const getCustomLabel = (businessCat) => {
           const customLabel = result.map((data) => {
             data.switchActive = data.activeStatus;
             data.defaultLabel = `Custom ${data.labelNumber}`;
-            data.fieldTypeArray = business_category_field_type;
+            data.fieldTypeArray = business_category_field_type.map((field) => {
+              return {value: field, label: field};
+            });
             return data;
           });
           dispatch(saveCustomLabel(customLabel));
