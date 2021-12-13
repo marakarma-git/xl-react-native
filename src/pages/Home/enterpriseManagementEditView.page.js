@@ -50,7 +50,7 @@ const EnterpriseManagementEditView = ({route, navigation}) => {
   const showToast = useToastHooks();
   const dispatch = useDispatch();
   const {imageBase64} = useSelector((state) => state.enterprise_reducer);
-  const {business_category, custom_label, enterprise_detail} = useSelector(
+  const {business_category, enterprise_detail} = useSelector(
     (state) => state.enterprise_management_get_enterprise_reducer,
   );
   const [scrollViewEnabled, setScrollViewEnabled] = useState(true);
@@ -70,6 +70,7 @@ const EnterpriseManagementEditView = ({route, navigation}) => {
   const [formValidation, setFormValidation] = useState({});
   const [localEnterpriseId, setLocalEnterpriseId] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
+  const [customLabelValidation, setCustomLabelValidation] = useState([]);
   //Function
   const basicInformationInputHandler = (name, value) => {
     setBasicInformation({
@@ -166,7 +167,6 @@ const EnterpriseManagementEditView = ({route, navigation}) => {
         validateErrorCnt++;
       }
     });
-    console.log(validateErrorCnt, 'ERROR COUNt');
     if (validateErrorCnt > 0) {
       setFormValidation(validateError);
       setIsLoading(false);
@@ -180,6 +180,20 @@ const EnterpriseManagementEditView = ({route, navigation}) => {
       });
       return;
     }
+    // Custom Label Validation
+    let errorValidationCnt = 0;
+    customLabelValidation.map((label) => {
+      errorValidationCnt++;
+      showToast({
+        title: 'Error',
+        type: 'error',
+        message: label.errorMsg,
+        duration: 3000,
+        showToast: true,
+        position: 'top',
+      });
+      return;
+    });
 
     dataObj.agreementNumber = basicInformation?.agreementNumber;
     dataObj.bpHo = basicInformation?.bpHo;
@@ -207,7 +221,20 @@ const EnterpriseManagementEditView = ({route, navigation}) => {
         updatedBy: data?.updatedBy,
         updatedTime: data?.updatedTime,
       });
+      if (data.fieldType === 'Combo Box' && !data.customValue) {
+        errorValidationCnt++;
+        showToast({
+          title: 'Error',
+          type: 'error',
+          message: 'Custom Value Required',
+          duration: 3000,
+          showToast: true,
+          position: 'top',
+        });
+        return;
+      }
     });
+    if (errorValidationCnt > 0) return;
 
     if (validateErrorCnt <= 0) {
       try {
@@ -237,6 +264,7 @@ const EnterpriseManagementEditView = ({route, navigation}) => {
             });
             formCancelAction(actionNumber, 'submit');
             setFormValidation({});
+            setCustomLabelValidation([]);
           } else {
             showToast({
               title: 'Edit Onboard Enterprise',
@@ -281,6 +309,7 @@ const EnterpriseManagementEditView = ({route, navigation}) => {
           dispatch(resetCustomLabel());
           dispatch(getCustomLabel(localEnterpriseId, 'enterpriseId'));
         }
+        setCustomLabelValidation([]);
         setIsEditCustomLabelActive(false);
         break;
 
@@ -420,6 +449,7 @@ const EnterpriseManagementEditView = ({route, navigation}) => {
               setChangesLabelRow={setChangesLabelRow}
               isCreate={false}
               isDisabled={!isEditCustomLabelActive}
+              setFormValidation={setCustomLabelValidation}
             />
           }
         />

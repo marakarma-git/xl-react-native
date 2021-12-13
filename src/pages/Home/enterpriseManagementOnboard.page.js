@@ -19,6 +19,7 @@ import {useToastHooks} from '../../customHooks/customHooks';
 import {
   getBusinessCategory,
   getBusinessFieldType,
+  resetCustomLabel,
 } from '../../redux/action/enterprise_management_action';
 import {colors} from '../../constant/color';
 import {setRequestError} from '../../redux/action/dashboard_action';
@@ -66,6 +67,7 @@ const EnterpriseManagementOnBoardPage = ({route, navigation}) => {
   const [changesLabelRow, setChangesLabelRow] = useState([]);
   // Validation State
   const [formValidation, setFormValidation] = useState({});
+  const [customLabelValidation, setCustomLabelValidation] = useState([]);
   //Form Function
   const stepValidation = () => {
     let validateError = {};
@@ -125,6 +127,21 @@ const EnterpriseManagementOnBoardPage = ({route, navigation}) => {
       imageLogo: '',
     };
 
+    // check custom value validation
+    let errorValidationCnt = 0;
+    customLabelValidation.map((label) => {
+      errorValidationCnt++;
+      showToast({
+        title: 'Error',
+        type: 'error',
+        message: label.errorMsg,
+        duration: 3000,
+        showToast: true,
+        position: 'top',
+      });
+      return;
+    });
+
     dataObj.agreementNumber = basicInformation?.agreementNumber;
     dataObj.bpHo = basicInformation?.bpHo;
     dataObj.bpPayer = basicInformation?.bpPayer;
@@ -149,8 +166,20 @@ const EnterpriseManagementOnBoardPage = ({route, navigation}) => {
         fieldType: data.fieldType,
         labelNumber: data.labelNumber,
       });
+      if (data.fieldType === 'Combo Box' && !data.customValue) {
+        errorValidationCnt++;
+        showToast({
+          title: 'Error',
+          type: 'error',
+          message: 'Custom Value Required',
+          duration: 3000,
+          showToast: true,
+          position: 'top',
+        });
+        return;
+      }
     });
-
+    if (errorValidationCnt > 0) return;
     try {
       const customHeader = {
         headers: {
@@ -292,6 +321,7 @@ const EnterpriseManagementOnBoardPage = ({route, navigation}) => {
               changesLabelRow={changesLabelRow}
               setChangesLabelRow={setChangesLabelRow}
               isDisabled={false}
+              setFormValidation={setCustomLabelValidation}
             />
           ),
         },
@@ -315,6 +345,7 @@ const EnterpriseManagementOnBoardPage = ({route, navigation}) => {
       setFormValidation({});
       setChangesLabelRow([]);
       setCustomLabel([]);
+      dispatch(resetCustomLabel());
     });
     return pageBlur;
   }, [navigation]);

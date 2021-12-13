@@ -257,6 +257,14 @@ const getEnterpriseList = (paginate) => {
       }
     };
 
+    const customHeaders = {
+      headers: {
+        activityId: searchText || generatedParams ? 'AP-29' : 'AP-16',
+        showParams: searchText || generatedParams ? true : false,
+        excludeParamsKey: 'page|size',
+      },
+    };
+
     console.log(
       `${base_url}/user/corp/v2/getEnterpriseList?page${getPage}&size=${getSize}&keyword=${searchText}${
         getSortBy() ? `&order=${getSortBy()}` : ''
@@ -265,17 +273,13 @@ const getEnterpriseList = (paginate) => {
         .join('+'),
     );
     try {
-      const {data} = await axios.get(
-        `${base_url}/user/corp/v2/getEnterpriseList?page${getPage}&size=${getSize}&keyword=${searchText}${
+      const {data} = await httpRequest.get(
+        `${base_url}/user/corp/v2/getEnterpriseList?page=${getPage}&size=${getSize}&keyword=${searchText}${
           getSortBy() ? `&order=${getSortBy()}` : ''
         }${getSortBy() ? `&sort=${getOrderBy()}` : ''}${generatedParams}`
           .split(' ')
           .join('+'),
-        {
-          headers: {
-            Authorization: 'Bearer ' + access_token,
-          },
-        },
+        customHeaders,
       );
 
       if (data) {

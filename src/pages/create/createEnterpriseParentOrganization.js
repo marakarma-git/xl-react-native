@@ -117,6 +117,8 @@ const CreateEnterpriseParentOrganization = (props) => {
           } else {
             if (data.enterpriseParentId === cellId) {
               data.treeCheck = !isCheck;
+              // find children
+              deepArrayChildren(data.children, isCheck);
             }
             data.isDisabled = !isCheck;
           }
@@ -132,6 +134,24 @@ const CreateEnterpriseParentOrganization = (props) => {
       }
     });
     return data;
+  };
+  const deepArrayChildren = (data, isCheck) => {
+    // base case
+    let isFinish = true;
+    if (typeof data === 'object' && data.length <= 0) {
+      return data;
+    }
+    data.map((datas) => {
+      datas.treeCheck = !isCheck;
+      if (typeof datas === 'object' && datas.length > 0) {
+        isFinish = false;
+        deepArrayChildren(data.children, isCheck);
+      }
+    });
+
+    if (isFinish) {
+      return data;
+    }
   };
   const onCellHide = (data, cellId, enterpriseStatus, visibility) => {
     data.map((data) => {

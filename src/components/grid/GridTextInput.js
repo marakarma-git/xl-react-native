@@ -17,9 +17,9 @@ const GridTextInputComponent = (props) => {
     keyName,
     placeholder,
     isRequired,
+    setFormValidation,
   } = props;
   const formValidation = (text) => {
-    console.log(text);
     const title = Helper.makeCamelCaseToTitle(keyName);
     const errorValidation = Helper.requiredValidation(title, text);
     if (errorValidation) {
@@ -31,6 +31,14 @@ const GridTextInputComponent = (props) => {
         showToast: true,
         position: 'top',
       });
+      setFormValidation((prevState) => [
+        ...prevState,
+        {errorMsg: errorValidation, id: dataId},
+      ]);
+    } else {
+      setFormValidation((prevState) =>
+        [...prevState].filter((error) => error.id !== dataId),
+      );
     }
   };
   return (
@@ -59,6 +67,7 @@ GridTextInputComponent.propTypes = {
   keyName: PropTypes.string,
   placeholder: PropTypes.string,
   isRequired: PropTypes.bool,
+  setFormValidation: PropTypes.func,
 };
 GridTextInputComponent.defaultProps = {
   value: '',
@@ -70,6 +79,7 @@ GridTextInputComponent.defaultProps = {
   keyName: '',
   placeholder: '',
   isRequired: false,
+  setFormValidation: () => {},
 };
 
 export default GridTextInputComponent;
