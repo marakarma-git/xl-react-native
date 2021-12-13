@@ -11,6 +11,7 @@ const CreateEnterpriseBasicInformation = (props) => {
     value,
     setFormError,
     dropDownData,
+    isCreate,
   } = props;
   const formList = [
     {
@@ -29,7 +30,7 @@ const CreateEnterpriseBasicInformation = (props) => {
       isRequired: true,
       type: 'text',
       validationType: 'required',
-      editable: true,
+      editable: isCreate,
     },
     {
       title: 'BP HO',
@@ -92,7 +93,7 @@ const CreateEnterpriseBasicInformation = (props) => {
       isRequired: true,
       type: 'select',
       validationType: 'required',
-      editable: true,
+      editable: isCreate,
       options: dropDownData || [{value: '', label: ''}],
       config: {
         searchable: false,
@@ -127,6 +128,7 @@ CreateEnterpriseBasicInformation.propTypes = {
   inputHandler: PropTypes.func,
   value: PropTypes.object,
   dropDownData: PropTypes.array,
+  isCreate: PropTypes.bool,
 };
 CreateEnterpriseBasicInformation.defaultProps = {
   editable: false,
@@ -135,6 +137,7 @@ CreateEnterpriseBasicInformation.defaultProps = {
   inputHandler: () => {},
   value: {},
   dropDownData: [{value: '', label: ''}],
+  isCreate: true,
 };
 
 export default CreateEnterpriseBasicInformation;

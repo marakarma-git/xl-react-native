@@ -18,6 +18,7 @@ const dataHeaderEnterprise = [
       showIcon: true,
       isTouchable: true,
       isTreeView: true,
+      isNavigate: true,
     },
     shown: true,
   },

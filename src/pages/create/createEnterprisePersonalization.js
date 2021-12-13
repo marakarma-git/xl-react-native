@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import {FormFactory} from '../../components';
 
 const CreateEnterprisePersonalization = (props) => {
-  const {editable, formError, inputHandler, value} = props;
+  const {editable, formError, inputHandler, value, isActive} = props;
   const formList = [
     {
       title: 'Upload Company Logo',
@@ -34,14 +34,14 @@ const CreateEnterprisePersonalization = (props) => {
   ];
   return (
     <FormFactory
-      formList={formList}
+      formList={isActive ? formList : [formList[2]]}
       isValidate={false}
       editable={editable}
       formError={formError}
       inputHandler={inputHandler}
       value={value}
-      imagePreview={value.companyLogo}
-      imageBgColor={value.topBarColour}
+      imagePreview={value?.companyLogo}
+      imageBgColor={value?.topBarColour}
     />
   );
 };
@@ -51,12 +51,14 @@ CreateEnterprisePersonalization.propTypes = {
   formError: PropTypes.object,
   inputHandler: PropTypes.func,
   value: PropTypes.object,
+  isActive: PropTypes.bool,
 };
 CreateEnterprisePersonalization.defaultProps = {
   editable: true,
   formError: {},
   inputHandler: () => {},
   value: {},
+  isActive: true,
 };
 
 export default CreateEnterprisePersonalization;

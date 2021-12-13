@@ -45,7 +45,7 @@ const FormFactoryComponent = (props) => {
             <DropDownPickerComponent
               name={form.name}
               title={form?.title}
-              disabled={!editable}
+              editable={!form?.editable}
               setValue={form?.config?.setValue}
               placeholder={form?.config?.placeholder}
               options={form.options}
@@ -107,15 +107,34 @@ const FormFactoryComponent = (props) => {
           );
       }
     } else {
-      return (
-        <TextInputComponent
-          name={form.name}
-          inputHandler={inputHandler}
-          value={value[form.name]}
-          editable={editable}
-          placeholder={form.title}
-        />
-      );
+      switch (form.type) {
+        case 'select':
+          return (
+            <DropDownPickerComponent
+              name={form.name}
+              title={form?.title}
+              editable={!form?.editable}
+              setValue={form?.config?.setValue}
+              placeholder={form?.config?.placeholder}
+              options={form.options}
+              searchable={form?.config?.searchable}
+              validation={form?.validation}
+              value={value[form.name] || form?.config?.defaultValue}
+              setValidationError={setFormError}
+              dropDownHeight={form?.config?.dropDownHeight}
+            />
+          );
+        default:
+          return (
+            <TextInputComponent
+              name={form.name}
+              inputHandler={inputHandler}
+              value={value[form.name]}
+              editable={editable}
+              placeholder={form.title}
+            />
+          );
+      }
     }
   };
 

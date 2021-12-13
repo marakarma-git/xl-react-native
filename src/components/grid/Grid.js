@@ -60,6 +60,7 @@ const GridComponent = (props) => {
               onPickItem={props.onPickItem}
               onChangeText={props.onChangeText}
               activateDisabledFeature={props.activateDisabledFeature}
+              isTableDisabled={props.isTableDisabled}
             />
           )}
         </ScrollView>
@@ -275,7 +276,7 @@ const GridCellComponent = (props) => {
         />
       </View>
     );
-  }, [props.gridData]);
+  }, [props.gridData, props.isTableDisabled]);
 
   const renderCell = ({item}) => {
     return (
@@ -309,9 +310,10 @@ const GridCellComponent = (props) => {
             icon={item.icon}
             isActive={item.switchActive}
             isCellDisabled={!item.switchActive}
+            isDisabled={item.isDisabled}
+            isTableDisabled={props?.isTableDisabled}
             isSelect={item.treeCheck}
             isCheck={item.isCheck}
-            isDisabled={item.isDisabled}
             onPressTree={props.onPressTree}
             onPressCheckBox={props.onPressCheckBox}
             onSwitch={props.onSwitch}
@@ -381,11 +383,13 @@ const CellTreeViewCheckBoxComponent = (props) => {
         width: props?.width,
         justifyContent: 'flex-start',
         alignItems: 'center',
-        backgroundColor: props.activateDisabledFeature
-          ? props.isCellDisabled
-            ? colors.disabled_table
+        backgroundColor: !props.isTableDisabled
+          ? props.activateDisabledFeature
+            ? props.isCellDisabled
+              ? colors.disabled_table
+              : props.bgColor
             : props.bgColor
-          : props.bgColor,
+          : colors.disabled_table,
         borderBottomColor: '#D8D8D8',
         borderBottomWidth: 1,
         borderRightColor: '#D8D8D8',
@@ -426,11 +430,13 @@ const CellTreeViewComponent = (props) => {
         width: props?.width,
         justifyContent: 'flex-start',
         alignItems: 'center',
-        backgroundColor: props.activateDisabledFeature
-          ? props.isCellDisabled
-            ? colors.disabled_table
+        backgroundColor: !props.isTableDisabled
+          ? props.activateDisabledFeature
+            ? props.isCellDisabled
+              ? colors.disabled_table
+              : props.bgColor
             : props.bgColor
-          : props.bgColor,
+          : colors.disabled_table,
         borderBottomColor: '#D8D8D8',
         borderBottomWidth: 1,
         borderRightColor: '#D8D8D8',
@@ -464,11 +470,13 @@ const CellTextComponent = (props) => {
         width: props?.width,
         justifyContent: 'center',
         alignItems: props.cellAlign,
-        backgroundColor: props.activateDisabledFeature
-          ? props.isCellDisabled
-            ? colors.disabled_table
+        backgroundColor: !props.isTableDisabled
+          ? props.activateDisabledFeature
+            ? props.isCellDisabled
+              ? colors.disabled_table
+              : props.bgColor
             : props.bgColor
-          : props.bgColor,
+          : colors.disabled_table,
         borderBottomColor: '#D8D8D8',
         borderBottomWidth: 1,
         borderRightColor: '#D8D8D8',
@@ -497,11 +505,13 @@ const CellCheckBoxComponent = (props) => {
         width: props?.width,
         justifyContent: 'center',
         alignItems: props.cellAlign,
-        backgroundColor: props.activateDisabledFeature
-          ? props.isCellDisabled
-            ? colors.disabled_table
+        backgroundColor: !props.isTableDisabled
+          ? props.activateDisabledFeature
+            ? props.isCellDisabled
+              ? colors.disabled_table
+              : props.bgColor
             : props.bgColor
-          : props.bgColor,
+          : colors.disabled_table,
         borderBottomColor: '#D8D8D8',
         borderBottomWidth: 1,
         borderRightColor: '#D8D8D8',
@@ -524,24 +534,37 @@ const CellSwitchComponent = (props) => {
         width: props?.width,
         justifyContent: 'center',
         alignItems: props.cellAlign,
-        backgroundColor: props.activateDisabledFeature
-          ? props.isCellDisabled
-            ? colors.disabled_table
+        backgroundColor: !props.isTableDisabled
+          ? props.activateDisabledFeature
+            ? props.isCellDisabled
+              ? colors.disabled_table
+              : props.bgColor
             : props.bgColor
-          : props.bgColor,
+          : colors.disabled_table,
         borderBottomColor: '#D8D8D8',
         borderBottomWidth: 1,
         borderRightColor: '#D8D8D8',
         borderRightWidth: 1,
       }}>
-      <GridSwitchComponent
-        value={props.isActive}
-        onSwitch={props.onSwitch}
-        activeText={props.activeText}
-        inActiveText={props.inActiveText}
-        isDisabled={props.isDisabled}
-        dataId={props.cellId}
-      />
+      {props.isTableDisabled ? (
+        <GridSwitchComponent
+          value={props.isActive}
+          onSwitch={() => {}}
+          activeText={props.activeText}
+          inActiveText={props.inActiveText}
+          isDisabled={props.isDisabled}
+          dataId={props.cellId}
+        />
+      ) : (
+        <GridSwitchComponent
+          value={props.isActive}
+          onSwitch={props.onSwitch}
+          activeText={props.activeText}
+          inActiveText={props.inActiveText}
+          isDisabled={props.isDisabled}
+          dataId={props.cellId}
+        />
+      )}
     </View>
   );
 };
@@ -554,11 +577,13 @@ const CellDropDownComponent = (props) => {
         width: props?.width,
         justifyContent: 'center',
         alignItems: props.cellAlign,
-        backgroundColor: props.activateDisabledFeature
-          ? props.isCellDisabled
-            ? colors.disabled_table
+        backgroundColor: !props.isTableDisabled
+          ? props.activateDisabledFeature
+            ? props.isCellDisabled
+              ? colors.disabled_table
+              : props.bgColor
             : props.bgColor
-          : props.bgColor,
+          : colors.disabled_table,
         borderBottomColor: '#D8D8D8',
         borderBottomWidth: 1,
         borderRightColor: '#D8D8D8',
@@ -592,28 +617,45 @@ const CellTextInputComponent = (props) => {
         width: props?.width,
         justifyContent: 'center',
         alignItems: props.cellAlign,
-        backgroundColor: props.activateDisabledFeature
-          ? props.isCellDisabled
-            ? colors.disabled_table
+        backgroundColor: !props.isTableDisabled
+          ? props.activateDisabledFeature
+            ? props.isCellDisabled
+              ? colors.disabled_table
+              : props.bgColor
             : props.bgColor
-          : props.bgColor,
+          : colors.disabled_table,
         borderBottomColor: '#D8D8D8',
         borderBottomWidth: 1,
         borderRightColor: '#D8D8D8',
         borderRightWidth: 1,
       }}>
-      <GridTextInputComponent
-        isEditable={isEditable()}
-        dataId={props.cellId}
-        onChangeText={props.onChangeText}
-        color={
-          props.isCellDisabled ? colors.gray : props.headerColor || 'black'
-        }
-        value={props.data}
-        keyName={props.keyName}
-        placeholder={props.placeholder}
-        isRequired={props.formRequired}
-      />
+      {props.isTableDisabled ? (
+        <GridTextInputComponent
+          isEditable={!props.isTableDisabled}
+          dataId={props.cellId}
+          onChangeText={props.onChangeText}
+          color={
+            props.isCellDisabled ? colors.gray : props.headerColor || 'black'
+          }
+          value={props.data}
+          keyName={props.keyName}
+          placeholder={props.placeholder}
+          isRequired={props.formRequired}
+        />
+      ) : (
+        <GridTextInputComponent
+          isEditable={isEditable()}
+          dataId={props.cellId}
+          onChangeText={props.onChangeText}
+          color={
+            props.isCellDisabled ? colors.gray : props.headerColor || 'black'
+          }
+          value={props.data}
+          keyName={props.keyName}
+          placeholder={props.placeholder}
+          isRequired={props.formRequired}
+        />
+      )}
     </View>
   );
 };
@@ -635,6 +677,7 @@ GridComponent.propTypes = {
   sortField: PropTypes.string,
   onSort: PropTypes.func,
   isOverflow: PropTypes.bool,
+  isTableDisabled: PropTypes.bool,
   customTableStyle: PropTypes.object,
   activateDisabledFeature: PropTypes.bool,
 };
@@ -658,6 +701,7 @@ GridComponent.defaultProps = {
   onPickItem: () => {},
   onSort: () => {},
   isOverflow: false,
+  isTableDisabled: false,
   customTableStyle: {},
   activateDisabledFeature: false,
 };

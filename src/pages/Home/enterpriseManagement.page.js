@@ -14,6 +14,7 @@ import {
   enterpriseManagementHideShow,
   enterpriseManagementCheckBoxToggle,
   enterpriseManagementSetDataGenerated,
+  enterpriseManagementSetDetailParams,
 } from '../../redux/action/enterprise_management_action';
 import SearchHeader from '../../components/subscription/searchHeader';
 import AppliedFilter from '../../components/subscription/appliedFilter';
@@ -159,6 +160,10 @@ const EnterpriseManagement = () => {
           }}
           dataHeader={dataHeaderEnterprise}
           dataTable={data_enterprise_generated}
+          onPressCell={(e) => {
+            dispatch(enterpriseManagementSetDetailParams(e.item.enterpriseId));
+            navigation.navigate('EnterpriseManagementEditView');
+          }}
           onPressCheckCell={(e) =>
             dispatch(
               enterpriseManagementCheckBoxToggle(e.item.item.enterpriseId),

@@ -19,7 +19,7 @@ const DocumentPickerComponent = (props) => {
         type: type,
       });
       const imageFile = await FileSystem.readFile(res.uri, 'base64');
-      const base64File = `data:image/png;base64,${imageFile}`;
+      const base64File = `${imageFile}`;
       const isAvailableSize = Helper.imageSizeValidation(res.size, 1024000);
       if (isAvailableSize) {
         inputHandler(

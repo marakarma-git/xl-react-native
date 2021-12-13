@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import PropTypes from 'prop-types';
 import styles from '../../style/account.style';
 import {TextInput} from 'react-native';
@@ -18,8 +18,7 @@ const TextInputComponent = (props) => {
   } = props;
   const onChangeHandler = (text) => {
     inputHandler(name, text);
-    if (validation)
-      setValidationError(name, Helper.requiredValidation(title, text));
+    setValidationError(name, Helper.requiredValidation(title, text));
   };
   return (
     <TextInput

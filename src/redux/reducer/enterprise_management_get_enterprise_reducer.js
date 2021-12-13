@@ -21,6 +21,8 @@ const initialState = {
   business_category: null,
   business_category_field_type: null,
   custom_label: null,
+  enterprise_detail: null,
+  detail_params: '',
 };
 
 const enterprise_management_get_enterprise_reducer = (
@@ -136,6 +138,30 @@ const enterprise_management_get_enterprise_reducer = (
       return {
         ...state,
         custom_label: action.payload,
+      };
+    }
+    case reduxString.SAVE_ENTERPRISE_DETAIL: {
+      return {
+        ...state,
+        enterprise_detail: action.payload,
+      };
+    }
+    case reduxString.RESET_ENTERPRISE_DETAIL: {
+      return {
+        ...state,
+        enterprise_detail: null,
+      };
+    }
+    case reduxString.ENTERPRISE_MANAGEMENT_SET_DETAIL_PARAMS: {
+      return {
+        ...state,
+        detail_params: action.payload,
+      };
+    }
+    case reduxString.RESET_CUSTOM_LABEL: {
+      return {
+        ...state,
+        custom_label: null,
       };
     }
     default: {

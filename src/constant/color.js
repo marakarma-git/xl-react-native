@@ -49,6 +49,7 @@ export const colors = {
   disabled_cancel: color_theme_one.silver,
   checked_box: color_theme_one.green,
   disabled_table: '#eee',
+  link_color: '#3357da',
 };
 
 export const preDefineColorPallete = [

@@ -24,6 +24,7 @@ const ButtonLabelComponent = (props) => {
         {
           backgroundColor: isLoading ? colors.gray_200 : buttonColor,
           width: buttonWidth,
+          height: 30,
         },
       ]}
       onPress={buttonAction}>
@@ -63,11 +64,11 @@ ButtonLabelComponent.defaultProps = {
 
 const styles = StyleSheet.create({
   button: {
-    paddingVertical: 5,
     borderRadius: 3,
     marginVertical: 10,
     marginHorizontal: 5,
     alignItems: 'center',
+    justifyContent: 'center',
   },
   text: {
     fontSize: 12,

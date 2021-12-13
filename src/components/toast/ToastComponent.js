@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import {Text} from '../index';
 import {Animated, StyleSheet, Dimensions, TouchableOpacity} from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import {color_theme_one} from '../../constant/color';
+import {color_theme_one, colors} from '../../constant/color';
 
 const toastWidth = Dimensions.get('screen').width - 20;
 
@@ -15,7 +15,7 @@ const ToastComponent = (props) => {
   const renderToastType = (type, impactOn = 'color') => {
     switch (type) {
       case 'success':
-        return impactOn == 'color' ? color_theme_one.torquoise : 'checkmark';
+        return impactOn == 'color' ? colors.tab_edit : 'checkmark';
       case 'warning':
         return impactOn == 'color' ? '#FFBB01' : 'warning';
       case 'error':

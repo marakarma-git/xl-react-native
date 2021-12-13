@@ -80,6 +80,8 @@ const CreateEnterpriseCustomLabel = (props) => {
     setCustomLabel,
     changesLabelRow,
     setChangesLabelRow,
+    isDisabled,
+    isCreate,
   } = props;
   const {custom_label} = useSelector(
     (state) => state.enterprise_management_get_enterprise_reducer,
@@ -87,10 +89,11 @@ const CreateEnterpriseCustomLabel = (props) => {
   const [gridOptions, setGridOptions] = useState(gridOptionsArray);
   const [gridData, setGridData] = useState([]);
   const [isReady, setIsReady] = useState(false);
+  const [dataKey, setDataKey] = useState('suggestId');
   const onSwitchStatus = (dataId, val) => {
     const resData = [...gridData];
     const dataChanges = resData.map((data) => {
-      if (data.suggestId === dataId) {
+      if (data[dataKey] === dataId) {
         data.switchActive = val;
         data.activeStatus = val;
       }
@@ -101,7 +104,7 @@ const CreateEnterpriseCustomLabel = (props) => {
   const onPickItem = (value, dataId) => {
     const resData = [...gridData];
     const dataChanges = resData.map((data) => {
-      if (data.suggestId === dataId) {
+      if (data[dataKey] === dataId) {
         data.fieldType = value;
       }
       return data;
@@ -111,7 +114,7 @@ const CreateEnterpriseCustomLabel = (props) => {
   const onChangeText = (dataId, keyName, text) => {
     const resData = [...gridData];
     const dataChanges = resData.map((data) => {
-      if (data.suggestId === dataId) {
+      if (data[dataKey] === dataId) {
         data[keyName] = text;
       }
       return data;
@@ -121,7 +124,7 @@ const CreateEnterpriseCustomLabel = (props) => {
   const changeDataHandler = (dataChanges, dataId, formType = 'switch') => {
     const addChangesLabel = [...changesLabelRow];
     const filterChangesLabel = dataChanges.find(
-      (data) => data.suggestId == dataId,
+      (data) => data[dataKey] == dataId,
     );
     if (filterChangesLabel.activeStatus) {
       if (formType === 'switch') {
@@ -130,21 +133,21 @@ const CreateEnterpriseCustomLabel = (props) => {
       } else {
         setChangesLabelRow((prevState) =>
           [...prevState].map((data) => {
-            if (data.suggestId === dataId) data = filterChangesLabel;
+            if (data[dataKey] === dataId) data = filterChangesLabel;
             return data;
           }),
         );
       }
     } else {
       const filterData = addChangesLabel.filter(
-        (data) => data.suggestId !== dataId,
+        (data) => data[dataKey] !== dataId,
       );
       setChangesLabelRow(filterData);
     }
     setGridData(dataChanges);
     setCustomLabel(changeCustomLabel(dataChanges));
   };
-  const dataManipulation = (data) => {
+  const dataManipulation = (data, keyItem) => {
     const resData = [...data];
     const dataChanges = [];
     if (changesLabelRow.length > 0) {
@@ -152,8 +155,7 @@ const CreateEnterpriseCustomLabel = (props) => {
       resData.map((data) => {
         let changesTempData = null;
         changesLabel.map((labelData) => {
-          if (data.suggestId === labelData.suggestId)
-            changesTempData = labelData;
+          if (data[keyItem] === labelData[keyItem]) changesTempData = labelData;
         });
         if (changesTempData) dataChanges.push(changesTempData);
         else dataChanges.push(data);
@@ -167,16 +169,20 @@ const CreateEnterpriseCustomLabel = (props) => {
   };
   const changeCustomLabel = (data) => {
     const resData = [...data];
-    return resData.map((data) => {
-      return {
-        activeStatus: data.activeStatus,
-        customLabel: data.customLabel,
-        customLabelId: '',
-        customValue: data.customValue,
-        fieldType: data.fieldType,
-        labelNumber: data.labelNumber,
-      };
-    });
+    if (isCreate) {
+      return resData.map((data) => {
+        return {
+          activeStatus: data.activeStatus,
+          customLabel: data.customLabel,
+          customLabelId: '',
+          customValue: data.customValue,
+          fieldType: data.fieldType,
+          labelNumber: data.labelNumber,
+        };
+      });
+    } else {
+      return resData;
+    }
   };
   useEffect(() => {
     if (formPosition === 2) {
@@ -187,8 +193,15 @@ const CreateEnterpriseCustomLabel = (props) => {
     }
   }, [formPosition]);
   useEffect(() => {
-    if (isReady) {
-      dataManipulation(custom_label);
+    if (isCreate) {
+      if (isReady) {
+        dataManipulation(custom_label, 'suggestId');
+      }
+    } else {
+      setDataKey('customLabelId');
+      if (custom_label) {
+        dataManipulation(custom_label, 'customLabelId');
+      }
     }
   }, [custom_label]);
   return (
@@ -200,9 +213,10 @@ const CreateEnterpriseCustomLabel = (props) => {
         colHeight={40}
         tableMaxHeight={400}
         isOverflow={true}
+        isTableDisabled={isDisabled}
         customTableStyle={styles.customTable}
         onSwitch={onSwitchStatus}
-        keyExtractor="suggestId"
+        keyExtractor={isCreate ? 'suggestId' : 'customLabelId'}
         activateDisabledFeature={true}
         onPickItem={onPickItem}
         onChangeText={onChangeText}
@@ -217,6 +231,8 @@ CreateEnterpriseCustomLabel.propTypes = {
   setCustomLabel: PropTypes.array,
   changesLabelRow: PropTypes.array,
   setChangesLabelRow: PropTypes.func,
+  isDisabled: PropTypes.bool,
+  isCreate: PropTypes.bool,
 };
 CreateEnterpriseCustomLabel.defaultProps = {
   PropTypes: 0,
@@ -224,6 +240,8 @@ CreateEnterpriseCustomLabel.defaultProps = {
   setCustomLabel: [],
   changesLabelRow: [],
   setChangesLabelRow: () => {},
+  isDisabled: false,
+  isCreate: true,
 };
 
 export default CreateEnterpriseCustomLabel;

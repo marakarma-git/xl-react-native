@@ -7,14 +7,12 @@ const ImagePreviewComponent = (props) => {
   const {image, bgColor} = props;
   return (
     <View style={[styles.imagePreviewContainer, {backgroundColor: bgColor}]}>
-      {image && (
-        <Image
-          style={styles.imagePreview}
-          source={{
-            uri: image,
-          }}
-        />
-      )}
+      <Image
+        style={styles.imagePreview}
+        source={{
+          uri: `data:image/png;base64,${image}`,
+        }}
+      />
     </View>
   );
 };

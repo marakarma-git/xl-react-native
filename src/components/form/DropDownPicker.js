@@ -31,7 +31,13 @@ const DropDownPickerComponent = (props) => {
       setValue={setValue}
       open={isOpen}
       items={options}
-      style={[styles.textInputContainer, {marginBottom: isOpen ? -2 : 10}]}
+      style={[
+        styles.textInputContainer,
+        {
+          marginBottom: isOpen ? -2 : 10,
+          backgroundColor: editable ? '#e4e7ea' : 'white',
+        },
+      ]}
       dropDownDirection="TOP"
       dropDownContainerStyle={{borderRadius: 3}}
       searchable={searchable}

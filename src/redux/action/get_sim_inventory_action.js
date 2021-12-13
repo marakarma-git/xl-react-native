@@ -104,6 +104,7 @@ const dataMatcherArray2D = (listData = [], headerData = []) => {
         isTreeView,
         labelBool,
         textLink,
+        isNavigate,
         ...getAllConfig
       } = config || {};
       if (shown && !doNotShowOnTable) {
@@ -145,6 +146,7 @@ const dataMatcherArray2D = (listData = [], headerData = []) => {
             isTreeView: isTreeView,
             treeLevel: item.level || 0,
             treeCheck: item.treeCheck == undefined ? false : item.treeCheck,
+            isNavigate: isNavigate == undefined ? false : isNavigate,
             textLink,
             rootConfig: getAllConfig,
           },

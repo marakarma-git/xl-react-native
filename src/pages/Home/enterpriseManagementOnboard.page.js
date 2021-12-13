@@ -155,7 +155,7 @@ const EnterpriseManagementOnBoardPage = ({route, navigation}) => {
       const customHeader = {
         headers: {
           activityId: 'AP-17',
-          descSuffix: dataObj.enterpriseName,
+          descSuffix: `Enterprise Name: ${dataObj.enterpriseName}`,
         },
       };
       const {data} = await httpRequest.post(
@@ -291,6 +291,7 @@ const EnterpriseManagementOnBoardPage = ({route, navigation}) => {
               setCustomLabel={setCustomLabel}
               changesLabelRow={changesLabelRow}
               setChangesLabelRow={setChangesLabelRow}
+              isDisabled={false}
             />
           ),
         },

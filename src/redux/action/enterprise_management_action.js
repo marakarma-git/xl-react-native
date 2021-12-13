@@ -43,6 +43,24 @@ const saveCustomLabel = (data) => ({
   payload: data,
 });
 
+const resetCustomLabel = () => ({
+  type: reduxString.RESET_CUSTOM_LABEL,
+});
+
+const saveEnterpriseDetail = (data) => ({
+  type: reduxString.SAVE_ENTERPRISE_DETAIL,
+  payload: data,
+});
+
+const resetEnterpriseDetail = () => ({
+  type: reduxString.RESET_ENTERPRISE_DETAIL,
+});
+
+const enterpriseManagementSetDetailParams = (params) => ({
+  type: reduxString.ENTERPRISE_MANAGEMENT_SET_DETAIL_PARAMS,
+  payload: params,
+});
+
 const enterpriseManagementSetDataGenerated = ({dataEnterpriseGenerated}) => {
   return {
     type: reduxString.ENTERPRISE_MANAGEMENT_SET_DATA_GENERATED,
@@ -316,7 +334,6 @@ const getBusinessCategory = () => {
             return {value: data.code, label: data.value};
           });
           dropDownData.unshift({value: '', label: 'Choose Business Category'});
-          console.log(dropDownData, ' DROPDOWN DATA');
           dispatch(saveBusinessCategoryData(dropDownData));
         }
       }
@@ -342,14 +359,17 @@ const getBusinessFieldType = () => {
   };
 };
 
-const getCustomLabel = (businessCat) => {
+const getCustomLabel = (params, key = 'business_cat') => {
   return async (dispatch, getState) => {
+    let url = `/user/corp/getCustomLabelSuggestions?${key}=${params}`;
+    if (key === 'enterpriseId') {
+      url = `/user/corp/getCustLabelEnterprise?${key}=${params}`;
+    }
+    console.log(url);
     const {business_category_field_type} = await getState()
       .enterprise_management_get_enterprise_reducer;
     try {
-      const {data} = await httpRequest.get(
-        `/user/corp/getCustomLabelSuggestions?business_cat=${businessCat}`,
-      );
+      const {data} = await httpRequest.get(url);
       if (data) {
         const {result, statusCode} = data;
         if (statusCode === 0) {
@@ -365,6 +385,25 @@ const getCustomLabel = (businessCat) => {
         }
       }
     } catch (error) {
+      console.log(error.response.data);
+      dispatch(setRequestError(error.response.data));
+    }
+  };
+};
+
+const getEnterpriseDetail = () => {
+  return async (dispatch, getState) => {
+    const {detail_params} = await getState()
+      .enterprise_management_get_enterprise_reducer;
+    try {
+      const {data} = await httpRequest(
+        `/user/corp/getEnterpriseDetail?enterpriseId=${detail_params}`,
+      );
+      if (data) {
+        const {result, statusCode} = data;
+        if (statusCode === 0) dispatch(saveEnterpriseDetail(result));
+      }
+    } catch (error) {
       dispatch(setRequestError(error.response.data));
     }
   };
@@ -375,6 +414,9 @@ export {
   getBusinessCategory,
   getBusinessFieldType,
   getCustomLabel,
+  getEnterpriseDetail,
+  resetEnterpriseDetail,
+  resetCustomLabel,
   getActiveEnterpriseList,
   enterpriseManagementHideShow,
   enterpriseManagementSetDataGenerated,
@@ -382,4 +424,5 @@ export {
   enterpriseManagementRequestData,
   enterpriseManagementRequestDataEnd,
   enterpriseManagementClearActiveEnterpriseData,
+  enterpriseManagementSetDetailParams,
 };
