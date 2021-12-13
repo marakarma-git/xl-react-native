@@ -39,6 +39,7 @@ const TableCellText = (props) => {
     showIcon,
     isTreeView,
     treeLevel,
+    isNavigate,
     treeCheck,
   } = config || {};
   const onLongPress = () => {
@@ -60,11 +61,11 @@ const TableCellText = (props) => {
             alignItems: 'center',
             backgroundColor: backgroundColor || 'white',
           }}>
-          <CustomCheckBox
+          {/* <CustomCheckBox
             style={{marginLeft: 16}}
             value={treeCheck}
             onPress={() => onChangeCheck(otherInformation)}
-          />
+          /> */}
           <View
             style={{
               flex: 1,
@@ -99,11 +100,18 @@ const TableCellText = (props) => {
                 </Text>
                 <Text
                   numberOfLines={1}
-                  style={{flex: 1}}
+                  style={{
+                    flex: 1,
+                    color: isNavigate ? colors.link_color : 'black',
+                  }}
                   onLongPress={() => onLongPress()}
                   onPress={() => {
-                    if (moreText) {
-                      setShowMore(true);
+                    if (isNavigate) {
+                      onPress(otherInformation);
+                    } else {
+                      if (moreText) {
+                        setShowMore(true);
+                      }
                     }
                   }}
                   onTextLayout={(e) => {
@@ -170,6 +178,7 @@ TableCellText.propTypes = {
     isTouchable: PropTypes.bool,
     visibility: PropTypes.bool,
     icon: PropTypes.string,
+    isNavigate: PropTypes.bool,
   }),
   onPress: PropTypes.func,
   otherInformation: PropTypes.any,

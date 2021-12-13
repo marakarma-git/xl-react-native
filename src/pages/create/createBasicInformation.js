@@ -69,7 +69,7 @@ const CreateBasicUserInformation = (props) => {
       ],
       config: {
         searchable: false,
-        isOpen: openDropDown,
+        isOpen: true,
         onClick: () =>
           setOpenDropDown(
             (prevState) => (prevState = prevState ? false : true),

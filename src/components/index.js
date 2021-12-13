@@ -19,11 +19,13 @@ export {default as PasswordInput} from './PasswordInput';
 export {default as TermCondition} from './termCondition';
 export {default as CustomDropDownPicker} from './form/CustomDropDown';
 export {default as FilterDropdown} from './form/FilterDropdown';
+export {default as FormFactory} from './form/FormFactory';
 
 // Modal Component
 export {default as ModalTermCondition} from './modal/ModalTermCondition';
 export {default as ModalMultiSession} from './modal/ModalMultiSession';
 export {default as ModalConfirmation} from './modal/ModalConfirmation';
+export {default as ModalColorPallete} from './modal/ModalColorPallete';
 
 //Global Text
 export {default as Text} from './global/text';
@@ -43,3 +45,6 @@ export {default as ContentCard} from './card/ContentCard';
 export {default as FilterCard} from './card/FilterCard';
 export {default as NotificationCard} from './card/NotificationCard';
 export {default as CardSeverityLevel} from './card/CardSeverityLevel';
+
+// Button
+export {default as ButtonLabelComponent} from './button/ButtonLabel';

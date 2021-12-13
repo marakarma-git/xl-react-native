@@ -3,7 +3,6 @@ import {TouchableOpacity, View} from 'react-native';
 import PropTypes from 'prop-types';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import {colors} from '../../constant/color';
-import {color} from 'react-native-reanimated';
 const CustomCheckBox = (props) => {
   const {value, onPress, style, disabled, children} = props || {};
   return (
@@ -30,14 +29,16 @@ const CustomCheckBox = (props) => {
         <MaterialCommunityIcons
           style={{
             backgroundColor: disabled
-              ? colors.gray
+              ? value
+                ? colors.tab_edit
+                : colors.gray
               : value
               ? colors.tab_edit
               : 'white',
             borderRadius: 3,
           }}
           name={'check-bold'}
-          color={'white'}
+          color={disabled ? (value ? colors.gray : 'white') : 'white'}
           size={17}
         />
       </View>

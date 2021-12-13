@@ -1,6 +1,7 @@
 import {DRAWER_MENU_PRIVILEDGE} from '../constant/priviledge';
 import dayjs from 'dayjs';
 import lod from 'lodash';
+import {FileSystem} from 'react-native-file-access';
 
 class Helper {
   static numberFormat(value, symbol, type = 'number') {
@@ -19,6 +20,21 @@ class Helper {
     }
 
     return capitalWord;
+  }
+
+  static makeCamelCaseToTitle(value) {
+    let capitalLetter = Helper.makeCapital(value).split('');
+    let result = '';
+    capitalLetter.map((letter) => {
+      let isUpperCase = /^[A-Z]*$/.test(letter);
+      if (isUpperCase) result += ` ${letter}`;
+      else result += letter;
+    });
+    return result;
+  }
+
+  static imageSizeValidation(imageSize, availableSize) {
+    return imageSize <= availableSize ? true : false;
   }
 
   static formatBytes(bytes) {
@@ -567,6 +583,10 @@ class Helper {
     });
 
     return errorValidation[formKey];
+  }
+
+  static requiredValidation(title, value) {
+    return value.trim().length > 0 ? null : `${title} Required`;
   }
 
   static validationIsRequired(formKey, formTitle, formData) {

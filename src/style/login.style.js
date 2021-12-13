@@ -205,14 +205,14 @@ export default {
     marginHorizontal: 3,
   },
   containerDropDown: {
-    width: 230,
+    width: '55%',
     color: '#707070',
     borderRadius: 0,
     zIndex: 5000,
   },
   dropDownStyle: {
     height: 30,
-    width: 230,
+    width: '55%',
     borderRadius: 0,
     paddingLeft: 10,
     borderWidth: 1,

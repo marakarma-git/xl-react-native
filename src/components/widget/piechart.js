@@ -10,6 +10,7 @@ import {Text} from '../index';
 import ChartLegend from './chartlegend';
 import style from '../../style/home.style';
 import {colors} from '../../constant/color';
+import {TouchableOpacity} from 'react-native';
 
 const PieChartComponent = ({item, filterParams = {}}) => {
   const dispatch = useDispatch();
@@ -88,6 +89,10 @@ const PieChartComponent = ({item, filterParams = {}}) => {
           <Text fontType="bold" style={{fontSize: 14}}>
             {item.jsonData?.title?.text || ''}
           </Text>
+          <TouchableOpacity
+            onPress={() => navigation.navigate('Sim Productivity')}>
+            <Text style={style.linkText}>See Details</Text>
+          </TouchableOpacity>
         </View>
         {loading ? (
           <ActivityIndicator color={colors.main_color} size="large" />

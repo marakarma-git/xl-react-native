@@ -42,6 +42,7 @@ import {
   UsageSubscribersAnalyticsFilterPage,
   SubscriptionPackageEditPage,
   SmsA2pEditPage,
+  EnterpriseManagementEditViewPage,
 } from '../pages/Home/index';
 
 import {
@@ -281,6 +282,14 @@ export const DRAWER_MENU_PRIVILEDGE = [
     width: 25,
     height: 25,
     components: EnterpriseManagementOnBoardPage,
+  },
+  {
+    name: 'EnterpriseManagementEditView',
+    icon: '',
+    type: 'non-drawer',
+    width: 25,
+    height: 25,
+    components: EnterpriseManagementEditViewPage,
   },
   {
     name: 'SubscriptionPackageFilter',

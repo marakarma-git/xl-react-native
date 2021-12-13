@@ -7,7 +7,12 @@ import {HeaderContainer} from '../../components';
 import dayjs from 'dayjs';
 import relativeTime from 'dayjs/plugin/relativeTime';
 import style from '../../style/home.style';
-import {readNotificationApi} from '../../redux/action/notification_action';
+import {
+  increaseNotificationLimit,
+  limitListNotification,
+  readNotificationApi,
+  resetNotificationLimit,
+} from '../../redux/action/notification_action';
 
 dayjs.extend(relativeTime);
 
@@ -16,11 +21,14 @@ const NotificationPage = ({navigation}) => {
   const [firstLoad, setFirstLoad] = useState(true);
   const {imageBase64} = useSelector((state) => state.enterprise_reducer);
   const {username} = useSelector((state) => state.auth_reducer);
-  const {listNotification, severityLevel} = useSelector(
-    (state) => state.notification_reducer,
-  );
+  const {
+    listNotification,
+    severityLevel,
+    limitedListNotification,
+  } = useSelector((state) => state.notification_reducer);
   const {high, medium, low} = severityLevel;
   const [activeMenu, setActiveMenu] = useState('All');
+  const [isScrolled, setIsScrolled] = useState(false);
 
   const notificationList = ({item}) => {
     return (
@@ -33,7 +41,7 @@ const NotificationPage = ({navigation}) => {
     );
   };
   const filterDataBySeverityLevel = (activeMenu) => {
-    const notificationData = [...listNotification];
+    const notificationData = [...limitedListNotification];
     const lowActiveMenu = activeMenu.toLowerCase();
     if (lowActiveMenu !== 'all') {
       return notificationData.filter(
@@ -42,14 +50,22 @@ const NotificationPage = ({navigation}) => {
     }
     return notificationData;
   };
+  const loadMoreHandler = (info) => {
+    if (limitedListNotification.length < listNotification.length) {
+      if (isScrolled) {
+        dispatch(increaseNotificationLimit(10));
+        dispatch(limitListNotification(listNotification));
+      }
+    }
+  };
   useEffect(() => {
-    const checkUnreadNotif = [...listNotification].filter(
+    const checkUnreadNotif = [...limitedListNotification].filter(
       (notif) => notif.readStatus == false,
     );
     if (checkUnreadNotif.length > 0) {
       if (!firstLoad) dispatch(readNotificationApi(username));
     }
-  }, [listNotification]);
+  }, [limitedListNotification]);
   useEffect(() => {
     const pageLoad = navigation.addListener('focus', () => {
       dispatch(readNotificationApi(username));
@@ -60,6 +76,9 @@ const NotificationPage = ({navigation}) => {
   useEffect(() => {
     const pageBlur = navigation.addListener('blur', () => {
       setFirstLoad(true);
+      setIsScrolled(false);
+      dispatch(resetNotificationLimit());
+      dispatch(limitListNotification(listNotification));
     });
     return pageBlur;
   }, [navigation]);
@@ -83,6 +102,9 @@ const NotificationPage = ({navigation}) => {
         data={filterDataBySeverityLevel(activeMenu)}
         renderItem={notificationList}
         keyExtractor={(item) => item.pushMessageNotifId}
+        onEndReached={loadMoreHandler}
+        onEndReachedThreshold={0.2}
+        onScroll={() => setIsScrolled(true)}
       />
     </View>
   );

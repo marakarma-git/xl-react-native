@@ -3,9 +3,11 @@ import {base_url} from '../../constant/connection';
 import Helper from '../../helpers/helper';
 import {dataMatcherArray2D} from './get_sim_inventory_action';
 import reduxString from '../reduxString';
+import {setRequestError} from './dashboard_action';
+import httpRequest from '../../constant/axiosInstance';
 
 const enterpriseManagementClearActiveEnterpriseData = () => ({
-  type: "ENTERPRISE_MANAGEMENT_CLEAR_ACTIVE_ENTERPRISE_DATA"
+  type: 'ENTERPRISE_MANAGEMENT_CLEAR_ACTIVE_ENTERPRISE_DATA',
 });
 
 const enterpriseManagementRequestData = () => ({
@@ -22,8 +24,41 @@ const enterpriseManagementGetDataSuccess = (data) => ({
 });
 
 const activeEnterpriseManagementGetDataSucces = (data) => ({
-  type: "ACTIVE_ENTERPRISE_MANAGEMENT_GET_DATA_SUCCESS",
-  payload: data
+  type: 'ACTIVE_ENTERPRISE_MANAGEMENT_GET_DATA_SUCCESS',
+  payload: data,
+});
+
+const saveBusinessCategoryData = (data) => ({
+  type: reduxString.SAVE_BUSINESS_CATEGORY,
+  payload: data,
+});
+
+const saveBusinessCategoryFieldType = (data) => ({
+  type: reduxString.SAVE_BUSINESS_CATEGORY_FIELD_TYPE,
+  payload: data,
+});
+
+const saveCustomLabel = (data) => ({
+  type: reduxString.SAVE_CUSTOM_LABEL,
+  payload: data,
+});
+
+const resetCustomLabel = () => ({
+  type: reduxString.RESET_CUSTOM_LABEL,
+});
+
+const saveEnterpriseDetail = (data) => ({
+  type: reduxString.SAVE_ENTERPRISE_DETAIL,
+  payload: data,
+});
+
+const resetEnterpriseDetail = () => ({
+  type: reduxString.RESET_ENTERPRISE_DETAIL,
+});
+
+const enterpriseManagementSetDetailParams = (params) => ({
+  type: reduxString.ENTERPRISE_MANAGEMENT_SET_DETAIL_PARAMS,
+  payload: params,
 });
 
 const enterpriseManagementSetDataGenerated = ({dataEnterpriseGenerated}) => {
@@ -113,7 +148,7 @@ const enterpriseManagementHideShow = (enterpriseId) => {
 };
 
 const getActiveEnterpriseList = (paginate) => {
-    return async (dispatch, getState) => {
+  return async (dispatch, getState) => {
     dispatch(enterpriseManagementRequestData());
     const {page_params, size_params, header_sort_params} = paginate || {};
     const {orderBy: order_by_params, sortBy: sort_by_params} =
@@ -143,8 +178,10 @@ const getActiveEnterpriseList = (paginate) => {
         const {content, totalPages, totalElements} = result || {};
         if (statusCode === 0) {
           dispatch(
-            activeEnterpriseManagementGetDataSucces(Helper.makeMultiDimensionalArrayTo2DArray(result))
-          )
+            activeEnterpriseManagementGetDataSucces(
+              Helper.makeMultiDimensionalArrayTo2DArray(result),
+            ),
+          );
         } else {
           dispatch(
             enterpriseManagementGetDataFail({
@@ -162,7 +199,7 @@ const getActiveEnterpriseList = (paginate) => {
       );
     }
   };
-}
+};
 
 // const resetTreeCheckGetActiveEnterpriseList = (dataActiveEnterprise) => {
 //   return (dispatch) => {
@@ -286,8 +323,100 @@ const getEnterpriseList = (paginate) => {
   };
 };
 
+const getBusinessCategory = () => {
+  return async (dispatch) => {
+    try {
+      const {data} = await httpRequest.get(`/user/corp/getBusinessCat`);
+      if (data) {
+        const {result, statusCode} = data;
+        if (statusCode === 0) {
+          const dropDownData = [...result].map((data) => {
+            return {value: data.code, label: data.value};
+          });
+          dropDownData.unshift({value: '', label: 'Choose Business Category'});
+          dispatch(saveBusinessCategoryData(dropDownData));
+        }
+      }
+    } catch (error) {
+      dispatch(setRequestError(error.response.data));
+    }
+  };
+};
+
+const getBusinessFieldType = () => {
+  return async (dispatch) => {
+    try {
+      const {data} = await httpRequest.get(
+        `/user/corp/getCustomLabelFieldType`,
+      );
+      if (data) {
+        const {result, statusCode} = data;
+        if (statusCode === 0) dispatch(saveBusinessCategoryFieldType(result));
+      }
+    } catch (error) {
+      dispatch(setRequestError(error.response.data));
+    }
+  };
+};
+
+const getCustomLabel = (params, key = 'business_cat') => {
+  return async (dispatch, getState) => {
+    let url = `/user/corp/getCustomLabelSuggestions?${key}=${params}`;
+    if (key === 'enterpriseId') {
+      url = `/user/corp/getCustLabelEnterprise?${key}=${params}`;
+    }
+    console.log(url);
+    const {business_category_field_type} = await getState()
+      .enterprise_management_get_enterprise_reducer;
+    try {
+      const {data} = await httpRequest.get(url);
+      if (data) {
+        const {result, statusCode} = data;
+        if (statusCode === 0) {
+          const customLabel = result.map((data) => {
+            data.switchActive = data.activeStatus;
+            data.defaultLabel = `Custom ${data.labelNumber}`;
+            data.fieldTypeArray = business_category_field_type.map((field) => {
+              return {value: field, label: field};
+            });
+            return data;
+          });
+          dispatch(saveCustomLabel(customLabel));
+        }
+      }
+    } catch (error) {
+      console.log(error.response.data);
+      dispatch(setRequestError(error.response.data));
+    }
+  };
+};
+
+const getEnterpriseDetail = () => {
+  return async (dispatch, getState) => {
+    const {detail_params} = await getState()
+      .enterprise_management_get_enterprise_reducer;
+    try {
+      const {data} = await httpRequest(
+        `/user/corp/getEnterpriseDetail?enterpriseId=${detail_params}`,
+      );
+      if (data) {
+        const {result, statusCode} = data;
+        if (statusCode === 0) dispatch(saveEnterpriseDetail(result));
+      }
+    } catch (error) {
+      dispatch(setRequestError(error.response.data));
+    }
+  };
+};
+
 export {
   getEnterpriseList,
+  getBusinessCategory,
+  getBusinessFieldType,
+  getCustomLabel,
+  getEnterpriseDetail,
+  resetEnterpriseDetail,
+  resetCustomLabel,
   getActiveEnterpriseList,
   enterpriseManagementHideShow,
   enterpriseManagementSetDataGenerated,
@@ -295,4 +424,5 @@ export {
   enterpriseManagementRequestData,
   enterpriseManagementRequestDataEnd,
   enterpriseManagementClearActiveEnterpriseData,
+  enterpriseManagementSetDetailParams,
 };

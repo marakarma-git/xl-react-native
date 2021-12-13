@@ -12,7 +12,8 @@ const ContentCard = (props) => {
   return (
     <Card style={[styles.cardSection, {marginTop: '3%'}]}>
       <Card.Content style={styles.cardContentWrapper}>
-        <View style={[styles.cardTitleContainer]}>
+        <View
+          style={[styles.cardTitleContainer, {height: props.cardTitleHeight}]}>
           {props.cardTitle ? (
             <Text
               fontType="bold"
@@ -56,6 +57,7 @@ const ContentCard = (props) => {
 ContentCard.propTypes = {
   cardTitle: PropTypes.string,
   cardHeaderStyle: PropTypes.object,
+  cardTitleHeight: PropTypes.number,
   titleStyle: PropTypes.object,
   cardToolbar: PropTypes.element,
   cardContent: PropTypes.element,
@@ -69,6 +71,7 @@ ContentCard.defaultProps = {
   cardHeaderStyle: {},
   titleStyle: {},
   loadingContent: false,
+  cardTitleHeight: 40,
 };
 
 export default ContentCard;
