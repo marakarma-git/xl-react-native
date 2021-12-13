@@ -61,6 +61,7 @@ const GridComponent = (props) => {
               onChangeText={props.onChangeText}
               activateDisabledFeature={props.activateDisabledFeature}
               isTableDisabled={props.isTableDisabled}
+              setFormValidation={props.setFormValidation}
             />
           )}
         </ScrollView>
@@ -322,6 +323,7 @@ const GridCellComponent = (props) => {
             cellVisible={
               option.cellVisible == undefined ? true : option.cellVisible
             }
+            setFormValidation={props?.setFormValidation}
           />
         ))}
       </View>
@@ -641,6 +643,7 @@ const CellTextInputComponent = (props) => {
           keyName={props.keyName}
           placeholder={props.placeholder}
           isRequired={props.formRequired}
+          setFormValidation={props.setFormValidation}
         />
       ) : (
         <GridTextInputComponent
@@ -654,6 +657,7 @@ const CellTextInputComponent = (props) => {
           keyName={props.keyName}
           placeholder={props.placeholder}
           isRequired={props.formRequired}
+          setFormValidation={props.setFormValidation}
         />
       )}
     </View>
@@ -680,6 +684,7 @@ GridComponent.propTypes = {
   isTableDisabled: PropTypes.bool,
   customTableStyle: PropTypes.object,
   activateDisabledFeature: PropTypes.bool,
+  setFormValidation: PropTypes.func,
 };
 
 GridComponent.defaultProps = {
@@ -704,6 +709,7 @@ GridComponent.defaultProps = {
   isTableDisabled: false,
   customTableStyle: {},
   activateDisabledFeature: false,
+  setFormValidation: () => {},
 };
 
 export default GridComponent;

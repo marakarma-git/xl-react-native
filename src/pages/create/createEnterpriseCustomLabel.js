@@ -82,6 +82,7 @@ const CreateEnterpriseCustomLabel = (props) => {
     setChangesLabelRow,
     isDisabled,
     isCreate,
+    setFormValidation,
   } = props;
   const {custom_label} = useSelector(
     (state) => state.enterprise_management_get_enterprise_reducer,
@@ -106,6 +107,11 @@ const CreateEnterpriseCustomLabel = (props) => {
     const dataChanges = resData.map((data) => {
       if (data[dataKey] === dataId) {
         data.fieldType = value;
+        if (value !== 'Combo Box') {
+          setFormValidation((prevState) =>
+            [...prevState].filter((error) => error.id !== dataId),
+          );
+        }
       }
       return data;
     });
@@ -220,6 +226,7 @@ const CreateEnterpriseCustomLabel = (props) => {
         activateDisabledFeature={true}
         onPickItem={onPickItem}
         onChangeText={onChangeText}
+        setFormValidation={setFormValidation}
       />
     </View>
   );
@@ -233,6 +240,7 @@ CreateEnterpriseCustomLabel.propTypes = {
   setChangesLabelRow: PropTypes.func,
   isDisabled: PropTypes.bool,
   isCreate: PropTypes.bool,
+  setFormValidation: PropTypes.func,
 };
 CreateEnterpriseCustomLabel.defaultProps = {
   PropTypes: 0,
@@ -242,6 +250,7 @@ CreateEnterpriseCustomLabel.defaultProps = {
   setChangesLabelRow: () => {},
   isDisabled: false,
   isCreate: true,
+  setFormValidation: () => {},
 };
 
 export default CreateEnterpriseCustomLabel;
