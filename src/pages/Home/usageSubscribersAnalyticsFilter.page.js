@@ -6,7 +6,6 @@ import {subscriptionStyle} from '../../style';
 import Text from '../../components/global/text';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import {colors} from '../../constant/color';
-import {useNavigation} from '@react-navigation/native';
 import {
   simGetEnterprise,
   simGetEnterprisePackage,
@@ -20,8 +19,7 @@ import {device_width} from '../../constant/config';
 import lod from 'lodash';
 import InputHybrid from '../../components/InputHybrid';
 
-const UsageAnalyticsFilterPage = () => {
-  const navigation = useNavigation();
+const UsageAnalyticsFilterPage = ({navigation}) => {
   const dispatch = useDispatch();
   const [testWidth, setTestWidth] = useState(device_width * 0.41 - 1);
   const {dataHeader} = useSelector(

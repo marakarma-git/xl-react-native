@@ -166,6 +166,20 @@ const styles = StyleSheet.create({
     color: 'white',
     fontSize: 10,
   },
+  customChartContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    width: '95%',
+    height: 30,
+  },
+  legendWrapper: {
+    paddingHorizontal: 10,
+    paddingVertical: 5,
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
 });
 
 export default styles;
