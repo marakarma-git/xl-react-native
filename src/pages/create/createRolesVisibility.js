@@ -1,8 +1,12 @@
-import React, { useEffect, useState } from 'react';
+import React, {useEffect, useState} from 'react';
 import PropTypes from 'prop-types';
 import {View} from 'react-native';
 import {useDispatch} from 'react-redux';
-import {Text, CustomRadioButtonComponent, GridComponent} from '../../components';
+import {
+  Text,
+  CustomRadioButtonComponent,
+  GridComponent,
+} from '../../components';
 import {useNavigation} from '@react-navigation/native';
 
 import styles from '../../style/create.style';
@@ -10,29 +14,29 @@ import Helper from '../../helpers/helper';
 
 const gridOptionsArray = [
   {
-    bgColor: "#F4F3F4", 
-    headerColor: "#707070", 
-    width: '80%', 
-    cellAlign: 'flex-start', 
-    headerAlign: 'center', 
-    label: "Organization", 
-    field: "enterpriseName", 
-    cellType: "text", 
-    headerType: "text",
-    cellVisible: true
+    bgColor: '#F4F3F4',
+    headerColor: '#707070',
+    width: '80%',
+    cellAlign: 'flex-start',
+    headerAlign: 'center',
+    label: 'Organization',
+    field: 'enterpriseName',
+    cellType: 'text',
+    headerType: 'text',
+    cellVisible: true,
   },
   {
-    bgColor: "#F4F3F4", 
-    headerColor: "#707070", 
-    width: '20%', 
-    cellAlign: 'center', 
-    headerAlign: 'center', 
-    label: "Children", 
-    field: "childrenCnt", 
-    cellType: "text", 
-    headerType: "text",
-    cellVisible: false
-  }
+    bgColor: '#F4F3F4',
+    headerColor: '#707070',
+    width: '20%',
+    cellAlign: 'center',
+    headerAlign: 'center',
+    label: 'Children',
+    field: 'childrenCnt',
+    cellType: 'text',
+    headerType: 'text',
+    cellVisible: false,
+  },
 ];
 
 const createRolesVisibility = (props) => {
@@ -50,39 +54,39 @@ const createRolesVisibility = (props) => {
 
     const data = Helper.treeViewToggle(newData, cellId);
     setGridData(data);
-  }
+  };
 
   const selectedOwnershipToggle = (selectedValue) => {
     const newOptions = gridOptions.slice();
 
-    if(selectedValue === 0){
+    if (selectedValue === 0) {
       cellVisibilityToggle(gridData, selectedValue);
     }
 
-    newOptions[0].cellType = !selectedValue == 0 ? "treeView" : "text";
+    newOptions[0].cellType = !selectedValue == 0 ? 'treeView' : 'text';
     newOptions[1].cellVisible = !selectedValue == 0 ? true : false;
 
     setGridOptions(newOptions);
     props.setSelectedVisibility(selectedValue);
-  }
+  };
 
   const cellVisibilityToggle = (data, visibility) => {
     data.map((dataGrid, index) => {
-      if(index === 0){
+      if (index === 0) {
         dataGrid.icon = visibility ? 'caret-down' : 'caret-up';
-      }else{
+      } else {
         dataGrid.visibility = visibility;
       }
     });
 
     return data;
-  }
+  };
   // End of Function
 
   // Hooks
   useEffect(() => {
-    if(!isSelectData){
-      if(gridData.length > 0){
+    if (!isSelectData) {
+      if (gridData.length > 0) {
         selectedOwnershipToggle(props.selectedVisibility);
       }
     }
@@ -104,55 +108,62 @@ const createRolesVisibility = (props) => {
     return pageLoad;
   }, [navigation]);
 
-  return(
+  return (
     <View
-     style={{ flexDirection: 'row', flexWrap: 'wrap' }}
-     onTouchStart={() => props.setScrollView(true)}
-     onTouchEnd={() => props.setScrollView(false)}>
+      style={{flexDirection: 'row', flexWrap: 'wrap'}}
+      onTouchStart={() => props.setScrollView(true)}
+      onTouchEnd={() => props.setScrollView(false)}>
       <View style={styles.menuBarContainer}>
-        <Text style={{ color: "#707070", paddingLeft: 10 }}>Visibility type</Text>
+        <Text style={{color: '#707070', paddingLeft: 10}}>Visibility type</Text>
       </View>
       <CustomRadioButtonComponent
         onPressRadio={() => selectedOwnershipToggle(0)}
         style={{paddingLeft: 10, fontSize: 10}}
         label="Owner Organizations Only"
         radioValue="0"
-        status={props.selectedVisibility === 0 ? "checked": "unchecked"}
+        status={props.selectedVisibility === 0 ? 'checked' : 'unchecked'}
       />
       <CustomRadioButtonComponent
         onPressRadio={() => selectedOwnershipToggle(1)}
         style={{paddingLeft: 10, fontSize: 10}}
         label="All Child Organizations"
         radioValue="1"
-        status={props.selectedVisibility === 1 ? "checked": "unchecked"}
+        status={props.selectedVisibility === 1 ? 'checked' : 'unchecked'}
       />
-        <GridComponent
-          loading={false}
-          gridOptions={gridOptions}
-          gridData={gridData}
-          colHeight={30}
-          tableMaxHeight={150}
-          keyExtractor="enterpriseId"
-          onPressTree={treeViewToggle}
-        />
+      <GridComponent
+        loading={false}
+        gridOptions={gridOptions}
+        gridData={gridData}
+        colHeight={30}
+        tableMaxHeight={150}
+        keyExtractor="enterpriseId"
+        onPressTree={treeViewToggle}
+        customTableStyle={{
+          width: '95%',
+          marginHorizontal: '2.5%',
+          borderWidth: 1,
+          borderColor: '#A8A8A8',
+          marginBottom: 10,
+        }}
+      />
     </View>
-  )
-}
+  );
+};
 
 createRolesVisibility.propTypes = {
   mode: PropTypes.string,
   selectedOwnership: PropTypes.array,
   selectedVisibility: PropTypes.number,
   setSelectedVisibility: PropTypes.func,
-  setScrollView: PropTypes.func
+  setScrollView: PropTypes.func,
 };
 
 createRolesVisibility.defaultProps = {
-  mode: "create",
+  mode: 'create',
   selectedOwnership: [],
   selectedVisibility: 0,
   setSelectedVisibility: () => {},
-  setScrollView: () => {}
-}
+  setScrollView: () => {},
+};
 
 export default createRolesVisibility;
