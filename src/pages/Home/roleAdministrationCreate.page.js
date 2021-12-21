@@ -81,7 +81,7 @@ const RoleAdministrationCreatePage = ({route, navigation}) => {
   const formArray = [
     {
       title: 'Properties',
-      description: 'lorem ipsum sit dolor amet orem ipsum dolor',
+      description: 'Define role name and ownership',
       body: [
         {
           component: (
@@ -115,7 +115,7 @@ const RoleAdministrationCreatePage = ({route, navigation}) => {
     },
     {
       title: 'Visibility',
-      description: 'lorem ipsum sit dolor amet orem ipsum dolor',
+      description: 'Select the organizations(s) that can see the role',
       body: [
         {
           component: (
@@ -133,7 +133,7 @@ const RoleAdministrationCreatePage = ({route, navigation}) => {
     },
     {
       title: 'Permission',
-      description: 'lorem ipsum sit dolor amet orem ipsum dolor',
+      description: 'Select the permissions for the role from the list',
       body: [
         {
           component: (
@@ -152,7 +152,7 @@ const RoleAdministrationCreatePage = ({route, navigation}) => {
     },
     {
       title: 'Summary',
-      description: 'lorem ipsum sit dolor amet orem ipsum dolor',
+      description: 'Review the details of the new user role',
       body: [
         {
           component: (

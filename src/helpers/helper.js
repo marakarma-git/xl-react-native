@@ -99,9 +99,11 @@ class Helper {
     return convertVal.value * value;
   }
 
-  static convertUnit(labelValue) {
+  static convertUnit(value) {
+    let labelValue = Number.isFinite(value) ? value : 0;
     if (labelValue) {
-      let formattedAmount = Math.round(labelValue / Math.pow(1024, 3));
+      let formattedAmount =
+        Number(labelValue / Math.pow(1024, 3)).toFixed(2) || 0;
       return formattedAmount + ' GB';
     } else {
       return 0 + ' GB';
@@ -770,23 +772,29 @@ class Helper {
   };
 
   static formatAmount = (num, digits) => {
-    let si = [
-      {value: 1, symbol: ''},
-      {value: 1e3, symbol: 'k'},
-      {value: 1e6, symbol: 'M'},
-      {value: 1e9, symbol: 'G'},
-      {value: 1e12, symbol: 'T'},
-      {value: 1e15, symbol: 'P'},
-      {value: 1e18, symbol: 'E'},
-    ];
-    let rx = /\.0+$|(\.[0-9]*[1-9])0+$/;
-    let i;
-    for (i = si.length - 1; i > 0; i--) {
-      if (num >= si[i].value) {
-        break;
+    if (Number.isFinite(num)) {
+      let si = [
+        {value: 1, symbol: ''},
+        {value: 1e3, symbol: 'k'},
+        {value: 1e6, symbol: 'M'},
+        {value: 1e9, symbol: 'G'},
+        {value: 1e12, symbol: 'T'},
+        {value: 1e15, symbol: 'P'},
+        {value: 1e18, symbol: 'E'},
+      ];
+      let rx = /\.0+$|(\.[0-9]*[1-9])0+$/;
+      let i;
+      for (i = si.length - 1; i > 0; i--) {
+        if (num >= si[i].value) {
+          break;
+        }
       }
+      return (
+        (num / si[i].value).toFixed(digits).replace(rx, '$1') + si[i].symbol
+      );
+    } else {
+      return 0;
     }
-    return (num / si[i].value).toFixed(digits).replace(rx, '$1') + si[i].symbol;
   };
 
   static delimiterNumberOnInput = (value, comma) => {

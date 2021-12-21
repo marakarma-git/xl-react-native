@@ -6,19 +6,18 @@ import {
   HeaderContainer,
   OverlayBackground,
   UsageSubsChart,
-  Text,
 } from '../../components';
 import {
   usageSubscribersAnalyticsDynamicResetSelectedValue,
   usageSubscribersAnalyticsGenerateParams,
+  usageSubscribersAnalyticsResetAllValue,
 } from '../../redux/action/usage_subscribers_analytics_filter_action';
-
-// Undestruct
 import styles from '../../style/usageAnalytics.style';
 import AppliedFilter from '../../components/subscription/appliedFilter';
 import {
   getSubsAnalytics,
   getWidgetList,
+  resetSubsAnalytics,
 } from '../../redux/action/dashboard_action';
 
 const UsageSubscribersAnalyticsPage = ({route, navigation}) => {
@@ -32,7 +31,6 @@ const UsageSubscribersAnalyticsPage = ({route, navigation}) => {
   const {subsAnalytics, loadingSubsAnalytics} = useSelector(
     (state) => state.dashboard_reducer,
   );
-
   const [param1, setParam1] = useState(null);
   const [param2, setParam2] = useState(null);
   const [monthlyWidget, setMonthlyWidget] = useState(null);
@@ -94,8 +92,13 @@ const UsageSubscribersAnalyticsPage = ({route, navigation}) => {
     const pageLoad = navigation.addListener('focus', () => {
       callWidgetList();
     });
-
     return pageLoad;
+  }, [navigation]);
+  useEffect(() => {
+    const pageBlur = navigation.addListener('blur', () => {
+      dispatch(resetSubsAnalytics());
+    });
+    return pageBlur;
   }, [navigation]);
 
   return (
@@ -120,9 +123,27 @@ const UsageSubscribersAnalyticsPage = ({route, navigation}) => {
               data={appliedFilter}
               onDelete={(e) => {
                 const {formId} = e || {};
-                dispatch(
-                  usageSubscribersAnalyticsDynamicResetSelectedValue({formId}),
-                );
+                if (
+                  formId === 'usage-subscribers-analytics-enterprise-hard-code'
+                ) {
+                  dispatch(
+                    usageSubscribersAnalyticsDynamicResetSelectedValue({
+                      formId,
+                    }),
+                  );
+                  dispatch(
+                    usageSubscribersAnalyticsDynamicResetSelectedValue({
+                      formId:
+                        'usage-subscribers-analytics-package-name-hard-code',
+                    }),
+                  );
+                } else {
+                  dispatch(
+                    usageSubscribersAnalyticsDynamicResetSelectedValue({
+                      formId,
+                    }),
+                  );
+                }
                 dispatch(usageSubscribersAnalyticsGenerateParams());
               }}
             />

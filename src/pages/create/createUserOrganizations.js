@@ -251,6 +251,13 @@ const CreateOrganization = (props) => {
         keyExtractor="enterpriseId"
         onPressTree={treeViewToggle}
         onPressCheckBox={checkBoxToggle}
+        customTableStyle={{
+          width: '95%',
+          marginHorizontal: '2.5%',
+          borderWidth: 1,
+          borderColor: '#A8A8A8',
+          marginBottom: 10,
+        }}
       />
     </View>
   );

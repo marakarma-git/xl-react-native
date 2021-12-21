@@ -188,7 +188,7 @@ const setTopTrafficStatistics = (data, params) => {
   };
 };
 
-const resetSubsAnalytics = () => ({
+export const resetSubsAnalytics = () => ({
   type: reduxString.RESET_SUBS_ANALYTIC,
 });
 

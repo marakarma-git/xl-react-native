@@ -66,7 +66,7 @@ const GridComponent = (props) => {
           )}
         </ScrollView>
       ) : (
-        <View style={[{flex: 1}, {...props.customTableStyle}]}>
+        <View style={[{width: '100%'}, {...props.customTableStyle}]}>
           <View style={{flexDirection: 'row'}}>
             <GridHeaderComponent
               sortField={props.sortField}
