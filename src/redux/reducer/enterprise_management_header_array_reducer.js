@@ -1,6 +1,7 @@
 import reduxString from '../reduxString';
 import Helper from '../../helpers/helper';
 import generateLink from '../../helpers/generateLink';
+import dayjs from 'dayjs';
 
 const dataHeaderEnterprise = [
   {
@@ -30,6 +31,16 @@ const dataHeaderEnterprise = [
     params: '&activeStatus=',
     typeInput: 'DropDown',
     value: {},
+    data: [
+      {
+        value: 'true',
+        label: 'ready for use',
+      },
+      {
+        value: 'false',
+        label: 'absolete',
+      },
+    ],
     config: {
       label: 'Status',
       isTouchable: true,
@@ -103,6 +114,9 @@ const dataHeaderEnterprise = [
     cellType: 'TableCellHeaderAscDesc',
     cellRowType: 'TableCellText',
     params: '&onboarded=',
+    value: dayjs().toDate(),
+    isSelectedDate: false,
+    typeInput: 'DateTimePicker',
     config: {
       label: 'Onboarded',
       isTouchable: true,
@@ -159,9 +173,22 @@ const enterprise_management_header_array_reducer = (
         dataHeaderEnterprise: state.dataHeaderEnterprise,
       };
     }
+    case reduxString.ENTERPRISE_MANAGEMENT_DYNAMIC_ONCHANGE_DATE_TIME_PICKER: {
+      const getIndex =
+        state.dataHeaderEnterprise.findIndex(
+          (f) => f.formId === action.formId,
+        ) || 0;
+      state.dataHeaderEnterprise[getIndex].value = action.dateTimePicker;
+      state.dataHeaderEnterprise[getIndex].isSelected =
+        !state.dataHeaderEnterprise[getIndex].isSelected;
+      return {
+        ...state,
+        dataHeaderEnterprise: state.dataHeaderEnterprise,
+      };
+    }
     case reduxString.ENTERPRISE_MANAGEMENT_CHANGE_CHECK_HEADER: {
-      state.dataHeaderEnterprise[0].valueCheck = !state.dataHeaderEnterprise[0]
-        .valueCheck;
+      state.dataHeaderEnterprise[0].valueCheck =
+        !state.dataHeaderEnterprise[0].valueCheck;
       return {
         ...state,
         dataHeaderEnterprise: state.dataHeaderEnterprise,
