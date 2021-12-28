@@ -1,0 +1,58 @@
+{
+  "provisioning": {
+    "statusInfo": [
+      "-",
+      "SIM / billing state is not active and your SIM will not able to connect to the network",
+      "SIM / billing state is active and allow your SIM to connect to the network",
+      "Unknown status. System may have problem to get the latest status via API."
+    ],
+    "statusDesc": [
+      "-",
+      "To connect network, SIM / billing state should be active. Paused, disabled or terminated will not allow your SIM to access to any network.",
+      "-",
+      "-"
+    ]
+  },
+  "simDevice": {
+    "statusInfo": [
+      "-",
+      "SIM card is not plugged to your device / device is not powered up",
+      "Device IMEI is detected and able to connect network",
+      "Unknown status. System may have problem to get the latest status via API."
+    ],
+    "statusDesc": [
+      "-",
+      "Please ensure that SIM card is plugged to your device and device is powered up. You may check the detail SIM card history for further detail.",
+      "-",
+      "-"
+    ]
+  },
+  "networkConnection": {
+    "statusInfo": [
+      "-",
+      "SIM / Device is not in session mode and currently is not connected to network",
+      "SIM / Device is in session mode and able to connect network",
+      "Unknown status. System may have problem to get the latest status via API."
+    ],
+    "statusDesc": [
+      "-",
+      "It may have network problem or SIM is experiencing loss signal. Please try to click reconnect device and wait for next 2 minutes and check if there's any changes.",
+      "-",
+      "-"
+    ]
+  },
+  "ipConnection": {
+    "statusInfo": [
+      "-",
+      "Your device doesn't have IP Pool allocation from network",
+      "Device has the IP pool allocation to connect network",
+      "Unknown due to Diagnostic API is not accessible"
+    ],
+    "statusDesc": [
+      "-",
+      "It may have network anomaly or conflicted IP pool allocation. Please try to click reconnect device and wait for next 2 minutes and check if there's any changes.",
+      "-",
+      "-"
+    ]
+  }
+}

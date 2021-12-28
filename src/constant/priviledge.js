@@ -43,6 +43,7 @@ import {
   SubscriptionPackageEditPage,
   SmsA2pEditPage,
   EnterpriseManagementEditViewPage,
+  RealtimeDiagnosticPage,
 } from '../pages/Home/index';
 
 import {
@@ -51,6 +52,7 @@ import {
   ADMINISTRATION_PRIVILEDGE_ID,
   AUTOMATION_PRIVILEDGE_ID,
   ANALYTICS_PRIVILEDGE_ID,
+  DIAGNOSTIC_WIZARD_PRIVILEDGE_ID,
 } from './actionPriv';
 
 export const DRAWER_MENU_PRIVILEDGE = [
@@ -126,6 +128,13 @@ export const DRAWER_MENU_PRIVILEDGE = [
     type: 'drawer',
     components: AutomationPage,
     priviledgeIds: AUTOMATION_PRIVILEDGE_ID,
+  },
+  {
+    name: 'Diagnostic Wizard',
+    icon: iconAutomation,
+    type: 'drawer',
+    components: RealtimeDiagnosticPage,
+    priviledgeIds: DIAGNOSTIC_WIZARD_PRIVILEDGE_ID,
   },
   {
     name: 'Analytics',

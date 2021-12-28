@@ -20,6 +20,8 @@ export {default as TermCondition} from './termCondition';
 export {default as CustomDropDownPicker} from './form/CustomDropDown';
 export {default as FilterDropdown} from './form/FilterDropdown';
 export {default as FormFactory} from './form/FormFactory';
+export {default as SimInformationComponent} from './form/simInformation';
+export {default as ViewInformationComponent} from './form/viewInformation';
 
 // Modal Component
 export {default as ModalTermCondition} from './modal/ModalTermCondition';

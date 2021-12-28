@@ -499,6 +499,23 @@ const CUSTOMER_CONSENT_PRIVILEDGE_ID = [
   },
 ];
 
+const DIAGNOSTIC_WIZARD_PRIVILEDGE_ID = [
+  {
+    activityId: 'DW-1',
+    privId: 'd154bdb7-d552-4cbc-814c-1f77c15d9a19',
+    menuName: 'Diagnostic Wizard',
+    actionName: 'SearchAndView',
+    activityLog: 'Filter with sim attribute : ',
+  },
+  {
+    activityId: 'DW-2',
+    privId: '5c65cf2f-d2fb-4fc8-b38b-12828b120fff',
+    menuName: 'Diagnostic Wizard',
+    actionName: 'FixStatus',
+    activityLog: '',
+  },
+];
+
 export {
   DASHBOARD_PRIVILEDGE_ID,
   SUBSCRIPTION_PRIVILEDGE_ID,
@@ -508,4 +525,5 @@ export {
   LOGIN_LOGOUT_PRIVILEDGE_ID,
   CHANGE_PASSWORD_PRIVILEDGE_ID,
   CUSTOMER_CONSENT_PRIVILEDGE_ID,
+  DIAGNOSTIC_WIZARD_PRIVILEDGE_ID,
 };
