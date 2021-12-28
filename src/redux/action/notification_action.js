@@ -69,10 +69,11 @@ const readNotification = (payload) => ({
   payload,
 });
 
-const saveUserToken = (token, username) => {
+const saveUserToken = (token, username, enterpriseId) => {
   return async (dispatch) => {
     const requestBody = {
       token,
+      enterpriseId,
     };
     const requestHeader = {
       headers: {
@@ -86,6 +87,7 @@ const saveUserToken = (token, username) => {
         requestHeader,
       );
     } catch (error) {
+      console.log(error, 'ERROR NICH');
       dispatch(setRequestError(error.response.data));
     }
   };

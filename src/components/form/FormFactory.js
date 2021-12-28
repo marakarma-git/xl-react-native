@@ -10,6 +10,7 @@ import {colors} from '../../constant/color';
 import DocumentPickerComponent from './DocumentPicker';
 import ColorPickerComponent from './ColorPicker';
 import ImagePreviewComponent from './ImagePreview';
+import TextSearchComponent from './TextSearch';
 
 const FormFactoryComponent = (props) => {
   const {
@@ -70,6 +71,17 @@ const FormFactoryComponent = (props) => {
               setValidationError={setFormError}
             />
           );
+        case 'search':
+          return (
+            <TextSearchComponent
+              editable={form.editable}
+              name={form.name}
+              inputHandler={inputHandler}
+              value={value[form.name]}
+              placeholder={form?.config?.placeholder}
+              onSubmit={form?.config?.action}
+            />
+          );
         case 'document-picker':
           return (
             <DocumentPickerComponent
@@ -124,6 +136,17 @@ const FormFactoryComponent = (props) => {
               dropDownHeight={form?.config?.dropDownHeight}
             />
           );
+        case 'search':
+          return (
+            <TextSearchComponent
+              editable={!form.editable}
+              name={form.name}
+              inputHandler={inputHandler}
+              value={value[form.name]}
+              placeholder={form?.config?.placeholder}
+              onSubmit={form?.config?.action}
+            />
+          );
         default:
           return (
             <TextInputComponent
@@ -174,6 +197,7 @@ FormFactoryComponent.propTypes = {
         'document-picker',
         'color-picker',
         'image-preview',
+        'search',
       ]),
       fileType: PropTypes.array,
       fieldForFilename: PropTypes.string,
@@ -188,6 +212,7 @@ FormFactoryComponent.propTypes = {
         setValue: PropTypes.func,
         placeholder: PropTypes.string,
         dropDownHeight: PropTypes.number,
+        action: PropTypes.func,
       }),
       editable: PropTypes.bool,
     }),

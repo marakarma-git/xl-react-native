@@ -28,6 +28,24 @@ import framerBanner from './banners/farmer-banner.png';
 
 import locationNotFound from './404/location-not-found.png';
 
+// SVG
+import iconProvisioningDefault from './provisioning/Provisioning-Default.png';
+import iconProvisioningError from './provisioning/Provisioning-Error.png';
+import iconProvisioningGood from './provisioning/Provisioning-Good.png';
+import iconProvisioningQuestion from './provisioning/provisioningQuestion.png';
+import iconSimDeviceDefault from './simDevice/Sim-Device-Default.png';
+import iconSimDeviceError from './simDevice/Sim-Device-Error.png';
+import iconSimDeviceGood from './simDevice/Sim-Device-Good.png';
+import iconSimDeviceQuestion from './simDevice/simOrDeviceQuestion.png';
+import iconNetworkConnectionDefault from './networkConnection/Network-Connection-Default.png';
+import iconNetworkConnectionError from './networkConnection/Network-Connection-Error.png';
+import iconNetworkConnectionGood from './networkConnection/Network-Connection-Good.png';
+import iconNetworkConnectionQuestion from './networkConnection/networkConnectionQuestion.png';
+import iconIpConnectionDefault from './ipConnection/IPConnection-Default.png';
+import iconIpConnectionError from './ipConnection/IPConnection-Error.png';
+import iconIpConnectionGood from './ipConnection/IPConnection-Good.png';
+import iconIpConnectionQuestion from './ipConnection/ipQuestion.png';
+
 export {
   logoCompany,
   xlBusolInverted,
@@ -50,4 +68,20 @@ export {
   iconAdmin,
   iconAutomation,
   iconAnalytics,
+  iconProvisioningDefault,
+  iconProvisioningError,
+  iconProvisioningGood,
+  iconProvisioningQuestion,
+  iconSimDeviceDefault,
+  iconSimDeviceError,
+  iconSimDeviceGood,
+  iconSimDeviceQuestion,
+  iconNetworkConnectionDefault,
+  iconNetworkConnectionError,
+  iconNetworkConnectionGood,
+  iconNetworkConnectionQuestion,
+  iconIpConnectionDefault,
+  iconIpConnectionError,
+  iconIpConnectionGood,
+  iconIpConnectionQuestion,
 };

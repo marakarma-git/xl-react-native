@@ -347,4 +347,27 @@ export default {
     paddingHorizontal: 10,
     alignItems: 'center',
   },
+  textSearchContainer: {
+    height: 40,
+    fontSize: 12,
+    borderWidth: 1,
+    borderColor: '#A8A8A8',
+    backgroundColor: 'white',
+    borderRadius: 5,
+    marginVertical: 10,
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  textSearchIconContainer: {
+    height: 40,
+    width: '10%',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  textSearchInputContainer: {
+    height: 40,
+    width: '85%',
+    color: colors.gray,
+    fontSize: 12,
+  },
 };

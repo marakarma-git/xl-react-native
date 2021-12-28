@@ -15,7 +15,13 @@ class Notification {
       onRegister: function (token) {
         const notifToken = token?.token;
         dispatch(savePushNotifToken(notifToken));
-        dispatch(saveUserToken(notifToken, userData?.principal?.username));
+        dispatch(
+          saveUserToken(
+            notifToken,
+            principal?.username,
+            principal?.enterpriseId,
+          ),
+        );
         if (access_token) dispatch(getListNotification(principal?.username));
       },
       onNotification: function (notification) {

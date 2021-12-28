@@ -181,7 +181,6 @@ const EnterpriseManagementOnBoardPage = ({route, navigation}) => {
       }
     });
     if (errorValidationCnt > 0) return;
-    console.log(JSON.stringify(dataObj, null, 2), ' Lemparan');
     try {
       setSubmitLoading(true);
       const customHeader = {

@@ -37,6 +37,7 @@ import usage_analytics_filter_reducer from './usage_analytics_filter_reducer';
 import usage_subscribers_analytics_filter_reducer from './usage_subscribers_analytics_filter_reducer';
 import subscription_package_edit_reducer from './subscription_package_edit_reducer';
 import sms_a2p_edit_reducer from './sms_a2p_edit_reducer';
+import realtime_diagnostic_reducer from './realtime_diagnostic_reducer';
 
 const RootReducers = combineReducers({
   dummy_reducer,
@@ -77,5 +78,6 @@ const RootReducers = combineReducers({
   usage_subscribers_analytics_filter_reducer,
   subscription_package_edit_reducer,
   sms_a2p_edit_reducer,
+  realtime_diagnostic_reducer,
 });
 export default RootReducers;
