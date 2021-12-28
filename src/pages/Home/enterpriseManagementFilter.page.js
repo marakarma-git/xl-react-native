@@ -5,6 +5,7 @@ import {useDispatch, useSelector} from 'react-redux';
 import {useNavigation} from '@react-navigation/native';
 import {device_width} from '../../constant/config';
 import getCustomerType, {
+  enterpriseManagementDynamicOnChangeDateTimePicker,
   enterpriseManagementDynamicOnChangeDropDown,
   enterpriseManagementDynamicOnChangeTextInput,
   enterpriseManagementGenerateParams,
@@ -60,11 +61,13 @@ const EnterpriseManagementFilterPage = () => {
                 data,
                 errorText,
                 disabled,
+                isSelected,
               } = e || {};
               const {label} = config || {};
               return (
                 <InputHybrid
                   disabled={disabled}
+                  isSelected={isSelected}
                   customStyle={{width: testWidth}}
                   type={typeInput}
                   value={value}
@@ -86,6 +89,14 @@ const EnterpriseManagementFilterPage = () => {
                         enterpriseManagementDynamicOnChangeDropDown({
                           formId: formId,
                           dropDown: e,
+                        }),
+                      );
+                    }
+                    if (typeInput === 'DateTimePicker') {
+                      dispatch(
+                        enterpriseManagementDynamicOnChangeDateTimePicker({
+                          formId,
+                          dateTimePicker: e,
                         }),
                       );
                     }

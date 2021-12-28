@@ -34,6 +34,16 @@ const enterpriseManagementDynamicOnChangeDropDown = ({formId, dropDown}) => {
     dropDown,
   };
 };
+const enterpriseManagementDynamicOnChangeDateTimePicker = ({
+  formId,
+  dateTimePicker,
+}) => {
+  return {
+    type: reduxString.ENTERPRISE_MANAGEMENT_DYNAMIC_ONCHANGE_DATE_TIME_PICKER,
+    formId,
+    dateTimePicker,
+  };
+};
 const enterpriseManagementChangeCheckHeader = () => {
   return {
     type: reduxString.ENTERPRISE_MANAGEMENT_CHANGE_CHECK_HEADER,
@@ -91,7 +101,7 @@ const getCustomerType = () => {
         const {result, statusCode} = data || {};
         if (statusCode === 0) {
           const changeArray = result.map(({value, code}) => ({
-            value: code,
+            value: value,
             label: value,
           }));
           dispatch(
@@ -124,6 +134,7 @@ export default getCustomerType;
 export {
   enterpriseManagementDynamicOnChangeTextInput,
   enterpriseManagementDynamicOnChangeDropDown,
+  enterpriseManagementDynamicOnChangeDateTimePicker,
   enterpriseManagementChangeCheckHeader,
   enterpriseManagementResetAllValue,
   enterpriseManagementGenerateParams,
