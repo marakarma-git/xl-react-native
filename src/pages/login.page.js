@@ -85,7 +85,6 @@ const Login = ({navigation}) => {
     const screenWidth = Orientation.getWidth();
     let customConfig = {...screenConfig};
     let isChange = false;
-    console.log('Screen Width ', screenWidth);
     // Width
     if (screenWidth <= 320) {
       isChange = true;

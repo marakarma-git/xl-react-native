@@ -19,6 +19,7 @@ import {useToastHooks} from '../../customHooks/customHooks';
 import {
   getBusinessCategory,
   getBusinessFieldType,
+  getEnterpriseList,
   resetCustomLabel,
 } from '../../redux/action/enterprise_management_action';
 import {colors} from '../../constant/color';
@@ -63,6 +64,7 @@ const EnterpriseManagementOnBoardPage = ({route, navigation}) => {
   const [selectedParentOrganization, setSelectedParentOrganization] = useState(
     [],
   );
+  const [enterpriseParentId, setEnterpriseParentId] = useState(null);
   const [customLabel, setCustomLabel] = useState([]);
   const [changesLabelRow, setChangesLabelRow] = useState([]);
   // Validation State
@@ -150,8 +152,7 @@ const EnterpriseManagementOnBoardPage = ({route, navigation}) => {
     dataObj.colorCode = personalization?.topBarColour;
     dataObj.customerNumber = basicInformation?.customerNumber;
     dataObj.enterpriseName = basicInformation?.enterpriseName;
-    dataObj.enterpriseParentId =
-      selectedParentOrganization[0]?.enterpriseParentId;
+    dataObj.enterpriseParentId = enterpriseParentId;
     dataObj.fileName = personalization?.fileName;
     dataObj.laNumber = basicInformation?.laNumber;
     dataObj.organizationalUnit = basicInformation?.organizationalUnit;
@@ -180,7 +181,9 @@ const EnterpriseManagementOnBoardPage = ({route, navigation}) => {
       }
     });
     if (errorValidationCnt > 0) return;
+    console.log(JSON.stringify(dataObj, null, 2), ' Lemparan');
     try {
+      setSubmitLoading(true);
       const customHeader = {
         headers: {
           activityId: 'AP-17',
@@ -193,6 +196,7 @@ const EnterpriseManagementOnBoardPage = ({route, navigation}) => {
         customHeader,
       );
       if (data) {
+        setSubmitLoading(false);
         const {statusCode, statusDescription} = data;
         if (statusCode === 0) {
           showToast({
@@ -258,7 +262,7 @@ const EnterpriseManagementOnBoardPage = ({route, navigation}) => {
   const formArray = [
     {
       title: 'Enterprise Information',
-      description: 'lorem ipsum sit dolor amet orem ipsum dolor',
+      description: 'Basic Information and Personalization',
       body: [
         {
           componentTitle: 'Basic Information',
@@ -289,7 +293,7 @@ const EnterpriseManagementOnBoardPage = ({route, navigation}) => {
     },
     {
       title: 'Parent Organization',
-      description: 'lorem ipsum sit dolor amet orem ipsum dolor',
+      description: 'Parent of then New Enterprise',
       body: [
         {
           componentTitle: 'Parent Organization',
@@ -300,6 +304,7 @@ const EnterpriseManagementOnBoardPage = ({route, navigation}) => {
               formPosition={formPosition}
               selectedParentOrganization={selectedParentOrganization}
               setSelectedParentOrganization={setSelectedParentOrganization}
+              setEnterpriseParentId={setEnterpriseParentId}
             />
           ),
         },
@@ -307,7 +312,7 @@ const EnterpriseManagementOnBoardPage = ({route, navigation}) => {
     },
     {
       title: 'Custom Label',
-      description: 'lorem ipsum sit dolor amet orem ipsum dolor',
+      description: 'Up to 10 Additional Information',
       body: [
         {
           componentTitle: 'Custom Label',
@@ -346,6 +351,7 @@ const EnterpriseManagementOnBoardPage = ({route, navigation}) => {
       setChangesLabelRow([]);
       setCustomLabel([]);
       dispatch(resetCustomLabel());
+      dispatch(getEnterpriseList());
     });
     return pageBlur;
   }, [navigation]);
