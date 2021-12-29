@@ -293,10 +293,9 @@ const getEnterpriseList = (paginate) => {
           );
           dispatch(
             enterpriseManagementGetDataSuccess({
-              dataEnterprise: Helper.makeMultiDimensionalArrayTo2DArray(
-                content,
-              ),
+              dataEnterprise: content,
               dataEnterpriseGenerated: generateDataTable,
+              enterpriseTotalChildren: generateDataTable.length,
               enterprisePage: getPage,
               enterpriseTotalPage: totalPages,
               enterpriseTotalSize: getSize,
@@ -330,7 +329,7 @@ const getEnterpriseList = (paginate) => {
 const getBusinessCategory = () => {
   return async (dispatch) => {
     try {
-      const {data} = await httpRequest.get(`/user/corp/getBusinessCat`);
+      const {data} = await httpRequest.get('/user/corp/getBusinessCat');
       if (data) {
         const {result, statusCode} = data;
         if (statusCode === 0) {
@@ -351,11 +350,13 @@ const getBusinessFieldType = () => {
   return async (dispatch) => {
     try {
       const {data} = await httpRequest.get(
-        `/user/corp/getCustomLabelFieldType`,
+        '/user/corp/getCustomLabelFieldType',
       );
       if (data) {
         const {result, statusCode} = data;
-        if (statusCode === 0) dispatch(saveBusinessCategoryFieldType(result));
+        if (statusCode === 0) {
+          dispatch(saveBusinessCategoryFieldType(result));
+        }
       }
     } catch (error) {
       dispatch(setRequestError(error.response.data));
@@ -405,7 +406,9 @@ const getEnterpriseDetail = () => {
       );
       if (data) {
         const {result, statusCode} = data;
-        if (statusCode === 0) dispatch(saveEnterpriseDetail(result));
+        if (statusCode === 0) {
+          dispatch(saveEnterpriseDetail(result));
+        }
       }
     } catch (error) {
       dispatch(setRequestError(error.response.data));

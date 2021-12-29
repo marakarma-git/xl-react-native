@@ -1,8 +1,14 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import {StyleSheet, TouchableOpacity, ActivityIndicator} from 'react-native';
+import {
+  View,
+  StyleSheet,
+  TouchableOpacity,
+  ActivityIndicator,
+} from 'react-native';
 import {Text} from '../index';
 import {colors} from '../../constant/color';
+import {subscriptionStyle} from '../../style';
 
 const ButtonLabelComponent = (props) => {
   const {
@@ -14,30 +20,48 @@ const ButtonLabelComponent = (props) => {
     textStyle,
     buttonAction,
     isLoading,
+    total,
+    filtered,
+    selected,
+    typeTwo,
   } = props;
   return (
-    <TouchableOpacity
-      disabled={isLoading}
-      style={[
-        styles.button,
-        {...buttonStyle},
-        {
-          backgroundColor: isLoading ? colors.gray_200 : buttonColor,
-          width: buttonWidth,
-          height: 30,
-        },
-      ]}
-      onPress={buttonAction}>
-      {isLoading ? (
-        <ActivityIndicator size="small" color={colors.main_color} />
-      ) : (
+    <View style={{flexDirection: 'row', alignItems: 'center'}}>
+      <TouchableOpacity
+        disabled={isLoading}
+        style={[
+          styles.button,
+          {...buttonStyle},
+          {
+            backgroundColor: isLoading ? colors.gray_200 : buttonColor,
+            width: buttonWidth,
+            height: 30,
+          },
+        ]}
+        onPress={buttonAction}>
+        {isLoading ? (
+          <ActivityIndicator size="small" color={colors.main_color} />
+        ) : (
+          <Text
+            fontType="bold"
+            style={[styles.text, {...textStyle}, {color: textColor}]}>
+            {buttonText}
+          </Text>
+        )}
+      </TouchableOpacity>
+      {(total || filtered || selected) && (
         <Text
-          fontType="bold"
-          style={[styles.text, {...textStyle}, {color: textColor}]}>
-          {buttonText}
+          fontType={'bold'}
+          style={[
+            subscriptionStyle.textMenuTotal,
+            {marginTop: typeTwo ? 6 : 0, marginLeft: typeTwo ? 0 : 12},
+          ]}>
+          {`${total ? `Total: ${total}` : ''} ${
+            filtered ? `| Filtered: ${filtered}` : ''
+          } ${selected ? `| Selected: ${selected}` : ''}`}
         </Text>
       )}
-    </TouchableOpacity>
+    </View>
   );
 };
 
@@ -50,6 +74,8 @@ ButtonLabelComponent.propTypes = {
   textStyle: PropTypes.object,
   buttonAction: PropTypes.func,
   isLoading: PropTypes.bool,
+  total: PropTypes.string,
+  filtered: PropTypes.string,
 };
 ButtonLabelComponent.defaultProps = {
   buttonText: 'Label',

@@ -9,6 +9,7 @@ const initialState = {
   enterprise_page: 0,
   enterprise_total_page: 0,
   enterprise_total_size: 20,
+  enterprise_total_children: 0,
   enterprise_elements_static: 0,
   enterprise_elements_dynamic: 0,
   enterprise_applied_filter: false,
@@ -65,7 +66,7 @@ const enterprise_management_get_enterprise_reducer = (
         enterprise_total_size: action.enterpriseTotalSize,
         enterprise_elements_static:
           state.enterprise_elements_static === 0
-            ? action.enterpriseElements
+            ? action.enterpriseTotalChildren
             : state.enterprise_elements_static,
         enterprise_elements_dynamic: action.enterpriseElements,
         enterprise_applied_filter: action.enterpriseAppliedFilter,
