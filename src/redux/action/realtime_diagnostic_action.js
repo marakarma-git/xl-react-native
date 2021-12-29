@@ -22,9 +22,12 @@ import Helper from '../../helpers/helper';
 import reduxString from '../reduxString';
 import wordingJson from '../../wording/diagnosticWizardWording.json';
 
-const realtimeDiagnosticGetSimData = (data) => ({
+const realtimeDiagnosticGetSimData = (simData, trafficUsage) => ({
   type: reduxString.REALTIME_DIAGNOSTIC_GET_SIM_DATA,
-  payload: data,
+  payload: {
+    simData,
+    trafficUsage,
+  },
 });
 
 const realtimeDiagnosticRequestSimData = () => ({
@@ -122,14 +125,46 @@ const getRealtimeDiagnosticSimStatus = (keyword, resultData) => {
             data.imsi = imsi;
             data.msisdn = msisdn;
           });
+          const trafficUsage = setTrafficUsage(resultData?.trafficUsage);
           dispatch(realtimeDiagnosticGetSimStatus(backupSimStatus));
-          dispatch(realtimeDiagnosticGetSimData(resultData));
+          dispatch(realtimeDiagnosticGetSimData(resultData, trafficUsage));
         }
       }
     } catch (error) {
       dispatch(realtimeDiagnosticResetSimStatus());
       dispatch(setRequestError(error.response.data));
     }
+  };
+};
+
+const setTrafficUsage = (data) => {
+  const monthUsage = [];
+  const cumulativeUsage = [];
+  data.map((datas) => {
+    let splitDate = datas.date.split('-');
+    let tooltipValue = [
+      `${splitDate[2]}.${splitDate[1]}.${splitDate[0]}`,
+      `Cumulative Month Values: ${Helper.formatBytes(datas.cumulative || 0)}`,
+      `Day Volumes: ${Helper.formatBytes(datas.volume || 0)}`,
+    ];
+    monthUsage.push({
+      y: datas.volume || 0,
+      x: datas.date || '',
+      tooltipValue,
+      symbol: 'round',
+      size: 4,
+    });
+    cumulativeUsage.push({
+      y: datas.cumulative || 0,
+      x: datas.date || '',
+      tooltipValue,
+      symbol: 'round',
+      size: 4,
+    });
+  });
+  return {
+    monthUsage,
+    cumulativeUsage,
   };
 };
 
