@@ -53,6 +53,10 @@ const initialState = {
       isCollapse: false,
     },
   ],
+  trafficUsage: {
+    monthUsage: [],
+    cumulativeUsage: [],
+  },
   loadSimData: false,
   loadSimStatus: false,
   errorText: null,
@@ -70,13 +74,18 @@ export default (state = initialState, action) => {
     case reduxString.REALTIME_DIAGNOSTIC_GET_SIM_DATA:
       return {
         ...state,
-        simData: action.payload,
+        simData: action.payload.simData,
+        trafficUsage: action.payload.trafficUsage,
         loadSimData: false,
       };
     case reduxString.REALTIME_DIAGNOSTIC_RESET_SIM_DATA:
       return {
         ...state,
         simData: null,
+        trafficUsage: {
+          monthUsage: [],
+          cumulativeUsage: [],
+        },
         loadSimData: false,
       };
     case reduxString.REALTIME_DIAGNOSTIC_REQUEST_SIM_DATA:

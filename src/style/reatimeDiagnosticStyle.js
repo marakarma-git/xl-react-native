@@ -103,6 +103,27 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
+  actionBar: {
+    alignItems: 'center',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    width: 120,
+    height: 30,
+    borderWidth: 2,
+    borderColor: '#aaa',
+  },
+  actionText: {
+    fontSize: 12,
+    paddingLeft: 5,
+  },
+  actionButton: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    width: 30,
+    height: '100%',
+    borderLeftWidth: 2,
+    borderLeftColor: '#aaa',
+  },
 });
 
 export default styles;

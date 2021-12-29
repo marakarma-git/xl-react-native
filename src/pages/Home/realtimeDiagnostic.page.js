@@ -1,6 +1,7 @@
 import React, {useEffect, useState, useCallback} from 'react';
-import {View, ScrollView} from 'react-native';
+import {View, ScrollView, TouchableOpacity} from 'react-native';
 import {
+  ButtonCurveTypeComponent,
   ContentCard,
   FormFactory,
   HeaderContainer,
@@ -21,24 +22,45 @@ import {
 import {useToastHooks} from '../../customHooks/customHooks';
 import {Bars} from 'react-native-loader';
 import {colors} from '../../constant/color';
+import RealtimeChartComponent from '../../components/chart/realtimeChart';
 
 const RealtimeDiagnosticPage = ({navigation}) => {
   const dispatch = useDispatch();
   const showToast = useToastHooks();
   const {imageBase64} = useSelector((state) => state.enterprise_reducer);
-  const {simData, loadSimData, simStatus, errorText, successText} = useSelector(
-    (state) => state.realtime_diagnostic_reducer,
-  );
+  const {
+    simData,
+    loadSimData,
+    simStatus,
+    errorText,
+    successText,
+    trafficUsage,
+  } = useSelector((state) => state.realtime_diagnostic_reducer);
   const [searchForm, setSearchForm] = useState({
     keyword: '',
   });
   const [searchCriteria, setSearchCriteria] = useState('');
+  const [curveType, setCurveType] = useState({
+    value: 'day',
+    label: 'Day Volumes',
+  });
+  const [showCurveType, setShowCurveType] = useState(false);
   const searchHandler = (name, value) => {
     setSearchForm({
       ...searchForm,
       [name]: value,
     });
   };
+  const [curveTypeOptions, setCurveTypeOptions] = useState([
+    {label: 'Day Volumes', value: 'day', isDisabled: false, isVisible: true},
+    {
+      label: 'Cumulative Month Values',
+      value: 'cumulative',
+      isDisabled: false,
+      isVisible: true,
+    },
+    {label: 'Both', value: 'both', isDisabled: false, isVisible: true},
+  ]);
   const searchSubmit = (value) => {
     if (value.length > 0) {
       dispatch(getRealtimeDiagnosticSimData(value));
@@ -151,6 +173,26 @@ const RealtimeDiagnosticPage = ({navigation}) => {
           isOnlyContent={true}
           customStyle={{marginBottom: 0}}
           cardContent={<ViewInformationComponent listInformation={simStatus} />}
+        />
+        <ContentCard
+          cardTitle="Last 30 Days Traffic Usage"
+          cardToolbar={
+            <ButtonCurveTypeComponent
+              label={curveType?.label}
+              setShowModal={setShowCurveType}
+              showModal={showCurveType}
+              curveTypeOptions={curveTypeOptions}
+              curveType={curveType}
+              setCurveType={setCurveType}
+            />
+          }
+          cardContent={
+            <RealtimeChartComponent
+              dataSet1={trafficUsage?.monthUsage}
+              dataSet2={trafficUsage?.cumulativeUsage}
+              chartType={curveType.value}
+            />
+          }
         />
       </ScrollView>
     </View>

@@ -7,7 +7,6 @@ import {
   VictoryChart,
   VictoryLabel,
   VictoryTooltip,
-  VictoryZoomContainer,
   VictoryGroup,
   VictoryScatter,
   VictoryLegend,
@@ -23,6 +22,7 @@ import Helper from '../../helpers/helper';
 import {NoDataText} from '..';
 import {useNavigation} from '@react-navigation/native';
 import {colors} from '../../constant/color';
+import EmptyChartComponent from '../chart/emptyChart';
 
 const VictoryVoronoiZoomContainer = createContainer('voronoi', 'zoom');
 
@@ -37,14 +37,20 @@ const DayMonthChart = (props) => {
   const chartType = (type) => {
     switch (type) {
       case 'day':
-        return <VolumeChart dataSet={monthUsage} />;
+        return <VolumeChart dataSet={monthUsage} orientation={orientation} />;
       case 'cumulative':
-        return <CumulativeMonthChart dataSet={cummulativeMonthUsage} />;
+        return (
+          <CumulativeMonthChart
+            dataSet={cummulativeMonthUsage}
+            orientation={orientation}
+          />
+        );
       case 'both':
         return (
           <BothChart
             volumeData={monthUsage}
             cumulativeData={cummulativeMonthUsage}
+            orientation={orientation}
           />
         );
 
@@ -54,9 +60,7 @@ const DayMonthChart = (props) => {
   };
 
   const generateChart = () => (
-    <View style={{position: 'relative', top: -20}}>
-      {chartType(props.chartType)}
-    </View>
+    <View style={{position: 'relative'}}>{chartType(props.chartType)}</View>
   );
 
   const generateView = () => {
@@ -86,40 +90,15 @@ const DayMonthChart = (props) => {
   return <>{generateView()}</>;
 };
 
-const CustomLabel = (props) => {
-  const {text, x, y} = props;
-
-  let yPos = y - 10;
-  let xPos = x - 80;
-
-  return (
-    <View
-      style={{
-        width: 160,
-        position: 'absolute',
-        top: yPos,
-        left: xPos,
-        alignItems: 'center',
-      }}>
-      <Text style={{fontSize: 12, paddingLeft: 3}}>
-        <Text style={{fontWeight: 'bold'}}>
-          <Text style={{color: '#0266FF'}}>
-            {String(text.x).replace('-', ' ')} :{' '}
-          </Text>
-          {Helper.tooltipConvertUnit(text.y)}
-        </Text>
-      </Text>
-    </View>
-  );
-};
-
-const VolumeChart = ({dataSet}) => {
+const VolumeChart = ({dataSet, orientation}) => {
   return (
     <>
       {dataSet.length > 0 ? (
         <Svg>
           <VictoryChart
-            width={Orientation.getWidth() - 80}
+            width={
+              Orientation.getWidth() - (orientation === 'landscape' ? 140 : 60)
+            }
             padding={{top: 30, left: 70, bottom: 70}}
             domain={[1, dataSet.length]}
             containerComponent={
@@ -153,7 +132,7 @@ const VolumeChart = ({dataSet}) => {
             </LinearGradient>
             <VictoryAxis
               dependentAxis
-              label={'Data volume'}
+              label={'Data volumes'}
               axisLabelComponent={<VictoryLabel dy={-30} />}
               standalone={true}
               fixLabelOverlap
@@ -238,19 +217,21 @@ const VolumeChart = ({dataSet}) => {
           </VictoryChart>
         </Svg>
       ) : (
-        <NoDataText />
+        <EmptyChartComponent />
       )}
     </>
   );
 };
 
-const CumulativeMonthChart = ({dataSet}) => {
+const CumulativeMonthChart = ({dataSet, orientation}) => {
   return (
     <>
       {dataSet.length > 0 ? (
         <Svg>
           <VictoryChart
-            width={Orientation.getWidth() - 80}
+            width={
+              Orientation.getWidth() - (orientation === 'landscape' ? 140 : 60)
+            }
             padding={{top: 30, left: 70, bottom: 70}}
             domain={[1, dataSet.length]}
             containerComponent={
@@ -284,7 +265,7 @@ const CumulativeMonthChart = ({dataSet}) => {
             </LinearGradient>
             <VictoryAxis
               dependentAxis
-              label={'Data volume'}
+              label={'Data volumes'}
               axisLabelComponent={<VictoryLabel dy={-30} />}
               standalone={true}
               fixLabelOverlap
@@ -369,19 +350,21 @@ const CumulativeMonthChart = ({dataSet}) => {
           </VictoryChart>
         </Svg>
       ) : (
-        <NoDataText />
+        <EmptyChartComponent />
       )}
     </>
   );
 };
 
-const BothChart = ({volumeData, cumulativeData}) => {
+const BothChart = ({volumeData, cumulativeData, orientation}) => {
   return (
     <>
       {volumeData.length > 0 && cumulativeData.length > 0 ? (
         <Svg>
           <VictoryChart
-            width={Orientation.getWidth() - 80}
+            width={
+              Orientation.getWidth() - (orientation === 'landscape' ? 140 : 60)
+            }
             padding={{top: 30, left: 70, bottom: 70}}
             domain={[1, cumulativeData.length]}
             containerComponent={
@@ -415,7 +398,7 @@ const BothChart = ({volumeData, cumulativeData}) => {
             </LinearGradient>
             <VictoryAxis
               dependentAxis
-              label={'Data volume'}
+              label={'Data volumes'}
               axisLabelComponent={<VictoryLabel dy={-30} />}
               standalone={true}
               fixLabelOverlap
@@ -524,7 +507,7 @@ const BothChart = ({volumeData, cumulativeData}) => {
           </VictoryChart>
         </Svg>
       ) : (
-        <NoDataText />
+        <EmptyChartComponent />
       )}
     </>
   );
