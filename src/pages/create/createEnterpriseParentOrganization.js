@@ -40,6 +40,7 @@ const CreateEnterpriseParentOrganization = (props) => {
     formPosition,
     selectedParentOrganization,
     setSelectedParentOrganization,
+    setEnterpriseParentId,
   } = props;
   const [gridOptions, setGridOptions] = useState(gridOptionsArray);
   const [showFilterModal, setShowFilterModal] = useState(false);
@@ -102,6 +103,7 @@ const CreateEnterpriseParentOrganization = (props) => {
     } else {
       setGridData(resData);
     }
+    setEnterpriseParentId(cellId);
   };
   const onCheck = (data, cellId, enterpriseStatus, isCheck, parentId) => {
     data.map((data) => {
@@ -270,11 +272,13 @@ CreateEnterpriseParentOrganization.propTypes = {
   formPosition: PropTypes.number,
   selectedParentOrganization: PropTypes.array,
   setSelectedParentOrganization: PropTypes.func,
+  setEnterpriseParentId: PropTypes.func,
 };
 CreateEnterpriseParentOrganization.defaultProps = {
   formPosition: 0,
   selectedParentOrganization: [],
   setSelectedParentOrganization: () => {},
+  setEnterpriseParentId: () => {},
 };
 
 export default CreateEnterpriseParentOrganization;

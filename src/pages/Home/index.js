@@ -36,3 +36,4 @@ export {default as UsageAnalyticsFilterPage} from './usageAnalyticsFilterPage';
 export {default as SubscriptionPackageEditPage} from './subscriptionPackageEdit.page';
 export {default as SmsA2pEditPage} from './smsA2pEdit.page';
 export {default as EnterpriseManagementEditViewPage} from './enterpriseManagementEditView.page';
+export {default as RealtimeDiagnosticPage} from './realtimeDiagnostic.page';

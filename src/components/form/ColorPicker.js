@@ -8,7 +8,6 @@ const ColorPickerComponent = (props) => {
   const {value, inputHandler, name} = props;
   const [showColorPallet, setShowColorPallete] = useState(false);
   const setCurrentColor = (color) => {
-    console.log('Color', color);
     inputHandler(name, color);
   };
   return (

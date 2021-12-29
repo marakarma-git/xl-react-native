@@ -8,6 +8,7 @@ import {
   CHANGE_PASSWORD_PRIVILEDGE_ID,
   CUSTOMER_CONSENT_PRIVILEDGE_ID,
   DASHBOARD_PRIVILEDGE_ID,
+  DIAGNOSTIC_WIZARD_PRIVILEDGE_ID,
   LOGIN_LOGOUT_PRIVILEDGE_ID,
   SUBSCRIPTION_PRIVILEDGE_ID,
 } from './actionPriv';
@@ -73,6 +74,7 @@ const requestHandler = async (request) => {
 };
 
 const errorHandler = (error) => {
+  console.log(error, ' AXIOS ERROR ');
   return Promise.reject(error);
 };
 
@@ -101,6 +103,8 @@ const activityLogHandler = {
         return CHANGE_PASSWORD_PRIVILEDGE_ID;
       case 'CCP':
         return CUSTOMER_CONSENT_PRIVILEDGE_ID;
+      case 'DW':
+        return DIAGNOSTIC_WIZARD_PRIVILEDGE_ID;
       default:
         return;
     }
@@ -195,6 +199,7 @@ const activityLogHandler = {
     return filterLabel.join(', ');
   },
   splitFirstUrl: (url) => {
+    console.log(url, 'URL');
     let splitUrl = url.split('');
     let returnData = [];
     let isSplit = 0;

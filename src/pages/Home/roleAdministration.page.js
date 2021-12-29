@@ -200,7 +200,7 @@ const RoleAdministrationPage = ({route, navigation}) => {
           dispatch(callRoleAdministrationDeleteRole(roleId));
         }
         setShowModal(false);
-        setDeleteLoading(true);
+        setDeleteLoading(false);
       }
     } catch (error) {
       setShowModal(false);

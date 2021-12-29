@@ -10,23 +10,29 @@ import {colors} from '../../constant/color';
 
 const ContentCard = (props) => {
   return (
-    <Card style={[styles.cardSection, {marginTop: '3%'}]}>
-      <Card.Content style={styles.cardContentWrapper}>
-        <View
-          style={[styles.cardTitleContainer, {height: props.cardTitleHeight}]}>
-          {props.cardTitle ? (
-            <Text
-              fontType="bold"
-              style={[{fontSize: 12, color: 'black'}, props.titleStyle]}>
-              {props.cardTitle}
-            </Text>
-          ) : (
-            <>{props.cardTitleComponent}</>
-          )}
-          <View style={{flexDirection: 'row', justifyContent: 'flex-end'}}>
-            {props.cardToolbar}
+    <Card style={[styles.cardSection, {marginTop: '3%'}, {...props.cardStyle}]}>
+      <Card.Content style={[styles.cardContentWrapper, {...props.customStyle}]}>
+        {!props.isOnlyContent && (
+          <View
+            style={[
+              styles.cardTitleContainer,
+              {height: props.cardTitleHeight},
+              {...props.cardTitleStyle},
+            ]}>
+            {props.cardTitle ? (
+              <Text
+                fontType="bold"
+                style={[{fontSize: 12, color: 'black'}, props.titleStyle]}>
+                {props.cardTitle}
+              </Text>
+            ) : (
+              <>{props.cardTitleComponent}</>
+            )}
+            <View style={{flexDirection: 'row', justifyContent: 'flex-end'}}>
+              {props.cardToolbar}
+            </View>
           </View>
-        </View>
+        )}
         {props.cardBody && (
           <View style={styles.cardBody}>{props.cardBody}</View>
         )}
@@ -65,6 +71,10 @@ ContentCard.propTypes = {
   cardTitleComponent: PropTypes.element,
   cardFooter: PropTypes.element,
   cardBody: PropTypes.element,
+  isOnlyContent: PropTypes.bool,
+  customStyle: PropTypes.object,
+  cardStyle: PropTypes.object,
+  cardTitleStyle: PropTypes.object,
 };
 ContentCard.defaultProps = {
   cardTitle: '',
@@ -72,6 +82,10 @@ ContentCard.defaultProps = {
   titleStyle: {},
   loadingContent: false,
   cardTitleHeight: 40,
+  isOnlyContent: false,
+  customStyle: {},
+  cardStyle: {},
+  cardTitleStyle: {},
 };
 
 export default ContentCard;
