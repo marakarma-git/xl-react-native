@@ -5,14 +5,21 @@ import {ButtonLabelComponent, Text} from '../index';
 import {Image} from 'react-native';
 import {color_theme_one} from '../../constant/color';
 import {TouchableOpacity} from 'react-native';
-import {useDispatch} from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 import styles from '../../style/reatimeDiagnosticStyle';
 import AntDesign from 'react-native-vector-icons/AntDesign';
-import {realtimeDiagnosticeHideUnhideMenu} from '../../redux/action/realtime_diagnostic_action';
+import {
+  realtimeDiagnosticeHideUnhideMenu,
+  realtimeDiagnosticFixLoading,
+  realtimeDiagnosticFixStatus,
+} from '../../redux/action/realtime_diagnostic_action';
 
 const ViewInformationComponent = (props) => {
   const dispatch = useDispatch();
   const {listInformation} = props;
+  const {fixLoading} = useSelector(
+    (state) => state.realtime_diagnostic_reducer,
+  );
   const renderList = () =>
     listInformation.map((list, index) => (
       <>
@@ -98,6 +105,16 @@ const ViewInformationComponent = (props) => {
               </Text>
             </View>
             <ButtonLabelComponent
+              isLoading={fixLoading[list.field]}
+              buttonAction={() => {
+                dispatch(realtimeDiagnosticFixLoading(list.field));
+                dispatch(
+                  realtimeDiagnosticFixStatus({
+                    fixType: list.field,
+                    msisdn: list.msisdn,
+                  }),
+                );
+              }}
               buttonWidth={'40%'}
               buttonText={list.buttonText}
               textStyle={{fontSize: 10}}

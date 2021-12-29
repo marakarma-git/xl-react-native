@@ -512,7 +512,7 @@ const DIAGNOSTIC_WIZARD_PRIVILEDGE_ID = [
     privId: '5c65cf2f-d2fb-4fc8-b38b-12828b120fff',
     menuName: 'Diagnostic Wizard',
     actionName: 'FixStatus',
-    activityLog: '',
+    activityLog: 'Diagnostic Status with criteria: ',
   },
 ];
 

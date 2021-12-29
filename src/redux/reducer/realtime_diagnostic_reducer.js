@@ -56,6 +56,13 @@ const initialState = {
   loadSimData: false,
   loadSimStatus: false,
   errorText: null,
+  successText: null,
+  fixLoading: {
+    provisioning: false,
+    simDevice: false,
+    networkConnection: false,
+    ipConnection: false,
+  },
 };
 
 export default (state = initialState, action) => {
@@ -145,6 +152,18 @@ export default (state = initialState, action) => {
         errorText: action.payload,
         loadSimStatus: false,
         loadSimData: false,
+      };
+    case reduxString.REALTIME_DIAGNOSTIC_SET_SUCCESS:
+      return {
+        ...state,
+        successText: action.payload,
+        loadSimStatus: false,
+        loadSimData: false,
+      };
+    case reduxString.REALTIME_DIAGNOSTIC_FIX_STATUS_LOADING:
+      return {
+        ...state,
+        fixLoading: action.payload,
       };
 
     default:

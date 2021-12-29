@@ -46,6 +46,9 @@ import iconIpConnectionError from './ipConnection/IPConnection-Error.png';
 import iconIpConnectionGood from './ipConnection/IPConnection-Good.png';
 import iconIpConnectionQuestion from './ipConnection/ipQuestion.png';
 
+// GIF
+import loaderRealtimeDiagnostic from './loader/loader-realtime-diagnostic.gif';
+
 export {
   logoCompany,
   xlBusolInverted,
@@ -84,4 +87,5 @@ export {
   iconIpConnectionError,
   iconIpConnectionGood,
   iconIpConnectionQuestion,
+  loaderRealtimeDiagnostic,
 };

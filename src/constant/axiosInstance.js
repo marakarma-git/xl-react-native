@@ -74,7 +74,6 @@ const requestHandler = async (request) => {
 };
 
 const errorHandler = (error) => {
-  console.log(error, ' AXIOS ERROR ');
   return Promise.reject(error);
 };
 
@@ -199,7 +198,6 @@ const activityLogHandler = {
     return filterLabel.join(', ');
   },
   splitFirstUrl: (url) => {
-    console.log(url, 'URL');
     let splitUrl = url.split('');
     let returnData = [];
     let isSplit = 0;
