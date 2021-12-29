@@ -22,6 +22,7 @@ import iconAboutus from './drawer/aboutus.png';
 import iconAdmin from './drawer/admin.png';
 import iconAutomation from './drawer/automation.png';
 import iconAnalytics from './drawer/analytics.png';
+import iconDiagnostic from './drawer/diagnostic-wizard.png';
 
 // Banner Assets
 import framerBanner from './banners/farmer-banner.png';
@@ -88,4 +89,5 @@ export {
   iconIpConnectionGood,
   iconIpConnectionQuestion,
   loaderRealtimeDiagnostic,
+  iconDiagnostic,
 };
