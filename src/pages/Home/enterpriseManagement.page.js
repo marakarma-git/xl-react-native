@@ -5,7 +5,6 @@ import {
   ButtonLabelComponent,
   HeaderContainer,
   OverlayBackground,
-  Text,
 } from '../../components';
 import {useDispatch, useSelector} from 'react-redux';
 import Loading from '../../components/loading';
@@ -116,7 +115,7 @@ const EnterpriseManagement = () => {
                   }
                   buttonWidth={150}
                   buttonStyle={{marginHorizontal: 15}}
-                  total={enterprise_elements_static || ''}
+                  total={data_enterprise_generated.length || ''}
                   filtered={
                     enterprise_applied_filter &&
                     !loading &&
