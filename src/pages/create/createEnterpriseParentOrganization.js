@@ -56,7 +56,7 @@ const CreateEnterpriseParentOrganization = (props) => {
       isVisible: true,
     },
   ]);
-  const {loading, data_enterprise, searchText} = useSelector(
+  const {loading, data_enterprise_create} = useSelector(
     (state) => state.enterprise_management_get_enterprise_reducer,
   );
   const filterData = (searchText) => {
@@ -184,9 +184,9 @@ const CreateEnterpriseParentOrganization = (props) => {
   }, [formPosition]);
   useEffect(() => {
     if (isReady) {
-      dataManipulation(data_enterprise);
+      dataManipulation(data_enterprise_create);
     }
-  }, [data_enterprise]);
+  }, [data_enterprise_create]);
 
   return (
     <View style={{marginVertical: 10}}>

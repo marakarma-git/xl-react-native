@@ -67,9 +67,12 @@ const enterpriseManagementSetDataGenerated = ({dataEnterpriseGenerated}) => {
     dataEnterpriseGenerated,
   };
 };
-const updateEnterpriseData = (dataEnterprise, dataEnterpriseGenerated) => ({
+const updateEnterpriseData = (
+  dataEnterpriseCreate,
+  dataEnterpriseGenerated,
+) => ({
   type: 'ENTERPRISE_UPDATE_DATA',
-  dataEnterprise,
+  dataEnterpriseCreate,
   dataEnterpriseGenerated,
 });
 
@@ -80,11 +83,11 @@ const enterpriseManagementGetDataFail = (payload) => ({
 
 const treeViewToggle = (
   enterpriseId,
-  data_enterprise,
+  data_enterprise_create,
   parentCondition = null,
   key = 'visibility',
 ) => {
-  data_enterprise.map((data) => {
+  data_enterprise_create.map((data) => {
     if (data.enterpriseParentId == enterpriseId) {
       if (parentCondition == null) {
         data[key] = !data[key];
@@ -92,43 +95,43 @@ const treeViewToggle = (
         data[key] = parentCondition;
       }
 
-      treeViewToggle(data.enterpriseId, data_enterprise, data[key], key);
+      treeViewToggle(data.enterpriseId, data_enterprise_create, data[key], key);
     }
   });
 };
 
 const enterpriseManagementCheckBoxToggle = (enterpriseId) => {
   return async (dispatch, getState) => {
-    const {data_enterprise} =
+    const {data_enterprise_create} =
       getState().enterprise_management_get_enterprise_reducer || {};
     const {dataHeaderEnterprise} =
       getState().enterprise_management_header_array_reducer || {};
 
-    data_enterprise.map((data) => {
+    data_enterprise_create.map((data) => {
       if (data.enterpriseId == enterpriseId) {
         data.treeCheck = !data.treeCheck;
       }
     });
 
-    treeViewToggle(enterpriseId, data_enterprise, null, 'treeCheck');
+    treeViewToggle(enterpriseId, data_enterprise_create, null, 'treeCheck');
 
     const generateDataTable = dataMatcherArray2D(
-      data_enterprise,
+      data_enterprise_create,
       dataHeaderEnterprise,
     );
 
-    dispatch(updateEnterpriseData(data_enterprise, generateDataTable));
+    dispatch(updateEnterpriseData(data_enterprise_create, generateDataTable));
   };
 };
 
 const enterpriseManagementHideShow = (enterpriseId) => {
   return async (dispatch, getState) => {
-    const {data_enterprise} =
+    const {data_enterprise_create} =
       getState().enterprise_management_get_enterprise_reducer || {};
     const {dataHeaderEnterprise} =
       getState().enterprise_management_header_array_reducer || {};
 
-    await data_enterprise.map((data) => {
+    await data_enterprise_create.map((data) => {
       if (data.enterpriseId == enterpriseId) {
         if (data.icon) {
           data.icon = data.icon == 'caret-down' ? 'caret-up' : 'caret-down';
@@ -136,14 +139,14 @@ const enterpriseManagementHideShow = (enterpriseId) => {
       }
     });
 
-    treeViewToggle(enterpriseId, data_enterprise, null, 'visibility');
+    treeViewToggle(enterpriseId, data_enterprise_create, null, 'visibility');
 
     const generateDataTable = dataMatcherArray2D(
-      data_enterprise,
+      data_enterprise_create,
       dataHeaderEnterprise,
     );
 
-    dispatch(updateEnterpriseData(data_enterprise, generateDataTable));
+    dispatch(updateEnterpriseData(data_enterprise_create, generateDataTable));
   };
 };
 
@@ -291,11 +294,15 @@ const getEnterpriseList = (paginate) => {
             Helper.makeMultiDimensionalArrayTo2DArray(content),
             dataHeaderEnterprise,
           );
+          const oneLevelArray = Helper.makeMultiDimensionalArrayTo2DArray(
+            content,
+          );
           dispatch(
             enterpriseManagementGetDataSuccess({
               dataEnterprise: content,
+              dataEnterpriseCreate: oneLevelArray,
               dataEnterpriseGenerated: generateDataTable,
-              enterpriseTotalChildren: generateDataTable.length,
+              enterpriseTotalChildren: oneLevelArray.length,
               enterprisePage: getPage,
               enterpriseTotalPage: totalPages,
               enterpriseTotalSize: getSize,

@@ -4,6 +4,7 @@ const initialState = {
   loading: false,
   errorText: '',
   data_enterprise: [],
+  data_enterprise_create: [],
   data_active_enterprise: [],
   data_enterprise_generated: [],
   enterprise_page: 0,
@@ -50,7 +51,7 @@ const enterprise_management_get_enterprise_reducer = (
         ...state,
         loading: false,
         errorText: '',
-        data_enterprise: action.dataEnterprise,
+        data_enterprise_create: action.dataEnterpriseCreate,
         data_enterprise_generated: action.dataEnterpriseGenerated,
       };
     }
@@ -60,6 +61,7 @@ const enterprise_management_get_enterprise_reducer = (
         loading: false,
         errorText: '',
         data_enterprise: action.dataEnterprise,
+        data_enterprise_create: action.dataEnterpriseCreate,
         data_enterprise_generated: action.dataEnterpriseGenerated,
         enterprise_page: action.enterprisePage,
         enterprise_total_page: action.enterpriseTotalPage,

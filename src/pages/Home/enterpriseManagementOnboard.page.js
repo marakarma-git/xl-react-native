@@ -351,6 +351,7 @@ const EnterpriseManagementOnBoardPage = ({route, navigation}) => {
       setCustomLabel([]);
       dispatch(resetCustomLabel());
       dispatch(getEnterpriseList());
+      setEnterpriseParentId(null);
     });
     return pageBlur;
   }, [navigation]);
