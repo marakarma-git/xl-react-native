@@ -26,7 +26,7 @@ const ToastComponent = (props) => {
         return impactOn == 'color' ? '#06B6D4' : 'information-circle';
 
       default:
-        return impactOn == 'color' ? '#14B8A6' : 'information-circle';
+        return impactOn == 'color' ? colors.tab_edit : 'information-circle';
     }
   };
 

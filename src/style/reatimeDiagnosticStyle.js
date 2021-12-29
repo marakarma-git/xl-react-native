@@ -32,6 +32,7 @@ const styles = StyleSheet.create({
     width: '100%',
     paddingVertical: 5,
     alignItems: 'center',
+    flexWrap: 'wrap',
   },
   listTitle: {
     fontSize: 12,
@@ -43,8 +44,8 @@ const styles = StyleSheet.create({
     left: 0,
     right: 0,
     backgroundColor: 'black',
-    opacity: 0.5,
-    elevation: 4,
+    elevation: 1,
+    opacity: 0.8,
     alignItems: 'center',
     justifyContent: 'center',
   },

@@ -13,18 +13,20 @@ import {useSelector, useDispatch} from 'react-redux';
 import styles from '../../style/reatimeDiagnosticStyle';
 import {
   getRealtimeDiagnosticSimData,
-  realtimeDiagnosticGetSimStatus,
   realtimeDiagnosticResetSimData,
   realtimeDiagnosticResetSimStatus,
   realtimeDiagnosticSetError,
+  realtimeDiagnosticSetSuccess,
 } from '../../redux/action/realtime_diagnostic_action';
 import {useToastHooks} from '../../customHooks/customHooks';
+import {Bars} from 'react-native-loader';
+import {colors} from '../../constant/color';
 
-const RealtimeDiagnosticPage = ({route, navigation}) => {
+const RealtimeDiagnosticPage = ({navigation}) => {
   const dispatch = useDispatch();
   const showToast = useToastHooks();
   const {imageBase64} = useSelector((state) => state.enterprise_reducer);
-  const {simData, loadSimData, simStatus, errorText} = useSelector(
+  const {simData, loadSimData, simStatus, errorText, successText} = useSelector(
     (state) => state.realtime_diagnostic_reducer,
   );
   const [searchForm, setSearchForm] = useState({
@@ -40,6 +42,15 @@ const RealtimeDiagnosticPage = ({route, navigation}) => {
   const searchSubmit = (value) => {
     if (value.length > 0) {
       dispatch(getRealtimeDiagnosticSimData(value));
+    } else {
+      showToast({
+        title: 'Diagnostic Wizard',
+        type: 'warning',
+        message: 'Please input valid keyword',
+        duration: 3000,
+        showToast: true,
+        position: 'top',
+      });
     }
     setSearchCriteria(value);
   };
@@ -55,7 +66,18 @@ const RealtimeDiagnosticPage = ({route, navigation}) => {
       });
       dispatch(realtimeDiagnosticSetError(null));
     }
-  }, [errorText]);
+    if (successText) {
+      showToast({
+        title: 'Diagnostic Wizard',
+        type: 'success',
+        message: successText,
+        duration: 3000,
+        showToast: true,
+        position: 'top',
+      });
+      dispatch(realtimeDiagnosticSetSuccess(null));
+    }
+  }, [errorText, successText]);
   useEffect(() => {
     const pageBlur = navigation.addListener('blur', () => {
       dispatch(realtimeDiagnosticResetSimData());
@@ -91,7 +113,10 @@ const RealtimeDiagnosticPage = ({route, navigation}) => {
       />
       {loadSimData && (
         <View style={styles.loadBackdrop}>
-          <Text>Please Wait...</Text>
+          <Bars size={24} color={colors.tab_edit} />
+          <Text fontType="semi-bold" style={{color: 'white', fontSize: 16}}>
+            Please Wait...
+          </Text>
         </View>
       )}
       <ScrollView showsVerticalScrollIndicator={false}>

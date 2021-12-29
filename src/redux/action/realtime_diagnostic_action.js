@@ -53,6 +53,16 @@ const realtimeDiagnosticSetError = (data) => ({
   payload: data,
 });
 
+const realtimeDiagnosticSetSuccess = (data) => ({
+  type: reduxString.REALTIME_DIAGNOSTIC_SET_SUCCESS,
+  payload: data,
+});
+
+const realtimeDiagnosticFixStatusLoading = (data) => ({
+  type: reduxString.REALTIME_DIAGNOSTIC_FIX_STATUS_LOADING,
+  payload: data,
+});
+
 const getRealtimeDiagnosticSimData = (keyword) => {
   return async (dispatch) => {
     const customHeaders = {
@@ -73,6 +83,8 @@ const getRealtimeDiagnosticSimData = (keyword) => {
           result.totalUsage = Helper.formatBytes(result.totalUsage);
           dispatch(getRealtimeDiagnosticSimStatus(keyword, result));
         } else {
+          dispatch(realtimeDiagnosticResetSimData());
+          dispatch(realtimeDiagnosticResetSimStatus());
           dispatch(realtimeDiagnosticSetError(statusDescription));
         }
       }
@@ -136,6 +148,55 @@ const realtimeDiagnosticeHideUnhideMenu = (field) => {
   };
 };
 
+const realtimeDiagnosticFixStatus = ({fixType, msisdn}) => {
+  return async (dispatch) => {
+    const customHeaders = {
+      headers: {
+        activityId: 'DW-2',
+        descSuffix: `${msisdn} from ${fixType} status`,
+      },
+    };
+    try {
+      const {data} = await httpRequest.post(
+        '/dcp/diagnostic/fixSimStatus',
+        {fixType, msisdn},
+        customHeaders,
+      );
+
+      if (data) {
+        const {result, statusCode} = data;
+        const {msisdn} = result;
+        if (statusCode === 0) {
+          dispatch(
+            realtimeDiagnosticSetSuccess(
+              `A device reconnect request has been sent successfully, please wait about 2 minutes for the SIM card requests for a new location update and check again on the Diagnostic Wizard`,
+            ),
+          );
+          dispatch(realtimeDiagnosticFixLoading(fixType));
+          dispatch(getRealtimeDiagnosticSimData(msisdn));
+        } else {
+          dispatch(
+            realtimeDiagnosticSetError(
+              `SIM Activation can’t be done, please contact your system support`,
+            ),
+          );
+        }
+      }
+    } catch (error) {
+      dispatch(setRequestError(error.response.data));
+    }
+  };
+};
+
+const realtimeDiagnosticFixLoading = (key) => {
+  return (dispatch, getState) => {
+    const {fixLoading} = getState().realtime_diagnostic_reducer;
+    const newFixLoading = {...fixLoading};
+    newFixLoading[key] = !newFixLoading[key];
+    dispatch(realtimeDiagnosticFixStatusLoading(newFixLoading));
+  };
+};
+
 const findWordingAndIcon = (key, value) => {
   const flagList = ['', false, true, null];
   const iconList = {
@@ -178,7 +239,10 @@ export {
   getRealtimeDiagnosticSimData,
   realtimeDiagnosticResetSimData,
   realtimeDiagnosticSetError,
+  realtimeDiagnosticSetSuccess,
   realtimeDiagnosticResetSimStatus,
   realtimeDiagnosticeHideUnhideMenu,
   realtimeDiagnosticGetSimStatus,
+  realtimeDiagnosticFixStatus,
+  realtimeDiagnosticFixLoading,
 };
