@@ -5,6 +5,7 @@ import {
   iconAdmin,
   iconAutomation,
   iconAnalytics,
+  iconDiagnostic,
 } from '../assets/images';
 import {
   LandingPage,
@@ -131,7 +132,7 @@ export const DRAWER_MENU_PRIVILEDGE = [
   },
   {
     name: 'Diagnostic Wizard',
-    icon: iconAutomation,
+    icon: iconDiagnostic,
     type: 'drawer',
     components: RealtimeDiagnosticPage,
     priviledgeIds: DIAGNOSTIC_WIZARD_PRIVILEDGE_ID,
