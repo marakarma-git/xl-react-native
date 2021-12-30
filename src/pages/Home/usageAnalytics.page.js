@@ -10,6 +10,7 @@ import {
   Last12MonthChart,
   DayMonthChart,
   FilterDropdown,
+  ButtonCurveTypeComponent,
 } from '../../components';
 import {
   usageAnalyticsDynamicResetSelectedValue,
@@ -93,9 +94,12 @@ const UsageAnalyticsPage = ({route, navigation}) => {
     {label: 'Top 10', value: 10, isDisabled: false, isVisible: true},
     {label: 'Top 20', value: 20, isDisabled: false, isVisible: true},
   ]);
-  const [curveType, setCurveType] = useState('day');
+  const [curveType, setCurveType] = useState({
+    value: 'day',
+    label: 'Day Volumes',
+  });
   const [curveTypeOptions, setCurveTypeOptions] = useState([
-    {label: 'Day', value: 'day', isDisabled: false, isVisible: true},
+    {label: 'Day Volumes', value: 'day', isDisabled: false, isVisible: true},
     {
       label: 'Cumulative Month Values',
       value: 'cumulative',
@@ -278,17 +282,16 @@ const UsageAnalyticsPage = ({route, navigation}) => {
                   </View>
                 }
                 cardToolbar={
-                  <TouchableOpacity
-                    disabled={loadingMonthUsage}
-                    style={styles.actionBar}
-                    onPress={() => setShowCurveType(true)}>
-                    <Text style={styles.actionText}>Curve Type</Text>
-                    <View style={styles.actionButton}>
-                      <AntDesign name="caretdown" size={14} color="black" />
-                    </View>
-                  </TouchableOpacity>
+                  <ButtonCurveTypeComponent
+                    label={curveType?.label}
+                    setShowModal={setShowCurveType}
+                    showModal={showCurveType}
+                    curveTypeOptions={curveTypeOptions}
+                    curveType={curveType}
+                    setCurveType={setCurveType}
+                  />
                 }
-                cardContent={<DayMonthChart chartType={curveType} />}
+                cardContent={<DayMonthChart chartType={curveType?.value} />}
                 cardFooter={
                   <>
                     <TouchableOpacity
@@ -356,20 +359,6 @@ const UsageAnalyticsPage = ({route, navigation}) => {
           removeSearch={true}
           title={'Count Filter'}
           value={param4}
-        />
-      )}
-      {showCurveType && (
-        <ModalSearchPicker
-          modalHeight={230}
-          data={curveTypeOptions}
-          onChange={(e) => {
-            setCurveType(e.value);
-            setShowCurveType(false);
-          }}
-          onClose={() => setShowCurveType(false)}
-          removeSearch={true}
-          title={'Curve Type'}
-          value={curveType}
         />
       )}
     </View>
