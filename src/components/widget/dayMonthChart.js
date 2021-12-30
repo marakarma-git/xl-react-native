@@ -13,13 +13,11 @@ import {
   createContainer,
 } from 'victory-native';
 import {View, Dimensions} from 'react-native';
-import {Text} from '../index';
 import Orientation from '../../helpers/orientation';
 import {LinearGradient, Svg, Stop} from 'react-native-svg';
 
 import PropTypes from 'prop-types';
 import Helper from '../../helpers/helper';
-import {NoDataText} from '..';
 import {useNavigation} from '@react-navigation/native';
 import {colors} from '../../constant/color';
 import EmptyChartComponent from '../chart/emptyChart';
@@ -137,7 +135,9 @@ const VolumeChart = ({dataSet, orientation}) => {
               standalone={true}
               fixLabelOverlap
               tickFormat={(t) => Helper.formatBytes(t)}
-              tickLabelComponent={<VictoryLabel style={{fontSize: 10}} />}
+              tickLabelComponent={
+                <VictoryLabel dx={8} style={{fontSize: 10}} />
+              }
             />
             <VictoryAxis
               crossAxis
@@ -270,7 +270,9 @@ const CumulativeMonthChart = ({dataSet, orientation}) => {
               standalone={true}
               fixLabelOverlap
               tickFormat={(t) => Helper.formatBytes(t)}
-              tickLabelComponent={<VictoryLabel style={{fontSize: 10}} />}
+              tickLabelComponent={
+                <VictoryLabel dx={8} style={{fontSize: 10}} />
+              }
             />
             <VictoryAxis
               crossAxis
@@ -403,7 +405,9 @@ const BothChart = ({volumeData, cumulativeData, orientation}) => {
               standalone={true}
               fixLabelOverlap
               tickFormat={(t) => Helper.formatBytes(t)}
-              tickLabelComponent={<VictoryLabel style={{fontSize: 10}} />}
+              tickLabelComponent={
+                <VictoryLabel dx={8} style={{fontSize: 10}} />
+              }
             />
             <VictoryAxis
               crossAxis
