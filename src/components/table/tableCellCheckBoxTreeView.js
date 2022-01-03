@@ -43,10 +43,8 @@ const TableCellText = (props) => {
     treeCheck,
   } = config || {};
   const onLongPress = () => {
-    if (!moreText) {
-      Clipboard.setString(mergingText(textRaw.lines));
-      ToastAndroid.show('Text copied', ToastAndroid.LONG);
-    }
+    Clipboard.setString(mergingText(textRaw.lines));
+    ToastAndroid.show('Text copied', ToastAndroid.LONG);
   };
   // const TouchView = isTouchable ? TouchableOpacity : View;
   return (
@@ -104,7 +102,7 @@ const TableCellText = (props) => {
                     flex: 1,
                     color: isNavigate ? colors.link_color : 'black',
                   }}
-                  onLongPress={() => onLongPress()}
+                  onLongPress={onLongPress}
                   onPress={() => {
                     if (isNavigate) {
                       onPress(otherInformation);
