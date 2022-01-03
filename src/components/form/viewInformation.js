@@ -115,7 +115,7 @@ const ViewInformationComponent = (props) => {
                   }),
                 );
               }}
-              buttonWidth={'40%'}
+              buttonWidth={150}
               buttonText={list.buttonText}
               textStyle={{fontSize: 10}}
             />
