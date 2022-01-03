@@ -115,7 +115,7 @@ const EnterpriseManagement = () => {
                   }
                   buttonWidth={150}
                   buttonStyle={{marginHorizontal: 15}}
-                  total={data_enterprise_generated.length || ''}
+                  total={enterprise_elements_static}
                   filtered={
                     enterprise_applied_filter &&
                     !loading &&

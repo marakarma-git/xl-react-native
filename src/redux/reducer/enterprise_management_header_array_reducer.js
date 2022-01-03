@@ -28,26 +28,25 @@ const dataHeaderEnterprise = [
     api_id: 'activeStatus',
     cellType: 'TableCellHeaderAscDesc',
     cellRowType: 'TableCellText',
-    params: '&activeStatus=',
+    params: '&status=',
     typeInput: 'DropDown',
     value: {},
     data: [
       {
-        value: 'true',
+        value: true,
         label: 'ready for use',
       },
       {
-        value: 'false',
-        label: 'absolete',
+        value: false,
+        label: 'obsolete',
       },
     ],
     config: {
       label: 'Status',
       isTouchable: true,
-      doNotShowOnFilter: true,
       condition: {
         true: 'Ready For Use',
-        false: 'Not Ready',
+        false: 'Obsolete',
       },
     },
     shown: true,
@@ -66,7 +65,6 @@ const dataHeaderEnterprise = [
     disabled: true,
     config: {
       label: 'Customer Type',
-      doNotShowOnFilter: true,
     },
     shown: true,
   },
