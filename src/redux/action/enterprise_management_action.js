@@ -220,6 +220,7 @@ const getActiveEnterpriseList = (paginate) => {
 
 const getEnterpriseList = (paginate) => {
   return async (dispatch, getState) => {
+    let isFilter = false;
     dispatch(enterpriseManagementRequestData());
     const {page_params, size_params, header_sort_params} = paginate || {};
     const {orderBy: order_by_params, sortBy: sort_by_params} =
@@ -236,7 +237,7 @@ const getEnterpriseList = (paginate) => {
 
     const getPage = page_params ?? enterprise_page;
     const getSize = size_params || enterprise_total_size;
-    const isFilter = generatedParams.length > 0;
+    if (searchText.length > 0 || generatedParams.length > 0) isFilter = true;
 
     const getOrderBy = () => {
       if (order_by_params === 'RESET' || orderBy === 'RESET') {
