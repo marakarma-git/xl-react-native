@@ -67,7 +67,7 @@ const enterprise_management_get_enterprise_reducer = (
         enterprise_total_page: action.enterpriseTotalPage,
         enterprise_total_size: action.enterpriseTotalSize,
         enterprise_elements_static:
-          state.enterprise_elements_static === 0
+          action.enterpriseTotalChildren > 0
             ? action.enterpriseTotalChildren
             : state.enterprise_elements_static,
         enterprise_elements_dynamic: action.enterpriseElements,
