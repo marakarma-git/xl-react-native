@@ -66,10 +66,9 @@ const enterprise_management_get_enterprise_reducer = (
         enterprise_page: action.enterprisePage,
         enterprise_total_page: action.enterpriseTotalPage,
         enterprise_total_size: action.enterpriseTotalSize,
-        enterprise_elements_static:
-          action.enterpriseTotalChildren > 0
-            ? action.enterpriseTotalChildren
-            : state.enterprise_elements_static,
+        enterprise_elements_static: !action.isFilter
+          ? action.enterpriseTotalChildren
+          : state.enterprise_elements_static,
         enterprise_elements_dynamic: action.enterpriseElements,
         enterprise_applied_filter: action.enterpriseAppliedFilter,
         enterprise_applied_header_sort:

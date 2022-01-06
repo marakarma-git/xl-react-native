@@ -236,6 +236,7 @@ const getEnterpriseList = (paginate) => {
 
     const getPage = page_params ?? enterprise_page;
     const getSize = size_params || enterprise_total_size;
+    const isFilter = generatedParams.length > 0;
 
     const getOrderBy = () => {
       if (order_by_params === 'RESET' || orderBy === 'RESET') {
@@ -312,6 +313,7 @@ const getEnterpriseList = (paginate) => {
                 ? header_sort_params
                 : enterprise_applied_header_sort,
               enterpriseParamsAppliedActivityLog: generatedParams,
+              isFilter,
             }),
           );
         } else {
@@ -397,7 +399,6 @@ const getCustomLabel = (params, key = 'business_cat') => {
         }
       }
     } catch (error) {
-      console.log(error.response.data);
       dispatch(setRequestError(error.response.data));
     }
   };
