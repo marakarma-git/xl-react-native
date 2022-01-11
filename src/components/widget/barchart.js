@@ -32,6 +32,7 @@ const BarChartComponent = ({
   item,
   viewType = 'dashboard',
   filterParams = {},
+  barTotal = null,
 }) => {
   const dispatch = useDispatch();
   const navigation = useNavigation();
@@ -70,15 +71,21 @@ const BarChartComponent = ({
   const [countLabel, setCountLabel] = useState('Top 10');
   const [showPeriodFilter, setShowPeriodFilter] = useState(false);
   const [showCountFilter, setShowCountFilter] = useState(false);
-
+  const getTickValues = (data) => {
+    const dataUsage = [...data].map((datas) => datas.y);
+    const tickTimes = [0, 0.25, 0.5, 0.75, 1];
+    const tickValues = tickTimes.map((tick) => Math.max(...dataUsage) * tick);
+    return tickValues;
+  };
   const generateChart = () => (
     <View style={{position: 'relative', top: -20, left: -15}}>
       {dataSet.length > 0 ? (
         <VictoryContainer>
           <VictoryChart
             width={
-              Orientation.getWidth() - (orientation === 'landscape' ? 120 : 30)
-            }>
+              Orientation.getWidth() - (orientation === 'landscape' ? 120 : 45)
+            }
+            height={barTotal ? +barTotal * 30 : +param4 * 30}>
             <VictoryAxis
               crossAxis
               label="Subscriptions"
@@ -86,14 +93,14 @@ const BarChartComponent = ({
             />
             <VictoryAxis
               dependentAxis
-              style={{axis: {stroke: 'none'}}}
               standalone={false}
+              tickValues={getTickValues(dataSet)}
               tickFormat={(t) => Helper.formatBytes(t)}
-              tickLabelComponent={
-                <VictoryLabel angle={-10} dy={10} style={{fontSize: 10}} />
-              }
+              fixLabelOverlap
+              tickLabelComponent={<VictoryLabel style={{fontSize: 10}} />}
             />
             <VictoryBar
+              alignment="start"
               data={dataSet}
               events={[
                 {
@@ -125,7 +132,7 @@ const BarChartComponent = ({
               }}
               labelComponent={
                 <VictoryTooltip
-                  dx={-30}
+                  dx={-45}
                   dy={20}
                   orientation="top"
                   flyoutStyle={{
@@ -185,7 +192,14 @@ const BarChartComponent = ({
               data={param3List}
               onChange={(e) => {
                 setParam3(e.value);
-                dispatch(resetTopTrafficStatistics());
+                dispatch(
+                  requestWidgetData(
+                    userData.access_token,
+                    item,
+                    Object.assign(filterParams, {param3: e.value, param4}),
+                    (type = 'top'),
+                  ),
+                );
                 setShowPeriodFilter(false);
                 setPeriodLabel(e.label);
               }}
@@ -201,7 +215,14 @@ const BarChartComponent = ({
               data={param4List}
               onChange={(e) => {
                 setParam4(e.value);
-                dispatch(resetTopTrafficStatistics());
+                dispatch(
+                  requestWidgetData(
+                    userData.access_token,
+                    item,
+                    Object.assign(filterParams, {param3: e.value, param4}),
+                    (type = 'top'),
+                  ),
+                );
                 setShowCountFilter(false);
                 setCountLabel(e.label);
               }}
@@ -233,7 +254,7 @@ const BarChartComponent = ({
         requestWidgetData(
           userData.access_token,
           item,
-          {param3, param4},
+          Object.assign(filterParams, {param3, param4}),
           (type = 'top'),
         ),
       );
