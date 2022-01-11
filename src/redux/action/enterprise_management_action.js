@@ -220,6 +220,7 @@ const getActiveEnterpriseList = (paginate) => {
 
 const getEnterpriseList = (paginate) => {
   return async (dispatch, getState) => {
+    let isFilter = false;
     dispatch(enterpriseManagementRequestData());
     const {page_params, size_params, header_sort_params} = paginate || {};
     const {orderBy: order_by_params, sortBy: sort_by_params} =
@@ -236,6 +237,7 @@ const getEnterpriseList = (paginate) => {
 
     const getPage = page_params ?? enterprise_page;
     const getSize = size_params || enterprise_total_size;
+    if (searchText.length > 0 || generatedParams.length > 0) isFilter = true;
 
     const getOrderBy = () => {
       if (order_by_params === 'RESET' || orderBy === 'RESET') {
@@ -312,6 +314,7 @@ const getEnterpriseList = (paginate) => {
                 ? header_sort_params
                 : enterprise_applied_header_sort,
               enterpriseParamsAppliedActivityLog: generatedParams,
+              isFilter,
             }),
           );
         } else {
@@ -397,7 +400,6 @@ const getCustomLabel = (params, key = 'business_cat') => {
         }
       }
     } catch (error) {
-      console.log(error.response.data);
       dispatch(setRequestError(error.response.data));
     }
   };

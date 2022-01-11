@@ -26,6 +26,7 @@ import {
   getAggregatedTraffic,
   getMonthUsage,
   getWidgetList,
+  requestWidgetData,
   resetTopTrafficStatistics,
 } from '../../redux/action/dashboard_action';
 import ModalSearchPicker from '../../components/modal/ModalSearchPickerCustom';
@@ -35,8 +36,8 @@ import AntDesign from 'react-native-vector-icons/AntDesign';
 const gridOptionsArray = [
   {
     bgColor: '#F4F3F4',
-    headerColor: '#707070',
-    width: '75%',
+    headerColor: 'black',
+    width: 200,
     cellAlign: 'center',
     headerAlign: 'center',
     label: 'Aggregation',
@@ -46,12 +47,23 @@ const gridOptionsArray = [
   },
   {
     bgColor: '#F4F3F4',
-    headerColor: '#707070',
-    width: '25%',
+    headerColor: 'black',
+    width: 100,
     cellAlign: 'center',
     headerAlign: 'center',
     label: 'Data',
     field: 'data',
+    cellType: 'text',
+    headerType: 'text',
+  },
+  {
+    bgColor: '#F4F3F4',
+    headerColor: 'black',
+    width: 100,
+    cellAlign: 'center',
+    headerAlign: 'center',
+    label: 'Sms',
+    field: 'sms',
     cellType: 'text',
     headerType: 'text',
   },
@@ -177,6 +189,7 @@ const UsageAnalyticsPage = ({route, navigation}) => {
     setParam2(splitParams[1] || '');
     if (!isFirstRender) {
       callWidgetList();
+      dispatch(resetTopTrafficStatistics());
     }
   }, [generatedParams, appliedFilter]);
 
@@ -212,10 +225,27 @@ const UsageAnalyticsPage = ({route, navigation}) => {
               data={appliedFilter}
               onDelete={(e) => {
                 const {formId} = e || {};
-                dispatch(usageAnalyticsDynamicResetSelectedValue({formId}));
+                if (formId === 'usage-analytics-enterprise-hard-code') {
+                  dispatch(usageAnalyticsDynamicResetSelectedValue({formId}));
+                  dispatch(
+                    usageAnalyticsDynamicResetSelectedValue({
+                      formId: 'usage-analytics-package-name-hard-code',
+                    }),
+                  );
+                } else {
+                  dispatch(usageAnalyticsDynamicResetSelectedValue({formId}));
+                }
                 dispatch(usageAnalyticsGenerateParams());
               }}
             />
+            <View>
+              <Text style={styles.cardDescriptionText}>
+                Analyze the Usage Behaviour to have insights for further
+                decision making such as apply usage limit policy, fraud
+                prevention, upgrade package, change to shared package or others
+                to be more cost-effective.
+              </Text>
+            </View>
             <ContentCard
               loadingContent={loadingTopTraffic ? true : false}
               cardBody={
@@ -236,13 +266,13 @@ const UsageAnalyticsPage = ({route, navigation}) => {
                 <>
                   {topTrafficWidget.length > 0 && (
                     <BarChartComponent
+                      barTotal={param4}
                       viewType="analytics"
                       item={topTrafficWidget[0]}
-                      filterParams={
-                        param1 && param2
-                          ? {param1, param2, param3, param4}
-                          : {param3, param4}
-                      }
+                      filterParams={Object.assign(
+                        param1 ? {param1} : {},
+                        param2 ? {param2} : {},
+                      )}
                     />
                   )}
                 </>
@@ -256,6 +286,10 @@ const UsageAnalyticsPage = ({route, navigation}) => {
                 <>
                   {!loadingAggregated && (
                     <GridComponent
+                      colHeight={40}
+                      tableMaxHeight={400}
+                      isOverflow={true}
+                      customTableStyle={styles.customTable}
                       indexIdentifier="title"
                       gridData={aggregatedTraffic || []}
                       gridOptions={gridOptionsArray}
@@ -334,8 +368,18 @@ const UsageAnalyticsPage = ({route, navigation}) => {
           modalHeight={230}
           data={param3List}
           onChange={(e) => {
+            dispatch(
+              requestWidgetData(
+                '',
+                topTrafficWidget[0],
+                Object.assign(param1 ? {param1} : {}, param2 ? {param2} : {}, {
+                  param3: e.value,
+                  param4,
+                }),
+                'top',
+              ),
+            );
             setParam3(e.value);
-            dispatch(resetTopTrafficStatistics());
             setShowPeriodFilter(false);
             setPeriodLabel(e.label);
           }}
@@ -351,7 +395,17 @@ const UsageAnalyticsPage = ({route, navigation}) => {
           data={param4List}
           onChange={(e) => {
             setParam4(e.value);
-            dispatch(resetTopTrafficStatistics());
+            dispatch(
+              requestWidgetData(
+                '',
+                topTrafficWidget[0],
+                Object.assign(param1 ? {param1} : {}, param2 ? {param2} : {}, {
+                  param3,
+                  param4: e.value,
+                }),
+                'top',
+              ),
+            );
             setShowCountFilter(false);
             setCountLabel(e.label);
           }}

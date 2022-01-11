@@ -135,6 +135,7 @@ export const getCarousel = () => {
         }
       }
     } catch (error) {
+      console.log(error.response.data, 'ERROR');
       dispatch(setRequestError(error.response.data));
     }
   };
@@ -202,34 +203,44 @@ const setAggregatedTraffic = (data, params) => {
       title: 'From start of month, Total Volume',
       dataId: 'firstmonthvolume',
       smsId: 'firstmonthsms',
+      data: '-',
+      sms: '-',
     },
     {
       title: 'Previous 30 days, Total Volume',
       dataId: 'last30dayvolume',
       smsId: 'last30daysms',
+      data: '-',
+      sms: '-',
     },
     {
       title: 'From start of month, Average per subscription',
       dataId: 'firstmonthavgpersubs',
       smsId: 'firstmonthavgpersubssms',
+      data: '-',
+      sms: '-',
     },
     {
       title: 'Previous 30 days, Average per subscription',
       dataId: 'last30dayavgpersubs',
       smsId: 'last30dayavgpersubssms',
+      data: '-',
+      sms: '-',
     },
   ];
 
-  data.map((datas) => {
-    Object.keys(datas).map((keys) => {
-      summaryData.map((sumData, index) => {
-        if (keys === sumData.dataId)
-          summaryData[index].data = Helper.formatBytes(+datas[keys]);
-        else if (keys === sumData.smsId)
-          summaryData[index].sms = Helper.formatBytes(+datas[keys]);
+  if (data.length > 0) {
+    data.map((datas) => {
+      Object.keys(datas).map((keys) => {
+        summaryData.map((sumData, index) => {
+          if (keys === sumData.dataId)
+            summaryData[index].data = Helper.formatBytes(+datas[keys]);
+          else if (keys === sumData.smsId)
+            summaryData[index].sms = Helper.numberFormat(+datas[keys], '.');
+        });
       });
     });
-  });
+  }
 
   return {
     type: reduxString.SET_AGGREGATED_TRAFFIC,
@@ -325,8 +336,8 @@ export const requestWidgetData = (
   type = 'sim',
 ) => {
   return async (dispatch) => {
-    console.log('PARAMS ', filterParams);
     let isHasParams = Object.keys(filterParams).length > 0;
+    console.log(filterParams, ' FILTER PARAMS', type);
     if (type === 'sim') dispatch(requestDashboardData());
     if (type === 'top') dispatch(requestTopTraffic());
     let activityId;
@@ -347,7 +358,7 @@ export const requestWidgetData = (
         filterParams,
         customHeaders,
       );
-
+      console.log(JSON.stringify(data, null, 2));
       if (data) {
         if (data.statusCode === 0) {
           if (type === 'sim') {
@@ -389,6 +400,8 @@ export const getAggregatedTraffic = (item, filterParams = {}) => {
       if (data) {
         if (data.statusCode === 0) {
           dispatch(setAggregatedTraffic(data.result.dataset, filterParams));
+        } else {
+          dispatch(setAggregatedTraffic([], filterParams));
         }
       }
     } catch (error) {

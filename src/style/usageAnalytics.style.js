@@ -180,6 +180,18 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
+  cardDescriptionText: {
+    fontSize: 12,
+    color: colors.gray,
+    marginRight: 10,
+    marginLeft: 10,
+  },
+  customTable: {
+    width: '95%',
+    marginHorizontal: '2.5%',
+    borderWidth: 1,
+    borderColor: '#A8A8A8',
+  },
 });
 
 export default styles;

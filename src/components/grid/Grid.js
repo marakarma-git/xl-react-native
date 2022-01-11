@@ -23,7 +23,9 @@ const GridComponent = (props) => {
         <ScrollView
           style={[{flex: 1}, {...props.customTableStyle}]}
           contentContainerStyle={{flexDirection: 'column'}}
-          horizontal={true}>
+          horizontal={true}
+          showsHorizontalScrollIndicator={true}
+          alwaysBounceHorizontal={true}>
           <View style={{flexDirection: 'row'}}>
             <GridHeaderComponent
               sortField={props.sortField}
