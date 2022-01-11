@@ -14,7 +14,7 @@ import {
 } from './actionPriv';
 
 const httpRequest = axios.create({
-  baseURL: `${API_URL}/apim`,
+  baseURL: `${API_URL}/api`,
   timeout: 30000,
   headers: {
     Authorization: BASIC_TOKEN,
@@ -34,7 +34,9 @@ const requestHandler = async (request) => {
   let paramsUrl = '';
   let method = request.method.toLowerCase();
   const accessToken = await store.getState().auth_reducer.data?.access_token;
-  if (accessToken) request.headers.Authorization = `Bearer ${accessToken}`;
+  if (accessToken) {
+    request.headers.Authorization = `Bearer ${accessToken}`;
+  }
 
   if (activityId) {
     const privData = activityLogHandler.getPriviledgeData(activityId);
@@ -115,11 +117,14 @@ const activityLogHandler = {
     const dataPriviledge = [...priviledgeData].find(
       (data) => data.activityId == activityCode,
     );
-    if (authorityData)
+    if (authorityData) {
       isHasPriviledge = [...authorityData].find(
         (authority) => authority == dataPriviledge.privId,
       );
-    if (isStatic) isHasPriviledge = true;
+    }
+    if (isStatic) {
+      isHasPriviledge = true;
+    }
     return isHasPriviledge ? dataPriviledge : null;
   },
   showDescription: (
@@ -157,15 +162,18 @@ const activityLogHandler = {
     Object.keys(filterData).map((filterKey) => {
       let isUsed = true;
       splitExcludeParams.map((paramsKey) => {
-        if (filterKey == paramsKey) isUsed = false;
+        if (filterKey == paramsKey) {
+          isUsed = false;
+        }
       });
-      if (isUsed)
+      if (isUsed) {
         filterLabel.push(
           `${activityLogHandler.getParamKeyDescription(
             filterKey,
             paramKeyDescription,
           )} : ${filterData[filterKey]}`,
         );
+      }
     });
     return filterLabel.join(', ');
   },
@@ -185,15 +193,18 @@ const activityLogHandler = {
     Object.keys(filterData).map((filterKey) => {
       let isUsed = true;
       splitExcludeParams.map((paramsKey) => {
-        if (filterKey == paramsKey) isUsed = false;
+        if (filterKey == paramsKey) {
+          isUsed = false;
+        }
       });
-      if (isUsed)
+      if (isUsed) {
         filterLabel.push(
           `${activityLogHandler.getParamKeyDescription(
             filterKey,
             paramKeyDescription,
           )} : ${filterData[filterKey]}`,
         );
+      }
     });
     return filterLabel.join(', ');
   },
@@ -202,19 +213,28 @@ const activityLogHandler = {
     let returnData = [];
     let isSplit = 0;
     splitUrl.map((data) => {
-      if (returnData[isSplit] === undefined) returnData.push(data);
-      else returnData[isSplit] += data;
-      if (data === '?') isSplit = 1;
+      if (returnData[isSplit] === undefined) {
+        returnData.push(data);
+      } else {
+        returnData[isSplit] += data;
+      }
+      if (data === '?') {
+        isSplit = 1;
+      }
     });
     return returnData;
   },
   getParamKeyDescription: (filterKey, paramKeyDescription = null) => {
-    if (!paramKeyDescription) return filterKey;
+    if (!paramKeyDescription) {
+      return filterKey;
+    }
     let splitParamDesc = paramKeyDescription.split('|');
     let returnLabel = filterKey;
     splitParamDesc.map((params) => {
       let paramsKey = String(params.split(':')[0]).trim();
-      if (paramsKey === filterKey) returnLabel = String(params.split(':')[1]);
+      if (paramsKey === filterKey) {
+        returnLabel = String(params.split(':')[1]);
+      }
     });
     return returnLabel;
   },
