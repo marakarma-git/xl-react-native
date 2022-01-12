@@ -8,6 +8,8 @@ import {
   UsageSubsChart,
 } from '../../components';
 import {
+  simGetEnterprisePackage,
+  usageSubscribersAnalyticsDynamicOnchangeDropDown,
   usageSubscribersAnalyticsDynamicResetSelectedValue,
   usageSubscribersAnalyticsGenerateParams,
   usageSubscribersAnalyticsResetAllValue,
@@ -138,9 +140,26 @@ const UsageSubscribersAnalyticsPage = ({route, navigation}) => {
                     }),
                   );
                 } else {
+                  const dataEnterprise = [...appliedFilter].find(
+                    (data) =>
+                      data.formId ===
+                      'usage-subscribers-analytics-enterprise-hard-code',
+                  );
                   dispatch(
                     usageSubscribersAnalyticsDynamicResetSelectedValue({
                       formId,
+                    }),
+                  );
+                  dispatch(
+                    simGetEnterprisePackage({
+                      enterpriseName: dataEnterprise?.value?.label,
+                    }),
+                  );
+                  dispatch(
+                    usageSubscribersAnalyticsDynamicOnchangeDropDown({
+                      formId:
+                        'usage-subscribers-analytics-enterprise-hard-code',
+                      dropDown: dataEnterprise?.value,
                     }),
                   );
                 }

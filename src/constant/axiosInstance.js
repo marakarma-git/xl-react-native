@@ -14,7 +14,7 @@ import {
 } from './actionPriv';
 
 const httpRequest = axios.create({
-  baseURL: `${API_URL}/api`,
+  baseURL: `${API_URL}/apim`,
   timeout: 30000,
   headers: {
     Authorization: BASIC_TOKEN,

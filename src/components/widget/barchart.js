@@ -254,7 +254,10 @@ const BarChartComponent = ({
         requestWidgetData(
           userData.access_token,
           item,
-          Object.assign(filterParams, {param3, param4}),
+          Object.assign(filterParams, {
+            param3,
+            param4: barTotal ? barTotal : param4,
+          }),
           (type = 'top'),
         ),
       );
