@@ -452,6 +452,7 @@ export const getMonthUsage = (item, filterParams = {}) => {
         paramKeyDescription: 'param3:Data in Month',
       },
     };
+    console.log(filterParams);
     try {
       dispatch(requestMonthUsage());
       const {data} = await httpRequest.post(
@@ -459,7 +460,6 @@ export const getMonthUsage = (item, filterParams = {}) => {
         filterParams,
         customHeaders,
       );
-
       if (data) {
         if (data.statusCode === 0) {
           dispatch(setMonthUsage(data.result.dataset, filterParams));

@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useState, useCallback} from 'react';
 import {ScrollView, TouchableOpacity, View} from 'react-native';
 import {HeaderContainer, OverlayBackground} from '../../components';
 import {Container} from './subscriptionFilter.page';
@@ -22,7 +22,7 @@ import InputHybrid from '../../components/InputHybrid';
 const UsageAnalyticsFilterPage = ({navigation}) => {
   const dispatch = useDispatch();
   const [testWidth, setTestWidth] = useState(device_width * 0.41 - 1);
-  const {dataHeader} = useSelector(
+  const {dataHeader, appliedFilter} = useSelector(
     (state) => state.usage_subscribers_analytics_filter_reducer,
   );
   useEffect(() => {
