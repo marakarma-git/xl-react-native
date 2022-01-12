@@ -6,6 +6,7 @@ import cardStyle from './card.style';
 import analyticStyle from './analytic.style';
 import geoDistributionStyle from './geoDistribution.style';
 import enterpriseStyle from './enterprise.style';
+import automationCreditStyle from './automationCredit.style';
 export {
   loginStyle,
   homeStyle,
@@ -15,4 +16,5 @@ export {
   analyticStyle,
   geoDistributionStyle,
   enterpriseStyle,
+  automationCreditStyle,
 };

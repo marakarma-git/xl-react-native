@@ -26,6 +26,8 @@ const InputHybrid = (props) => {
       return <DateInput {...props} />;
     case 'DropDownType2':
       return <SelectInputType2 {...props} />;
+    case 'AutomationLabel':
+      return <AutomationLabel {...props} />;
     default:
       return <React.Fragment />;
   }
@@ -118,6 +120,14 @@ const ContainerInput = (props) => {
           {errorText && `Error: ${errorText}`}
         </Text>
       </View>
+    </View>
+  );
+};
+const AutomationLabel = (props) => {
+  const {label} = props;
+  return (
+    <View style={{marginTop: 16}}>
+      <Text fontType={'bold'}>{label}</Text>
     </View>
   );
 };

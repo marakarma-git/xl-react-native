@@ -1,22 +1,23 @@
-import React, {useEffect} from 'react';
-import {ScrollView, View} from 'react-native';
+import React, {useEffect, useState} from 'react';
+import {ScrollView, TouchableOpacity, View} from 'react-native';
 import {HeaderContainer, OverlayBackground, Text} from '../../components';
-import {subscriptionStyle} from '../../style';
+import {automationCreditStyle, subscriptionStyle} from '../../style';
 import {useSelector} from 'react-redux';
 import lod from 'lodash';
 import {useNavigation, useRoute} from '@react-navigation/native';
 import {FormStepHeaderComponent} from '../../components/form/formStep';
-import styles from '../../style/home.style';
-import {Card} from 'react-native-paper';
-import InputHybrid from '../../components/InputHybrid';
+import CardAutomation from '../../components/card/CardAutomation';
 import {colors} from '../../constant/color';
-import GridSwitchComponent from '../../components/grid/GridSwitch';
 
 const AutomationCreateEditPage = () => {
   const navigation = useNavigation();
   const {params} = useRoute();
   const {from, result} = params || {};
+  const [indexForm, setIndexForm] = useState(0);
   const {imageBase64} = useSelector((state) => state.enterprise_reducer);
+  const {automationDefaultFormData} = useSelector(
+    (state) => state.automation_create_edit_reducer,
+  );
   useEffect(() => {
     if (!lod.isEmpty(result)) {
       const {customerNumber} = result || {};
@@ -32,78 +33,80 @@ const AutomationCreateEditPage = () => {
         <ScrollView style={{flex: 1}}>
           <OverlayBackground />
           <FormStepHeaderComponent
-            formPosition={0}
-            formLength={6}
-            formTitle={'Form Title'}
-            formDescription={'Description'}
+            formPosition={indexForm}
+            formLength={4}
+            formTitle={automationDefaultFormData[indexForm].stepperTitle}
+            formDescription={
+              automationDefaultFormData[indexForm].stepperDescription
+            }
           />
-          <Card style={[styles.cardSection, {marginTop: '5%'}]}>
-            <Card.Content>
-              <Text fontType="bold" style={styles.formStepHeaderTextTitle}>
-                Ini Title
-              </Text>
-              <Text style={styles.formStepHeaderTextBody}>Ini Description</Text>
-            </Card.Content>
-            <View
-              style={{
-                flex: 1,
-                height: 1,
-                backgroundColor: 'black',
-                marginTop: 12,
-              }}
+          {automationDefaultFormData[indexForm].dataContainer.map((item) => {
+            const {
+              dataInput,
+              containerType,
+              containerTitle,
+              containerDescription,
+            } = item || {};
+            return (
+              <CardAutomation
+                containerType={containerType}
+                dataInput={dataInput}
+                containerTitle={containerTitle}
+                containerDescription={containerDescription}
+              />
+            );
+          })}
+          <View style={automationCreditStyle.containerFooter}>
+            <LocalButton
+              title={'Cancel'}
+              buttonType={'Two'}
+              style={{marginLeft: 0}}
             />
-            <Card.Content>
-              <InputHybrid
-                fullWidthInput
-                type={'DropDown'}
-                label={'Rules Name'}
+            <View style={{flexDirection: 'row'}}>
+              {indexForm > 0 && indexForm <= 3 && (
+                <LocalButton
+                  title={'Prev'}
+                  buttonType={'Two'}
+                  onPress={() => setIndexForm((state) => state - 1)}
+                />
+              )}
+              <LocalButton
+                title={indexForm === 3 ? 'Submit' : 'Next'}
+                buttonType={'One'}
+                onPress={() => {
+                  if (indexForm !== 3) {
+                    setIndexForm((state) => state + 1);
+                  }
+                }}
               />
-            </Card.Content>
-          </Card>
-          <View
-            style={[
-              styles.cardSection,
-              {
-                marginTop: '5%',
-                marginHorizontal: 0,
-                borderWidth: 0,
-              },
-            ]}>
-            <View
-              style={{
-                flexDirection: 'row',
-                backgroundColor: colors.disabled_table,
-                paddingHorizontal: '3%',
-                paddingVertical: 6,
-                alignItems: 'center',
-              }}>
-              <GridSwitchComponent
-                inActiveText={''}
-                activeText={''}
-                switchBorderRadius={50}
-                switchWidthMultiplier={3}
-              />
-              <Text
-                fontType="bold"
-                style={{fontSize: 18, color: 'black', marginLeft: 8}}>
-                Ini Title
-              </Text>
             </View>
-            <Card.Content>
-              <Text style={[styles.formStepHeaderTextBody, {marginTop: 16}]}>
-                Ini Description
-              </Text>
-              <InputHybrid
-                fullWidthInput
-                type={'DropDown'}
-                label={'Rules Name'}
-              />
-            </Card.Content>
           </View>
         </ScrollView>
       </View>
     </HeaderContainer>
   );
 };
-
+const LocalButton = (props) => {
+  const {title, buttonType, onPress, style} = props || {};
+  return (
+    <TouchableOpacity
+      onPress={onPress}
+      style={[
+        {
+          backgroundColor:
+            buttonType === 'Two' ? colors.gray_400 : colors.main_color,
+        },
+        subscriptionStyle.buttonStyle,
+        style,
+      ]}>
+      <Text
+        fontType={'bold'}
+        style={{
+          color: buttonType === 'Two' ? 'black' : 'white',
+        }}>
+        {title}
+      </Text>
+    </TouchableOpacity>
+  );
+};
 export default AutomationCreateEditPage;

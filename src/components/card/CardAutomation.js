@@ -3,68 +3,75 @@ import styles from '../../style/home.style';
 import {Card} from 'react-native-paper';
 import {Text} from '../index';
 import {View} from 'react-native';
-import {colors} from '../../constant/color';
 import PropTypes from 'prop-types';
 import InputHybrid from '../InputHybrid';
 import GridSwitchComponent from '../grid/GridSwitch';
-
+import {automationCreditStyle} from '../../style';
+const InputWrapper = (props) => {
+  const {dataInput} = props || [];
+  return (
+    <>
+      {dataInput &&
+        dataInput.map((item) => {
+          const {inputType, titleInput, config} = item || {};
+          return (
+            <InputHybrid type={inputType} label={titleInput} {...config} />
+          );
+        })}
+    </>
+  );
+};
 const WrapperOne = (props) => {
+  const {dataInput, containerTitle, containerDescription} = props || {};
   return (
     <Card style={[styles.cardSection, {marginTop: '5%'}]}>
       <Card.Content>
         <Text fontType="bold" style={styles.formStepHeaderTextTitle}>
-          Ini Title
+          {containerTitle}
         </Text>
-        <Text style={styles.formStepHeaderTextBody}>Ini Description</Text>
+        <Text style={styles.formStepHeaderTextBody}>
+          {containerDescription}
+        </Text>
       </Card.Content>
-      <View
-        style={{
-          flex: 1,
-          height: 1,
-          backgroundColor: 'black',
-          marginTop: 12,
-        }}
-      />
-      <Card.Content />
+      <View style={automationCreditStyle.wrapperOneLine} />
+      <Card.Content>
+        <InputWrapper dataInput={dataInput} />
+      </Card.Content>
     </Card>
   );
 };
 const WrapperTwo = (props) => {
+  const {dataInput, containerTitle, containerDescription, isSwitch} =
+    props || {};
   return (
     <View
-      style={[
-        styles.cardSection,
-        {
-          marginTop: '5%',
-          marginHorizontal: 0,
-          borderWidth: 0,
-        },
-      ]}>
-      <View
-        style={{
-          flexDirection: 'row',
-          backgroundColor: colors.disabled_table,
-          paddingHorizontal: '3%',
-          paddingVertical: 6,
-          alignItems: 'center',
-        }}>
+      style={[styles.cardSection, automationCreditStyle.wrapperTwoContainer]}>
+      <View style={automationCreditStyle.wrapperTwoInnerContainer}>
         <GridSwitchComponent
           inActiveText={''}
           activeText={''}
           switchBorderRadius={50}
           switchWidthMultiplier={3}
+          value={isSwitch}
         />
-        <Text
-          fontType="bold"
-          style={{fontSize: 18, color: 'black', marginLeft: 8}}>
-          Ini Title
-        </Text>
+        {containerTitle && (
+          <Text fontType="bold" style={automationCreditStyle.wrapperTitle}>
+            {containerTitle}
+          </Text>
+        )}
       </View>
-      <Card.Content>
-        <Text style={[styles.formStepHeaderTextBody, {marginTop: 16}]}>
-          Ini Description
-        </Text>
-      </Card.Content>
+      {isSwitch === true && (
+        <Card.Content>
+          <Text
+            style={[
+              styles.formStepHeaderTextBody,
+              {marginTop: containerDescription ? 16 : 0},
+            ]}>
+            {containerDescription}
+          </Text>
+          <InputWrapper dataInput={dataInput} />
+        </Card.Content>
+      )}
     </View>
   );
 };

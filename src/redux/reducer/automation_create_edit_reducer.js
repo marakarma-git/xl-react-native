@@ -19,6 +19,9 @@ const automationDefaultFormData = [
             data: [],
             inputLoading: false,
             titleInput: 'Enterprise',
+            config: {
+              fullWidthInput: true,
+            },
           },
         ],
       },
@@ -32,7 +35,7 @@ const automationDefaultFormData = [
     dataContainer: [
       {
         containerId: 'rules-name-container',
-        containerType: '',
+        containerType: 'WrapperOne',
         showContainer: true,
         containerTitle: 'Rules Name',
         containerDescription: '',
@@ -41,15 +44,18 @@ const automationDefaultFormData = [
             inputId: '',
             inputType: 'TextInput',
             titleInput: 'Rules Name',
+            config: {
+              fullWidthInput: true,
+            },
           },
         ],
       },
       {
         containerId: 'select-rule-category-container',
-        containerType: '',
+        containerType: 'WrapperOne',
         showContainer: true,
         containerTitle: 'Select Rule Category',
-        containerDescription: '',
+        containerDescription: 'WrapperOne',
         dataInput: [
           {
             inputId: '',
@@ -77,17 +83,40 @@ const automationDefaultFormData = [
     dataContainer: [
       {
         containerId: 'auto-downgrade-package-container-hard-code',
-        containerType: '',
+        containerType: 'WrapperTwo',
         showContainer: false,
         isSelected: false,
         containerTitle: 'Auto Downgrade Package',
-        containerDescription: '',
+        containerDescription:
+          'In the case where a subscription upgrades from package A to higher package B, and you want to downgrade it back to package A on the next month billing, you may use this auto downgrade rule.\n' +
+          '\n' +
+          'Please note that it will impact to change all SIMs subscription under selected enterprise.',
         dataInput: [
           {
+            inputType: 'AutomationLabel',
+            titleInput: 'Subscription Package',
+            config: {
+              fullWidthInput: true,
+            },
+          },
+          {
             inputId: '',
-            inputType: '',
-            data: [],
-            value: {},
+            inputType: 'DropDown',
+            titleInput: 'From',
+            config: {
+              fullWidthInput: true,
+              labelLeft: true,
+            },
+            inputLoading: false,
+          },
+          {
+            inputId: '',
+            inputType: 'DropDown',
+            titleInput: 'To',
+            config: {
+              fullWidthInput: true,
+              labelLeft: true,
+            },
             inputLoading: false,
           },
         ],
@@ -95,16 +124,30 @@ const automationDefaultFormData = [
       {
         containerId:
           'auto-upgrade-individual-shared-package-container-hard-code',
-        containerType: '',
+        containerType: 'WrapperTwo',
         showContainer: false,
         isSelected: false,
-        containerTitle: 'Auto Upgrade Individual Shared package',
+        containerTitle: 'Individual Shared package Auto Upgrade',
         containerDescription: '',
-        dataInput: [{}],
+        dataInput: [
+          {
+            inputId: '',
+            inputType: 'TextInput',
+            titleInput: 'Email Address(es)',
+            config: {
+              fullWidthInput: true,
+            },
+          },
+          {
+            inputId: '',
+            inputType: 'NumberPad',
+            titleInput: 'Threshold',
+          },
+        ],
       },
       {
         containerId: 'bulk-shared-notification-container-hard-code',
-        containerType: '',
+        containerType: 'WrapperTwo',
         showContainer: false,
         isSelected: false,
         containerTitle: 'Bulk Shared Notification',
@@ -113,16 +156,44 @@ const automationDefaultFormData = [
       },
       {
         containerId: 'bulk-shared-auto-upgrade-container-hard-code',
-        containerType: '',
+        containerType: 'WrapperTwo',
         showContainer: false,
         isSelected: false,
         containerTitle: 'Bulk Shared Auto Upgrade',
         containerDescription: '',
-        dataInput: [{}],
+        dataInput: [
+          {
+            inputType: 'AutomationLabel',
+            titleInput: 'Subscription Package',
+            config: {
+              fullWidthInput: true,
+            },
+          },
+          {
+            inputId: '',
+            inputType: 'DropDown',
+            titleInput: 'From',
+            config: {
+              fullWidthInput: true,
+              labelLeft: true,
+            },
+            inputLoading: false,
+          },
+          {
+            inputId: '',
+            inputType: 'DropDown',
+            titleInput: 'To',
+            config: {
+              fullWidthInput: true,
+              labelLeft: true,
+            },
+            inputLoading: false,
+          },
+        ],
       },
       {
         containerId: 'individual-shared-limit-container-hard-code',
-        containerType: '',
+        containerType: 'WrapperTwo',
         showContainer: false,
         isSelected: false,
         containerTitle: 'Individual Shared Limit',
@@ -136,6 +207,7 @@ const automationDefaultFormData = [
     stepperTitle: 'Summary',
     stepperDescription: '',
     currentState: 3,
+    dataContainer: [],
   },
 ];
 const initialState = {
