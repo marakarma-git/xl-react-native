@@ -1,17 +1,23 @@
-import React, {useEffect} from 'react';
-import {ScrollView, View} from 'react-native';
-import {HeaderContainer, OverlayBackground} from '../../components';
-import {subscriptionStyle} from '../../style';
+import React, {useEffect, useState} from 'react';
+import {ScrollView, TouchableOpacity, View} from 'react-native';
+import {HeaderContainer, OverlayBackground, Text} from '../../components';
+import {automationCreditStyle, subscriptionStyle} from '../../style';
 import {useSelector} from 'react-redux';
 import lod from 'lodash';
 import {useNavigation, useRoute} from '@react-navigation/native';
 import {FormStepHeaderComponent} from '../../components/form/formStep';
+import CardAutomation from '../../components/card/CardAutomation';
+import {colors} from '../../constant/color';
 
 const AutomationCreateEditPage = () => {
   const navigation = useNavigation();
   const {params} = useRoute();
   const {from, result} = params || {};
+  const [indexForm, setIndexForm] = useState(0);
   const {imageBase64} = useSelector((state) => state.enterprise_reducer);
+  const {automationDefaultFormData} = useSelector(
+    (state) => state.automation_create_edit_reducer,
+  );
   useEffect(() => {
     if (!lod.isEmpty(result)) {
       const {customerNumber} = result || {};
@@ -27,15 +33,80 @@ const AutomationCreateEditPage = () => {
         <ScrollView style={{flex: 1}}>
           <OverlayBackground />
           <FormStepHeaderComponent
-            formPosition={0}
-            formLength={6}
-            formTitle={'Form Title'}
-            formDescription={'Description'}
+            formPosition={indexForm}
+            formLength={4}
+            formTitle={automationDefaultFormData[indexForm].stepperTitle}
+            formDescription={
+              automationDefaultFormData[indexForm].stepperDescription
+            }
           />
+          {automationDefaultFormData[indexForm].dataContainer.map((item) => {
+            const {
+              dataInput,
+              containerType,
+              containerTitle,
+              containerDescription,
+            } = item || {};
+            return (
+              <CardAutomation
+                containerType={containerType}
+                dataInput={dataInput}
+                containerTitle={containerTitle}
+                containerDescription={containerDescription}
+              />
+            );
+          })}
+          <View style={automationCreditStyle.containerFooter}>
+            <LocalButton
+              title={'Cancel'}
+              buttonType={'Two'}
+              style={{marginLeft: 0}}
+            />
+            <View style={{flexDirection: 'row'}}>
+              {indexForm > 0 && indexForm <= 3 && (
+                <LocalButton
+                  title={'Prev'}
+                  buttonType={'Two'}
+                  onPress={() => setIndexForm((state) => state - 1)}
+                />
+              )}
+              <LocalButton
+                title={indexForm === 3 ? 'Submit' : 'Next'}
+                buttonType={'One'}
+                onPress={() => {
+                  if (indexForm !== 3) {
+                    setIndexForm((state) => state + 1);
+                  }
+                }}
+              />
+            </View>
+          </View>
         </ScrollView>
       </View>
     </HeaderContainer>
   );
 };
-
+const LocalButton = (props) => {
+  const {title, buttonType, onPress, style} = props || {};
+  return (
+    <TouchableOpacity
+      onPress={onPress}
+      style={[
+        {
+          backgroundColor:
+            buttonType === 'Two' ? colors.gray_400 : colors.main_color,
+        },
+        subscriptionStyle.buttonStyle,
+        style,
+      ]}>
+      <Text
+        fontType={'bold'}
+        style={{
+          color: buttonType === 'Two' ? 'black' : 'white',
+        }}>
+        {title}
+      </Text>
+    </TouchableOpacity>
+  );
+};
 export default AutomationCreateEditPage;

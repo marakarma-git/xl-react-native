@@ -4,9 +4,20 @@ import {Switch} from 'react-native-switch';
 import {colors} from '../../constant/color';
 
 const GridSwitchComponent = (props) => {
-  const {value, onSwitch, activeText, inActiveText, isDisabled, dataId} = props;
+  const {
+    value,
+    onSwitch,
+    activeText,
+    inActiveText,
+    isDisabled,
+    dataId,
+    switchBorderRadius,
+    switchWidthMultiplier,
+    containerStyle,
+  } = props;
   return (
     <Switch
+      containerStyle={containerStyle}
       value={value}
       onValueChange={(val) => onSwitch(dataId, val)}
       disabled={isDisabled}
@@ -20,8 +31,8 @@ const GridSwitchComponent = (props) => {
       circleActiveColor={'white'}
       circleInActiveColor={'white'}
       changeValueImmediately={true}
-      switchBorderRadius={5}
-      switchWidthMultiplier={4}
+      switchBorderRadius={switchBorderRadius || 5}
+      switchWidthMultiplier={switchWidthMultiplier || 4}
     />
   );
 };
@@ -33,6 +44,9 @@ GridSwitchComponent.propTypes = {
   activeText: PropTypes.string,
   inActiveText: PropTypes.string,
   isDisabled: PropTypes.bool,
+  switchBorderRadius: PropTypes.string,
+  switchWidthMultiplier: PropTypes.string,
+  containerStyle: PropTypes.object,
 };
 GridSwitchComponent.defaultProps = {
   dataId: '',
