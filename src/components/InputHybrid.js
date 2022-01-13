@@ -14,6 +14,10 @@ import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityI
 import {inputHybridStyle} from '../style';
 import {colors} from '../constant/color';
 import ModalSearchPicker from './modal/ModalSearchPicker';
+import {device_width} from '../constant/config';
+import styles from '../style/drawer.style';
+import Ionicons from 'react-native-vector-icons/Ionicons';
+import CustomRadioButtonComponent from './form/CustomRadioButton';
 
 const InputHybrid = (props) => {
   const {type} = props;
@@ -28,6 +32,10 @@ const InputHybrid = (props) => {
       return <SelectInputType2 {...props} />;
     case 'AutomationLabel':
       return <AutomationLabel {...props} />;
+    case 'ThresholdPad':
+      return <ThresholdPad {...props} />;
+    case 'RadioButton':
+      return <RadioButton {...props} />;
     default:
       return <React.Fragment />;
   }
@@ -38,6 +46,9 @@ InputHybrid.propTypes = {
     'DropDown',
     'DateTimePicker',
     'DropDownType2',
+    'AutomationLabel',
+    'ThresholdPad',
+    'RadioButton',
   ]),
   removeLabel: PropTypes.bool,
   customStyle: PropTypes.object,
@@ -77,7 +88,9 @@ const ContainerInput = (props) => {
     fullWidthInput,
     customStyle,
     customStyleText,
+    customTouchStyle,
     removeLabel,
+    isPaddingZero,
   } = props;
   const CustomTouch = isTouchable ? TouchableOpacity : View;
   return (
@@ -103,6 +116,13 @@ const ContainerInput = (props) => {
           style={[
             inputHybridStyle.innerContainerInput,
             labelLeft && inputHybridStyle.customStyleInnerContainer,
+            isPaddingZero
+              ? {
+                  paddingHorizontal: 0,
+                  alignItems: null,
+                }
+              : {},
+            customTouchStyle,
           ]}
           {...customTouchProps}
           disabled={loading || disableText || disabled}>
@@ -121,6 +141,67 @@ const ContainerInput = (props) => {
         </Text>
       </View>
     </View>
+  );
+};
+const RadioButton = (props) => {
+  const {data, value: values} = props || {};
+  return (
+    <View style={{marginTop: 16}}>
+      {data &&
+        data.map(({value, label}) => {
+          return (
+            <CustomRadioButtonComponent
+              color={colors.main_color}
+              label={label}
+              radioValue={value}
+              fontType={values?.value === value ? 'bold' : ''}
+              status={values?.value === value ? 'checked' : 'unchecked'}
+            />
+          );
+        })}
+    </View>
+  );
+};
+const ThresholdPad = (props) => {
+  return (
+    <ContainerInput
+      isPaddingZero
+      customTouchProps={{width: device_width * 0.3}}
+      {...props}>
+      <View
+        style={{
+          flex: 1,
+          flexDirection: 'row',
+          justifyContent: 'center',
+        }}>
+        <View
+          style={{
+            flex: 1,
+            borderRightWidth: 1,
+            borderColor: '#8D8D8D',
+            flexDirection: 'row',
+          }}>
+          <TextInput style={{flex: 1, textAlign: 'right'}} />
+          <Text style={{textAlignVertical: 'center', paddingHorizontal: 6}}>
+            %
+          </Text>
+        </View>
+        <View>
+          <TouchableOpacity style={{flex: 1, borderColor: '#8D8D8D'}}>
+            <Ionicons name={'md-chevron-up'} color={'black'} size={20} />
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={{
+              flex: 1,
+              borderTopWidth: 1,
+              borderColor: '#8D8D8D',
+              justifyContent: 'center',
+            }}>
+            <Ionicons name={'md-chevron-down'} color={'black'} size={20} />
+          </TouchableOpacity>
+        </View>
+      </View>
+    </ContainerInput>
   );
 };
 const AutomationLabel = (props) => {

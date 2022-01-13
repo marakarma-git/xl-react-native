@@ -22,7 +22,8 @@ const InputWrapper = (props) => {
   );
 };
 const WrapperOne = (props) => {
-  const {dataInput, containerTitle, containerDescription} = props || {};
+  const {dataInput, containerTitle, containerDescription, isRemoveBottomLine} =
+    props || {};
   return (
     <Card style={[styles.cardSection, {marginTop: '5%'}]}>
       <Card.Content>
@@ -33,7 +34,9 @@ const WrapperOne = (props) => {
           {containerDescription}
         </Text>
       </Card.Content>
-      <View style={automationCreditStyle.wrapperOneLine} />
+      {!isRemoveBottomLine && (
+        <View style={automationCreditStyle.wrapperOneLine} />
+      )}
       <Card.Content>
         <InputWrapper dataInput={dataInput} />
       </Card.Content>

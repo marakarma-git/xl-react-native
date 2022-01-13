@@ -12,6 +12,7 @@ const automationDefaultFormData = [
         containerTitle: 'Target Enterprise',
         containerDescription:
           'It will affect all subscription packages and individual subscription within the selected enterprises.',
+        isRemoveBottomLine: true,
         dataInput: [
           {
             inputId: '',
@@ -55,21 +56,23 @@ const automationDefaultFormData = [
         containerType: 'WrapperOne',
         showContainer: true,
         containerTitle: 'Select Rule Category',
-        containerDescription: 'WrapperOne',
+        containerDescription: '',
+        isRemoveBottomLine: true,
         dataInput: [
           {
-            inputId: '',
-            inputType: 'RadioOnlyOne',
-            data: [
-              {
-                value: 'Business Automation',
-                label: 'Business Automation',
-              },
-              {
-                value: 'Fraud Prevention',
-                label: 'Fraud Prevention',
-              },
-            ],
+            inputType: 'RadioButton',
+            config: {
+              data: [
+                {
+                  value: 'Business Automation',
+                  label: 'Business Automation',
+                },
+                {
+                  value: 'Fraud Prevention',
+                  label: 'Fraud Prevention',
+                },
+              ],
+            },
           },
         ],
       },

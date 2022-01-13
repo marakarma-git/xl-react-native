@@ -193,7 +193,7 @@ export default {
     alignItems: 'center',
   },
   customStyleText: {
-    width: '15%',
+    width: '20%',
     marginRight: 14,
   },
   customStyleInnerContainer: {

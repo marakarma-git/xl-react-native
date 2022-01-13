@@ -46,6 +46,7 @@ const AutomationCreateEditPage = () => {
               containerType,
               containerTitle,
               containerDescription,
+              isRemoveBottomLine,
             } = item || {};
             return (
               <CardAutomation
@@ -53,6 +54,7 @@ const AutomationCreateEditPage = () => {
                 dataInput={dataInput}
                 containerTitle={containerTitle}
                 containerDescription={containerDescription}
+                isRemoveBottomLine={isRemoveBottomLine}
               />
             );
           })}
