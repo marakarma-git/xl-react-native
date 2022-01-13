@@ -7,6 +7,7 @@ import {
   VictoryLabel,
   VictoryTooltip,
   VictoryZoomContainer,
+  createContainer,
 } from 'victory-native';
 import {View, Dimensions} from 'react-native';
 import {Text} from '../index';
@@ -19,6 +20,8 @@ import {NoDataText} from '..';
 import {useNavigation} from '@react-navigation/native';
 
 import {colors} from '../../constant/color';
+
+const VictoryVoronoiZoomContainer = createContainer('voronoi', 'zoom');
 
 const Las12MonthUsageChart = (props) => {
   const navigation = useNavigation();
@@ -42,6 +45,7 @@ const Las12MonthUsageChart = (props) => {
   };
 
   const _onPressOut = (data) => {
+    console.log(data?.datum.x);
     props.setShowMonthUsage(data?.datum?.x || 'Jan-1990');
     return {active: undefined};
   };
@@ -57,7 +61,7 @@ const Las12MonthUsageChart = (props) => {
             }
             domain={[0, dataSet.length]}
             containerComponent={
-              <VictoryZoomContainer
+              <VictoryVoronoiZoomContainer
                 allowZoom={false}
                 zoomDimension="x"
                 zoomDomain={{

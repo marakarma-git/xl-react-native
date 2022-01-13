@@ -13,6 +13,8 @@ import {
   ButtonCurveTypeComponent,
 } from '../../components';
 import {
+  simGetEnterprisePackage,
+  usageAnalyticsDynamicOnchangeDropDown,
   usageAnalyticsDynamicResetSelectedValue,
   usageAnalyticsGenerateParams,
 } from '../../redux/action/usage_analytics_filter_action';
@@ -62,7 +64,7 @@ const gridOptionsArray = [
     width: 100,
     cellAlign: 'center',
     headerAlign: 'center',
-    label: 'Sms',
+    label: 'SMS',
     field: 'sms',
     cellType: 'text',
     headerType: 'text',
@@ -136,9 +138,14 @@ const UsageAnalyticsPage = ({route, navigation}) => {
     let isSum = type === 'sum' ? true : false;
     const param3 = Helper.monthlyUsageParams(monthPeriod, isSubstract, isSum);
     const monthYear = Helper.numToYearMonth(param3);
+    const filterParams = Object.assign(
+      param1 ? {param1} : {},
+      param2 ? {param2} : {},
+      {param3},
+    );
     setMonthUsageText(monthYear);
     setShowMonthUsage(param3);
-    dispatch(getMonthUsage(monthUsageId[0], {param3}));
+    dispatch(getMonthUsage(monthUsageId[0], filterParams));
   };
 
   const callWidgetList = () => {
@@ -190,6 +197,8 @@ const UsageAnalyticsPage = ({route, navigation}) => {
     if (!isFirstRender) {
       callWidgetList();
       dispatch(resetTopTrafficStatistics());
+      // if (showMonthUsage) _showMonthUsage(monthUsageText);
+      setShowMonthUsage(null);
     }
   }, [generatedParams, appliedFilter]);
 
@@ -233,7 +242,22 @@ const UsageAnalyticsPage = ({route, navigation}) => {
                     }),
                   );
                 } else {
+                  const dataEnterprise = [...appliedFilter].find(
+                    (data) =>
+                      data.formId === 'usage-analytics-enterprise-hard-code',
+                  );
                   dispatch(usageAnalyticsDynamicResetSelectedValue({formId}));
+                  dispatch(
+                    simGetEnterprisePackage({
+                      enterpriseName: dataEnterprise?.value?.label,
+                    }),
+                  );
+                  dispatch(
+                    usageAnalyticsDynamicOnchangeDropDown({
+                      formId: 'usage-analytics-enterprise-hard-code',
+                      dropDown: dataEnterprise?.value,
+                    }),
+                  );
                 }
                 dispatch(usageAnalyticsGenerateParams());
               }}
@@ -304,9 +328,11 @@ const UsageAnalyticsPage = ({route, navigation}) => {
                 loadingContent={loadingMonthUsage}
                 cardTitleComponent={
                   <View style={{flexDirection: 'row'}}>
-                    <Text fontType="bold" style={styles.cardTitleText}>
-                      Month Usage{' '}
-                    </Text>
+                    <TouchableOpacity onPress={() => setShowMonthUsage(null)}>
+                      <Text fontType="bold" style={styles.cardTitleText}>
+                        Monthly Usage{' '}
+                      </Text>
+                    </TouchableOpacity>
                     <TouchableOpacity onPress={() => setShowMonthUsage(null)}>
                       <Text>&gt; </Text>
                     </TouchableOpacity>
