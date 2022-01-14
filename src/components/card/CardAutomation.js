@@ -44,7 +44,7 @@ const WrapperOne = (props) => {
   );
 };
 const WrapperTwo = (props) => {
-  const {dataInput, containerTitle, containerDescription, isSwitch} =
+  const {dataInput, containerTitle, containerDescription, containerSwitch} =
     props || {};
   return (
     <View
@@ -55,7 +55,7 @@ const WrapperTwo = (props) => {
           activeText={''}
           switchBorderRadius={50}
           switchWidthMultiplier={3}
-          value={isSwitch}
+          value={containerSwitch}
         />
         {containerTitle && (
           <Text fontType="bold" style={automationCreditStyle.wrapperTitle}>
@@ -63,7 +63,7 @@ const WrapperTwo = (props) => {
           </Text>
         )}
       </View>
-      {isSwitch === true && (
+      {containerSwitch === true && (
         <Card.Content>
           <Text
             style={[
@@ -91,5 +91,10 @@ const CardAutomation = (props) => {
 };
 CardAutomation.propTypes = {
   containerType: PropTypes.oneOfType(['WrapperOne', 'WrapperTwo']),
+  dataInput: PropTypes.array,
+  containerTitle: PropTypes.string,
+  containerDescription: PropTypes.string,
+  containerSwitch: PropTypes.bool,
+  isRemoveBottomLine: PropTypes.bool,
 };
 export default CardAutomation;

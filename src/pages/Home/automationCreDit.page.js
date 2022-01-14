@@ -47,16 +47,31 @@ const AutomationCreateEditPage = () => {
               containerTitle,
               containerDescription,
               isRemoveBottomLine,
+              groupByContainer,
             } = item || {};
-            return (
-              <CardAutomation
-                containerType={containerType}
-                dataInput={dataInput}
-                containerTitle={containerTitle}
-                containerDescription={containerDescription}
-                isRemoveBottomLine={isRemoveBottomLine}
-              />
-            );
+            if (!lod.isEmpty(groupByContainer)) {
+              if (groupByContainer === 'abc') {
+                return (
+                  <CardAutomation
+                    containerType={containerType}
+                    dataInput={dataInput}
+                    containerTitle={containerTitle}
+                    containerDescription={containerDescription}
+                    isRemoveBottomLine={isRemoveBottomLine}
+                  />
+                );
+              }
+            } else {
+              return (
+                <CardAutomation
+                  containerType={containerType}
+                  dataInput={dataInput}
+                  containerTitle={containerTitle}
+                  containerDescription={containerDescription}
+                  isRemoveBottomLine={isRemoveBottomLine}
+                />
+              );
+            }
           })}
           <View style={automationCreditStyle.containerFooter}>
             <LocalButton
