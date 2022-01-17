@@ -7,15 +7,48 @@ import PropTypes from 'prop-types';
 import InputHybrid from '../InputHybrid';
 import GridSwitchComponent from '../grid/GridSwitch';
 import {automationCreditStyle} from '../../style';
+import {useSelector} from 'react-redux';
 const InputWrapper = (props) => {
   const {dataInput} = props || [];
+  const {containerValue} = useSelector(
+    (state) => state.automation_create_edit_reducer,
+  );
   return (
     <>
       {dataInput &&
         dataInput.map((item) => {
-          const {inputType, titleInput, config} = item || {};
+          const {
+            inputType,
+            titleInput,
+            config,
+            paramsDefault,
+            paramsValue,
+            paramsData,
+            paramsError,
+            paramsLoading,
+          } = item || {};
           return (
-            <InputHybrid type={inputType} label={titleInput} {...config} />
+            <InputHybrid
+              type={inputType}
+              label={titleInput}
+              value={
+                containerValue[`${paramsValue}`] ||
+                containerValue[`${paramsDefault}`]
+              }
+              data={
+                containerValue[`${paramsData}`] ||
+                containerValue[`${paramsDefault}Data`]
+              }
+              errorText={
+                containerValue[`${paramsError}`] ||
+                containerValue[`${paramsDefault}Error`]
+              }
+              loading={
+                containerValue[`${paramsLoading}`] ||
+                containerValue[`${paramsDefault}Loading`]
+              }
+              {...config}
+            />
           );
         })}
     </>

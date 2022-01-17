@@ -15,10 +15,14 @@ const automationDefaultFormData = [
         isRemoveBottomLine: true,
         dataInput: [
           {
-            inputId: '',
             inputType: 'DropDown',
             inputLoading: false,
             titleInput: 'Enterprise',
+            paramsDefault: 'enterpriseId',
+            paramsValue: 'enterpriseId',
+            paramsData: 'dataEnterprise',
+            paramsError: 'dummyErrorText',
+            paramsLoading: 'dummyErrorBool',
             config: {
               fullWidthInput: true,
             },
@@ -41,9 +45,9 @@ const automationDefaultFormData = [
         containerDescription: '',
         dataInput: [
           {
-            inputId: '',
             inputType: 'TextInput',
             titleInput: 'Rules Name',
+            paramsValue: 'rulesName',
             config: {
               fullWidthInput: true,
             },
@@ -102,10 +106,10 @@ const automationDefaultFormData = [
             },
           },
           {
-            inputId: 'bulk-shared-auto-upgrade-input-type-from',
             inputType: 'DropDown',
             titleInput: 'From',
             paramsValue: 'upgradePackageBulkFrom',
+            paramsData: 'dataDummy',
             config: {
               fullWidthInput: true,
               labelLeft: true,
@@ -113,10 +117,10 @@ const automationDefaultFormData = [
             inputLoading: false,
           },
           {
-            inputId: 'bulk-shared-auto-upgrade-input-type-to',
             inputType: 'DropDown',
             titleInput: 'To',
             paramsValue: 'upgradePackageBulkTo',
+            paramsData: 'dataDummy',
             config: {
               fullWidthInput: true,
               labelLeft: true,
@@ -146,10 +150,10 @@ const automationDefaultFormData = [
             },
           },
           {
-            inputId: 'auto-downgrade-package-input-type-from',
             inputType: 'DropDown',
             titleInput: 'From',
             paramsValue: 'downgradePackageFrom',
+            paramsData: 'dataDummy',
             config: {
               fullWidthInput: true,
               labelLeft: true,
@@ -157,10 +161,10 @@ const automationDefaultFormData = [
             inputLoading: false,
           },
           {
-            inputId: 'auto-downgrade-package-input-type-to',
             inputType: 'DropDown',
             titleInput: 'To',
             paramsValue: 'downgradePackageTo',
+            paramsData: 'dataDummy',
             config: {
               fullWidthInput: true,
               labelLeft: true,
@@ -188,10 +192,10 @@ const automationDefaultFormData = [
             },
           },
           {
-            inputId: 'auto-upgrade-individual-shared-package-input-type-from',
             inputType: 'DropDown',
             titleInput: 'From',
             paramsValue: 'upgradePackageIndividualFrom',
+            paramsData: 'dataDummy',
             config: {
               fullWidthInput: true,
               labelLeft: true,
@@ -199,10 +203,10 @@ const automationDefaultFormData = [
             inputLoading: false,
           },
           {
-            inputId: 'auto-upgrade-individual-shared-package-input-type-to',
             inputType: 'DropDown',
             titleInput: 'To',
             paramsValue: 'upgradePackageIndividualTo',
+            paramsData: 'dataDummy',
             config: {
               fullWidthInput: true,
               labelLeft: true,
@@ -210,8 +214,6 @@ const automationDefaultFormData = [
             inputLoading: false,
           },
           {
-            inputId:
-              'auto-upgrade-individual-shared-package-input-type-threshold',
             inputType: 'ThresholdPad',
             titleInput: 'Threshold',
             paramsValue: 'thresholdUpgradeIndividual',
@@ -229,7 +231,6 @@ const automationDefaultFormData = [
         containerBoolParamsTo: 'isBulkNotification',
         dataInput: [
           {
-            inputId: 'bulk-shared-limit-notification-input-type-email',
             inputType: 'TextInput',
             titleInput: 'Email Address(es)',
             paramsValue: 'notificationBulkEmail',
@@ -238,7 +239,6 @@ const automationDefaultFormData = [
             },
           },
           {
-            inputId: 'bulk-shared-limit-notification-input-type-threshold',
             inputType: 'ThresholdPad',
             titleInput: 'Threshold',
             paramsValue: 'thresholdBulkNotification',
@@ -256,7 +256,6 @@ const automationDefaultFormData = [
         containerBoolParamsTo: 'isIndividualNotification',
         dataInput: [
           {
-            inputId: 'individual-shared-limit-input-type-email',
             inputType: 'TextInput',
             titleInput: 'Email Address(es)',
             paramsValue: 'notificationIndividualEmail',
@@ -265,7 +264,6 @@ const automationDefaultFormData = [
             },
           },
           {
-            inputId: 'individual-shared-limit-input-type-threshold',
             inputType: 'ThresholdPad',
             titleInput: 'Threshold',
             paramsValue: 'thresholdIndividualNotification',
@@ -283,7 +281,20 @@ const automationDefaultFormData = [
   },
 ];
 const containerValue = {
-  enterpriseId: 'string', // Target Enterprise
+  dataDummy: [
+    {
+      value: 'abc',
+      label: 'abc',
+    },
+    {
+      value: 'cba',
+      label: 'cba',
+    },
+  ],
+  dummyErrorBool: true,
+  dummyErrorText: 'Testing Dummy Error Text',
+
+  enterpriseId: {}, // Target Enterprise
   rulesName: 'string', // Rules Name
   category: {}, // Select Rule Category | String
 
@@ -317,8 +328,8 @@ const containerValue = {
 const initialState = {
   loading: false,
   errorText: '',
-  automationDefaultFormData,
-  containerValue,
+  automationDefaultFormData: automationDefaultFormData,
+  containerValue: containerValue,
 };
 const automation_create_edit_reducer = (state = initialState, action) => {
   switch (action.type) {
