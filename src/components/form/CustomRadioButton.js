@@ -13,7 +13,7 @@ const CustomRadioButtonComponent = (props) => {
     <View style={[styles.radioButtonContainer, props.style]}>
       <RadioButton
         color={color || colors.tab_edit}
-        onPress={() => props.onPressRadio()}
+        onPress={() => props.onPressRadio(props)}
         value={props.radioValue}
         status={props.status}
       />

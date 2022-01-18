@@ -15,7 +15,7 @@ const AutomationCreateEditPage = () => {
   const {from, result} = params || {};
   const [indexForm, setIndexForm] = useState(0);
   const {imageBase64} = useSelector((state) => state.enterprise_reducer);
-  const {automationDefaultFormData} = useSelector(
+  const {automationDefaultFormData, containerValue} = useSelector(
     (state) => state.automation_create_edit_reducer,
   );
   useEffect(() => {
@@ -43,9 +43,11 @@ const AutomationCreateEditPage = () => {
           {automationDefaultFormData[indexForm].dataContainer.map((item) => {
             const {groupByContainer, ...rest} = item || {};
             if (!lod.isEmpty(groupByContainer)) {
-              if (groupByContainer === 'abc') {
-                return <CardAutomation {...rest} />;
-              }
+              return (
+                groupByContainer === containerValue?.category.value && (
+                  <CardAutomation {...rest} />
+                )
+              );
             } else {
               return <CardAutomation {...rest} />;
             }

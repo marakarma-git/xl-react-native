@@ -1,3 +1,5 @@
+import reduxString from '../reduxString';
+
 const automationDefaultFormData = [
   {
     stepperId: 'select-enterprise-stepper-hard-code',
@@ -19,10 +21,6 @@ const automationDefaultFormData = [
             inputLoading: false,
             titleInput: 'Enterprise',
             paramsDefault: 'enterpriseId',
-            paramsValue: 'enterpriseId',
-            paramsData: 'dataEnterprise',
-            paramsError: 'dummyErrorText',
-            paramsLoading: 'dummyErrorBool',
             config: {
               fullWidthInput: true,
             },
@@ -47,7 +45,7 @@ const automationDefaultFormData = [
           {
             inputType: 'TextInput',
             titleInput: 'Rules Name',
-            paramsValue: 'rulesName',
+            paramsDefault: 'rulesName',
             config: {
               fullWidthInput: true,
             },
@@ -64,7 +62,7 @@ const automationDefaultFormData = [
         dataInput: [
           {
             inputType: 'RadioButton',
-            paramsValue: 'category',
+            paramsDefault: 'category',
             config: {
               data: [
                 {
@@ -96,7 +94,7 @@ const automationDefaultFormData = [
         containerTitle: 'Bulk Shared Auto Upgrade',
         containerDescription: '',
         groupByContainer: 'Business Automation',
-        containerBoolParamsTo: 'isUpgradeBulk',
+        paramsContainerDefault: 'isUpgradeBulk',
         dataInput: [
           {
             inputType: 'AutomationLabel',
@@ -140,7 +138,7 @@ const automationDefaultFormData = [
           '\n' +
           'Please note that it will impact to change all SIMs subscription under selected enterprise.',
         groupByContainer: 'Business Automation',
-        containerBoolParamsTo: 'isDowngrade',
+        paramsContainerDefault: 'isDowngrade',
         dataInput: [
           {
             inputType: 'AutomationLabel',
@@ -152,8 +150,9 @@ const automationDefaultFormData = [
           {
             inputType: 'DropDown',
             titleInput: 'From',
-            paramsValue: 'downgradePackageFrom',
-            paramsData: 'dataDummy',
+            paramsDefault: 'downgradePackageFrom',
+            paramsData: 'subscriptionPackageData',
+            paramsLoading: 'subscriptionPackageLoading',
             config: {
               fullWidthInput: true,
               labelLeft: true,
@@ -163,8 +162,9 @@ const automationDefaultFormData = [
           {
             inputType: 'DropDown',
             titleInput: 'To',
-            paramsValue: 'downgradePackageTo',
-            paramsData: 'dataDummy',
+            paramsDefault: 'downgradePackageTo',
+            paramsData: 'subscriptionPackageData',
+            paramsLoading: 'subscriptionPackageLoading',
             config: {
               fullWidthInput: true,
               labelLeft: true,
@@ -182,7 +182,7 @@ const automationDefaultFormData = [
         containerTitle: 'Individual Shared package Auto Upgrade',
         containerDescription: '',
         groupByContainer: 'Business Automation',
-        containerBoolParamsTo: 'isUpgradeIndividual',
+        paramsContainerDefault: 'isUpgradeIndividual',
         dataInput: [
           {
             inputType: 'AutomationLabel',
@@ -194,8 +194,9 @@ const automationDefaultFormData = [
           {
             inputType: 'DropDown',
             titleInput: 'From',
-            paramsValue: 'upgradePackageIndividualFrom',
-            paramsData: 'dataDummy',
+            paramsDefault: 'upgradePackageIndividualFrom',
+            paramsData: 'subscriptionPackageData',
+            paramsLoading: 'subscriptionPackageLoading',
             config: {
               fullWidthInput: true,
               labelLeft: true,
@@ -205,8 +206,9 @@ const automationDefaultFormData = [
           {
             inputType: 'DropDown',
             titleInput: 'To',
-            paramsValue: 'upgradePackageIndividualTo',
-            paramsData: 'dataDummy',
+            paramsDefault: 'upgradePackageIndividualTo',
+            paramsData: 'subscriptionPackageData',
+            paramsLoading: 'subscriptionPackageLoading',
             config: {
               fullWidthInput: true,
               labelLeft: true,
@@ -228,7 +230,7 @@ const automationDefaultFormData = [
         containerTitle: 'Bulk Shared Limit Notification',
         containerDescription: '',
         groupByContainer: 'Fraud Prevention',
-        containerBoolParamsTo: 'isBulkNotification',
+        paramsContainerDefault: 'isBulkNotification',
         dataInput: [
           {
             inputType: 'TextInput',
@@ -253,7 +255,7 @@ const automationDefaultFormData = [
         containerTitle: 'Individual Shared Limit',
         containerDescription: '',
         groupByContainer: 'Fraud Prevention',
-        containerBoolParamsTo: 'isIndividualNotification',
+        paramsContainerDefault: 'isIndividualNotification',
         dataInput: [
           {
             inputType: 'TextInput',
@@ -295,32 +297,50 @@ const containerValue = {
   dummyErrorText: 'Testing Dummy Error Text',
 
   enterpriseId: {}, // Target Enterprise
-  rulesName: 'string', // Rules Name
+  enterpriseIdData: [],
+  enterpriseIdLoading: false,
+
+  rulesName: '', // Rules Name
   category: {}, // Select Rule Category | String
+
+  //Sharing Array Data
+  // Auto Downgrade Upgrade || Individual Shared Package Auto Upgrade
+  subscriptionPackageData: [],
+  subscriptionPackageLoading: false,
 
   //Define Rules - Business Automation -  Bulk Shared Auto Upgrade
   isUpgradeBulk: false,
+  isUpgradeBulkDisabled: false,
+  isUpgradeBulkHide: false,
   upgradePackageBulkFrom: {}, //String
   upgradePackageBulkTo: {}, //String
 
   //Define Rules - Business Automation - Bulk Shared Auto Downgrade Package
   isDowngrade: false,
+  isDowngradeDisabled: false,
+  isDowngradeHide: false,
   downgradePackageFrom: {}, //String
   downgradePackageTo: {}, //String
 
   //Define Rules - Business Automation - Individual Shared Package Auto Upgrade
   isUpgradeIndividual: false,
+  isUpgradeIndividualDisabled: false,
+  isUpgradeIndividualHide: false,
   upgradePackageIndividualFrom: {}, //String
   upgradePackageIndividualTo: {}, //String
   thresholdUpgradeIndividual: '0', //String
 
   //Define Rules - Fraud Prevention - Bulk Shared Limit Notification
   isBulkNotification: false,
+  isBulkNotificationDisabled: false,
+  isBulkNotificationHide: false,
   notificationBulkEmail: '',
   thresholdBulkNotification: '0',
 
   //Define Rules - Fraud Prevention - Individual Shared Limit
   isIndividualNotification: false,
+  isIndividualNotificationDisabled: false,
+  isIndividualNotificationHide: false,
   notificationIndividualEmail: '',
   thresholdIndividualNotification: '',
 };
@@ -333,6 +353,25 @@ const initialState = {
 };
 const automation_create_edit_reducer = (state = initialState, action) => {
   switch (action.type) {
+    case reduxString.AUTOMATION_CONTAINER_SWITCH: {
+      return {
+        ...state,
+        containerValue: {
+          ...state.containerValue,
+          [`${action.paramsToWhere}`]:
+            !state.containerValue[`${action.paramsToWhere}`],
+        },
+      };
+    }
+    case reduxString.AUTOMATION_ADAPTIVE_ONCHANGE: {
+      return {
+        ...state,
+        containerValue: {
+          ...state.containerValue,
+          [`${action.paramsToWhere}`]: action.realData,
+        },
+      };
+    }
     default: {
       return state;
     }

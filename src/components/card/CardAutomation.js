@@ -7,8 +7,13 @@ import PropTypes from 'prop-types';
 import InputHybrid from '../InputHybrid';
 import GridSwitchComponent from '../grid/GridSwitch';
 import {automationCreditStyle} from '../../style';
-import {useSelector} from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
+import {
+  automationAdaptiveOnChange,
+  automationContainerSwitch,
+} from '../../redux/action/automation_create_edit_action';
 const InputWrapper = (props) => {
+  const dispatch = useDispatch();
   const {dataInput} = props || [];
   const {containerValue} = useSelector(
     (state) => state.automation_create_edit_reducer,
@@ -22,7 +27,6 @@ const InputWrapper = (props) => {
             titleInput,
             config,
             paramsDefault,
-            paramsValue,
             paramsData,
             paramsError,
             paramsLoading,
@@ -31,10 +35,15 @@ const InputWrapper = (props) => {
             <InputHybrid
               type={inputType}
               label={titleInput}
-              value={
-                containerValue[`${paramsValue}`] ||
-                containerValue[`${paramsDefault}`]
-              }
+              onChange={(e) => {
+                dispatch(
+                  automationAdaptiveOnChange({
+                    paramsToWhere: paramsDefault,
+                    realData: e,
+                  }),
+                );
+              }}
+              value={containerValue[`${paramsDefault}`]}
               data={
                 containerValue[`${paramsData}`] ||
                 containerValue[`${paramsDefault}Data`]
@@ -77,38 +86,67 @@ const WrapperOne = (props) => {
   );
 };
 const WrapperTwo = (props) => {
-  const {dataInput, containerTitle, containerDescription, containerSwitch} =
-    props || {};
+  const dispatch = useDispatch();
+  const {
+    dataInput,
+    containerTitle,
+    containerDescription,
+    paramsContainerDefault,
+    paramsContainerDisabled,
+    paramsContainerHide,
+  } = props || {};
+  const {containerValue} = useSelector(
+    (state) => state.automation_create_edit_reducer,
+  );
   return (
-    <View
-      style={[styles.cardSection, automationCreditStyle.wrapperTwoContainer]}>
-      <View style={automationCreditStyle.wrapperTwoInnerContainer}>
-        <GridSwitchComponent
-          inActiveText={''}
-          activeText={''}
-          switchBorderRadius={50}
-          switchWidthMultiplier={3}
-          value={containerSwitch}
-        />
-        {containerTitle && (
-          <Text fontType="bold" style={automationCreditStyle.wrapperTitle}>
-            {containerTitle}
-          </Text>
-        )}
-      </View>
-      {containerSwitch === true && (
-        <Card.Content>
-          <Text
-            style={[
-              styles.formStepHeaderTextBody,
-              {marginTop: containerDescription ? 16 : 0},
-            ]}>
-            {containerDescription}
-          </Text>
-          <InputWrapper dataInput={dataInput} />
-        </Card.Content>
+    <>
+      {(containerValue[`${paramsContainerDefault}Hide`] !== true ||
+        containerValue[`${paramsContainerHide}`] !== true) && (
+        <View
+          style={[
+            styles.cardSection,
+            automationCreditStyle.wrapperTwoContainer,
+          ]}>
+          <View style={automationCreditStyle.wrapperTwoInnerContainer}>
+            <GridSwitchComponent
+              isDisabled={
+                containerValue[`${paramsContainerDisabled}`] ||
+                containerValue[`${paramsContainerDefault}Disabled`]
+              }
+              inActiveText={''}
+              activeText={''}
+              switchBorderRadius={50}
+              switchWidthMultiplier={3}
+              value={containerValue[`${paramsContainerDefault}`]}
+              onSwitch={() => {
+                dispatch(
+                  automationContainerSwitch({
+                    paramsToWhere: paramsContainerDefault,
+                  }),
+                );
+              }}
+            />
+            {containerTitle && (
+              <Text fontType="bold" style={automationCreditStyle.wrapperTitle}>
+                {containerTitle}
+              </Text>
+            )}
+          </View>
+          {containerValue[`${paramsContainerDefault}`] === true && (
+            <Card.Content>
+              <Text
+                style={[
+                  styles.formStepHeaderTextBody,
+                  {marginTop: containerDescription ? 16 : 0},
+                ]}>
+                {containerDescription}
+              </Text>
+              <InputWrapper dataInput={dataInput} />
+            </Card.Content>
+          )}
+        </View>
       )}
-    </View>
+    </>
   );
 };
 const CardAutomation = (props) => {

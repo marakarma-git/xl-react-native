@@ -148,7 +148,7 @@ const ContainerInput = (props) => {
   );
 };
 const RadioButton = (props) => {
-  const {data, value: values} = props || {};
+  const {data, value: values, onChange} = props || {};
   return (
     <View style={{marginTop: 16}}>
       {data &&
@@ -160,6 +160,12 @@ const RadioButton = (props) => {
               radioValue={value}
               fontType={values?.value === value ? 'bold' : ''}
               status={values?.value === value ? 'checked' : 'unchecked'}
+              onPressRadio={({label, radioValue}) =>
+                onChange({
+                  label,
+                  value: radioValue,
+                })
+              }
             />
           );
         })}
