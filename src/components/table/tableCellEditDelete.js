@@ -3,7 +3,7 @@ import {View, TouchableOpacity} from 'react-native';
 import {border_radius} from '../../constant/config';
 import {defaultHeightCell, defaultWidthCell} from '../../constant/config';
 import Feather from 'react-native-vector-icons/Feather';
-import {colors} from '../../constant/color';
+import {color_theme_one, colors} from '../../constant/color';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import PropType from 'prop-types';
 import PropTypes from 'prop-types';
@@ -40,7 +40,7 @@ const TableCellEditDelete = (props) => {
           style={{
             width: 28,
             height: 28,
-            backgroundColor: colors.delete,
+            backgroundColor: color_theme_one.peach,
             justifyContent: 'center',
             alignItems: 'center',
             borderRadius: border_radius,

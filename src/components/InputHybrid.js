@@ -91,6 +91,7 @@ const ContainerInput = (props) => {
     customTouchStyle,
     removeLabel,
     isPaddingZero,
+    isTitleRequired,
   } = props;
   const CustomTouch = isTouchable ? TouchableOpacity : View;
   return (
@@ -109,6 +110,9 @@ const ContainerInput = (props) => {
             customStyleText,
           ]}>
           {label}
+          {isTitleRequired && (
+            <Text style={{color: colors.chart_line_red}}> *</Text>
+          )}
         </Text>
       )}
       <View style={{flex: 1}}>

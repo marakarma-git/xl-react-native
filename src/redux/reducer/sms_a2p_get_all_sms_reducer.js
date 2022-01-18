@@ -94,6 +94,18 @@ const sms_a2p_get_all_sms_reducer = (state = initialState, action) => {
         data_sms_generated: state.data_sms_generated,
       };
     }
+    case reduxString.SMS_A2P_TOTAL_PLUS_ONE: {
+      return {
+        ...state,
+        sms_elements_static: state.sms_elements_static + 1,
+      };
+    }
+    case reduxString.SMS_A2P_TOTAL_MINUS_ONE: {
+      return {
+        ...state,
+        sms_elements_static: state.sms_elements_static - 1,
+      };
+    }
     default: {
       return state;
     }

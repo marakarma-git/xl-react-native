@@ -25,10 +25,13 @@ import getA2pEditDetail, {
 import Helper from '../../helpers/helper';
 import getSmsA2p, {
   smsA2pReplaceCellWithIndex,
+  smsA2pTotalPlusOne,
 } from '../../redux/action/sms_a2p_get_all_sms_action';
 import httpRequest from '../../constant/axiosInstance';
+import {useToastHooks} from '../../customHooks/customHooks';
 
 const SmsA2pEdit = ({route}) => {
+  const showToast = useToastHooks();
   const navigation = useNavigation();
   const dispatch = useDispatch();
   const {params} = route || {};
@@ -64,9 +67,8 @@ const SmsA2pEdit = ({route}) => {
     });
   };
   const onSubmit = () => {
-    const {data: getSmsData, errorCount} = Helper.editFormValidator(
-      dataA2pEdit,
-    );
+    const {data: getSmsData, errorCount} =
+      Helper.editFormValidator(dataA2pEdit);
     if (errorCount > 0) {
       dispatch(
         smsA2pEditDynamicFormFailed({
@@ -96,7 +98,16 @@ const SmsA2pEdit = ({route}) => {
         .then(({data}) => {
           const {statusCode} = data || {};
           if (statusCode === 0) {
+            showToast({
+              title: 'Success',
+              type: 'success',
+              message: `Success ${layoutType} New A2P Configuration`,
+              duration: 4500,
+              showToast: true,
+              position: 'top',
+            });
             if (layoutType === 'Create') {
+              dispatch(smsA2pTotalPlusOne());
               dispatch(
                 getSmsA2p({
                   page_params: 0,
@@ -117,7 +128,7 @@ const SmsA2pEdit = ({route}) => {
               );
             }
             setLocalLoading(false);
-            alert('success');
+            navigation.goBack();
           } else {
             setLocalLoading(false);
           }
@@ -133,12 +144,22 @@ const SmsA2pEdit = ({route}) => {
     BackHandler.addEventListener('hardwareBackPress', () => handlingBack());
   }, [navigation]);
   return (
-    <HeaderContainer headerTitle={'SMS A2P'} backIcon={true}>
+    <HeaderContainer
+      headerTitle={`${
+        layoutType === 'Edit' ? 'Update' : layoutType
+      } SMS A2P Configuration`}
+      backIcon={true}>
       <ScrollView style={{backgroundColor: 'white'}}>
         <OverlayBackground />
         <Container style={{marginTop: 16}}>
           <View style={subscriptionStyle.containerTitle}>
-            <Text style={{fontSize: 16}}>{layoutType || ''}</Text>
+            <Text style={{fontSize: 16}}>
+              {layoutType === 'Create'
+                ? 'New Configuration'
+                : layoutType === 'Edit'
+                ? 'Edit Configuration'
+                : ''}
+            </Text>
             <TouchableOpacity
               onPress={() => {
                 handlingBack();
@@ -164,7 +185,8 @@ const SmsA2pEdit = ({route}) => {
           <View style={subscriptionStyle.containerWrap}>
             {dataA2pEdit &&
               dataA2pEdit.map((item) => {
-                const {for_layout_edit_only, subItem} = item || {};
+                const {for_layout_edit_only, subItem, config} = item || {};
+                const {isTitleRequired} = config || {};
                 const {formId, validationError} = subItem || '';
                 const {
                   edit_value,
@@ -183,6 +205,7 @@ const SmsA2pEdit = ({route}) => {
                     value={edit_value}
                     errorText={validationError}
                     label={edit_label}
+                    isTitleRequired
                     onChange={(e) => {
                       if (formId !== 'sender-address-hard-code') {
                         dispatch(

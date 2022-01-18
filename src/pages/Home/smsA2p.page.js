@@ -4,11 +4,13 @@ import {useDispatch, useSelector} from 'react-redux';
 import getSmsA2p, {
   deleteSmsA2p,
   smsA2pSetDataSmsGenerated,
+  smsA2pTotalMinusOne,
 } from '../../redux/action/sms_a2p_get_all_sms_action';
 import {
   HeaderContainer,
   ModalConfirmation,
   OverlayBackground,
+  Text,
 } from '../../components';
 import {subscriptionStyle} from '../../style';
 import ModalMenuPicker from '../../components/modal/ModalMenuPicker';
@@ -27,6 +29,7 @@ import {
 import TableFooter from '../../components/subscription/tableFooter';
 import Loading from '../../components/loading';
 import {useNavigation} from '@react-navigation/native';
+import {useToastHooks} from '../../customHooks/customHooks';
 const actionDataArray = [
   {
     value: '0',
@@ -40,17 +43,14 @@ const actionDataArray = [
 const SmsA2p = () => {
   const dispatch = useDispatch();
   const navigation = useNavigation();
+  const showToast = useToastHooks();
   const [firstRender, setFirstRender] = useState(true);
   const [showMenu, setShowMenu] = useState(false);
   const [showModal, setShowModal] = useState(false);
   const [thisConfigId, setThisConfigId] = useState('');
   const {imageBase64} = useSelector((state) => state.enterprise_reducer);
-  const {
-    dataSmsHeader,
-    searchText,
-    generatedParams,
-    appliedFilterSms,
-  } = useSelector((state) => state.sms_a2p_array_header_reducer);
+  const {dataSmsHeader, searchText, generatedParams, appliedFilterSms} =
+    useSelector((state) => state.sms_a2p_array_header_reducer);
   const {
     loading,
     errorText,
@@ -247,7 +247,7 @@ const SmsA2p = () => {
             'Are you sure want to delete this SMS A2P Configuration?'
           }
           confirmAction={() => {
-            dispatch(deleteSmsA2p({getConfigId: thisConfigId}));
+            dispatch(deleteSmsA2p({getConfigId: thisConfigId, showToast}));
             setShowModal(false);
           }}
         />

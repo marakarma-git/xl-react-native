@@ -39,6 +39,7 @@
     "dayjs": "^1.10.3",
     "jail-monkey": "^2.4.0",
     "lodash": "^4.17.20",
+    "moment": "^2.29.1",
     "prop-types": "^15.7.2",
     "react": "16.13.1",
     "react-native": "0.63.4",

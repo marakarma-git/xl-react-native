@@ -32,6 +32,7 @@ const dataSmsHeader = [
       doNotShowOnFilter: true,
       isTouchable: true,
       width: 180,
+      isTitleRequired: true,
     },
     shown: true,
     on_edit_config: {
@@ -53,6 +54,7 @@ const dataSmsHeader = [
       label: 'Sender Address (A.Number)',
       isTouchable: true,
       width: 280,
+      isTitleRequired: true,
     },
     shown: true,
     on_edit_config: {
@@ -76,6 +78,7 @@ const dataSmsHeader = [
     config: {
       label: 'User Name',
       isTouchable: true,
+      isTitleRequired: true,
     },
     shown: true,
     on_edit_config: {
@@ -93,6 +96,7 @@ const dataSmsHeader = [
     api_id: 'password',
     config: {
       doNotShowOnFilter: true,
+      isTitleRequired: true,
     },
     on_edit_config: {
       type_input_edit: 'TextInput',
@@ -117,6 +121,7 @@ const dataSmsHeader = [
     config: {
       label: 'Registration ID',
       isTouchable: true,
+      isTitleRequired: true,
     },
     shown: true,
     on_edit_config: {
@@ -134,14 +139,14 @@ const dataSmsHeader = [
     api_id: 'createdTime',
     value: dayjs().toDate(),
     params: '&createdTime=',
-    typeInput: 'DateTimePicker',
+    // typeInput: 'DateTimePicker',
     isSelected: false,
     cellType: 'TableCellHeaderAscDesc',
     cellRowType: 'TableCellText',
     config: {
       label: 'Date Time',
       isTouchable: true,
-      superType: 'DATE',
+      superType: 'DATECLOCK',
     },
     shown: true,
   },

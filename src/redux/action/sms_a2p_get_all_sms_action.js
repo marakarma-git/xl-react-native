@@ -1,6 +1,7 @@
 import reduxString from '../reduxString';
 import {dataMatcherArray2D} from './get_sim_inventory_action';
 import httpRequest from '../../constant/axiosInstance';
+import {useToastHooks} from '../../customHooks/customHooks';
 
 const smsA2pGetSmsLoading = () => {
   return {
@@ -58,6 +59,16 @@ const smsA2pReplaceCellWithIndex = ({indexToReplace, indexReplaceData}) => {
     type: reduxString.SMS_A2P_REPLACE_CELL_WITH_INDEX,
     indexToReplace,
     indexReplaceData,
+  };
+};
+const smsA2pTotalPlusOne = () => {
+  return {
+    type: reduxString.SMS_A2P_TOTAL_PLUS_ONE,
+  };
+};
+const smsA2pTotalMinusOne = () => {
+  return {
+    type: reduxString.SMS_A2P_TOTAL_MINUS_ONE,
   };
 };
 const getSmsA2p = (paginate) => {
@@ -145,7 +156,7 @@ const getSmsA2p = (paginate) => {
 };
 const deleteSmsA2p = (localValue) => {
   return async (dispatch) => {
-    const {getConfigId} = localValue || '';
+    const {getConfigId, showToast} = localValue || '';
     dispatch(smsA2pGetSmsLoading());
     httpRequest({
       method: 'post',
@@ -157,6 +168,15 @@ const deleteSmsA2p = (localValue) => {
       .then(({data}) => {
         const {statusCode} = data || {};
         if (statusCode === 0) {
+          showToast({
+            title: 'Success',
+            type: 'success',
+            message: 'Success Delete SMS A2P Configuration',
+            duration: 4500,
+            showToast: true,
+            position: 'top',
+          });
+          dispatch(smsA2pTotalMinusOne());
           dispatch(getSmsA2p());
         } else {
           dispatch(
@@ -186,4 +206,6 @@ export {
   smsA2pSetAppliedHeaderSort,
   smsA2pReplaceCellWithIndex,
   deleteSmsA2p,
+  smsA2pTotalPlusOne,
+  smsA2pTotalMinusOne,
 };

@@ -4,6 +4,7 @@ import {authFailed} from './auth_action';
 import dayjs from 'dayjs';
 import Helper from '../../helpers/helper';
 import httpRequest from '../../constant/axiosInstance';
+import moment from 'moment';
 const getSimInventoryLoading = () => {
   return {
     type: reduxString.GET_SIM_INVENTORY_LOADING,
@@ -112,6 +113,10 @@ const dataMatcherArray2D = (listData = [], headerData = []) => {
           if (superType === 'DATE') {
             return firstValue
               ? dayjs(firstValue.substring(0, 10)).format('DD-MM-YYYY')
+              : '';
+          } else if (superType === 'DATECLOCK') {
+            return firstValue
+              ? moment(firstValue).format('YYYY-MM-DD HH:mm')
               : '';
           } else if (superType === 'BYTE') {
             return Helper.formatBytes(firstValue);

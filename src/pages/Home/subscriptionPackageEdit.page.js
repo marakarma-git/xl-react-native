@@ -23,20 +23,18 @@ import Helper from '../../helpers/helper';
 import {subscriptionPackageReplaceCellWithIndex} from '../../redux/action/subscription_package_get_subscription_action';
 import {setRequestError} from '../../redux/action/dashboard_action';
 import httpRequest from '../../constant/axiosInstance';
+import {useToastHooks} from '../../customHooks/customHooks';
 
 const SubscriptionPackageEdit = ({route}) => {
   const dispatch = useDispatch();
   const navigation = useNavigation();
   const {params} = route || {};
   const {positionTableIndex} = params || {};
-  const {
-    dataSubscriptionEdit,
-    dataSubscriptionSnapShot,
-    loading,
-    errorText,
-  } = useSelector((state) => state.subscription_package_edit_reducer);
+  const {dataSubscriptionEdit, dataSubscriptionSnapShot, loading, errorText} =
+    useSelector((state) => state.subscription_package_edit_reducer);
   const {customerNo} = useSelector((state) => state.auth_reducer.data);
   const [localLoading, setLocalLoading] = useState(false);
+  const showToast = useToastHooks();
 
   useEffect(() => {
     if (positionTableIndex || positionTableIndex === 0) {
@@ -76,10 +74,25 @@ const SubscriptionPackageEdit = ({route}) => {
             }),
           );
           setLocalLoading(false);
-          alert('Success');
+          showToast({
+            title: 'Edit Package',
+            type: 'success',
+            message: 'Selected package has been edited',
+            duration: 4500,
+            showToast: true,
+            position: 'top',
+          });
+          navigation.goBack();
         } else {
           setLocalLoading(false);
-          alert(statusDescription);
+          showToast({
+            title: statusCode,
+            type: 'error',
+            message: statusDescription,
+            duration: 3000,
+            showToast: true,
+            position: 'top',
+          });
         }
       })
       .catch((error) => {
@@ -140,10 +153,20 @@ const SubscriptionPackageEdit = ({route}) => {
                 disabled,
               } = for_layout_edit_only || {};
               const isCurrency = edit_text_type === 'Currency';
+              const getValue =
+                dataSubscriptionEdit[8]?.for_layout_edit_only?.edit_value
+                  ?.value;
               return (
                 <InputHybrid
                   fullWidthInput={true}
-                  disabled={disabled || localLoading}
+                  disabled={
+                    disabled ||
+                    localLoading ||
+                    (edit_form_id ===
+                      'edit-subscription-price-bulk-shared-hard-code' &&
+                      (getValue === 'Individual' ||
+                        getValue === 'Individual shared'))
+                  }
                   type={type_input_edit}
                   value={edit_value}
                   selectedValue={edit_value2}
@@ -199,6 +222,7 @@ const SubscriptionPackageEdit = ({route}) => {
                     if (!localLoading || !loading) {
                       if (value === 'Cancel') {
                         handlingBack();
+                        navigation.goBack();
                       }
                       if (value === 'Submit') {
                         onSubmit();

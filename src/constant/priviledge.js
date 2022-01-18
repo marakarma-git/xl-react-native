@@ -116,7 +116,7 @@ export const DRAWER_MENU_PRIVILEDGE = [
         components: SubscriptionPackagePage,
       },
       {
-        name: 'SmsA2p Configuration',
+        name: 'SMS A2P Configuration',
         icon: '',
         type: 'drawer',
         components: SmsA2pPage,
