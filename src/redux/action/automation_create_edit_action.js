@@ -16,10 +16,16 @@ const automationAdaptiveOnChange = ({paramsToWhere, realData}) => {
   };
 };
 
+const automationResetFormContainerValue = () => {
+  return {
+    type: reduxString.AUTOMATION_RESET_FORM_CONTAINER_VALUE,
+  };
+};
+
 const automationValidationForm = ({dataForm, dataContainerValue}) => {
   const {dataContainer} = dataForm || {};
   let containerParams = {};
-  let containerInput = [];
+  let containerOfContainer = [];
   let containerErrorString = [];
   let counterFalse = 0;
 
@@ -36,7 +42,11 @@ const automationValidationForm = ({dataForm, dataContainerValue}) => {
           dataContainerValue[`${paramsContainerDefault}`] === true &&
           dataContainerValue?.category?.value === groupByContainer)
       ) {
-        containerParams[`${paramsContainerDefault}`] = true;
+        if (containerType === 'WrapperTwo') {
+          containerParams[`${paramsContainerDefault}`] = true;
+        }
+        let copyContainer = lod.cloneDeep(item);
+        let containerInput = [];
         dataInput.map((subItem) => {
           const {validationConfig, paramsDefault, titleInput} = subItem || {};
           const {isRequired, overrideTitleInput, forceSendValue} =
@@ -69,19 +79,44 @@ const automationValidationForm = ({dataForm, dataContainerValue}) => {
             counterFalse = counterFalse + 1;
           }
         });
+        const createObject = {
+          ...copyContainer,
+          dataInput: containerInput,
+        };
+        containerOfContainer.push(createObject);
       }
     }
   });
   return {
     containerParams,
-    containerInput,
+    containerOfContainer,
     containerErrorString,
     counterFalse,
   };
 };
-
+const automationCreateSummary = ({getAllData, dataContainerValue}) => {
+  let arraySummary = [];
+  let getAllParams = {};
+  getAllData.map((item) => {
+    const {containerOfContainer, containerParams} = automationValidationForm({
+      dataForm: item,
+      dataContainerValue,
+    });
+    getAllParams = {
+      ...getAllParams,
+      ...containerParams,
+    };
+    arraySummary = [...arraySummary, ...containerOfContainer];
+  });
+  return {
+    arraySummary,
+    getAllParams,
+  };
+};
 export {
   automationContainerSwitch,
   automationAdaptiveOnChange,
+  automationResetFormContainerValue,
   automationValidationForm,
+  automationCreateSummary,
 };

@@ -2,19 +2,25 @@ import React, {useEffect, useState} from 'react';
 import {ScrollView, TouchableOpacity, View} from 'react-native';
 import {HeaderContainer, OverlayBackground, Text} from '../../components';
 import {automationCreditStyle, subscriptionStyle} from '../../style';
-import {useSelector} from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 import lod from 'lodash';
 import {useNavigation, useRoute} from '@react-navigation/native';
 import {FormStepHeaderComponent} from '../../components/form/formStep';
 import CardAutomation from '../../components/card/CardAutomation';
 import {colors} from '../../constant/color';
-import {automationValidationForm} from '../../redux/action/automation_create_edit_action';
+import {
+  automationCreateSummary,
+  automationResetFormContainerValue,
+  automationValidationForm,
+} from '../../redux/action/automation_create_edit_action';
 
 const AutomationCreateEditPage = () => {
+  const dispatch = useDispatch();
   const navigation = useNavigation();
   const {params} = useRoute();
   const {from, result} = params || {};
   const [indexForm, setIndexForm] = useState(0);
+  const [dataSummary, setDataSummary] = useState([]);
   const {imageBase64} = useSelector((state) => state.enterprise_reducer);
   const {automationDefaultFormData, containerValue} = useSelector(
     (state) => state.automation_create_edit_reducer,
@@ -43,16 +49,37 @@ const AutomationCreateEditPage = () => {
           />
           <Text
             onPress={() => {
+              dispatch(automationResetFormContainerValue());
+            }}>
+            RESET ALL DATA
+          </Text>
+          <Text
+            onPress={() => {
               const getMe = automationValidationForm({
                 dataForm: automationDefaultFormData[indexForm],
                 dataContainerValue: containerValue,
               });
-              alert(JSON.stringify(getMe, null, 2));
             }}>
             Validation ME
           </Text>
+          <Text
+            onPress={() => {
+              const {arraySummary} = automationCreateSummary({
+                getAllData: automationDefaultFormData,
+                dataContainerValue: containerValue,
+              });
+              setDataSummary(arraySummary);
+              alert('Array Summary Created');
+            }}>
+            Create Summary
+          </Text>
           {automationDefaultFormData[indexForm].dataContainer.map((item) => {
             const {groupByContainer, ...rest} = item || {};
+            if (indexForm === 3) {
+              return dataSummary.map((item) => (
+                <CardAutomation summaryMode={true} {...item} />
+              ));
+            }
             if (!lod.isEmpty(groupByContainer)) {
               return (
                 groupByContainer === containerValue?.category.value && (
@@ -63,6 +90,7 @@ const AutomationCreateEditPage = () => {
               return <CardAutomation {...rest} />;
             }
           })}
+
           <View style={automationCreditStyle.containerFooter}>
             <LocalButton
               title={'Cancel'}
@@ -88,14 +116,6 @@ const AutomationCreateEditPage = () => {
               />
             </View>
           </View>
-          <Text>{JSON.stringify(containerValue, null, 2)}</Text>
-          <Text>
-            {JSON.stringify(
-              automationDefaultFormData[indexForm].dataContainer,
-              null,
-              2,
-            )}
-          </Text>
         </ScrollView>
       </View>
     </HeaderContainer>

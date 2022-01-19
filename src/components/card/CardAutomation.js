@@ -12,9 +12,11 @@ import {
   automationAdaptiveOnChange,
   automationContainerSwitch,
 } from '../../redux/action/automation_create_edit_action';
+import lod from 'lodash';
+
 const InputWrapper = (props) => {
   const dispatch = useDispatch();
-  const {dataInput} = props || [];
+  const {dataInput, summaryMode} = props || [];
   const {containerValue} = useSelector(
     (state) => state.automation_create_edit_reducer,
   );
@@ -30,42 +32,66 @@ const InputWrapper = (props) => {
             paramsData,
             paramsError,
             paramsLoading,
+            paramsDisabled,
+            paramsHide,
           } = item || {};
           return (
-            <InputHybrid
-              type={inputType}
-              label={titleInput}
-              onChange={(e) => {
-                dispatch(
-                  automationAdaptiveOnChange({
-                    paramsToWhere: paramsDefault,
-                    realData: e,
-                  }),
-                );
-              }}
-              value={containerValue[`${paramsDefault}`]}
-              data={
-                containerValue[`${paramsData}`] ||
-                containerValue[`${paramsDefault}Data`]
-              }
-              errorText={
-                containerValue[`${paramsError}`] ||
-                containerValue[`${paramsDefault}Error`]
-              }
-              loading={
-                containerValue[`${paramsLoading}`] ||
-                containerValue[`${paramsDefault}Loading`]
-              }
-              {...config}
-            />
+            <>
+              {containerValue[`${paramsHide}`] !== true && (
+                <InputHybrid
+                  type={summaryMode === true ? 'TextInput' : inputType}
+                  label={titleInput}
+                  disabled={
+                    !!(
+                      containerValue[`${paramsDisabled}`] ||
+                      containerValue[`${paramsDefault}Disabled`] ||
+                      summaryMode === true
+                    )
+                  }
+                  onChange={(e) => {
+                    dispatch(
+                      automationAdaptiveOnChange({
+                        paramsToWhere: paramsDefault,
+                        realData: e,
+                      }),
+                    );
+                  }}
+                  value={
+                    summaryMode === true
+                      ? lod.isObject(containerValue[`${paramsDefault}`])
+                        ? containerValue[`${paramsDefault}`]?.value
+                        : containerValue[`${paramsDefault}`]
+                      : containerValue[`${paramsDefault}`]
+                  }
+                  data={
+                    containerValue[`${paramsData}`] ||
+                    containerValue[`${paramsDefault}Data`]
+                  }
+                  errorText={
+                    containerValue[`${paramsError}`] ||
+                    containerValue[`${paramsDefault}Error`]
+                  }
+                  loading={
+                    containerValue[`${paramsLoading}`] ||
+                    containerValue[`${paramsDefault}Loading`]
+                  }
+                  {...config}
+                />
+              )}
+            </>
           );
         })}
     </>
   );
 };
 const WrapperOne = (props) => {
-  const {dataInput, containerTitle, containerDescription, isRemoveBottomLine} =
-    props || {};
+  const {
+    dataInput,
+    containerTitle,
+    containerDescription,
+    isRemoveBottomLine,
+    summaryMode,
+  } = props || {};
   return (
     <Card style={[styles.cardSection, {marginTop: '5%'}]}>
       <Card.Content>
@@ -80,7 +106,7 @@ const WrapperOne = (props) => {
         <View style={automationCreditStyle.wrapperOneLine} />
       )}
       <Card.Content>
-        <InputWrapper dataInput={dataInput} />
+        <InputWrapper dataInput={dataInput} summaryMode={summaryMode} />
       </Card.Content>
     </Card>
   );
@@ -94,6 +120,7 @@ const WrapperTwo = (props) => {
     paramsContainerDefault,
     paramsContainerDisabled,
     paramsContainerHide,
+    summaryMode,
   } = props || {};
   const {containerValue} = useSelector(
     (state) => state.automation_create_edit_reducer,
@@ -110,8 +137,11 @@ const WrapperTwo = (props) => {
           <View style={automationCreditStyle.wrapperTwoInnerContainer}>
             <GridSwitchComponent
               isDisabled={
-                containerValue[`${paramsContainerDisabled}`] ||
-                containerValue[`${paramsContainerDefault}Disabled`]
+                !!(
+                  containerValue[`${paramsContainerDisabled}`] ||
+                  containerValue[`${paramsContainerDefault}Disabled`] ||
+                  summaryMode === true
+                )
               }
               inActiveText={''}
               activeText={''}
@@ -141,7 +171,7 @@ const WrapperTwo = (props) => {
                 ]}>
                 {containerDescription}
               </Text>
-              <InputWrapper dataInput={dataInput} />
+              <InputWrapper dataInput={dataInput} summaryMode={summaryMode} />
             </Card.Content>
           )}
         </View>
@@ -167,5 +197,6 @@ CardAutomation.propTypes = {
   containerDescription: PropTypes.string,
   containerSwitch: PropTypes.bool,
   isRemoveBottomLine: PropTypes.bool,
+  summaryMode: PropTypes.bool,
 };
 export default CardAutomation;

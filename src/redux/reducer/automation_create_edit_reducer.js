@@ -68,6 +68,7 @@ const automationDefaultFormData = [
             paramsDefault: 'category',
             titleInput: 'Rule Category',
             config: {
+              fullWidthInput: true,
               data: [
                 {
                   value: 'Business Automation',
@@ -313,7 +314,13 @@ const automationDefaultFormData = [
     stepperTitle: 'Summary',
     stepperDescription: '',
     currentState: 3,
-    dataContainer: [],
+    dataContainer: [
+      {
+        containerTitle: 'Dummy Container',
+        containerDescription:
+          'This container for trigger the local variable dataSummary from automationCreateSummary',
+      },
+    ],
   },
 ];
 const containerValue = {
@@ -403,6 +410,14 @@ const automation_create_edit_reducer = (state = initialState, action) => {
         containerValue: {
           ...state.containerValue,
           [`${action.paramsToWhere}`]: action.realData,
+        },
+      };
+    }
+    case reduxString.AUTOMATION_RESET_FORM_CONTAINER_VALUE: {
+      return {
+        ...state,
+        containerValue: {
+          ...containerValue,
         },
       };
     }

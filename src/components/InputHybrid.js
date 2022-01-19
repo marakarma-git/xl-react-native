@@ -15,10 +15,8 @@ import {inputHybridStyle} from '../style';
 import {colors} from '../constant/color';
 import ModalSearchPicker from './modal/ModalSearchPicker';
 import {device_width} from '../constant/config';
-import styles from '../style/drawer.style';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import CustomRadioButtonComponent from './form/CustomRadioButton';
-import {value} from 'lodash/seq';
 
 const InputHybrid = (props) => {
   const {type} = props;
@@ -176,70 +174,72 @@ const RadioButton = (props) => {
 const ThresholdPad = (props) => {
   const {value: values, onChange} = props || {};
   return (
-    <ContainerInput
-      isPaddingZero
-      customTouchProps={{width: device_width * 0.3}}
-      {...props}>
-      <View
-        style={{
-          flex: 1,
-          flexDirection: 'row',
-          justifyContent: 'center',
-        }}>
+    <>
+      <Text>{JSON.stringify(props, null, 2)}</Text>
+      <ContainerInput
+        isPaddingZero
+        customTouchProps={{width: device_width * 0.3}}
+        {...props}>
         <View
           style={{
             flex: 1,
-            borderRightWidth: 1,
-            borderColor: '#8D8D8D',
             flexDirection: 'row',
+            justifyContent: 'center',
           }}>
-          <TextInput
-            style={{flex: 1, textAlign: 'right'}}
-            value={values}
-            defaultValue={'0'}
-            keyboardType={'number-pad'}
-            onChange={({nativeEvent}) => {
-              const {text} = nativeEvent || '';
-              if (text <= 100 && text >= 0) {
-                const changeText = parseInt(text, 10) || '0';
-                onChange(changeText.toString());
-              }
-            }}
-          />
-          <Text style={{textAlignVertical: 'center', paddingHorizontal: 6}}>
-            %
-          </Text>
-        </View>
-        <View>
-          <TouchableOpacity
-            style={{flex: 1, borderColor: '#8D8D8D'}}
-            onPress={() => {
-              if (parseInt(values, 10) < 100) {
-                const calculate = parseInt(values, 10) + 1;
-                console.log(JSON.stringify(calculate));
-                onChange(calculate.toString());
-              }
-            }}>
-            <Ionicons name={'md-chevron-up'} color={'black'} size={20} />
-          </TouchableOpacity>
-          <TouchableOpacity
+          <View
             style={{
               flex: 1,
-              borderTopWidth: 1,
+              borderRightWidth: 1,
               borderColor: '#8D8D8D',
-              justifyContent: 'center',
-            }}
-            onPress={() => {
-              if (parseInt(values, 10) > 0) {
-                const calculate = parseInt(values, 10) - 1;
-                onChange(calculate.toString());
-              }
+              flexDirection: 'row',
             }}>
-            <Ionicons name={'md-chevron-down'} color={'black'} size={20} />
-          </TouchableOpacity>
+            <TextInput
+              style={{flex: 1, textAlign: 'right'}}
+              value={values}
+              defaultValue={'0'}
+              keyboardType={'number-pad'}
+              onChange={({nativeEvent}) => {
+                const {text} = nativeEvent || '';
+                if (text <= 100 && text >= 0) {
+                  const changeText = parseInt(text, 10) || '0';
+                  onChange(changeText.toString());
+                }
+              }}
+            />
+            <Text style={{textAlignVertical: 'center', paddingHorizontal: 6}}>
+              %
+            </Text>
+          </View>
+          <View>
+            <TouchableOpacity
+              style={{flex: 1, borderColor: '#8D8D8D'}}
+              onPress={() => {
+                if (parseInt(values, 10) < 100) {
+                  const calculate = parseInt(values, 10) + 1;
+                  onChange(calculate.toString());
+                }
+              }}>
+              <Ionicons name={'md-chevron-up'} color={'black'} size={20} />
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={{
+                flex: 1,
+                borderTopWidth: 1,
+                borderColor: '#8D8D8D',
+                justifyContent: 'center',
+              }}
+              onPress={() => {
+                if (parseInt(values, 10) > 0) {
+                  const calculate = parseInt(values, 10) - 1;
+                  onChange(calculate.toString());
+                }
+              }}>
+              <Ionicons name={'md-chevron-down'} color={'black'} size={20} />
+            </TouchableOpacity>
+          </View>
         </View>
-      </View>
-    </ContainerInput>
+      </ContainerInput>
+    </>
   );
 };
 const AutomationLabel = (props) => {
