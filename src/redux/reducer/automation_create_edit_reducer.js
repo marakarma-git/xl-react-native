@@ -10,7 +10,6 @@ const automationDefaultFormData = [
       {
         containerId: 'target-enterprise-container',
         containerType: 'WrapperOne',
-        showContainer: true,
         containerTitle: 'Target Enterprise',
         containerDescription:
           'It will affect all subscription packages and individual subscription within the selected enterprises.',
@@ -23,6 +22,9 @@ const automationDefaultFormData = [
             paramsDefault: 'enterpriseId',
             config: {
               fullWidthInput: true,
+            },
+            validationConfig: {
+              isRequired: true,
             },
           },
         ],
@@ -38,7 +40,6 @@ const automationDefaultFormData = [
       {
         containerId: 'rules-name-container',
         containerType: 'WrapperOne',
-        showContainer: true,
         containerTitle: 'Rules Name',
         containerDescription: '',
         dataInput: [
@@ -49,13 +50,15 @@ const automationDefaultFormData = [
             config: {
               fullWidthInput: true,
             },
+            validationConfig: {
+              isRequired: true,
+            },
           },
         ],
       },
       {
         containerId: 'select-rule-category-container',
         containerType: 'WrapperOne',
-        showContainer: true,
         containerTitle: 'Select Rule Category',
         containerDescription: '',
         isRemoveBottomLine: true,
@@ -63,6 +66,7 @@ const automationDefaultFormData = [
           {
             inputType: 'RadioButton',
             paramsDefault: 'category',
+            titleInput: 'Rule Category',
             config: {
               data: [
                 {
@@ -74,6 +78,9 @@ const automationDefaultFormData = [
                   label: 'Fraud Prevention',
                 },
               ],
+            },
+            validationConfig: {
+              isRequired: true,
             },
           },
         ],
@@ -89,8 +96,6 @@ const automationDefaultFormData = [
       {
         containerId: 'bulk-shared-auto-upgrade-container-hard-code',
         containerType: 'WrapperTwo',
-        showContainer: false,
-        isSelected: false,
         containerTitle: 'Bulk Shared Auto Upgrade',
         containerDescription: '',
         groupByContainer: 'Business Automation',
@@ -106,22 +111,28 @@ const automationDefaultFormData = [
           {
             inputType: 'DropDown',
             titleInput: 'From',
-            paramsValue: 'upgradePackageBulkFrom',
-            paramsData: 'dataDummy',
+            paramsDefault: 'upgradePackageBulkFrom',
             config: {
               fullWidthInput: true,
               labelLeft: true,
+            },
+            validationConfig: {
+              isRequired: true,
+              overrideTitleInput: 'Upgrade Package Bulk From',
             },
             inputLoading: false,
           },
           {
             inputType: 'DropDown',
             titleInput: 'To',
-            paramsValue: 'upgradePackageBulkTo',
-            paramsData: 'dataDummy',
+            paramsDefault: 'upgradePackageBulkTo',
             config: {
               fullWidthInput: true,
               labelLeft: true,
+            },
+            validationConfig: {
+              isRequired: true,
+              overrideTitleInput: 'Upgrade Package Bulk To',
             },
             inputLoading: false,
           },
@@ -130,8 +141,6 @@ const automationDefaultFormData = [
       {
         containerId: 'auto-downgrade-package-container-hard-code',
         containerType: 'WrapperTwo',
-        showContainer: false,
-        isSelected: false,
         containerTitle: 'Auto Downgrade Package',
         containerDescription:
           'In the case where a subscription upgrades from package A to higher package B, and you want to downgrade it back to package A on the next month billing, you may use this auto downgrade rule.\n' +
@@ -157,6 +166,10 @@ const automationDefaultFormData = [
               fullWidthInput: true,
               labelLeft: true,
             },
+            validationConfig: {
+              isRequired: true,
+              overrideTitleInput: 'Subscription Package From',
+            },
             inputLoading: false,
           },
           {
@@ -169,6 +182,10 @@ const automationDefaultFormData = [
               fullWidthInput: true,
               labelLeft: true,
             },
+            validationConfig: {
+              isRequired: true,
+              overrideTitleInput: 'Subscription Package To',
+            },
             inputLoading: false,
           },
         ],
@@ -177,8 +194,6 @@ const automationDefaultFormData = [
         containerId:
           'auto-upgrade-individual-shared-package-container-hard-code',
         containerType: 'WrapperTwo',
-        showContainer: false,
-        isSelected: false,
         containerTitle: 'Individual Shared package Auto Upgrade',
         containerDescription: '',
         groupByContainer: 'Business Automation',
@@ -201,6 +216,10 @@ const automationDefaultFormData = [
               fullWidthInput: true,
               labelLeft: true,
             },
+            validationConfig: {
+              isRequired: true,
+              overrideTitleInput: 'Upgrade Package Individual From',
+            },
             inputLoading: false,
           },
           {
@@ -213,20 +232,25 @@ const automationDefaultFormData = [
               fullWidthInput: true,
               labelLeft: true,
             },
+            validationConfig: {
+              isRequired: true,
+              overrideTitleInput: 'Upgrade Package Individual To',
+            },
             inputLoading: false,
           },
           {
             inputType: 'ThresholdPad',
             titleInput: 'Threshold',
-            paramsValue: 'thresholdUpgradeIndividual',
+            paramsDefault: 'thresholdUpgradeIndividual',
+            validationConfig: {
+              forceSendValue: '0',
+            },
           },
         ],
       },
       {
         containerId: 'bulk-shared-limit-notification-container-hard-code',
         containerType: 'WrapperTwo',
-        showContainer: false,
-        isSelected: false,
         containerTitle: 'Bulk Shared Limit Notification',
         containerDescription: '',
         groupByContainer: 'Fraud Prevention',
@@ -235,23 +259,27 @@ const automationDefaultFormData = [
           {
             inputType: 'TextInput',
             titleInput: 'Email Address(es)',
-            paramsValue: 'notificationBulkEmail',
+            paramsDefault: 'notificationBulkEmail',
             config: {
               fullWidthInput: true,
+            },
+            validationConfig: {
+              isRequired: true,
             },
           },
           {
             inputType: 'ThresholdPad',
             titleInput: 'Threshold',
-            paramsValue: 'thresholdBulkNotification',
+            paramsDefault: 'thresholdBulkNotification',
+            validationConfig: {
+              forceSendValue: '0',
+            },
           },
         ],
       },
       {
         containerId: 'individual-shared-limit-container-hard-code',
         containerType: 'WrapperTwo',
-        showContainer: false,
-        isSelected: false,
         containerTitle: 'Individual Shared Limit',
         containerDescription: '',
         groupByContainer: 'Fraud Prevention',
@@ -260,15 +288,21 @@ const automationDefaultFormData = [
           {
             inputType: 'TextInput',
             titleInput: 'Email Address(es)',
-            paramsValue: 'notificationIndividualEmail',
+            paramsDefault: 'notificationIndividualEmail',
             config: {
               fullWidthInput: true,
+            },
+            validationConfig: {
+              isRequired: true,
             },
           },
           {
             inputType: 'ThresholdPad',
             titleInput: 'Threshold',
-            paramsValue: 'thresholdIndividualNotification',
+            paramsDefault: 'thresholdIndividualNotification',
+            validationConfig: {
+              forceSendValue: '0',
+            },
           },
         ],
       },

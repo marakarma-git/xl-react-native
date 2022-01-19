@@ -8,6 +8,7 @@ import {useNavigation, useRoute} from '@react-navigation/native';
 import {FormStepHeaderComponent} from '../../components/form/formStep';
 import CardAutomation from '../../components/card/CardAutomation';
 import {colors} from '../../constant/color';
+import {automationValidationForm} from '../../redux/action/automation_create_edit_action';
 
 const AutomationCreateEditPage = () => {
   const navigation = useNavigation();
@@ -40,6 +41,16 @@ const AutomationCreateEditPage = () => {
               automationDefaultFormData[indexForm].stepperDescription
             }
           />
+          <Text
+            onPress={() => {
+              const getMe = automationValidationForm({
+                dataForm: automationDefaultFormData[indexForm],
+                dataContainerValue: containerValue,
+              });
+              alert(JSON.stringify(getMe, null, 2));
+            }}>
+            Validation ME
+          </Text>
           {automationDefaultFormData[indexForm].dataContainer.map((item) => {
             const {groupByContainer, ...rest} = item || {};
             if (!lod.isEmpty(groupByContainer)) {
@@ -77,6 +88,14 @@ const AutomationCreateEditPage = () => {
               />
             </View>
           </View>
+          <Text>{JSON.stringify(containerValue, null, 2)}</Text>
+          <Text>
+            {JSON.stringify(
+              automationDefaultFormData[indexForm].dataContainer,
+              null,
+              2,
+            )}
+          </Text>
         </ScrollView>
       </View>
     </HeaderContainer>
