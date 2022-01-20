@@ -1,5 +1,6 @@
 import reduxString from '../reduxString';
 import lod from 'lodash';
+import httpRequest from '../../constant/axiosInstance';
 
 const automationContainerSwitch = ({paramsToWhere}) => {
   return {
@@ -21,6 +22,18 @@ const automationResetFormContainerValue = () => {
     type: reduxString.AUTOMATION_RESET_FORM_CONTAINER_VALUE,
   };
 };
+const automationCreateReduxLoading = () => {
+  return {
+    type: reduxString.AUTOMATION_CREATE_REDUX_LOADING,
+  };
+};
+const automationCreateReduxError = ({errorText}) => {
+  return {
+    type: reduxString.AUTOMATION_CREATE_REDUX_ERROR,
+    errorText,
+  };
+};
+const automationEnterpriseSuccess = (result) => {};
 
 const automationValidationForm = ({dataForm, dataContainerValue}) => {
   const {dataContainer} = dataForm || {};
@@ -113,10 +126,36 @@ const automationCreateSummary = ({getAllData, dataContainerValue}) => {
     getAllParams,
   };
 };
+
+const callAutomationEnterprise = (localValue) => {
+  return (dispatch) => {
+    dispatch(automationCreateReduxLoading());
+    const {customerNumber} = localValue || {};
+    httpRequest
+      .get(
+        `/dcp/automation/getAutomationEnterprise?customerNumber=${customerNumber}`,
+      )
+      .then(({data}) => {
+        const {result, statusCode} = data || {};
+        if (statusCode === 0) {
+          dispatch(automationEnterpriseSuccess(result));
+        } else {
+          dispatch(
+            automationCreateReduxError({errorText: 'something go wrong'}),
+          );
+        }
+      })
+      .catch(() => {
+        dispatch(automationCreateReduxError({errorText: 'something go wrong'}));
+      });
+  };
+};
+
 export {
   automationContainerSwitch,
   automationAdaptiveOnChange,
   automationResetFormContainerValue,
   automationValidationForm,
   automationCreateSummary,
+  callAutomationEnterprise,
 };

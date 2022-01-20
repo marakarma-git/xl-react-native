@@ -13,6 +13,7 @@ import {
   automationContainerSwitch,
 } from '../../redux/action/automation_create_edit_action';
 import lod from 'lodash';
+import {colors} from '../../constant/color';
 
 const InputWrapper = (props) => {
   const dispatch = useDispatch();
@@ -91,6 +92,8 @@ const WrapperOne = (props) => {
     containerDescription,
     isRemoveBottomLine,
     summaryMode,
+    children,
+    style,
   } = props || {};
   return (
     <Card style={[styles.cardSection, {marginTop: '5%'}]}>
@@ -105,8 +108,10 @@ const WrapperOne = (props) => {
       {!isRemoveBottomLine && (
         <View style={automationCreditStyle.wrapperOneLine} />
       )}
-      <Card.Content>
-        <InputWrapper dataInput={dataInput} summaryMode={summaryMode} />
+      <Card.Content style={style}>
+        {children || (
+          <InputWrapper dataInput={dataInput} summaryMode={summaryMode} />
+        )}
       </Card.Content>
     </Card>
   );
@@ -121,6 +126,7 @@ const WrapperTwo = (props) => {
     paramsContainerDisabled,
     paramsContainerHide,
     summaryMode,
+    containerTopLine,
   } = props || {};
   const {containerValue} = useSelector(
     (state) => state.automation_create_edit_reducer,
@@ -129,11 +135,10 @@ const WrapperTwo = (props) => {
     <>
       {(containerValue[`${paramsContainerDefault}Hide`] !== true ||
         containerValue[`${paramsContainerHide}`] !== true) && (
-        <View
-          style={[
-            styles.cardSection,
-            automationCreditStyle.wrapperTwoContainer,
-          ]}>
+        <View style={[automationCreditStyle.wrapperTwoContainer]}>
+          {containerTopLine === true && (
+            <View style={automationCreditStyle.containerTopLineStyle} />
+          )}
           <View style={automationCreditStyle.wrapperTwoInnerContainer}>
             <GridSwitchComponent
               isDisabled={
@@ -200,3 +205,4 @@ CardAutomation.propTypes = {
   summaryMode: PropTypes.bool,
 };
 export default CardAutomation;
+export {WrapperOne};

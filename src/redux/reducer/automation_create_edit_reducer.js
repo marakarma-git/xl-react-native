@@ -113,6 +113,7 @@ const automationDefaultFormData = [
             inputType: 'DropDown',
             titleInput: 'From',
             paramsDefault: 'upgradePackageBulkFrom',
+            paramsData: 'upgradePackageBulkData',
             config: {
               fullWidthInput: true,
               labelLeft: true,
@@ -127,6 +128,7 @@ const automationDefaultFormData = [
             inputType: 'DropDown',
             titleInput: 'To',
             paramsDefault: 'upgradePackageBulkTo',
+            paramsData: 'upgradePackageBulkData',
             config: {
               fullWidthInput: true,
               labelLeft: true,
@@ -142,7 +144,7 @@ const automationDefaultFormData = [
       {
         containerId: 'auto-downgrade-package-container-hard-code',
         containerType: 'WrapperTwo',
-        containerTitle: 'Auto Downgrade Package',
+        containerTitle: 'Auto Downgrade Upgrade',
         containerDescription:
           'In the case where a subscription upgrades from package A to higher package B, and you want to downgrade it back to package A on the next month billing, you may use this auto downgrade rule.\n' +
           '\n' +
@@ -161,7 +163,7 @@ const automationDefaultFormData = [
             inputType: 'DropDown',
             titleInput: 'From',
             paramsDefault: 'downgradePackageFrom',
-            paramsData: 'subscriptionPackageData',
+            paramsData: 'downgradePackageData',
             paramsLoading: 'subscriptionPackageLoading',
             config: {
               fullWidthInput: true,
@@ -177,7 +179,7 @@ const automationDefaultFormData = [
             inputType: 'DropDown',
             titleInput: 'To',
             paramsDefault: 'downgradePackageTo',
-            paramsData: 'subscriptionPackageData',
+            paramsData: 'downgradePackageData',
             paramsLoading: 'subscriptionPackageLoading',
             config: {
               fullWidthInput: true,
@@ -211,7 +213,7 @@ const automationDefaultFormData = [
             inputType: 'DropDown',
             titleInput: 'From',
             paramsDefault: 'upgradePackageIndividualFrom',
-            paramsData: 'subscriptionPackageData',
+            paramsData: 'upgradePackageIndividualData',
             paramsLoading: 'subscriptionPackageLoading',
             config: {
               fullWidthInput: true,
@@ -227,7 +229,7 @@ const automationDefaultFormData = [
             inputType: 'DropDown',
             titleInput: 'To',
             paramsDefault: 'upgradePackageIndividualTo',
-            paramsData: 'subscriptionPackageData',
+            paramsData: 'upgradePackageIndividualData',
             paramsLoading: 'subscriptionPackageLoading',
             config: {
               fullWidthInput: true,
@@ -344,24 +346,21 @@ const containerValue = {
   rulesName: '', // Rules Name
   category: {}, // Select Rule Category | String
 
-  //Sharing Array Data
-  // Auto Downgrade Upgrade || Individual Shared Package Auto Upgrade
-  subscriptionPackageData: [],
-  subscriptionPackageLoading: false,
-
   //Define Rules - Business Automation -  Bulk Shared Auto Upgrade
   isUpgradeBulk: false,
   isUpgradeBulkDisabled: false,
   isUpgradeBulkHide: false,
   upgradePackageBulkFrom: {}, //String
   upgradePackageBulkTo: {}, //String
+  upgradePackageBulkData: [], // packageBulkUpgradeList
 
-  //Define Rules - Business Automation - Bulk Shared Auto Downgrade Package
+  //Define Rules - Business Automation - Auto Downgrade Upgrade
   isDowngrade: false,
   isDowngradeDisabled: false,
   isDowngradeHide: false,
   downgradePackageFrom: {}, //String
   downgradePackageTo: {}, //String
+  downgradePackageData: [], //packageDowngradeList
 
   //Define Rules - Business Automation - Individual Shared Package Auto Upgrade
   isUpgradeIndividual: false,
@@ -370,6 +369,7 @@ const containerValue = {
   upgradePackageIndividualFrom: {}, //String
   upgradePackageIndividualTo: {}, //String
   thresholdUpgradeIndividual: '0', //String
+  upgradePackageIndividualData: [], //packageIndividualUpgradeList
 
   //Define Rules - Fraud Prevention - Bulk Shared Limit Notification
   isBulkNotification: false,
@@ -418,6 +418,42 @@ const automation_create_edit_reducer = (state = initialState, action) => {
         ...state,
         containerValue: {
           ...containerValue,
+        },
+      };
+    }
+    case reduxString.AUTOMATION_CREATE_REDUX_LOADING: {
+      return {
+        ...state,
+        loading: true,
+        errorText: '',
+      };
+    }
+    case reduxString.AUTOMATION_CREATE_REDUX_ERROR: {
+      return {
+        ...state,
+        loading: false,
+        errorText: action.errorText,
+      };
+    }
+    case reduxString.AUTOMATION_ENTERPRISE_SUCCESS: {
+      return {
+        ...state,
+        loading: false,
+        errorText: '',
+        containerValue: {
+          ...state.containerValue,
+          ['isBulkNotificationDisabled']: action?.result?.bulkNotification,
+          ['isIndividualNotificationDisabled']:
+            action?.result?.individualNotification,
+          ['isUpgradeBulkDisabled']: action?.result?.bulkUpgrade,
+          ['isUpgradeIndividualDisabled']:
+            action?.result?.individualUpgrade.packageIndividual,
+          ['upgradePackageBulkData']:
+            action?.result?.individualUpgrade.packageBulkUpgradeList,
+          ['downgradePackageData']:
+            action?.result?.individualUpgrade.packageDowngradeList,
+          ['upgradePackageIndividualData']:
+            action?.result?.individualUpgrade.packageIndividualUpgradeList,
         },
       };
     }

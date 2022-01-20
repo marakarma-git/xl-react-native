@@ -1,12 +1,12 @@
 import React, {useEffect, useState} from 'react';
-import {ScrollView, TouchableOpacity, View} from 'react-native';
+import {BackHandler, ScrollView, TouchableOpacity, View} from 'react-native';
 import {HeaderContainer, OverlayBackground, Text} from '../../components';
 import {automationCreditStyle, subscriptionStyle} from '../../style';
 import {useDispatch, useSelector} from 'react-redux';
 import lod from 'lodash';
 import {useNavigation, useRoute} from '@react-navigation/native';
 import {FormStepHeaderComponent} from '../../components/form/formStep';
-import CardAutomation from '../../components/card/CardAutomation';
+import CardAutomation, {WrapperOne} from '../../components/card/CardAutomation';
 import {colors} from '../../constant/color';
 import {
   automationCreateSummary,
@@ -21,6 +21,7 @@ const AutomationCreateEditPage = () => {
   const {from, result} = params || {};
   const [indexForm, setIndexForm] = useState(0);
   const [dataSummary, setDataSummary] = useState([]);
+  const [wrapperTwoFind, setWrapperTwoFind] = useState(false);
   const {imageBase64} = useSelector((state) => state.enterprise_reducer);
   const {automationDefaultFormData, containerValue} = useSelector(
     (state) => state.automation_create_edit_reducer,
@@ -28,9 +29,37 @@ const AutomationCreateEditPage = () => {
   useEffect(() => {
     if (!lod.isEmpty(result)) {
       const {customerNumber} = result || {};
-      console.log('result_not_empty_customer_number: ' + customerNumber);
+      console.log(
+        'result_not_empty_customer_number: ' + JSON.stringify(params, null, 2),
+      );
     }
   }, [navigation, params, result]);
+
+  useEffect(() => {
+    //this effect for tracking every time change the value of enterprise
+    console.log(
+      'Selected Enterprise: ' +
+        JSON.stringify(containerValue.enterpriseId, null, 2),
+    );
+  }, [containerValue.enterpriseId]);
+
+  const onCancel = () => {
+    setIndexForm(0);
+    setDataSummary([]);
+    dispatch(automationResetFormContainerValue());
+    navigation.setParams({
+      from: undefined,
+      result: undefined,
+    });
+  };
+  useEffect(() => {
+    BackHandler.addEventListener('hardwareBackPress', () => {
+      if (!lod.isEmpty(from)) {
+        onCancel();
+      }
+    });
+  }, [BackHandler, from]);
+  const onSubmit = () => {};
   return (
     <HeaderContainer
       headerTitle={`${!lod.isEmpty(from) ? from : 'Create New'} Automation`}
@@ -49,12 +78,6 @@ const AutomationCreateEditPage = () => {
           />
           <Text
             onPress={() => {
-              dispatch(automationResetFormContainerValue());
-            }}>
-            RESET ALL DATA
-          </Text>
-          <Text
-            onPress={() => {
               const getMe = automationValidationForm({
                 dataForm: automationDefaultFormData[indexForm],
                 dataContainerValue: containerValue,
@@ -62,23 +85,41 @@ const AutomationCreateEditPage = () => {
             }}>
             Validation ME
           </Text>
-          <Text
-            onPress={() => {
-              const {arraySummary} = automationCreateSummary({
-                getAllData: automationDefaultFormData,
-                dataContainerValue: containerValue,
-              });
-              setDataSummary(arraySummary);
-              alert('Array Summary Created');
-            }}>
-            Create Summary
-          </Text>
           {automationDefaultFormData[indexForm].dataContainer.map((item) => {
             const {groupByContainer, ...rest} = item || {};
             if (indexForm === 3) {
-              return dataSummary.map((item) => (
-                <CardAutomation summaryMode={true} {...item} />
-              ));
+              return (
+                <>
+                  {dataSummary.map((item) => {
+                    const {containerType} = item || {};
+                    return (
+                      containerType === 'WrapperOne' && (
+                        <CardAutomation summaryMode={true} {...item} />
+                      )
+                    );
+                  })}
+                  {wrapperTwoFind && (
+                    <WrapperOne
+                      style={{paddingHorizontal: 0}}
+                      containerTitle={'Rules'}
+                      containerDescription={'Rules that has been defined'}
+                      isRemoveBottomLine={true}>
+                      {dataSummary.map((item) => {
+                        const {containerType} = item || {};
+                        return (
+                          containerType === 'WrapperTwo' && (
+                            <CardAutomation
+                              summaryMode={true}
+                              containerTopLine={true}
+                              {...item}
+                            />
+                          )
+                        );
+                      })}
+                    </WrapperOne>
+                  )}
+                </>
+              );
             }
             if (!lod.isEmpty(groupByContainer)) {
               return (
@@ -109,9 +150,21 @@ const AutomationCreateEditPage = () => {
                 title={indexForm === 3 ? 'Submit' : 'Next'}
                 buttonType={'One'}
                 onPress={() => {
-                  if (indexForm !== 3) {
+                  if (indexForm < 3) {
                     setIndexForm((state) => state + 1);
                   }
+                  const {arraySummary} = automationCreateSummary({
+                    getAllData: automationDefaultFormData,
+                    dataContainerValue: containerValue,
+                  });
+                  setDataSummary(arraySummary);
+                  const findWrapperTwo = lod.find(
+                    arraySummary,
+                    ({containerType}) => {
+                      return containerType === 'WrapperTwo';
+                    },
+                  );
+                  setWrapperTwoFind(findWrapperTwo);
                 }}
               />
             </View>

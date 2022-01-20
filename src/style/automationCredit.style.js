@@ -7,6 +7,7 @@ export default {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
+    marginVertical: 12,
   },
   wrapperOneLine: {
     flex: 1,
@@ -30,5 +31,11 @@ export default {
     fontSize: 14,
     color: 'black',
     marginLeft: 8,
+  },
+  containerTopLineStyle: {
+    flex: 1,
+    height: 1,
+    backgroundColor: '#63717A',
+    marginVertical: 12,
   },
 };
