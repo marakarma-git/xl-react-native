@@ -87,7 +87,6 @@ const saveUserToken = (token, username, enterpriseId) => {
         requestHeader,
       );
     } catch (error) {
-      console.log(error, 'ERROR NICH');
       dispatch(setRequestError(error.response.data));
     }
   };
@@ -143,7 +142,6 @@ const getListNotification = (username, limit = 100) => {
       );
       if (data) {
         const {statusCode, result} = data;
-        console.log('DATA LENGTH ', result.length);
         if (statusCode === 0) dispatch(receivePushNotification(result));
       }
     } catch (error) {

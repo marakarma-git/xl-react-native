@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import {View, FlatList} from 'react-native';
-import {CardSeverityLevel, NotificationCard} from '../../components';
+import {CardSeverityLevel, NotificationCard, Text} from '../../components';
 import {useDispatch, useSelector} from 'react-redux';
 import {HeaderContainer} from '../../components';
 
@@ -13,6 +13,8 @@ import {
   readNotificationApi,
   resetNotificationLimit,
 } from '../../redux/action/notification_action';
+import {ActivityIndicator} from 'react-native-paper';
+import {colors} from '../../constant/color';
 
 dayjs.extend(relativeTime);
 
@@ -29,15 +31,18 @@ const NotificationPage = ({navigation}) => {
   const {high, medium, low} = severityLevel;
   const [activeMenu, setActiveMenu] = useState('All');
   const [isScrolled, setIsScrolled] = useState(false);
+  const [isLoadMore, setIsLoadMore] = useState(false);
 
   const notificationList = ({item}) => {
     return (
-      <NotificationCard
-        message={item.message}
-        title={item.subject}
-        time={new Date(item.createdDate.split('.')[0])}
-        severityLevel={item.criticalLevel}
-      />
+      <>
+        <NotificationCard
+          message={item.message}
+          title={item.subject}
+          time={new Date(item.createdDate.split('.')[0])}
+          severityLevel={item.criticalLevel}
+        />
+      </>
     );
   };
   const filterDataBySeverityLevel = (activeMenu) => {
@@ -53,8 +58,12 @@ const NotificationPage = ({navigation}) => {
   const loadMoreHandler = (info) => {
     if (limitedListNotification.length < listNotification.length) {
       if (isScrolled) {
-        dispatch(increaseNotificationLimit(10));
-        dispatch(limitListNotification(listNotification));
+        setIsLoadMore(true);
+        setTimeout(() => {
+          setIsLoadMore(false);
+          dispatch(increaseNotificationLimit(10));
+          dispatch(limitListNotification(listNotification));
+        }, 2000);
       }
     }
   };
@@ -105,6 +114,17 @@ const NotificationPage = ({navigation}) => {
         onEndReached={loadMoreHandler}
         onEndReachedThreshold={0.2}
         onScroll={() => setIsScrolled(true)}
+        ListFooterComponent={
+          <>
+            {isLoadMore && (
+              <View style={style.loader}>
+                <ActivityIndicator size={'small'} color={'black'} />
+                <Text style={style.loaderText}>Loading...</Text>
+              </View>
+            )}
+          </>
+        }
+        ListFooterComponentStyle={{marginBottom: 50}}
       />
     </View>
   );
