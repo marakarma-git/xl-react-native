@@ -97,7 +97,7 @@ const SmsA2pEdit = ({route}) => {
         data: getValueObject,
       })
         .then(({data}) => {
-          const {statusCode} = data || {};
+          const {statusCode, statusDescription} = data || {};
           if (statusCode === 0) {
             showToast({
               title: 'Success',
@@ -127,15 +127,30 @@ const SmsA2pEdit = ({route}) => {
                   },
                 }),
               );
+              navigation.goBack();
             }
             setLocalLoading(false);
-            navigation.goBack();
           } else {
             setLocalLoading(false);
+            showToast({
+              title: 'Error',
+              type: 'error',
+              message: statusDescription,
+              duration: 4500,
+              showToast: true,
+              position: 'top',
+            });
           }
         })
         .catch((error) => {
-          alert('error');
+          showToast({
+            title: 'Error',
+            type: 'error',
+            message: 'Something Went Wrong',
+            duration: 4500,
+            showToast: true,
+            position: 'top',
+          });
           dispatch(setRequestError(error));
           setLocalLoading(false);
         });
