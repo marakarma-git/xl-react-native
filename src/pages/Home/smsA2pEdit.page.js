@@ -29,6 +29,7 @@ import getSmsA2p, {
 } from '../../redux/action/sms_a2p_get_all_sms_action';
 import httpRequest from '../../constant/axiosInstance';
 import {useToastHooks} from '../../customHooks/customHooks';
+import styles from '../../style/usageAnalytics.style';
 
 const SmsA2pEdit = ({route}) => {
   const showToast = useToastHooks();
@@ -183,6 +184,15 @@ const SmsA2pEdit = ({route}) => {
             </View>
           )}
           <View style={subscriptionStyle.containerWrap}>
+            <Text
+              style={[
+                styles.cardDescriptionText,
+                {marginRight: 0, marginLeft: 0},
+              ]}>
+              Before fill in below configuration settings, please proceed to
+              submit the fulfillment request for SMS A2P Setup Form and Price
+              Plan Configuration via DCP Ericsson Service Portal.
+            </Text>
             {dataA2pEdit &&
               dataA2pEdit.map((item) => {
                 const {for_layout_edit_only, subItem, config} = item || {};

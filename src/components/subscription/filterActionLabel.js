@@ -7,6 +7,7 @@ import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityI
 import {colors} from '../../constant/color';
 import ModalSearchPicker from '../modal/ModalSearchPicker';
 import {ColumnFilterSearch} from './searchHeader';
+import {border_radius} from '../../constant/config';
 const actionData = [
   {
     value: 0,
@@ -15,6 +16,26 @@ const actionData = [
     isDisabled: false,
   },
 ];
+const LocalText = (props) => {
+  const {typeTwo, total, filtered, selected, style, forceMarginZero} =
+    props || {};
+  return (
+    <Text
+      fontType={'bold'}
+      style={[
+        subscriptionStyle.textMenuTotal,
+        {
+          marginTop: typeTwo ? 6 : 0,
+          marginLeft: typeTwo || forceMarginZero ? 0 : 12,
+        },
+        style,
+      ]}>
+      {`${total ? `Total: ${total}` : ''} ${
+        filtered ? `| Filtered: ${filtered}` : ''
+      } ${selected ? `| Selected: ${selected}` : ''}`}
+    </Text>
+  );
+};
 const FilterActionLabel = (props) => {
   const {
     value,
@@ -59,16 +80,12 @@ const FilterActionLabel = (props) => {
             </View>
           </TouchableOpacity>
           {(total || filtered || selected) && (
-            <Text
-              fontType={'bold'}
-              style={[
-                subscriptionStyle.textMenuTotal,
-                {marginTop: typeTwo ? 6 : 0, marginLeft: typeTwo ? 0 : 12},
-              ]}>
-              {`${total ? `Total: ${total}` : ''} ${
-                filtered ? `| Filtered: ${filtered}` : ''
-              } ${selected ? `| Selected: ${selected}` : ''}`}
-            </Text>
+            <LocalText
+              typeTwo={typeTwo}
+              total={total}
+              filtered={filtered}
+              selected={selected}
+            />
           )}
         </View>
         {typeTwo && (
@@ -122,4 +139,40 @@ FilterActionLabel.defaultProps = {
   onClickFilter: () => {},
   onClickColumn: () => {},
 };
+
+const FilterActionRightCreate = (props) => {
+  const {total, filtered, selected, onChange} = props || {};
+  return (
+    <View style={[subscriptionStyle.wrapperMenuOption]}>
+      {total || filtered || selected ? (
+        <LocalText
+          filtered={filtered}
+          total={total}
+          selected={selected}
+          forceMarginZero={true}
+        />
+      ) : (
+        <View style={{flex: 1}} />
+      )}
+      <TouchableOpacity
+        style={subscriptionStyle.rightButtonStyle}
+        onPress={(e) => onChange(e)}>
+        <Text style={{color: 'white'}} fontType={'bold'}>
+          New Configuration
+        </Text>
+      </TouchableOpacity>
+    </View>
+  );
+};
+FilterActionRightCreate.propTypes = {
+  onChange: PropTypes.func,
+  total: PropTypes.string || PropTypes.number,
+  filtered: PropTypes.string || PropTypes.number,
+  selected: PropTypes.string || PropTypes.number,
+};
+FilterActionRightCreate.defaultProps = {
+  onChange: () => {},
+};
+
 export default FilterActionLabel;
+export {FilterActionRightCreate};

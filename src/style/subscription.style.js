@@ -123,4 +123,10 @@ export default {
     flexDirection: 'row',
     alignItems: 'center',
   },
+  rightButtonStyle: {
+    marginLeft: 0,
+    backgroundColor: colors.main_color,
+    padding: 6,
+    borderRadius: border_radius,
+  },
 };

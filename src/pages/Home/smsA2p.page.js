@@ -18,7 +18,9 @@ import {dataMatcherArray2D} from '../../redux/action/get_sim_inventory_action';
 import Table from '../../components/table/Table';
 import SearchHeader from '../../components/subscription/searchHeader';
 import AppliedFilter from '../../components/subscription/appliedFilter';
-import FilterActionLabel from '../../components/subscription/filterActionLabel';
+import FilterActionLabel, {
+  FilterActionRightCreate,
+} from '../../components/subscription/filterActionLabel';
 import Helper from '../../helpers/helper';
 import {
   smsA2pDynamicReset,
@@ -129,15 +131,11 @@ const SmsA2p = () => {
                     dispatch(smsA2pGenerateParams());
                   }}
                 />
-                <FilterActionLabel
-                  actionData={actionDataArray}
-                  onChange={(e) => {
-                    const {actionName, navigateTo} = e || {};
-                    if (actionName === 'Create') {
-                      navigation.navigate(navigateTo, {
-                        layoutType: 'Create',
-                      });
-                    }
+                <FilterActionRightCreate
+                  onChange={() => {
+                    navigation.navigate('SmsA2pEdit', {
+                      layoutType: 'Create',
+                    });
                   }}
                   total={Helper.numberWithDot(sms_elements_static)}
                   filtered={
