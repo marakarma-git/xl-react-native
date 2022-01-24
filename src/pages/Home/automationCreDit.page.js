@@ -12,9 +12,13 @@ import {
   automationCreateSummary,
   automationResetFormContainerValue,
   automationValidationForm,
+  callAutomationActiveEnterprise,
+  callAutomationEnterprise,
 } from '../../redux/action/automation_create_edit_action';
+import {useToastHooks} from '../../customHooks/customHooks';
 
 const AutomationCreateEditPage = () => {
+  const showToast = useToastHooks();
   const dispatch = useDispatch();
   const navigation = useNavigation();
   const {params} = useRoute();
@@ -27,21 +31,12 @@ const AutomationCreateEditPage = () => {
     (state) => state.automation_create_edit_reducer,
   );
   useEffect(() => {
+    dispatch(callAutomationActiveEnterprise());
     if (!lod.isEmpty(result)) {
       const {customerNumber} = result || {};
-      console.log(
-        'result_not_empty_customer_number: ' + JSON.stringify(params, null, 2),
-      );
+      dispatch(callAutomationEnterprise({customerNumber, dataParams: params}));
     }
   }, [navigation, params, result]);
-
-  useEffect(() => {
-    //this effect for tracking every time change the value of enterprise
-    console.log(
-      'Selected Enterprise: ' +
-        JSON.stringify(containerValue.enterpriseId, null, 2),
-    );
-  }, [containerValue.enterpriseId]);
 
   const onCancel = () => {
     setIndexForm(0);
@@ -50,6 +45,7 @@ const AutomationCreateEditPage = () => {
     navigation.setParams({
       from: undefined,
       result: undefined,
+      itemEdit: undefined,
     });
   };
   useEffect(() => {
@@ -76,15 +72,6 @@ const AutomationCreateEditPage = () => {
               automationDefaultFormData[indexForm].stepperDescription
             }
           />
-          <Text
-            onPress={() => {
-              const getMe = automationValidationForm({
-                dataForm: automationDefaultFormData[indexForm],
-                dataContainerValue: containerValue,
-              });
-            }}>
-            Validation ME
-          </Text>
           {automationDefaultFormData[indexForm].dataContainer.map((item) => {
             const {groupByContainer, ...rest} = item || {};
             if (indexForm === 3) {
@@ -137,6 +124,10 @@ const AutomationCreateEditPage = () => {
               title={'Cancel'}
               buttonType={'Two'}
               style={{marginLeft: 0}}
+              onPress={() => {
+                onCancel();
+                navigation.goBack();
+              }}
             />
             <View style={{flexDirection: 'row'}}>
               {indexForm > 0 && indexForm <= 3 && (
@@ -151,7 +142,23 @@ const AutomationCreateEditPage = () => {
                 buttonType={'One'}
                 onPress={() => {
                   if (indexForm < 3) {
-                    setIndexForm((state) => state + 1);
+                    const {containerErrorString, counterFalse} =
+                      automationValidationForm({
+                        dataForm: automationDefaultFormData[indexForm],
+                        dataContainerValue: containerValue,
+                      });
+                    if (counterFalse === 0) {
+                      setIndexForm((state) => state + 1);
+                    } else {
+                      showToast({
+                        title: 'Error Input',
+                        type: 'error',
+                        message: containerErrorString.join('\n'),
+                        duration: 4000,
+                        showToast: true,
+                        position: 'top',
+                      });
+                    }
                   }
                   const {arraySummary} = automationCreateSummary({
                     getAllData: automationDefaultFormData,

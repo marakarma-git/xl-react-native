@@ -16,6 +16,7 @@ const automationDefaultFormData = [
         isRemoveBottomLine: true,
         dataInput: [
           {
+            inputId: 'enterprise-drop-down-the-only-one-have-id',
             inputType: 'DropDown',
             inputLoading: false,
             titleInput: 'Enterprise',
@@ -71,11 +72,11 @@ const automationDefaultFormData = [
               fullWidthInput: true,
               data: [
                 {
-                  value: 'Business Automation',
+                  value: 'businessAutomation',
                   label: 'Business Automation',
                 },
                 {
-                  value: 'Fraud Prevention',
+                  value: 'fraudPrevention',
                   label: 'Fraud Prevention',
                 },
               ],
@@ -99,7 +100,7 @@ const automationDefaultFormData = [
         containerType: 'WrapperTwo',
         containerTitle: 'Bulk Shared Auto Upgrade',
         containerDescription: '',
-        groupByContainer: 'Business Automation',
+        groupByContainer: 'businessAutomation',
         paramsContainerDefault: 'isUpgradeBulk',
         dataInput: [
           {
@@ -149,7 +150,7 @@ const automationDefaultFormData = [
           'In the case where a subscription upgrades from package A to higher package B, and you want to downgrade it back to package A on the next month billing, you may use this auto downgrade rule.\n' +
           '\n' +
           'Please note that it will impact to change all SIMs subscription under selected enterprise.',
-        groupByContainer: 'Business Automation',
+        groupByContainer: 'businessAutomation',
         paramsContainerDefault: 'isDowngrade',
         dataInput: [
           {
@@ -199,7 +200,7 @@ const automationDefaultFormData = [
         containerType: 'WrapperTwo',
         containerTitle: 'Individual Shared package Auto Upgrade',
         containerDescription: '',
-        groupByContainer: 'Business Automation',
+        groupByContainer: 'businessAutomation',
         paramsContainerDefault: 'isUpgradeIndividual',
         dataInput: [
           {
@@ -256,7 +257,7 @@ const automationDefaultFormData = [
         containerType: 'WrapperTwo',
         containerTitle: 'Bulk Shared Limit Notification',
         containerDescription: '',
-        groupByContainer: 'Fraud Prevention',
+        groupByContainer: 'fraudPrevention',
         paramsContainerDefault: 'isBulkNotification',
         dataInput: [
           {
@@ -285,7 +286,7 @@ const automationDefaultFormData = [
         containerType: 'WrapperTwo',
         containerTitle: 'Individual Shared Limit',
         containerDescription: '',
-        groupByContainer: 'Fraud Prevention',
+        groupByContainer: 'fraudPrevention',
         paramsContainerDefault: 'isIndividualNotification',
         dataInput: [
           {
@@ -436,24 +437,79 @@ const automation_create_edit_reducer = (state = initialState, action) => {
       };
     }
     case reduxString.AUTOMATION_ENTERPRISE_SUCCESS: {
+      const isReset = action.result?.isReset;
       return {
         ...state,
         loading: false,
         errorText: '',
         containerValue: {
           ...state.containerValue,
-          ['isBulkNotificationDisabled']: action?.result?.bulkNotification,
-          ['isIndividualNotificationDisabled']:
-            action?.result?.individualNotification,
-          ['isUpgradeBulkDisabled']: action?.result?.bulkUpgrade,
-          ['isUpgradeIndividualDisabled']:
-            action?.result?.individualUpgrade.packageIndividual,
-          ['upgradePackageBulkData']:
-            action?.result?.individualUpgrade.packageBulkUpgradeList,
-          ['downgradePackageData']:
-            action?.result?.individualUpgrade.packageDowngradeList,
-          ['upgradePackageIndividualData']:
-            action?.result?.individualUpgrade.packageIndividualUpgradeList,
+
+          enterpriseId: isReset
+            ? state.containerValue.enterpriseId
+            : {
+                value: action.result?.itemEdit?.enterpriseId,
+                label: action.result?.itemEdit?.enterpriseName,
+              },
+
+          rulesName: isReset ? '' : action.result?.result?.rulesName,
+          category: isReset
+            ? {}
+            : {
+                value: action.result?.result?.category,
+                label:
+                  action.result?.result?.category === 'businessAutomation'
+                    ? 'Business Automation'
+                    : action.result?.category === 'fraudPrevention'
+                    ? 'Fraud Prevention'
+                    : '',
+              },
+
+          isBulkNotificationDisabled: !action?.result?.bulkNotification,
+          isIndividualNotificationDisabled:
+            !action?.result?.individualNotification,
+          isUpgradeBulkDisabled: !action?.result?.bulkUpgrade,
+          isUpgradeIndividualDisabled:
+            !action?.result?.individualUpgrade.packageIndividual,
+
+          upgradePackageBulkData: action?.result?.packageBulkUpgradeList || [],
+          upgradePackageBulkFrom: isReset
+            ? {}
+            : state.containerValue.upgradePackageBulkFrom,
+          upgradePackageBulkTo: isReset
+            ? {}
+            : state.containerValue.upgradePackageBulkTo,
+
+          downgradePackageData: action?.result?.packageDowngradeList || [],
+          downgradePackageFrom: isReset
+            ? {}
+            : state.containerValue.downgradePackageFrom,
+          downgradePackageTo: isReset
+            ? {}
+            : state.containerValue.downgradePackageTo,
+
+          upgradePackageIndividualData:
+            action?.result?.packageIndividualUpgradeList || [],
+          upgradePackageIndividualFrom: isReset
+            ? {}
+            : state.containerValue.upgradePackageIndividualFrom,
+          upgradePackageIndividualTo: isReset
+            ? {}
+            : state.containerValue.upgradePackageIndividualTo,
+          thresholdUpgradeIndividual: isReset
+            ? '0'
+            : state.containerValue.thresholdUpgradeIndividual,
+        },
+      };
+    }
+    case reduxString.AUTOMATION_ACTIVE_ENTERPRISE_SUCCESS: {
+      return {
+        ...state,
+        loading: false,
+        errorText: '',
+        containerValue: {
+          ...state.containerValue,
+          enterpriseIdData: action.enterpriseData,
         },
       };
     }

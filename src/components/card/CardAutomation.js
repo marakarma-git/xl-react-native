@@ -11,13 +11,13 @@ import {useDispatch, useSelector} from 'react-redux';
 import {
   automationAdaptiveOnChange,
   automationContainerSwitch,
+  callAutomationEnterprise,
 } from '../../redux/action/automation_create_edit_action';
 import lod from 'lodash';
-import {colors} from '../../constant/color';
 
 const InputWrapper = (props) => {
   const dispatch = useDispatch();
-  const {dataInput, summaryMode} = props || [];
+  const {dataInput, summaryMode, statusParams} = props || [];
   const {containerValue} = useSelector(
     (state) => state.automation_create_edit_reducer,
   );
@@ -26,6 +26,7 @@ const InputWrapper = (props) => {
       {dataInput &&
         dataInput.map((item) => {
           const {
+            inputId,
             inputType,
             titleInput,
             config,
@@ -50,6 +51,17 @@ const InputWrapper = (props) => {
                     )
                   }
                   onChange={(e) => {
+                    if (
+                      inputId === 'enterprise-drop-down-the-only-one-have-id'
+                    ) {
+                      const {customerNumber} = e || {};
+                      dispatch(
+                        callAutomationEnterprise({
+                          customerNumber,
+                          isReset: true,
+                        }),
+                      );
+                    }
                     dispatch(
                       automationAdaptiveOnChange({
                         paramsToWhere: paramsDefault,
@@ -60,7 +72,7 @@ const InputWrapper = (props) => {
                   value={
                     summaryMode === true
                       ? lod.isObject(containerValue[`${paramsDefault}`])
-                        ? containerValue[`${paramsDefault}`]?.value
+                        ? containerValue[`${paramsDefault}`]?.label
                         : containerValue[`${paramsDefault}`]
                       : containerValue[`${paramsDefault}`]
                   }
@@ -94,6 +106,7 @@ const WrapperOne = (props) => {
     summaryMode,
     children,
     style,
+    statusParams,
   } = props || {};
   return (
     <Card style={[styles.cardSection, {marginTop: '5%'}]}>
@@ -110,7 +123,11 @@ const WrapperOne = (props) => {
       )}
       <Card.Content style={style}>
         {children || (
-          <InputWrapper dataInput={dataInput} summaryMode={summaryMode} />
+          <InputWrapper
+            dataInput={dataInput}
+            summaryMode={summaryMode}
+            statusParams={statusParams}
+          />
         )}
       </Card.Content>
     </Card>
@@ -127,6 +144,7 @@ const WrapperTwo = (props) => {
     paramsContainerHide,
     summaryMode,
     containerTopLine,
+    statusParams,
   } = props || {};
   const {containerValue} = useSelector(
     (state) => state.automation_create_edit_reducer,
@@ -176,7 +194,11 @@ const WrapperTwo = (props) => {
                 ]}>
                 {containerDescription}
               </Text>
-              <InputWrapper dataInput={dataInput} summaryMode={summaryMode} />
+              <InputWrapper
+                dataInput={dataInput}
+                summaryMode={summaryMode}
+                statusParams={statusParams}
+              />
             </Card.Content>
           )}
         </View>

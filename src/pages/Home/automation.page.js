@@ -51,7 +51,7 @@ const AutomationPage = () => {
     automation_applied_filter,
     automation_params_applied_activity_log,
   } = useSelector((state) => state.automation_get_automation_reducer);
-  const getDetailInfo = ({automationId, from}) => {
+  const getDetailInfo = ({automationId, from, itemEdit}) => {
     setLoadingDetail(true);
     httpRequest
       .get(`/dcp/automation/getAutomationDetail?automationId=${automationId}`)
@@ -62,6 +62,7 @@ const AutomationPage = () => {
           navigation.navigate('AutomationCreDit', {
             from: from,
             result: result,
+            itemEdit,
           });
         } else {
           setLoadingDetail(false);
@@ -205,6 +206,7 @@ const AutomationPage = () => {
             getDetailInfo({
               automationId: autoId,
               from: 'Edit',
+              itemEdit: item,
             });
           }}
           onPressDelete={({item}) => {

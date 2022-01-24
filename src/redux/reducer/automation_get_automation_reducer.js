@@ -83,8 +83,8 @@ const automation_get_automation_reducer = (state = initialState, action) => {
       };
     }
     case reduxString.AUTOMATION_DYNAMIC_CHECK_DATA_AUTOMATION: {
-      state.data_automation_generated[action.index].is_checked_root = !state
-        .data_automation_generated[action.index].is_checked_root;
+      state.data_automation_generated[action.index].is_checked_root =
+        !state.data_automation_generated[action.index].is_checked_root;
       return {
         ...state,
         data_automation_generated: state.data_automation_generated,

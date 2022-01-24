@@ -33,8 +33,18 @@ const automationCreateReduxError = ({errorText}) => {
     errorText,
   };
 };
-const automationEnterpriseSuccess = (result) => {};
-
+const automationEnterpriseSuccess = (result) => {
+  return {
+    type: reduxString.AUTOMATION_ENTERPRISE_SUCCESS,
+    result,
+  };
+};
+const automationActiveEnterpriseSuccess = (enterpriseData) => {
+  return {
+    type: reduxString.AUTOMATION_ACTIVE_ENTERPRISE_SUCCESS,
+    enterpriseData,
+  };
+};
 const automationValidationForm = ({dataForm, dataContainerValue}) => {
   const {dataContainer} = dataForm || {};
   let containerParams = {};
@@ -130,27 +140,82 @@ const automationCreateSummary = ({getAllData, dataContainerValue}) => {
 const callAutomationEnterprise = (localValue) => {
   return (dispatch) => {
     dispatch(automationCreateReduxLoading());
-    const {customerNumber} = localValue || {};
+    const {customerNumber, isReset, dataParams} = localValue || {};
     httpRequest
       .get(
         `/dcp/automation/getAutomationEnterprise?customerNumber=${customerNumber}`,
       )
       .then(({data}) => {
         const {result, statusCode} = data || {};
+        const {
+          packageBulkUpgradeList,
+          packageDowngradeList,
+          packageIndividualUpgradeList,
+        } = result || {};
         if (statusCode === 0) {
-          dispatch(automationEnterpriseSuccess(result));
+          dispatch(
+            automationEnterpriseSuccess({
+              ...result,
+              ...dataParams,
+              isReset,
+              packageBulkUpgradeList: packageBulkUpgradeList.map(
+                ({packageId, packageDesc}) => ({
+                  value: packageId,
+                  label: packageDesc,
+                }),
+              ),
+              packageDowngradeList: packageDowngradeList.map(
+                ({packageId, packageDesc}) => ({
+                  value: packageId,
+                  label: packageDesc,
+                }),
+              ),
+              packageIndividualUpgradeList: packageIndividualUpgradeList.map(
+                ({packageId, packageDesc}) => ({
+                  value: packageId,
+                  label: packageDesc,
+                }),
+              ),
+            }),
+          );
         } else {
           dispatch(
             automationCreateReduxError({errorText: 'something go wrong'}),
           );
         }
       })
-      .catch(() => {
+      .catch((e) => {
         dispatch(automationCreateReduxError({errorText: 'something go wrong'}));
       });
   };
 };
-
+const callAutomationActiveEnterprise = () => {
+  return (dispatch) => {
+    dispatch(automationCreateReduxLoading());
+    httpRequest
+      .get('/user/corp/getActiveEnterprise')
+      .then(({data}) => {
+        const {result, statusCode} = data || {};
+        if (statusCode === 0) {
+          const reMap = result.map(
+            ({enterpriseId, enterpriseName, ...rest}) => ({
+              value: enterpriseId,
+              label: enterpriseName,
+              ...rest,
+            }),
+          );
+          dispatch(automationActiveEnterpriseSuccess(reMap));
+        } else {
+          dispatch(
+            automationCreateReduxError({errorText: 'something go wrong'}),
+          );
+        }
+      })
+      .catch((e) => {
+        dispatch(automationCreateReduxError({errorText: 'something go wrong'}));
+      });
+  };
+};
 export {
   automationContainerSwitch,
   automationAdaptiveOnChange,
@@ -158,4 +223,5 @@ export {
   automationValidationForm,
   automationCreateSummary,
   callAutomationEnterprise,
+  callAutomationActiveEnterprise,
 };
