@@ -1,4 +1,5 @@
 import reduxString from '../reduxString';
+import {is} from 'babel-traverse/lib/path/introspection';
 
 const automationDefaultFormData = [
   {
@@ -342,6 +343,7 @@ const containerValue = {
 
   enterpriseId: {}, // Target Enterprise
   enterpriseIdData: [],
+  enterpriseIdDisabled: false,
   enterpriseIdLoading: false,
 
   rulesName: '', // Rules Name
@@ -384,7 +386,7 @@ const containerValue = {
   isIndividualNotificationDisabled: false,
   isIndividualNotificationHide: false,
   notificationIndividualEmail: '',
-  thresholdIndividualNotification: '',
+  thresholdIndividualNotification: '0',
 };
 
 const initialState = {
@@ -444,14 +446,14 @@ const automation_create_edit_reducer = (state = initialState, action) => {
         errorText: '',
         containerValue: {
           ...state.containerValue,
-
+          ...action.result.forRulesValue,
           enterpriseId: isReset
             ? state.containerValue.enterpriseId
             : {
                 value: action.result?.itemEdit?.enterpriseId,
                 label: action.result?.itemEdit?.enterpriseName,
               },
-
+          enterpriseIdDisabled: !isReset,
           rulesName: isReset ? '' : action.result?.result?.rulesName,
           category: isReset
             ? {}
@@ -465,40 +467,16 @@ const automation_create_edit_reducer = (state = initialState, action) => {
                     : '',
               },
 
+          isUpgradeBulkDisabled: !action?.result?.bulkUpgrade,
+          isUpgradeIndividualDisabled: !action?.result?.individualUpgrade,
           isBulkNotificationDisabled: !action?.result?.bulkNotification,
           isIndividualNotificationDisabled:
             !action?.result?.individualNotification,
-          isUpgradeBulkDisabled: !action?.result?.bulkUpgrade,
-          isUpgradeIndividualDisabled:
-            !action?.result?.individualUpgrade.packageIndividual,
 
           upgradePackageBulkData: action?.result?.packageBulkUpgradeList || [],
-          upgradePackageBulkFrom: isReset
-            ? {}
-            : state.containerValue.upgradePackageBulkFrom,
-          upgradePackageBulkTo: isReset
-            ? {}
-            : state.containerValue.upgradePackageBulkTo,
-
           downgradePackageData: action?.result?.packageDowngradeList || [],
-          downgradePackageFrom: isReset
-            ? {}
-            : state.containerValue.downgradePackageFrom,
-          downgradePackageTo: isReset
-            ? {}
-            : state.containerValue.downgradePackageTo,
-
           upgradePackageIndividualData:
             action?.result?.packageIndividualUpgradeList || [],
-          upgradePackageIndividualFrom: isReset
-            ? {}
-            : state.containerValue.upgradePackageIndividualFrom,
-          upgradePackageIndividualTo: isReset
-            ? {}
-            : state.containerValue.upgradePackageIndividualTo,
-          thresholdUpgradeIndividual: isReset
-            ? '0'
-            : state.containerValue.thresholdUpgradeIndividual,
         },
       };
     }
@@ -518,5 +496,79 @@ const automation_create_edit_reducer = (state = initialState, action) => {
     }
   }
 };
+// This is for autocomplete text when user press from edit
+const forRulesValueParams = [
+  //----------------------------------------------
+  {
+    typeParams: 'SingleValue',
+    paramsDefault: 'isUpgradeBulk',
+    paramsDefaultValue: false,
+  },
+  {
+    typeParams: 'DualValue',
+    paramsDefault: 'upgradePackageBulk',
+    paramsData: 'packageBulkUpgradeList',
+  },
+  //----------------------------------------------
+  {
+    typeParams: 'SingleValue',
+    paramsDefault: 'isDowngrade',
+    paramsDefaultValue: false,
+  },
+  {
+    typeParams: 'DualValue',
+    paramsDefault: 'downgradePackage',
+    paramsData: 'packageDowngradeList',
+  },
+  //----------------------------------------------
+  {
+    typeParams: 'SingleValue',
+    paramsDefault: 'isUpgradeIndividual',
+    paramsDefaultValue: false,
+  },
+  {
+    typeParams: 'DualValue',
+    paramsDefault: 'upgradePackageIndividual',
+    paramsData: 'packageIndividualUpgradeList',
+  },
+  {
+    typeParams: 'SingleValue',
+    paramsDefault: 'thresholdUpgradeIndividual',
+    paramsDefaultValue: '0',
+  },
+  //----------------------------------------------
+  {
+    typeParams: 'SingleValue',
+    paramsDefault: 'isBulkNotification',
+    paramsDefaultValue: false,
+  },
+  {
+    typeParams: 'SingleValue',
+    paramsDefault: 'notificationBulkEmail',
+    paramsDefaultValue: '',
+  },
+  {
+    typeParams: 'SingleValue',
+    paramsDefault: 'thresholdBulkNotification',
+    paramsDefaultValue: '0',
+  },
+  //----------------------------------------------
+  {
+    typeParams: 'SingleValue',
+    paramsDefault: 'isIndividualNotification',
+    paramsDefaultValue: false,
+  },
+  {
+    typeParams: 'SingleValue',
+    paramsDefault: 'notificationIndividualEmail',
+    paramsDefaultValue: '',
+  },
+  {
+    typeParams: 'SingleValue',
+    paramsDefault: 'thresholdIndividualNotification',
+    paramsDefaultValue: '0',
+  },
+  //----------------------------------------------
+];
 export default automation_create_edit_reducer;
-export {automationDefaultFormData};
+export {automationDefaultFormData, forRulesValueParams};

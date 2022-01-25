@@ -1,6 +1,7 @@
 import reduxString from '../reduxString';
 import lod from 'lodash';
 import httpRequest from '../../constant/axiosInstance';
+import {forRulesValueParams} from '../reducer/automation_create_edit_reducer';
 
 const automationContainerSwitch = ({paramsToWhere}) => {
   return {
@@ -136,7 +137,46 @@ const automationCreateSummary = ({getAllData, dataContainerValue}) => {
     getAllParams,
   };
 };
-
+const createForRuleValueParams = (dataParams = {}, result = {}) => {
+  let containerForRules = {};
+  if (!lod.isEmpty(dataParams) && !lod.isEmpty(result)) {
+    forRulesValueParams.map((item) => {
+      const {typeParams, paramsDefault, paramsDefaultValue, paramsData} =
+        item || {};
+      if (typeParams === 'DualValue') {
+        result[`${paramsData}`]?.map(({packageId, packageDesc}) => {
+          if (packageId === dataParams[`${paramsDefault}From`]) {
+            containerForRules = {
+              ...containerForRules,
+              [`${paramsDefault}From`]: {
+                value: packageId,
+                label: packageDesc,
+              },
+            };
+          }
+          if (packageId === dataParams[`${paramsDefault}To`]) {
+            containerForRules = {
+              ...containerForRules,
+              [`${paramsDefault}To`]: {
+                value: packageId,
+                label: packageDesc,
+              },
+            };
+          }
+        });
+      }
+      if (typeParams === 'SingleValue') {
+        containerForRules = {
+          ...containerForRules,
+          [`${paramsDefault}`]: dataParams[`${paramsDefault}`]
+            ? dataParams[`${paramsDefault}`]
+            : paramsDefaultValue,
+        };
+      }
+    });
+  }
+  return containerForRules;
+};
 const callAutomationEnterprise = (localValue) => {
   return (dispatch) => {
     dispatch(automationCreateReduxLoading());
@@ -153,10 +193,12 @@ const callAutomationEnterprise = (localValue) => {
           packageIndividualUpgradeList,
         } = result || {};
         if (statusCode === 0) {
+          const getRules = createForRuleValueParams(dataParams?.result, result);
           dispatch(
             automationEnterpriseSuccess({
               ...result,
               ...dataParams,
+              forRulesValue: getRules,
               isReset,
               packageBulkUpgradeList: packageBulkUpgradeList.map(
                 ({packageId, packageDesc}) => ({
@@ -225,3 +267,110 @@ export {
   callAutomationEnterprise,
   callAutomationActiveEnterprise,
 };
+
+// NOTES AUTOMATION
+//
+// CREATE:
+//   Step 1:
+// Enterprise
+// customerNumber (will be used as getPackage on several rules below)
+// enterpriseId
+// enterpriseName
+//
+// Step 2:
+// rulesName: ’string’,
+// category: businessAutomation / fraudPrevention
+//
+// Step 3:
+// ====== Category: Business Automation =======
+//   category: businessAutomation
+//
+// 1. Bulk Shared Auto Upgrade  - isUpgradeBulk
+// --From - upgradePackageBulkFrom
+// --To - upgradePackageBulkTo
+//
+// 2. Auto Downgrade Package - isDowngrade
+// --From - downgradePackageFrom
+// --To - downgradePackageTo
+//
+// 3. Individual Shared Package Auto Upgrade - isUpgradeIndividual
+// --From - upgradePackageIndividualFrom
+// --To - upgradePackageIndividualTo
+// --Threshold - thresholdUpgradeIndividual
+//
+// ====== Category: FRAUD PREVENTION =======
+//   category: fraudPrevention
+//
+// 4. Bulk Shared Limit Notification - isBulkNotification
+// --Email Add - notificationBulkEmail
+// -- Threshold - thresholdBulkNotification
+//
+// 5. Individual Shared Limit - isIndividualNotification
+// --Email Add - notificationIndividualEmail
+// --Threshold - thresholdIndividualNotification
+//
+// === GET DEFINED RULES PACKAGE LIST AND ELIGIBLE RULES ===
+// after enterprise selected and get customerNumber from it,
+//   call this to get package list and eligible rules: automation/getAutomationEnterprise?customerNumber=enterpriseNumbernya
+//
+//   Bulk Shared Auto Upgrade:
+//   bulkUpgrade -toggle
+// packageBulkUpgradeList - from & to
+//
+// auto Downgrade Upgrade:
+//   ga ada toggle logic (jadi bisa dienable disabled bebas)
+// packageDowngradeList - from & to
+//
+// Individual Shared Package Auto Upgrade:
+//   individualUpgrade -toggle
+// packageIndividualUpgradeList - from & to
+//
+// Bulk Shared Limit Notification:
+//   bulkNotification - toggle
+//
+// Individual Shared Limit:
+//   individualNotification - toggle
+//
+//
+// ~~~~~~~~~~~~~~~~~~
+//
+//   Edit:
+// 1. call api to get details: /dcp/automation/getAutomationDetail?automationId=autoIdnya
+//   mapping attibute response same as create, which are:
+//
+//   Step 1:
+// Enterprise
+// enterpriseId - option will find the selected value based on enterpriseId
+//
+// Step 2:
+// rulesName: ’string’,
+// category: businessAutomation / fraudPrevention
+//
+// Step 3:
+// ====== Category: Business Automation =======
+//   category: businessAutomation
+//
+// 1. Bulk Shared Auto Upgrade  - isUpgradeBulk
+// --From - upgradePackageBulkFrom
+// --To - upgradePackageBulkTo
+//
+// 2. Auto Downgrade Package - isDowngrade
+// --From - downgradePackageFrom
+// --To - downgradePackageTo
+//
+// 3. Individual Shared Package Auto Upgrade - isUpgradeIndividual
+// --From - upgradePackageIndividualFrom
+// --To - upgradePackageIndividualTo
+// --Threshold - thresholdUpgradeIndividual
+//
+// POST AN UPDATE TO API
+// params same as create, but add additional params:
+//   “autoId”
+// autoId = autoId value from api: dcp/automation/getListAutomation
+//
+// endpoint to update: /api/dcp/automation/updateAutomation
+//
+// ~~~~~~~~~~~~~~~~~~
+//
+//   View:
+// call api to get details: /dcp/automation/getAutomationDetail?automationId=autoIdnya
