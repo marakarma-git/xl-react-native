@@ -48,6 +48,8 @@ const FilterActionLabel = (props) => {
     loading,
     onClickFilter,
     onClickColumn,
+
+    forceRemoveActions,
   } = props || {};
   const [showAction, setShowAction] = useState(false);
 
@@ -67,18 +69,20 @@ const FilterActionLabel = (props) => {
                   alignItems: 'flex-start',
                 }
           }>
-          <TouchableOpacity
-            style={subscriptionStyle.menuOption}
-            onPress={() => setShowAction(true)}>
-            <Text style={subscriptionStyle.textOption}>Actions</Text>
-            <View style={subscriptionStyle.menuOptionChevronDown}>
-              <MaterialCommunityIcons
-                name={'chevron-down'}
-                color={colors.gray}
-                size={26}
-              />
-            </View>
-          </TouchableOpacity>
+          {forceRemoveActions !== true && (
+            <TouchableOpacity
+              style={subscriptionStyle.menuOption}
+              onPress={() => setShowAction(true)}>
+              <Text style={subscriptionStyle.textOption}>Actions</Text>
+              <View style={subscriptionStyle.menuOptionChevronDown}>
+                <MaterialCommunityIcons
+                  name={'chevron-down'}
+                  color={colors.gray}
+                  size={26}
+                />
+              </View>
+            </TouchableOpacity>
+          )}
           {(total || filtered || selected) && (
             <LocalText
               typeTwo={typeTwo}
@@ -133,6 +137,8 @@ FilterActionLabel.propTypes = {
   loading: PropTypes.bool,
   onClickFilter: PropTypes.func,
   onClickColumn: PropTypes.func,
+
+  forceRemoveActions: PropTypes.bool,
 };
 FilterActionLabel.defaultProps = {
   onChange: () => {},

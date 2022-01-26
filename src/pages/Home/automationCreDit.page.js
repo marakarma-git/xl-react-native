@@ -9,6 +9,8 @@ import {FormStepHeaderComponent} from '../../components/form/formStep';
 import CardAutomation, {WrapperOne} from '../../components/card/CardAutomation';
 import {colors} from '../../constant/color';
 import {
+  automationCreateReduxLoading,
+  automationCreateReduxLoadingFalse,
   automationCreateSummary,
   automationResetFormContainerValue,
   automationValidationForm,
@@ -16,6 +18,10 @@ import {
   callAutomationEnterprise,
 } from '../../redux/action/automation_create_edit_action';
 import {useToastHooks} from '../../customHooks/customHooks';
+import httpRequest from '../../constant/axiosInstance';
+import getAutomation from '../../redux/action/automation_get_automation_action';
+import {automationElementStaticPlusOne} from '../../redux/action/automation_array_header_action';
+import Loading from '../../components/loading';
 
 const AutomationCreateEditPage = () => {
   const showToast = useToastHooks();
@@ -27,7 +33,7 @@ const AutomationCreateEditPage = () => {
   const [dataSummary, setDataSummary] = useState([]);
   const [wrapperTwoFind, setWrapperTwoFind] = useState(false);
   const {imageBase64} = useSelector((state) => state.enterprise_reducer);
-  const {automationDefaultFormData, containerValue} = useSelector(
+  const {automationDefaultFormData, containerValue, loading} = useSelector(
     (state) => state.automation_create_edit_reducer,
   );
   useEffect(() => {
@@ -55,7 +61,71 @@ const AutomationCreateEditPage = () => {
       }
     });
   }, [BackHandler, from]);
-  const onSubmit = () => {};
+  const onSubmit = (dataParameter = {}) => {
+    dispatch(automationCreateReduxLoading());
+    if (!lod.isEmpty(result)) {
+      dataParameter = {
+        ...dataParameter,
+        autoId: result?.autoId,
+      };
+    }
+    httpRequest({
+      method: 'post',
+      url: `/dcp/automation/${
+        !lod.isEmpty(result) ? 'updateAutomation' : 'createAutomation'
+      }`,
+      data: {
+        ...dataParameter,
+        enterpriseId: containerValue.enterpriseId?.value,
+      },
+    })
+      .then(({data}) => {
+        const {statusCode, statusDescription} = data || {};
+        if (statusCode === 0) {
+          showToast({
+            title: 'Success',
+            type: 'success',
+            message: `Success ${
+              !lod.isEmpty(result) ? 'Update' : 'Create'
+            } Automation`,
+            duration: 4500,
+            showToast: true,
+            position: 'top',
+          });
+          navigation.goBack();
+          onCancel();
+          dispatch(getAutomation());
+          if (lod.isEmpty(result)) {
+            dispatch(automationElementStaticPlusOne());
+          }
+        } else {
+          showToast({
+            title: 'Error',
+            type: 'error',
+            message: `Error When ${
+              !lod.isEmpty(result) ? 'Update' : 'Create'
+            } Automation \n ${statusDescription}`,
+            duration: 4500,
+            showToast: true,
+            position: 'top',
+          });
+        }
+        dispatch(automationCreateReduxLoadingFalse());
+      })
+      .catch(() => {
+        showToast({
+          title: 'Catch',
+          type: 'error',
+          message: `Error Catch When ${
+            !lod.isEmpty(result) ? 'Update' : 'Create'
+          } Automation`,
+          duration: 4500,
+          showToast: true,
+          position: 'top',
+        });
+        dispatch(automationCreateReduxLoadingFalse());
+      });
+  };
   return (
     <HeaderContainer
       headerTitle={`${!lod.isEmpty(from) ? from : 'Create New'} Automation`}
@@ -159,24 +229,32 @@ const AutomationCreateEditPage = () => {
                         position: 'top',
                       });
                     }
+                    const {arraySummary} = automationCreateSummary({
+                      getAllData: automationDefaultFormData,
+                      dataContainerValue: containerValue,
+                    });
+                    setDataSummary(arraySummary);
+                    const findWrapperTwo = lod.find(
+                      arraySummary,
+                      ({containerType}) => {
+                        return containerType === 'WrapperTwo';
+                      },
+                    );
+                    setWrapperTwoFind(findWrapperTwo);
                   }
-                  const {arraySummary} = automationCreateSummary({
-                    getAllData: automationDefaultFormData,
-                    dataContainerValue: containerValue,
-                  });
-                  setDataSummary(arraySummary);
-                  const findWrapperTwo = lod.find(
-                    arraySummary,
-                    ({containerType}) => {
-                      return containerType === 'WrapperTwo';
-                    },
-                  );
-                  setWrapperTwoFind(findWrapperTwo);
+                  if (indexForm === 3) {
+                    const {getAllParams} = automationCreateSummary({
+                      getAllData: automationDefaultFormData,
+                      dataContainerValue: containerValue,
+                    });
+                    onSubmit(getAllParams);
+                  }
                 }}
               />
             </View>
           </View>
         </ScrollView>
+        {loading && <Loading />}
       </View>
     </HeaderContainer>
   );

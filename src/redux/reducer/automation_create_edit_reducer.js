@@ -270,6 +270,7 @@ const automationDefaultFormData = [
             },
             validationConfig: {
               isRequired: true,
+              emailType: true,
             },
           },
           {
@@ -299,6 +300,7 @@ const automationDefaultFormData = [
             },
             validationConfig: {
               isRequired: true,
+              emailType: true,
             },
           },
           {
@@ -327,6 +329,7 @@ const automationDefaultFormData = [
     ],
   },
 ];
+
 const containerValue = {
   dataDummy: [
     {
@@ -431,6 +434,13 @@ const automation_create_edit_reducer = (state = initialState, action) => {
         errorText: '',
       };
     }
+    case reduxString.AUTOMATION_CREATE_REDUX_LOADING_FALSE: {
+      return {
+        ...state,
+        loading: false,
+        errorText: '',
+      };
+    }
     case reduxString.AUTOMATION_CREATE_REDUX_ERROR: {
       return {
         ...state,
@@ -462,7 +472,7 @@ const automation_create_edit_reducer = (state = initialState, action) => {
                 label:
                   action.result?.result?.category === 'businessAutomation'
                     ? 'Business Automation'
-                    : action.result?.category === 'fraudPrevention'
+                    : action.result?.result?.category === 'fraudPrevention'
                     ? 'Fraud Prevention'
                     : '',
               },

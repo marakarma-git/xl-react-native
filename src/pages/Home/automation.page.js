@@ -15,6 +15,7 @@ import FilterActionLabel from '../../components/subscription/filterActionLabel';
 import Helper from '../../helpers/helper';
 import {
   automationDynamicReset,
+  automationElementStaticMinusOne,
   automationGenerateParams,
   automationUpdateBundleArray,
 } from '../../redux/action/automation_array_header_action';
@@ -147,6 +148,7 @@ const AutomationPage = () => {
                   }}
                 />
                 <FilterActionLabel
+                  forceRemoveActions={true}
                   total={Helper.numberWithDot(automation_elements_static)}
                   filtered={
                     automation_applied_filter &&
@@ -225,6 +227,7 @@ const AutomationPage = () => {
                       page_params: 0,
                     }),
                   );
+                  dispatch(automationElementStaticMinusOne());
                   alert(`Success delete automation with id ${autoId}`);
                 } else {
                   setLoadingDetail(false);

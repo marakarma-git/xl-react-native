@@ -21,6 +21,18 @@ const initialState = {
 };
 const automation_get_automation_reducer = (state = initialState, action) => {
   switch (action.type) {
+    case reduxString.AUTOMATION_ELEMENT_STATIC_MINUS_ONE: {
+      return {
+        ...state,
+        automation_elements_static: state.automation_elements_static - 1,
+      };
+    }
+    case reduxString.AUTOMATION_ELEMENT_STATIC_PLUS_ONE: {
+      return {
+        ...state,
+        automation_elements_static: state.automation_elements_static + 1,
+      };
+    }
     case reduxString.AUTOMATION_GET_AUTOMATION_RELOAD: {
       return {
         ...state,

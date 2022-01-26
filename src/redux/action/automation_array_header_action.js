@@ -74,6 +74,16 @@ const automationResetParams = () => {
     type: reduxString.AUTOMATION_RESET_PARAMS,
   };
 };
+const automationElementStaticPlusOne = () => {
+  return {
+    type: reduxString.AUTOMATION_ELEMENT_STATIC_PLUS_ONE,
+  };
+};
+const automationElementStaticMinusOne = () => {
+  return {
+    type: reduxString.AUTOMATION_ELEMENT_STATIC_MINUS_ONE,
+  };
+};
 const getListRuleCategory = () => {
   return async (dispatch, getState) => {
     dispatch(
@@ -168,4 +178,6 @@ export {
   automationResetSearchText,
   automationUpdateBundleArray,
   automationDynamicReset,
+  automationElementStaticPlusOne,
+  automationElementStaticMinusOne,
 };

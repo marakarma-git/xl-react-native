@@ -28,6 +28,11 @@ const automationCreateReduxLoading = () => {
     type: reduxString.AUTOMATION_CREATE_REDUX_LOADING,
   };
 };
+const automationCreateReduxLoadingFalse = () => {
+  return {
+    type: reduxString.AUTOMATION_CREATE_REDUX_LOADING_FALSE,
+  };
+};
 const automationCreateReduxError = ({errorText}) => {
   return {
     type: reduxString.AUTOMATION_CREATE_REDUX_ERROR,
@@ -73,7 +78,7 @@ const automationValidationForm = ({dataForm, dataContainerValue}) => {
         let containerInput = [];
         dataInput.map((subItem) => {
           const {validationConfig, paramsDefault, titleInput} = subItem || {};
-          const {isRequired, overrideTitleInput, forceSendValue} =
+          const {isRequired, overrideTitleInput, forceSendValue, emailType} =
             validationConfig || false;
           if (
             (isRequired &&
@@ -88,6 +93,15 @@ const automationValidationForm = ({dataForm, dataContainerValue}) => {
               : dataContainerValue[`${paramsDefault}`];
             containerInput.push(subItem);
 
+            if (
+              emailType === true &&
+              !/\S+@\S+\.\S+/.test(valueIsObject || forceSendValue)
+            ) {
+              containerErrorString.push(
+                `Field Email ${overrideTitleInput || titleInput} Format False `,
+              );
+              counterFalse = counterFalse + 1;
+            }
             if (forceSendValue) {
               containerParams[`${paramsDefault}`] =
                 valueIsObject || forceSendValue;
@@ -266,6 +280,8 @@ export {
   automationCreateSummary,
   callAutomationEnterprise,
   callAutomationActiveEnterprise,
+  automationCreateReduxLoadingFalse,
+  automationCreateReduxLoading,
 };
 
 // NOTES AUTOMATION
