@@ -53,7 +53,7 @@ const requestHandler = async (request) => {
       }
     }
     // ADD HEADERS
-    request.headers['X-CHANNEL'] = 'Web Portal';
+    request.headers['X-CHANNEL'] = 'Mobile';
     request.headers['X-DESCRIPTION'] = activityLogHandler.showDescription(
       privDetail.activityLog,
       descSuffix,
