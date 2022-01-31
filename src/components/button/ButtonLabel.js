@@ -27,6 +27,18 @@ const ButtonLabelComponent = (props) => {
   } = props;
   return (
     <View style={{flexDirection: 'row', alignItems: 'center'}}>
+      {(total || filtered || selected) && (
+        <Text
+          fontType={'bold'}
+          style={[
+            subscriptionStyle.textMenuTotal,
+            {marginTop: typeTwo ? 6 : 0, marginLeft: typeTwo ? 0 : 12},
+          ]}>
+          {`${total ? `Total: ${total}` : ''} ${
+            filtered ? `| Filtered: ${filtered}` : ''
+          } ${selected ? `| Selected: ${selected}` : ''}`}
+        </Text>
+      )}
       <TouchableOpacity
         disabled={isLoading}
         style={[
@@ -49,18 +61,6 @@ const ButtonLabelComponent = (props) => {
           </Text>
         )}
       </TouchableOpacity>
-      {(total || filtered || selected) && (
-        <Text
-          fontType={'bold'}
-          style={[
-            subscriptionStyle.textMenuTotal,
-            {marginTop: typeTwo ? 6 : 0, marginLeft: typeTwo ? 0 : 12},
-          ]}>
-          {`${total ? `Total: ${total}` : ''} ${
-            filtered ? `| Filtered: ${filtered}` : ''
-          } ${selected ? `| Selected: ${selected}` : ''}`}
-        </Text>
-      )}
     </View>
   );
 };
