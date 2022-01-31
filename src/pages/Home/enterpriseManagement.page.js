@@ -109,7 +109,7 @@ const EnterpriseManagement = () => {
                   }}
                 />
                 <ButtonLabelComponent
-                  buttonText={'Create Enterprise'}
+                  buttonText={'Onboard Enterprise'}
                   buttonAction={() =>
                     navigation.navigate('EnterpriseManagementOnboard')
                   }
