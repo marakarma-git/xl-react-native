@@ -122,6 +122,13 @@ const getGeoProvince = (rootOfMap) => {
     dispatch(geoDistributionLoading());
     const {generatedParams} =
       (await getState().geo_distribution_filter_reducer) || {};
+    const customHeaders = {
+      headers: {
+        activityId: generatedParams ? 'ANP-16' : 'ANP-15',
+        showParams: !!generatedParams,
+        excludeParamsKey: 'page|size',
+      },
+    };
     httpRequest
       .get(
         `/dcp/sim/getTotalSimByLocation?zoomLevel=4${
@@ -129,6 +136,7 @@ const getGeoProvince = (rootOfMap) => {
         }`
           .split(' ')
           .join('+'),
+        customHeaders,
       )
       .then(({data}) => {
         const {result, statusCode} = data || {};

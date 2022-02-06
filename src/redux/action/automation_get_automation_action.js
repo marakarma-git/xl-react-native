@@ -106,6 +106,13 @@ const getAutomation = (paginate) => {
         }
       }
     };
+    const customHeaders = {
+      headers: {
+        activityId: searchText || generatedParams ? 'AUP-5' : 'AUP-4',
+        showParams: !!(searchText || generatedParams),
+        excludeParamsKey: 'page|size',
+      },
+    };
     httpRequest
       .get(
         `/dcp/automation/getListAutomation?page=${getPage}&size=${getSize}${
@@ -113,6 +120,7 @@ const getAutomation = (paginate) => {
         }${getSortBy() ? `&sort=${getOrderBy()}` : ''}${generatedParams}`
           .split(' ')
           .join('+'),
+        customHeaders,
       )
       .then(({data}) => {
         const {result, statusCode} = data || {};

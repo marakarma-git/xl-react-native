@@ -80,6 +80,21 @@ const SmsA2pEdit = ({route}) => {
     if (errorCount === 0) {
       const getValueObject = Helper.createObjectPostEdit(dataA2pEdit);
       setLocalLoading(true);
+      const customHeaders = {
+        activityId:
+          layoutType === 'Create'
+            ? 'AP-23'
+            : layoutType === 'Edit'
+            ? 'AP-24'
+            : '',
+        descSuffix: `${
+          layoutType === 'Create'
+            ? dataA2pEdit[0].for_layout_edit_only?.edit_value?.label
+            : layoutType === 'Edit'
+            ? dataA2pEdit[1].for_layout_edit_only?.edit_value?.label
+            : ''
+        }`,
+      };
       httpRequest({
         method: 'post',
         url: `/dcp/a2pConfiguration/${
@@ -93,6 +108,7 @@ const SmsA2pEdit = ({route}) => {
         }`,
         headers: {
           'Content-Type': 'application/json',
+          ...customHeaders,
         },
         data: getValueObject,
       })

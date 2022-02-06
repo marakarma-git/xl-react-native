@@ -108,6 +108,13 @@ const callSubscriptionPackage = (paginate) => {
         }
       }
     };
+    const customHeaders = {
+      headers: {
+        activityId: searchText || generatedParams ? 'SP-1' : 'AP-18',
+        showParams: !!(searchText || generatedParams),
+        excludeParamsKey: 'page|size',
+      },
+    };
     httpRequest
       .get(
         `/dcp/package/getSubscriptionPackage?page=${getPage}&size=${getSize}${
@@ -117,6 +124,7 @@ const callSubscriptionPackage = (paginate) => {
         }${generatedParams}`
           .split(' ')
           .join('+'),
+        customHeaders,
       )
       .then(({data}) => {
         const {result, statusCode} = data || {};

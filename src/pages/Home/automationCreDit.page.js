@@ -69,6 +69,10 @@ const AutomationCreateEditPage = () => {
         autoId: result?.autoId,
       };
     }
+    const customHeaders = {
+      activityId: !lod.isEmpty(result) ? 'AUP-3' : 'AUP-1',
+      descSuffix: `${containerValue?.enterpriseId?.label}`,
+    };
     httpRequest({
       method: 'post',
       url: `/dcp/automation/${
@@ -77,6 +81,10 @@ const AutomationCreateEditPage = () => {
       data: {
         ...dataParameter,
         enterpriseId: containerValue.enterpriseId?.value,
+      },
+      headers: {
+        'Content-Type': 'application/json',
+        ...customHeaders,
       },
     })
       .then(({data}) => {

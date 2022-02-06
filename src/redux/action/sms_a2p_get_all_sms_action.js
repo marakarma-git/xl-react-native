@@ -2,6 +2,7 @@ import reduxString from '../reduxString';
 import {dataMatcherArray2D} from './get_sim_inventory_action';
 import httpRequest from '../../constant/axiosInstance';
 import {useToastHooks} from '../../customHooks/customHooks';
+import lod from 'lodash';
 
 const smsA2pGetSmsLoading = () => {
   return {
@@ -107,6 +108,13 @@ const getSmsA2p = (paginate) => {
         }
       }
     };
+    const customHeaders = {
+      headers: {
+        activityId: searchText || generatedParams ? 'AP-27' : 'AP-28',
+        showParams: !!(searchText || generatedParams),
+        excludeParamsKey: 'page|size',
+      },
+    };
     httpRequest
       .get(
         `/dcp/a2pConfiguration/getA2PConfigurationList?page=${getPage}&size=${getSize}&keyword=${searchText}${
@@ -114,6 +122,7 @@ const getSmsA2p = (paginate) => {
         }${getSortBy() ? `&sort=${getOrderBy()}` : ''}${generatedParams}`
           .split(' ')
           .join('+'),
+        customHeaders,
       )
       .then(({data}) => {
         const {result, statusCode} = data || {};
@@ -156,11 +165,19 @@ const getSmsA2p = (paginate) => {
 };
 const deleteSmsA2p = (localValue) => {
   return async (dispatch) => {
-    const {getConfigId, showToast} = localValue || '';
+    const {getConfigId, showToast, allConfig} = localValue || '';
+    const {enterpriseName} = allConfig || '';
     dispatch(smsA2pGetSmsLoading());
+    const customHeaders = {
+      activityId: 'AP-25',
+      descSuffix: `${enterpriseName}`,
+    };
     httpRequest({
       method: 'post',
       url: '/dcp/a2pConfiguration/DeleteA2PConfiguration',
+      headers: {
+        ...customHeaders,
+      },
       data: {
         configId: [getConfigId],
       },

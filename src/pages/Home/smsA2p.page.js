@@ -50,6 +50,7 @@ const SmsA2p = () => {
   const [showMenu, setShowMenu] = useState(false);
   const [showModal, setShowModal] = useState(false);
   const [thisConfigId, setThisConfigId] = useState('');
+  const [allConfig, setAllConfig] = useState({});
   const {imageBase64} = useSelector((state) => state.enterprise_reducer);
   const {dataSmsHeader, searchText, generatedParams, appliedFilterSms} =
     useSelector((state) => state.sms_a2p_array_header_reducer);
@@ -100,6 +101,7 @@ const SmsA2p = () => {
             const {configId} = item || '';
             setShowModal(true);
             setThisConfigId(configId);
+            setAllConfig(item);
           }}
           isScrollView={true}
           stickHeaderIndices={[1]}
@@ -245,7 +247,9 @@ const SmsA2p = () => {
             'Are you sure want to delete this SMS A2P Configuration?'
           }
           confirmAction={() => {
-            dispatch(deleteSmsA2p({getConfigId: thisConfigId, showToast}));
+            dispatch(
+              deleteSmsA2p({getConfigId: thisConfigId, showToast, allConfig}),
+            );
             setShowModal(false);
           }}
         />

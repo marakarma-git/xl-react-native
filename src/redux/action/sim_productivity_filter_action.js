@@ -174,6 +174,13 @@ const simGetChart = () => {
     dispatch(simProductivityChartLoading());
     const {generatedParams} =
       (await getState().sim_productivity_filter_reducer) || {};
+    const customHeaders = {
+      headers: {
+        activityId: generatedParams ? 'AP-27' : 'AP-28',
+        showParams: !!generatedParams,
+        excludeParamsKey: 'page|size',
+      },
+    };
     httpRequest
       .get(
         `/dcp/analytics/getSimProductivityStatistics${
@@ -181,6 +188,7 @@ const simGetChart = () => {
         }`
           .split(' ')
           .join('+'),
+        customHeaders,
       )
       .then(({data}) => {
         const {result, statusCode} = data || {};

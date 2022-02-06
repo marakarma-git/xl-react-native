@@ -271,11 +271,19 @@ const callSimInventory = (paginate) => {
         }
       }
     };
+    const customHeaders = {
+      headers: {
+        activityId: searchText || generatedParams ? 'SP-1' : 'AP-18',
+        showParams: !!(searchText || generatedParams),
+        excludeParamsKey: 'page|size',
+      },
+    };
     httpRequest
       .get(
         `/dcp/sim/getSimInventory?page=${getPage()}&size=${getSize}&keyword=${searchText}&sort=${getOrderBy()}&order=${getSortBy()}${generatedParams}`
           .split(' ')
           .join('+'),
+        customHeaders,
       )
       .then(({data}) => {
         const {result, statusCode} = data || {};

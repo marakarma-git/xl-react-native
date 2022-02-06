@@ -23,10 +23,13 @@ import ModalMenuPicker from '../../components/modal/ModalMenuPicker';
 import {dataMatcherArray2D} from '../../redux/action/get_sim_inventory_action';
 import {useNavigation} from '@react-navigation/native';
 import httpRequest from '../../constant/axiosInstance';
+import lod from 'lodash';
+import {useToastHooks} from '../../customHooks/customHooks';
 
 const AutomationPage = () => {
   const dispatch = useDispatch();
   const navigation = useNavigation();
+  const showToast = useToastHooks();
   const [loadingDetail, setLoadingDetail] = useState(false);
   const [firstRender, setFirstRender] = useState(true);
   const [showMenu, setShowMenu] = useState(false);
@@ -212,11 +215,18 @@ const AutomationPage = () => {
             });
           }}
           onPressDelete={({item}) => {
-            const {autoId} = item || {};
+            const {autoId, enterpriseName} = item || {};
+            const customHeaders = {
+              activityId: 'AUP-2',
+              descSuffix: enterpriseName,
+            };
             setLoadingDetail(true);
             httpRequest({
               method: 'post',
               url: `/dcp/automation/deleteAutomation?automationId=${autoId}`,
+              headers: {
+                ...customHeaders,
+              },
             })
               .then(({data}) => {
                 const {statusCode} = data;
@@ -228,7 +238,14 @@ const AutomationPage = () => {
                     }),
                   );
                   dispatch(automationElementStaticMinusOne());
-                  alert(`Success delete automation with id ${autoId}`);
+                  showToast({
+                    title: 'Success',
+                    type: 'success',
+                    message: `Success Delete Automation ${enterpriseName}`,
+                    duration: 4500,
+                    showToast: true,
+                    position: 'top',
+                  });
                 } else {
                   setLoadingDetail(false);
                   Alert.alert(

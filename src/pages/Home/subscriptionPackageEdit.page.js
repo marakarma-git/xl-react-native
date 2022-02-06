@@ -56,10 +56,17 @@ const SubscriptionPackageEdit = ({route}) => {
       },
       true,
     );
+    const customHeaders = {
+      activityId: 'AP-21',
+      descSuffix: `packageId ${dataSubscriptionEdit[0]?.item?.packageId}`,
+    };
     httpRequest({
       method: 'post',
       url: '/dcp/package/updateSubscriptionPackage',
       data: createData,
+      headers: {
+        ...customHeaders,
+      },
     })
       .then(({data}) => {
         const {statusCode, statusDescription} = data || {};
