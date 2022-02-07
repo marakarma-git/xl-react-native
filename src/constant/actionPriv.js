@@ -241,7 +241,7 @@ const ADMINISTRATION_PRIVILEDGE_ID = [
     privId: '50b49a7c-8d01-11ea-bc55-0242ac130003',
     menuName: 'Subscription Package',
     actionName: 'Update',
-    activityLog: 'Update Data 1 by 1',
+    activityLog: 'Update data for : ',
   },
   {
     activityId: 'AP-22',
