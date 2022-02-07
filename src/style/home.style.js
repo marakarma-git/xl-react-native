@@ -265,11 +265,11 @@ export default {
     width: '100%',
     justifyContent: 'center',
     alignItems: 'center',
-    marginVertical: 20,
+    marginVertical: 10,
   },
   loaderText: {
     paddingVertical: 10,
     color: colors.gray_400,
-    fontSize: 12,
+    fontSize: 13,
   },
 };

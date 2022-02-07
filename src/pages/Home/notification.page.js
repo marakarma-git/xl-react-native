@@ -32,6 +32,7 @@ const NotificationPage = ({navigation}) => {
   const [activeMenu, setActiveMenu] = useState('All');
   const [isScrolled, setIsScrolled] = useState(false);
   const [isLoadMore, setIsLoadMore] = useState(false);
+  const [listEndText, setListEndText] = useState(null);
 
   const notificationList = ({item}) => {
     return (
@@ -58,6 +59,7 @@ const NotificationPage = ({navigation}) => {
   const loadMoreHandler = (info) => {
     if (limitedListNotification.length < listNotification.length) {
       if (isScrolled) {
+        setListEndText(null);
         setIsLoadMore(true);
         setTimeout(() => {
           setIsLoadMore(false);
@@ -65,6 +67,8 @@ const NotificationPage = ({navigation}) => {
           dispatch(limitListNotification(listNotification));
         }, 2000);
       }
+    } else {
+      setListEndText('- You have reach end of message -');
     }
   };
   useEffect(() => {
@@ -86,6 +90,7 @@ const NotificationPage = ({navigation}) => {
     const pageBlur = navigation.addListener('blur', () => {
       setFirstLoad(true);
       setIsScrolled(false);
+      setListEndText(null);
       dispatch(resetNotificationLimit());
       dispatch(limitListNotification(listNotification));
     });
@@ -122,9 +127,14 @@ const NotificationPage = ({navigation}) => {
                 <Text style={style.loaderText}>Loading...</Text>
               </View>
             )}
+            {listEndText && (
+              <View style={style.loader}>
+                <Text style={style.loaderText}>{listEndText}</Text>
+              </View>
+            )}
           </>
         }
-        ListFooterComponentStyle={{marginBottom: 50}}
+        ListFooterComponentStyle={{marginBottom: 20}}
       />
     </View>
   );
