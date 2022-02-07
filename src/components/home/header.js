@@ -12,23 +12,18 @@ import {useNavigation} from '@react-navigation/native';
 const HeaderComponent = (props) => {
   const navigation = useNavigation();
   const notification = useSelector(
-    (state) => state.notification_reducer.listNotification,
+    (state) => state.notification_reducer.bellCountNotification,
   );
 
   const generateNotif = () => {
-    if (notification.length > 0) {
-      const checkUnreadNotif = notification.filter(
-        (notif) => notif.readStatus == false,
+    if (notification > 0) {
+      return (
+        <View style={homeStyle.notifCircle}>
+          <Text style={homeStyle.notifText}>
+            {notification > 99 ? '99+' : notification}
+          </Text>
+        </View>
       );
-      if (checkUnreadNotif.length > 0) {
-        return (
-          <View style={homeStyle.notifCircle}>
-            <Text style={homeStyle.notifText}>
-              {checkUnreadNotif.length > 99 ? '99+' : checkUnreadNotif.length}
-            </Text>
-          </View>
-        );
-      }
     }
   };
 
