@@ -113,13 +113,6 @@ const getAutomation = (paginate) => {
         excludeParamsKey: 'page|size',
       },
     };
-    alert(
-      `/dcp/automation/getListAutomation?page=${getPage}&size=${getSize}${
-        getSortBy() ? `&order=${getSortBy()}` : ''
-      }${getSortBy() ? `&sort=${getOrderBy()}` : ''}${generatedParams}`
-        .split(' ')
-        .join('+'),
-    );
     httpRequest
       .get(
         `/dcp/automation/getListAutomation?page=${getPage}&size=${getSize}${
