@@ -8,7 +8,7 @@ const dataAutomationHeader = [
     cellType: 'TableCellHeader',
     cellRowType: 'TableCellEditDelete',
     config: {
-      label: 'Config',
+      label: 'Actions',
       width: 75,
       doNotShowOnFilter: true,
     },
@@ -29,6 +29,20 @@ const dataAutomationHeader = [
       doNotShowOnFilter: true,
       isTouchable: true,
       textLink: true,
+    },
+    shown: true,
+    sort_by_filter: 0,
+  },
+  {
+    formId: 'rules-name-hard-code',
+    api_id: 'rulesName',
+    params: '&rulesName=',
+    cellType: 'TableCellHeaderAscDesc',
+    cellRowType: 'TableCellText',
+    config: {
+      label: 'Rule Name',
+      width: 280,
+      isTouchable: true,
     },
     shown: true,
     sort_by_filter: 0,
@@ -58,6 +72,7 @@ const dataAutomationHeader = [
       label: 'Created Date',
       superType: 'DATE',
       isTouchable: true,
+      forceHideColumn: true,
     },
     shown: true,
     sort_by_filter: 0,
@@ -83,8 +98,8 @@ const automation_array_header_reducer = (state = initialState, action) => {
       };
     }
     case reduxString.AUTOMATION_CHANGE_CHECK_HEADER: {
-      state.dataAutomationHeader[0].valueCheck = !state.dataAutomationHeader[0]
-        .valueCheck;
+      state.dataAutomationHeader[0].valueCheck =
+        !state.dataAutomationHeader[0].valueCheck;
       return {
         ...state,
         dataAutomationHeader: state.dataAutomationHeader,
@@ -156,7 +171,7 @@ const automation_array_header_reducer = (state = initialState, action) => {
     case reduxString.AUTOMATION_UPDATE_BUNDLE_ARRAY: {
       return {
         ...state,
-        dataAutomationHeader: action.data,
+        dataAutomationHeader: [...action.data],
       };
     }
     case reduxString.AUTOMATION_SET_SEARCH_TEXT: {

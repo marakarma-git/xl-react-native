@@ -33,10 +33,10 @@ const automationGetAutomationReset = () => {
     type: reduxString.AUTOMATION_GET_AUTOMATION_RESET,
   };
 };
-const automationSetDataAutomationGenerated = (data) => {
+const automationSetDataAutomationGenerated = ({dataAutomationGenerated}) => {
   return {
     type: reduxString.AUTOMATION_SET_DATA_AUTOMATION_GENERATED,
-    dataAutomationGenerated: data,
+    dataAutomationGenerated,
   };
 };
 const automationResetDataAutomationGenerated = () => {
@@ -113,6 +113,13 @@ const getAutomation = (paginate) => {
         excludeParamsKey: 'page|size',
       },
     };
+    alert(
+      `/dcp/automation/getListAutomation?page=${getPage}&size=${getSize}${
+        getSortBy() ? `&order=${getSortBy()}` : ''
+      }${getSortBy() ? `&sort=${getOrderBy()}` : ''}${generatedParams}`
+        .split(' ')
+        .join('+'),
+    );
     httpRequest
       .get(
         `/dcp/automation/getListAutomation?page=${getPage}&size=${getSize}${
@@ -153,7 +160,6 @@ const getAutomation = (paginate) => {
         }
       })
       .catch((error) => {
-        console.error(error);
         dispatch(
           automationGetAutomationFailed({
             errorText: 'Failed, to get automation',

@@ -127,7 +127,7 @@ const getListRuleCategory = () => {
   };
 };
 const getEnterpriseAutomation = () => {
-  return async (dispatch, getState) => {
+  return async (dispatch) => {
     dispatch(
       automationDynamicLoading({
         formId: 'enterprise-name-hard-code',
@@ -139,7 +139,7 @@ const getEnterpriseAutomation = () => {
         if (statusCode === 0) {
           const changeArray = result.map(
             ({enterpriseId: thisEnterprise, enterpriseName}) => ({
-              value: thisEnterprise,
+              value: enterpriseName + `&enterpriseId=${thisEnterprise}`,
               label: enterpriseName,
             }),
           );

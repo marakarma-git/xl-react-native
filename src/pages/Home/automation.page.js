@@ -23,7 +23,6 @@ import ModalMenuPicker from '../../components/modal/ModalMenuPicker';
 import {dataMatcherArray2D} from '../../redux/action/get_sim_inventory_action';
 import {useNavigation} from '@react-navigation/native';
 import httpRequest from '../../constant/axiosInstance';
-import lod from 'lodash';
 import {useToastHooks} from '../../customHooks/customHooks';
 
 const AutomationPage = () => {
@@ -140,7 +139,6 @@ const AutomationPage = () => {
                   showMenu={showMenu}
                   onClickColumn={() => setShowMenu((state) => !state)}
                   navigateTo={'AutomationFilter'}
-                  placeholder={'Nanti ini dihapus'}
                 />
                 <AppliedFilter
                   data={appliedFilterAutomation}
