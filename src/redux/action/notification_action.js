@@ -25,14 +25,39 @@ const increaseNotificationLimit = (increaseNumber) => ({
   payload: Number(increaseNumber),
 });
 
-const limitListNotification = (notificationData) => {
+const limitListNotification = (notificationData, type = 'init') => {
   return async (dispatch, getState) => {
-    const {showNotificationLimit} = getState().notification_reducer;
-    const newLimitedNotificationList = [...notificationData].slice(
-      0,
+    const {
       showNotificationLimit,
+      limitedListNotification,
+      limitedHighNotification,
+      limitedMediumNotification,
+      limitedLowNotification,
+    } = getState().notification_reducer;
+    const limitedListAllNotification =
+      type === 'init' || type === 'all'
+        ? [...notificationData.listAll].slice(0, showNotificationLimit)
+        : limitedListNotification;
+    const limitedListHighNotification =
+      type === 'init' || type === 'high'
+        ? [...notificationData.listHigh].slice(0, showNotificationLimit)
+        : limitedHighNotification;
+    const limitedListMediumNotification =
+      type === 'init' || type === 'medium'
+        ? [...notificationData.listMedium].slice(0, showNotificationLimit)
+        : limitedMediumNotification;
+    const limitedListLowNotification =
+      type === 'init' || type === 'low'
+        ? [...notificationData.listLow].slice(0, showNotificationLimit)
+        : limitedLowNotification;
+    dispatch(
+      setLimitedNotification({
+        listAll: limitedListAllNotification,
+        listHigh: limitedListHighNotification,
+        listMedium: limitedListMediumNotification,
+        listLow: limitedListLowNotification,
+      }),
     );
-    dispatch(setLimitedNotification(newLimitedNotificationList));
   };
 };
 
@@ -42,20 +67,41 @@ const receivePushNotification = (notification) => {
       high: 0,
       medium: 0,
       low: 0,
+      listHigh: [],
+      listMedium: [],
+      listLow: [],
     };
+    const {listHigh, listMedium, listLow} = severityLevel;
     [...notification].map((notif) => {
       if (notif.criticalLevel) {
         const {criticalLevel} = notif;
-        if (criticalLevel === 'high') severityLevel.high++;
-        if (criticalLevel === 'medium') severityLevel.medium++;
-        if (criticalLevel === 'low') severityLevel.low++;
+        if (criticalLevel === 'high')
+          severityLevel.high++, severityLevel.listHigh.push(notif);
+        if (criticalLevel === 'medium')
+          severityLevel.medium++, severityLevel.listMedium.push(notif);
+        if (criticalLevel === 'low')
+          severityLevel.low++, severityLevel.listLow.push(notif);
       } else {
         severityLevel.low++;
       }
     });
-    dispatch(addNotification(notification));
+    dispatch(
+      addNotification({
+        listAll: notification,
+        listHigh,
+        listMedium,
+        listLow,
+      }),
+    );
     dispatch(countSeverityLevel(severityLevel));
-    dispatch(limitListNotification(notification));
+    dispatch(
+      limitListNotification({
+        listAll: notification,
+        listHigh,
+        listMedium,
+        listLow,
+      }),
+    );
   };
 };
 
@@ -66,6 +112,16 @@ const savePushNotifToken = (token) => ({
 
 const readNotification = (payload) => ({
   type: 'READ_NOTIFICATION',
+  payload,
+});
+
+const countBellNotification = (payload) => ({
+  type: 'COUNT_BELL_NOTIFICATION',
+  payload,
+});
+
+const setBellNotification = (payload) => ({
+  type: 'SET_BELL_NOTIFICATION',
   payload,
 });
 
@@ -92,12 +148,19 @@ const saveUserToken = (token, username, enterpriseId) => {
   };
 };
 
-const readNotificationApi = (username) => {
+const readNotificationApi = (
+  limitedListNotification,
+  listNotif,
+  type = 'all',
+) => {
   return async (dispatch, getState) => {
+    const {username} = getState().auth_reducer;
     const {
-      limitedListNotification,
-      listNotification,
       showNotificationLimit,
+      listNotification,
+      highNotification,
+      mediumNotification,
+      lowNotification,
     } = getState().notification_reducer;
     const pushMessageIds = limitedListNotification.map(
       (notif) => notif.pushMessageNotifId,
@@ -117,12 +180,22 @@ const readNotificationApi = (username) => {
         const {statusCode, result} = data;
         if (statusCode === 0 && result) {
           let readByLimit = 0;
-          const newNotificationData = [...listNotification];
+          const newNotificationData = [...listNotif];
           newNotificationData.map((notif) => {
             if (readByLimit < showNotificationLimit) notif.readStatus = true;
             readByLimit++;
           });
-          dispatch(addNotification(newNotificationData));
+          dispatch(countBellNotification(pushMessageIds.length));
+          dispatch(
+            addNotification({
+              listAll: type === 'all' ? newNotificationData : listNotification,
+              listHigh:
+                type === 'high' ? newNotificationData : highNotification,
+              listMedium:
+                type === 'medium' ? newNotificationData : mediumNotification,
+              listLow: type === 'low' ? newNotificationData : lowNotification,
+            }),
+          );
         }
       }
     } catch (error) {
@@ -142,7 +215,9 @@ const getListNotification = (username, limit = 100) => {
       );
       if (data) {
         const {statusCode, result} = data;
-        if (statusCode === 0) dispatch(receivePushNotification(result));
+        if (statusCode === 0)
+          dispatch(receivePushNotification(result)),
+            dispatch(setBellNotification(result.length));
       }
     } catch (error) {
       dispatch(setRequestError(error.response.data));
