@@ -215,9 +215,10 @@ const getListNotification = (username, limit = 100) => {
       );
       if (data) {
         const {statusCode, result} = data;
+        const checkUnread = result.filter((data) => data.readStatus === false);
         if (statusCode === 0)
           dispatch(receivePushNotification(result)),
-            dispatch(setBellNotification(result.length));
+            dispatch(setBellNotification(checkUnread.length));
       }
     } catch (error) {
       dispatch(setRequestError(error.response.data));
