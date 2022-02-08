@@ -36,6 +36,9 @@ const AutomationCreateEditPage = () => {
   const {automationDefaultFormData, containerValue, loading} = useSelector(
     (state) => state.automation_create_edit_reducer,
   );
+  const getCustomerNumber = useSelector(
+    (state) => state.auth_reducer.data?.customerNo,
+  );
   useEffect(() => {
     dispatch(callAutomationActiveEnterprise());
     if (!lod.isEmpty(result)) {
@@ -63,13 +66,27 @@ const AutomationCreateEditPage = () => {
   }, [BackHandler, from]);
   const onSubmit = (dataParameter = {}) => {
     dispatch(automationCreateReduxLoading());
+    dataParameter = {
+      isBulkNotification: false,
+      isDowngrade: false,
+      isIndividualNotification: false,
+      isUpgradeBulk: false,
+      isUpgradeIndividual: false,
+      ...dataParameter,
+    };
     if (!lod.isEmpty(result)) {
       dataParameter = {
         ...dataParameter,
         autoId: result?.autoId,
       };
     }
-    const customHeaders = {
+    if (lod.isEmpty(result)) {
+      dataParameter = {
+        ...dataParameter,
+        customerNo: getCustomerNumber,
+      };
+    }
+    let customHeaders = {
       activityId: !lod.isEmpty(result) ? 'AUP-3' : 'AUP-1',
       descSuffix: `${containerValue?.enterpriseId?.label}`,
     };
