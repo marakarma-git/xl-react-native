@@ -1,40 +1,40 @@
-import {
-  VictoryLabel,
-  VictoryPie,
-  VictoryVoronoiContainer,
-} from 'victory-native';
+import {VictoryPie, VictoryTooltip} from 'victory-native';
 import {analyticStyle} from '../../style';
 import Svg from 'react-native-svg';
-import React, {useEffect, useState} from 'react';
+import React, {useState} from 'react';
 import PropTypes from 'prop-types';
+import {colors} from '../../constant/color';
+import {View} from 'react-native';
+import {Text} from '..';
+import Helper from '../../helpers/helper';
 const SimChart = (props) => {
-  const [localBool, setLocalBool] = useState(false);
   const [dataDatum, setDataDatum] = useState({});
+  const [activeIndex, setActiveIndex] = useState(null);
+  const [afterLongPress, setAfterLongPress] = useState(false);
   const {widthChart, onPressPie, data, dataColor} = props || {};
   const isNoUsage = data[0].label === 'No Usage' && data.length === 1;
-  useEffect(() => {
-    if (localBool === true) {
-      onPressPie(dataDatum);
-    }
-  }, [dataDatum]);
+  const _onPressIn = (thisData) => {
+    setActiveIndex(thisData?.index);
+    return {active: undefined};
+  };
+
   const _onPressPie = (thisData) => {
-    setLocalBool(true);
-    setDataDatum({
-      ...thisData,
-    });
+    if (!afterLongPress) onPressPie(thisData);
+    setAfterLongPress(false);
     return {
       active: undefined,
     };
   };
-  const _onLongPress = (a) => {
-    setLocalBool(false);
+  const _onLongPress = (props) => {
+    setAfterLongPress(true);
     return {
-      active: true,
+      active: props?.index === activeIndex && !props?.active ? true : undefined,
     };
   };
   return (
     <Svg width={widthChart - widthChart * 0.1} height={widthChart}>
       <VictoryPie
+        labels={() => 'Hello'}
         colorScale={dataColor}
         width={widthChart - widthChart * 0.1}
         height={widthChart}
@@ -47,7 +47,7 @@ const SimChart = (props) => {
                 return [
                   {
                     target: 'labels',
-                    mutation: _onPressPie,
+                    mutation: _onPressIn,
                   },
                 ];
               },
@@ -55,11 +55,7 @@ const SimChart = (props) => {
                 return [
                   {
                     target: 'labels',
-                    mutation: () => {
-                      return {
-                        active: undefined,
-                      };
-                    },
+                    mutation: _onPressPie,
                   },
                 ];
               },
@@ -77,32 +73,31 @@ const SimChart = (props) => {
         ]}
         data={!isNoUsage ? data : [{y: 100}]}
         labelComponent={
-          <VictoryLabel
-            dy={15}
-            dx={10}
-            text={({datum}) => [`${datum.label}`, `(${datum.percentage}%)  `]}
-            verticalAnchor={'middle'}
-            style={analyticStyle.labelChart}
-          />
-        }
-        containerComponent={
-          <VictoryVoronoiContainer
-            labelComponent={
-              <VictoryLabel
-                dy={15}
-                dx={10}
-                text={({datum}) => [
-                  `${datum.label}`,
-                  `(${datum.percentage}%)  `,
-                ]}
-                verticalAnchor={'middle'}
-                style={analyticStyle.labelChart}
-              />
-            }
+          <VictoryTooltip
+            constrainToVisibleArea
+            orientation={'top'}
+            activateData={false}
+            renderInPortal={false}
+            flyoutStyle={{stroke: colors.main_color, fill: 'white'}}
+            flyoutHeight={40}
+            flyoutWidth={120}
+            labelComponent={<CustomLabel />}
           />
         }
       />
     </Svg>
+  );
+};
+const CustomLabel = (props) => {
+  const {text, datum, y, x} = props;
+  return (
+    <View style={[analyticStyle.customTooltip, {top: y - 15, left: x - 60}]}>
+      <Text style={analyticStyle.customTooltipText}>{text}</Text>
+      <Text style={analyticStyle.customTooltipText}>
+        {Helper.numberFormat(datum.rest.value, '.')} :{' '}
+        <Text fontType="semi-bold">{datum.percentage}%</Text>
+      </Text>
+    </View>
   );
 };
 SimChart.propTypes = {
