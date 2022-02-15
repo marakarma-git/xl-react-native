@@ -19,23 +19,20 @@ const SimChart = (props) => {
   const {widthChart, onPressPie, data, dataColor} = props || {};
   const isNoUsage = data[0].label === 'No Usage' && data.length === 1;
   const _onPressIn = (thisData) => {
-    console.log('onPressIn');
     setActiveIndex(thisData?.index);
     return {active: undefined};
   };
 
   const _onPressPie = (thisData) => {
-    console.log('onPressOut');
-
-    if (!afterLongPress) onPressPie(thisData);
+    if (!afterLongPress) {
+      onPressPie(thisData);
+    }
     setAfterLongPress(false);
     return {
       active: undefined,
     };
   };
   const _onLongPress = (props) => {
-    console.log('onLongPress');
-
     setAfterLongPress(true);
     return {
       active: props?.index === activeIndex && !props?.active ? true : undefined,

@@ -97,11 +97,10 @@ const SimProductivityPage = () => {
                 data={dataChartSim}
                 dataColor={dataChartColor}
                 onPressPie={({datum}) => {
-                  alert(JSON.stringify(datum));
-                  // handleToSubscription({
-                  //   value: datum.value,
-                  //   label: datum.label,
-                  // });
+                  handleToSubscription({
+                    value: datum.value,
+                    label: datum.label,
+                  });
                 }}
               />
               <TableSummary
