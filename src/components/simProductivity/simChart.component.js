@@ -1,4 +1,10 @@
-import {VictoryPie, VictoryTooltip} from 'victory-native';
+import {
+  VictoryChart,
+  VictoryContainer,
+  VictoryPie,
+  VictoryTooltip,
+  VictoryVoronoiContainer,
+} from 'victory-native';
 import {analyticStyle} from '../../style';
 import Svg from 'react-native-svg';
 import React, {useState} from 'react';
@@ -8,17 +14,19 @@ import {View} from 'react-native';
 import {Text} from '..';
 import Helper from '../../helpers/helper';
 const SimChart = (props) => {
-  const [dataDatum, setDataDatum] = useState({});
   const [activeIndex, setActiveIndex] = useState(null);
   const [afterLongPress, setAfterLongPress] = useState(false);
   const {widthChart, onPressPie, data, dataColor} = props || {};
   const isNoUsage = data[0].label === 'No Usage' && data.length === 1;
   const _onPressIn = (thisData) => {
+    console.log('onPressIn');
     setActiveIndex(thisData?.index);
     return {active: undefined};
   };
 
   const _onPressPie = (thisData) => {
+    console.log('onPressOut');
+
     if (!afterLongPress) onPressPie(thisData);
     setAfterLongPress(false);
     return {
@@ -26,6 +34,8 @@ const SimChart = (props) => {
     };
   };
   const _onLongPress = (props) => {
+    console.log('onLongPress');
+
     setAfterLongPress(true);
     return {
       active: props?.index === activeIndex && !props?.active ? true : undefined,
@@ -34,7 +44,7 @@ const SimChart = (props) => {
   return (
     <Svg width={widthChart - widthChart * 0.1} height={widthChart}>
       <VictoryPie
-        labels={() => 'Hello'}
+        standalone={false}
         colorScale={dataColor}
         width={widthChart - widthChart * 0.1}
         height={widthChart}
@@ -72,12 +82,12 @@ const SimChart = (props) => {
           },
         ]}
         data={!isNoUsage ? data : [{y: 100}]}
+        containerComponent={<VictoryVoronoiContainer />}
         labelComponent={
           <VictoryTooltip
             constrainToVisibleArea
             orientation={'top'}
-            activateData={false}
-            renderInPortal={false}
+            renderInPortal={true}
             flyoutStyle={{stroke: colors.main_color, fill: 'white'}}
             flyoutHeight={40}
             flyoutWidth={120}
