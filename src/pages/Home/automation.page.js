@@ -1,6 +1,10 @@
 import React, {useEffect, useState} from 'react';
 import {Alert, View} from 'react-native';
-import {HeaderContainer, OverlayBackground} from '../../components';
+import {
+  HeaderContainer,
+  ModalConfirmation,
+  OverlayBackground,
+} from '../../components';
 import {useDispatch, useSelector} from 'react-redux';
 import getAutomation, {
   automationSetDataAutomationGenerated,
@@ -24,6 +28,7 @@ import {dataMatcherArray2D} from '../../redux/action/get_sim_inventory_action';
 import {useNavigation} from '@react-navigation/native';
 import httpRequest from '../../constant/axiosInstance';
 import {useToastHooks} from '../../customHooks/customHooks';
+import {deleteSmsA2p} from '../../redux/action/sms_a2p_get_all_sms_action';
 
 const AutomationPage = () => {
   const dispatch = useDispatch();
@@ -32,6 +37,8 @@ const AutomationPage = () => {
   const [loadingDetail, setLoadingDetail] = useState(false);
   const [firstRender, setFirstRender] = useState(true);
   const [showMenu, setShowMenu] = useState(false);
+  const [confirmationModal, setConfirmationModal] = useState(false);
+  const [dataConfirmation, setDataConfirmation] = useState({});
   const {imageBase64} = useSelector((state) => state.enterprise_reducer);
   const {
     dataAutomationHeader,
@@ -213,7 +220,62 @@ const AutomationPage = () => {
             });
           }}
           onPressDelete={({item}) => {
-            const {autoId, enterpriseName} = item || {};
+            setDataConfirmation(item);
+            setConfirmationModal(true);
+          }}
+        />
+        <TableFooter
+          currentPage={automation_page}
+          totalPage={automation_total_page}
+          perPageValue={automation_total_size}
+          onChangePerPage={(e) => {
+            const {value} = e || {};
+            dispatch(
+              getAutomation({
+                size_params: value,
+              }),
+            );
+          }}
+          onChangePaging={(e) => {
+            dispatch(
+              getAutomation({
+                page_params: e,
+              }),
+            );
+          }}
+        />
+        {(loading || loadingDetail) && <Loading />}
+      </View>
+      {showMenu && (
+        <ModalMenuPicker
+          title={'Column'}
+          data={dataAutomationHeader}
+          onApply={(e) => {
+            const {result} = data_automation || {};
+            const {content} = result || {};
+            dispatch(automationUpdateBundleArray({data: e}));
+            const reGenerated = dataMatcherArray2D(content, e);
+            dispatch(
+              automationSetDataAutomationGenerated({
+                dataAutomationGenerated: reGenerated,
+              }),
+            );
+            setShowMenu((state) => !state);
+          }}
+          onClose={() => setShowMenu((state) => !state)}
+        />
+      )}
+      {confirmationModal && (
+        <ModalConfirmation
+          showModal={confirmationModal}
+          closeModal={() => {
+            setConfirmationModal(false);
+          }}
+          title={'Delete Automation Configuration'}
+          description={'Are you sure want to delete this automation rule?'}
+          confirmAction={() => {
+            setConfirmationModal(false);
+            const {autoId, enterpriseName} = dataConfirmation || {};
             const customHeaders = {
               activityId: 'AUP-2',
               descSuffix: enterpriseName,
@@ -268,46 +330,6 @@ const AutomationPage = () => {
                 );
               });
           }}
-        />
-        <TableFooter
-          currentPage={automation_page}
-          totalPage={automation_total_page}
-          perPageValue={automation_total_size}
-          onChangePerPage={(e) => {
-            const {value} = e || {};
-            dispatch(
-              getAutomation({
-                size_params: value,
-              }),
-            );
-          }}
-          onChangePaging={(e) => {
-            dispatch(
-              getAutomation({
-                page_params: e,
-              }),
-            );
-          }}
-        />
-        {(loading || loadingDetail) && <Loading />}
-      </View>
-      {showMenu && (
-        <ModalMenuPicker
-          title={'Column'}
-          data={dataAutomationHeader}
-          onApply={(e) => {
-            const {result} = data_automation || {};
-            const {content} = result || {};
-            dispatch(automationUpdateBundleArray({data: e}));
-            const reGenerated = dataMatcherArray2D(content, e);
-            dispatch(
-              automationSetDataAutomationGenerated({
-                dataAutomationGenerated: reGenerated,
-              }),
-            );
-            setShowMenu((state) => !state);
-          }}
-          onClose={() => setShowMenu((state) => !state)}
         />
       )}
     </HeaderContainer>

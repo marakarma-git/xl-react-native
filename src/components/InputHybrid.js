@@ -70,6 +70,7 @@ InputHybrid.propTypes = {
   isSecureTextEntry: PropTypes.bool,
   keyboardType: PropTypes.string,
   isSelected: PropTypes.bool,
+  isTitleRequired: PropTypes.bool,
 };
 export default InputHybrid;
 

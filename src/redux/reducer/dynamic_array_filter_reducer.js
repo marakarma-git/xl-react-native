@@ -459,7 +459,7 @@ const dynamicFilter = [
     formId: 'sim-productivity-percentage-group-params-only-drop-down',
     typeInput: 'ForParamsOnlyDropDown',
     config: {
-      label: 'Percentage Group',
+      label: 'Productivity Group',
       doNotShowOnFilter: true,
     },
     params: '&percentageGroup=',

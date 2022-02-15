@@ -5,7 +5,7 @@ const automationDefaultFormData = [
   {
     stepperId: 'select-enterprise-stepper-hard-code',
     stepperTitle: 'Select Enterprise',
-    stepperDescription: '',
+    stepperDescription: 'Lorem ipsum dolor sir amet, consectet adipiscing eltc',
     currentState: 0,
     dataContainer: [
       {
@@ -24,6 +24,7 @@ const automationDefaultFormData = [
             paramsDefault: 'enterpriseId',
             config: {
               fullWidthInput: true,
+              isTitleRequired: true,
             },
             validationConfig: {
               isRequired: true,
@@ -36,14 +37,15 @@ const automationDefaultFormData = [
   {
     stepperId: 'rule-category-stepper-hard-code',
     stepperTitle: 'Rule Category',
-    stepperDescription: '',
+    stepperDescription: 'Lorem ipsum dolor sir amet, consectet adipiscing eltc',
     currentState: 1,
     dataContainer: [
       {
         containerId: 'rules-name-container',
         containerType: 'WrapperOne',
         containerTitle: 'Rules Name',
-        containerDescription: '',
+        containerDescription:
+          'Lorem ipsum dolor sir amet, consectet adipiscing eltc',
         dataInput: [
           {
             inputType: 'TextInput',
@@ -51,6 +53,7 @@ const automationDefaultFormData = [
             paramsDefault: 'rulesName',
             config: {
               fullWidthInput: true,
+              isTitleRequired: true,
             },
             validationConfig: {
               isRequired: true,
@@ -62,7 +65,8 @@ const automationDefaultFormData = [
         containerId: 'select-rule-category-container',
         containerType: 'WrapperOne',
         containerTitle: 'Select Rule Category',
-        containerDescription: '',
+        containerDescription:
+          'Lorem ipsum dolor sir amet, consectet adipiscing eltc',
         isRemoveBottomLine: true,
         dataInput: [
           {
@@ -93,14 +97,15 @@ const automationDefaultFormData = [
   {
     stepperId: 'define-rules-stepper-hard-code',
     stepperTitle: 'Define Rules',
-    stepperDescription: '',
+    stepperDescription: 'Lorem ipsum dolor sir amet, consectet adipiscing eltc',
     currentState: 2,
     dataContainer: [
       {
         containerId: 'bulk-shared-auto-upgrade-container-hard-code',
         containerType: 'WrapperTwo',
         containerTitle: 'Bulk Shared Auto Upgrade',
-        containerDescription: '',
+        containerDescription:
+          'Lorem ipsum dolor sir amet, consectet adipiscing eltc',
         groupByContainer: 'businessAutomation',
         paramsContainerDefault: 'isUpgradeBulk',
         dataInput: [
@@ -200,7 +205,8 @@ const automationDefaultFormData = [
           'auto-upgrade-individual-shared-package-container-hard-code',
         containerType: 'WrapperTwo',
         containerTitle: 'Individual Shared package Auto Upgrade',
-        containerDescription: '',
+        containerDescription:
+          'Lorem ipsum dolor sir amet, consectet adipiscing eltc',
         groupByContainer: 'businessAutomation',
         paramsContainerDefault: 'isUpgradeIndividual',
         dataInput: [
@@ -257,7 +263,8 @@ const automationDefaultFormData = [
         containerId: 'bulk-shared-limit-notification-container-hard-code',
         containerType: 'WrapperTwo',
         containerTitle: 'Bulk Shared Limit Notification',
-        containerDescription: '',
+        containerDescription:
+          'Lorem ipsum dolor sir amet, consectet adipiscing eltc',
         groupByContainer: 'fraudPrevention',
         paramsContainerDefault: 'isBulkNotification',
         dataInput: [
@@ -287,7 +294,8 @@ const automationDefaultFormData = [
         containerId: 'individual-shared-limit-container-hard-code',
         containerType: 'WrapperTwo',
         containerTitle: 'Individual Shared Limit',
-        containerDescription: '',
+        containerDescription:
+          'Lorem ipsum dolor sir amet, consectet adipiscing eltc',
         groupByContainer: 'fraudPrevention',
         paramsContainerDefault: 'isIndividualNotification',
         dataInput: [
@@ -318,7 +326,7 @@ const automationDefaultFormData = [
   {
     stepperId: 'summary-stepper-hard-code',
     stepperTitle: 'Summary',
-    stepperDescription: '',
+    stepperDescription: 'Lorem ipsum dolor sir amet, consectet adipiscing eltc',
     currentState: 3,
     dataContainer: [
       {
