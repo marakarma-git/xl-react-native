@@ -36,7 +36,7 @@ const SimProductivityFilterPage = () => {
   }, [dispatch]);
   const sortedArray = lod.orderBy(dataHeader, ['sort_by_filter', 'asc']) || [];
   return (
-    <HeaderContainer headerTitle={'Sim Productivity'} backIcon={true}>
+    <HeaderContainer headerTitle={'SIM Productivity'} backIcon={true}>
       <ScrollView style={{backgroundColor: 'white'}}>
         <OverlayBackground />
         <Container style={{marginTop: 16}}>

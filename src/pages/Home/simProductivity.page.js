@@ -58,7 +58,7 @@ const SimProductivityPage = () => {
   };
   return (
     <HeaderContainer
-      headerTitle={'Sim Productivity'}
+      headerTitle={'SIM Productivity'}
       style={{flex: 1}}
       companyLogo={imageBase64}>
       <View style={[subscriptionStyle.containerBackground]}>
@@ -86,15 +86,22 @@ const SimProductivityPage = () => {
                 }}
               />
               <Text>{`${errorText && `Error: ${errorText}`}`}</Text>
+              <Text>
+                See your business productivity / performance from this SIM
+                productivity statistics to help you faster on taking decision,
+                avoid any excess usage charge by upgrading the existing package
+                to higher quota. See the legend for the detail classification.
+              </Text>
               <SimChart
                 widthChart={widthChart}
                 data={dataChartSim}
                 dataColor={dataChartColor}
                 onPressPie={({datum}) => {
-                  handleToSubscription({
-                    value: datum.value,
-                    label: datum.label,
-                  });
+                  alert(JSON.stringify(datum));
+                  // handleToSubscription({
+                  //   value: datum.value,
+                  //   label: datum.label,
+                  // });
                 }}
               />
               <TableSummary

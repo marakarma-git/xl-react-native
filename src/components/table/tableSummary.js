@@ -31,7 +31,7 @@ const TableSummary = (props) => {
               <ProductivityTableLabel
                 label={label}
                 color={color}
-                percentage={percentage}
+                percentage={percentage === 0 ? '0' : percentage}
               />
               <View style={analyticStyle.textRight}>
                 <Text>{value}</Text>

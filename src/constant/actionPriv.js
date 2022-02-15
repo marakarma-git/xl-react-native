@@ -343,14 +343,14 @@ const ANALYTICS_PRIVILEDGE_ID = [
   {
     activityId: 'ANP-1',
     privId: '26f20e88-badb-4bcc-a33d-8d897d675455',
-    menuName: 'Sim Productivity',
+    menuName: 'SIM Productivity',
     actionName: 'View',
     activityLog: 'Generate information for Sim Productivity',
   },
   {
     activityId: 'ANP-2',
     privId: '43e6210b-221c-4488-a921-5ec68daecd88',
-    menuName: 'Sim Productivity',
+    menuName: 'SIM Productivity',
     actionName: 'Filter',
     activityLog: 'Search / filter with criteria :',
   },

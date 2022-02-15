@@ -147,7 +147,7 @@ export const DRAWER_MENU_PRIVILEDGE = [
     priviledgeIds: ANALYTICS_PRIVILEDGE_ID,
     subMenu: [
       {
-        name: 'Sim Productivity',
+        name: 'SIM Productivity',
         type: 'drawer',
         width: 25,
         height: 25,

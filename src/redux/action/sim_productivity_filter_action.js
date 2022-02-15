@@ -176,7 +176,7 @@ const simGetChart = () => {
       (await getState().sim_productivity_filter_reducer) || {};
     const customHeaders = {
       headers: {
-        activityId: generatedParams ? 'AP-27' : 'AP-28',
+        activityId: generatedParams ? 'ANP-2' : 'ANP-1',
         showParams: !!generatedParams,
         excludeParamsKey: 'page|size',
       },
