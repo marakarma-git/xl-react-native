@@ -44,4 +44,14 @@ export default {
     alignItems: 'center',
     justifyContent: 'center',
   },
+  customTooltip: {
+    width: 120,
+    position: 'absolute',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  customTooltipText: {
+    fontSize: 12,
+    paddingLeft: 3,
+  },
 };
