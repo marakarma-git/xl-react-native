@@ -81,6 +81,12 @@ const changeCheckSimInventoryAllFalse = () => {
     type: reduxString.CHANGE_CHECK_SIM_INVENTORY_ALL_FALSE,
   };
 };
+const hardCodeCurrentTotalElements = (value) => {
+  return {
+    type: reduxString.HARD_CODE_CURRENT_TOTAL_ELEMENTS,
+    currentTotalElements: value,
+  };
+};
 const dataMatcherArray2D = (listData = [], headerData = []) => {
   const generated = [];
   listData.map((item, index) => {
@@ -326,4 +332,5 @@ export {
   changeCheckSimInventory,
   changeCheckSimInventoryAllTrue,
   changeCheckSimInventoryAllFalse,
+  hardCodeCurrentTotalElements,
 };

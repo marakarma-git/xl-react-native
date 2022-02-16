@@ -39,6 +39,12 @@ const get_sim_inventory_reducer = (state = initialState, action) => {
         loading: false,
         error: action.error,
       };
+    case reduxString.HARD_CODE_CURRENT_TOTAL_ELEMENTS: {
+      return {
+        ...state,
+        current_total_elements: action.currentTotalElements,
+      };
+    }
     case reduxString.GET_SIM_INVENTORY_SUCCESS:
       return {
         ...state,
@@ -83,8 +89,8 @@ const get_sim_inventory_reducer = (state = initialState, action) => {
       };
     case reduxString.CHANGE_CHECK_SIM_INVENTORY:
       let newArr = lod.cloneDeep(state.data_sim_inventory_table);
-      newArr[action.index].is_checked_root = !newArr[action.index]
-        .is_checked_root;
+      newArr[action.index].is_checked_root =
+        !newArr[action.index].is_checked_root;
       return {
         ...state,
         data_sim_inventory_table: newArr,

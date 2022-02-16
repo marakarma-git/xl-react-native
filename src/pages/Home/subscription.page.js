@@ -22,6 +22,7 @@ import callSimInventory, {
   changeCheckSimInventoryAllFalse,
   changeCheckSimInventoryAllTrue,
   dataMatcherArray2D,
+  hardCodeCurrentTotalElements,
   setSimInventoryTable,
 } from '../../redux/action/get_sim_inventory_action';
 import {
@@ -41,6 +42,7 @@ import ModalMapOnly from '../../components/modal/ModalMapOnly';
 import lod from 'lodash';
 import Loading from '../../components/loading';
 import generateLink from '../../helpers/generateLink';
+import httpRequest from '../../constant/axiosInstance';
 
 const Subscription = ({route}) => {
   const dispatch = useDispatch();
@@ -101,16 +103,21 @@ const Subscription = ({route}) => {
     if (!lod.isEmpty(navigationFrom)) {
       async function preConfig() {
         const {arrayNavigation} = dataNavigation || [];
-        const resetArray = await Helper.resetAllForm(array_filter);
+        const resetArray = Helper.resetAllForm(array_filter);
         const {newArray} = await Helper.merge2ArrayObject({
           arrayFrom: arrayNavigation,
           arrayTo: resetArray,
         });
         const {linkParams, containerData} = await generateLink(newArray);
-        return {newArray, linkParams, containerData};
+        const getTotal = await httpRequest.get(
+          '/dcp/sim/getSimInventory?page=0&size=20',
+        );
+        const getElements = getTotal?.data?.result?.totalElements;
+        return {newArray, linkParams, containerData, getElements};
       }
       preConfig()
-        .then(({newArray, linkParams, containerData}) => {
+        .then(({newArray, linkParams, containerData, getElements}) => {
+          dispatch(hardCodeCurrentTotalElements(getElements));
           if (!firstRender) {
             dispatch(
               subscriptionDynamicArraySnapshotGenerateParams({
