@@ -279,9 +279,9 @@ const callSimInventory = (paginate) => {
     };
     const customHeaders = {
       headers: {
-        activityId: searchText || generatedParams ? 'SP-1' : 'AP-18',
+        activityId: searchText || generatedParams ? 'SP-1' : 'SP-6',
         showParams: !!(searchText || generatedParams),
-        excludeParamsKey: 'page|size',
+        excludeParamsKey: 'page|size|sort|order',
       },
     };
     httpRequest
