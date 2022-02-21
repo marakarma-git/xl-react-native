@@ -5,6 +5,7 @@ import {
   ContentCard,
   HeaderContainer,
   OverlayBackground,
+  Text,
   UsageSubsChart,
 } from '../../components';
 import {
@@ -166,6 +167,13 @@ const UsageSubscribersAnalyticsPage = ({route, navigation}) => {
                 dispatch(usageSubscribersAnalyticsGenerateParams());
               }}
             />
+            <View>
+              <Text style={styles.cardDescriptionText}>
+                See the Usage Trends as well as Subscriber growth in one single
+                chart diagram to get some insights for future improvement or
+                alignment.
+              </Text>
+            </View>
             <ContentCard
               loadingContent={loadingSubsAnalytics}
               cardContent={
