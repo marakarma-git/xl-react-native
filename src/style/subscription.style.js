@@ -65,7 +65,7 @@ export default {
     marginHorizontal: 8,
   },
   wrapperMenuOption: {
-    marginHorizontal: 16,
+    marginHorizontal: 12,
     paddingVertical: 4,
     flexDirection: 'row',
     alignItems: 'center',

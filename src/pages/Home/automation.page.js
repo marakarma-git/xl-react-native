@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {Alert, View} from 'react-native';
+import {Alert, Text, View} from 'react-native';
 import {
   HeaderContainer,
   ModalConfirmation,
@@ -29,6 +29,7 @@ import {useNavigation} from '@react-navigation/native';
 import httpRequest from '../../constant/axiosInstance';
 import {useToastHooks} from '../../customHooks/customHooks';
 import {deleteSmsA2p} from '../../redux/action/sms_a2p_get_all_sms_action';
+import styles from '../../style/usageAnalytics.style';
 
 const AutomationPage = () => {
   const dispatch = useDispatch();
@@ -155,6 +156,12 @@ const AutomationPage = () => {
                     dispatch(automationGenerateParams());
                   }}
                 />
+                <Text
+                  style={[styles.cardDescriptionText, {paddingHorizontal: 12}]}>
+                  Define business automation automation rules for the enterprise
+                  such as auto downgrade to the previous subscription package,
+                  bulk shared alert notification and bulk shared auto-upgrade.
+                </Text>
                 <FilterActionLabel
                   forceRemoveActions={true}
                   total={Helper.numberWithDot(automation_elements_static)}

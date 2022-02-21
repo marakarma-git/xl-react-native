@@ -59,7 +59,7 @@ const getCustomLabel = () => {
         }
       })
       .catch((error) => {
-        dispatch(authFailed(error.response.data));
+        // dispatch(authFailed(error.response.data));
       });
   };
 };
