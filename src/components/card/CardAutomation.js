@@ -167,6 +167,7 @@ const WrapperTwo = (props) => {
                 !!(
                   containerValue[`${paramsContainerDisabled}`] ||
                   containerValue[`${paramsContainerDefault}Disabled`] ||
+                  forceDisabled === true ||
                   summaryMode === true
                 )
               }
