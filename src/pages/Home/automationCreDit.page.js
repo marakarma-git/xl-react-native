@@ -51,6 +51,7 @@ const AutomationCreateEditPage = () => {
     setIndexForm(0);
     setDataSummary([]);
     dispatch(automationResetFormContainerValue());
+    dispatch(getAutomation());
     navigation.setParams({
       from: undefined,
       result: undefined,
@@ -206,11 +207,13 @@ const AutomationCreateEditPage = () => {
             if (!lod.isEmpty(groupByContainer)) {
               return (
                 groupByContainer === containerValue?.category.value && (
-                  <CardAutomation {...rest} />
+                  <CardAutomation {...rest} forceDisabled={from === 'Detail'} />
                 )
               );
             } else {
-              return <CardAutomation {...rest} />;
+              return (
+                <CardAutomation {...rest} forceDisabled={from === 'Detail'} />
+              );
             }
           })}
 
@@ -233,9 +236,13 @@ const AutomationCreateEditPage = () => {
                 />
               )}
               <LocalButton
-                title={indexForm === 3 ? 'Submit' : 'Next'}
+                title={indexForm === 3 ? 'Finish' : 'Next'}
                 buttonType={'One'}
                 onPress={() => {
+                  if (indexForm === 3 && from === 'Detail') {
+                    onCancel();
+                    navigation.goBack();
+                  }
                   if (indexForm < 3) {
                     const {containerErrorString, counterFalse} =
                       automationValidationForm({
@@ -267,7 +274,7 @@ const AutomationCreateEditPage = () => {
                     );
                     setWrapperTwoFind(findWrapperTwo);
                   }
-                  if (indexForm === 3) {
+                  if (indexForm === 3 && from !== 'Detail') {
                     const {getAllParams} = automationCreateSummary({
                       getAllData: automationDefaultFormData,
                       dataContainerValue: containerValue,
@@ -285,14 +292,17 @@ const AutomationCreateEditPage = () => {
   );
 };
 const LocalButton = (props) => {
-  const {title, buttonType, onPress, style} = props || {};
+  const {title, buttonType, onPress, style, disabled} = props || {};
   return (
     <TouchableOpacity
+      disabled={disabled}
       onPress={onPress}
       style={[
         {
           backgroundColor:
-            buttonType === 'Two' ? colors.gray_400 : colors.main_color,
+            buttonType === 'Two' || disabled
+              ? colors.gray_400
+              : colors.main_color,
         },
         subscriptionStyle.buttonStyle,
         style,
@@ -300,7 +310,7 @@ const LocalButton = (props) => {
       <Text
         fontType={'bold'}
         style={{
-          color: buttonType === 'Two' ? 'black' : 'white',
+          color: buttonType === 'Two' || disabled ? 'black' : 'white',
         }}>
         {title}
       </Text>

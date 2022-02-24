@@ -8,10 +8,11 @@ import styles from '../../style/create.style';
 import {colors} from '../../constant/color';
 
 const CustomRadioButtonComponent = (props) => {
-  const {color, fontType} = props || {};
+  const {color, fontType, disabled} = props || {};
   return (
     <View style={[styles.radioButtonContainer, props.style]}>
       <RadioButton
+        disabled={disabled}
         color={color || colors.tab_edit}
         onPress={() => props.onPressRadio(props)}
         value={props.radioValue}
@@ -30,6 +31,7 @@ CustomRadioButtonComponent.propTypes = {
   status: PropTypes.string,
   style: PropTypes.object,
   onPressRadio: PropTypes.func,
+  disabled: PropTypes.bool,
 };
 
 CustomRadioButtonComponent.defaultProps = {

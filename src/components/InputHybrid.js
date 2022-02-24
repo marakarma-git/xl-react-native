@@ -148,13 +148,14 @@ const ContainerInput = (props) => {
   );
 };
 const RadioButton = (props) => {
-  const {data, value: values, onChange} = props || {};
+  const {data, value: values, onChange, disabled} = props || {};
   return (
     <View style={{marginTop: 16}}>
       {data &&
         data.map(({value, label}) => {
           return (
             <CustomRadioButtonComponent
+              disabled={disabled}
               color={colors.main_color}
               label={label}
               radioValue={value}

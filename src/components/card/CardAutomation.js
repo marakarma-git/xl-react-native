@@ -17,7 +17,7 @@ import lod from 'lodash';
 
 const InputWrapper = (props) => {
   const dispatch = useDispatch();
-  const {dataInput, summaryMode, statusParams} = props || [];
+  const {dataInput, summaryMode, forceDisabled} = props || [];
   const {containerValue} = useSelector(
     (state) => state.automation_create_edit_reducer,
   );
@@ -47,6 +47,7 @@ const InputWrapper = (props) => {
                     !!(
                       containerValue[`${paramsDisabled}`] ||
                       containerValue[`${paramsDefault}Disabled`] ||
+                      forceDisabled === true ||
                       summaryMode === true
                     )
                   }
@@ -107,6 +108,7 @@ const WrapperOne = (props) => {
     children,
     style,
     statusParams,
+    forceDisabled,
   } = props || {};
   return (
     <Card style={[styles.cardSection, {marginTop: '5%'}]}>
@@ -127,6 +129,7 @@ const WrapperOne = (props) => {
             dataInput={dataInput}
             summaryMode={summaryMode}
             statusParams={statusParams}
+            forceDisabled={forceDisabled}
           />
         )}
       </Card.Content>
@@ -145,6 +148,7 @@ const WrapperTwo = (props) => {
     summaryMode,
     containerTopLine,
     statusParams,
+    forceDisabled,
   } = props || {};
   const {containerValue} = useSelector(
     (state) => state.automation_create_edit_reducer,
@@ -198,6 +202,7 @@ const WrapperTwo = (props) => {
                 dataInput={dataInput}
                 summaryMode={summaryMode}
                 statusParams={statusParams}
+                forceDisabled={forceDisabled}
               />
             </Card.Content>
           )}
