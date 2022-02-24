@@ -128,6 +128,7 @@ const AutomationPage = () => {
             getDetailInfo({
               automationId: autoId,
               from: 'Detail',
+              itemEdit: item,
             });
           }}
           headerOtherLayout={() => {
