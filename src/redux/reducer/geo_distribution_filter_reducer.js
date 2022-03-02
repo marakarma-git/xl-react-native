@@ -14,6 +14,7 @@ const dataGeoDistribution = [
     params: '&customerNo=',
     config: {
       label: 'Enterprise',
+      fullWidthInput: true,
     },
     sort_by_filter: 0,
   },
@@ -132,6 +133,17 @@ const geo_distribution_filter_reducer = (state = initialState, action) => {
       return {
         ...state,
         dataGeoMarker: action.dataGeoMarker,
+      };
+    }
+    case reduxString.GEO_DISTRIBUTION_SET_TO_DEFAULT: {
+      state.dataHeader[0].value = {};
+      return {
+        ...state,
+        dataGeoMarker: [],
+        dataGeoMarkerApi: [],
+        appliedFilter: [],
+        dataHeader: state.dataHeader,
+        generatedParams: '',
       };
     }
     default: {

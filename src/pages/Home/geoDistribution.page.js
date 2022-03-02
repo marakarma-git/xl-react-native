@@ -9,10 +9,13 @@ import AppliedFilter from '../../components/subscription/appliedFilter';
 import {debounce} from 'lodash/function';
 import getGeoProvince, {
   geoDistributionSetDataGeoMarker,
+  geoDistributionSetToDefault,
 } from '../../redux/action/geo_distribution_filter_action';
 import Helper from '../../helpers/helper';
 import Loading from '../../components/loading';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import {colors} from '../../constant/color';
+import styles from '../../style/usageAnalytics.style';
 
 const defaultLatDelta = {
   longitudeDelta: 50.37650607526302,
@@ -28,6 +31,7 @@ const GeoDistributionPage = () => {
   const {imageBase64} = useSelector((state) => state.enterprise_reducer);
   const [rootOfMap, setRootOfMap] = useState(true);
   const [latDelta, setLatDelta] = useState(defaultLatDelta);
+  const [getLevel, setGetLevel] = useState(0);
   const [firstRender, setFirstRender] = useState(true);
   const [showInfo, setShowInfo] = useState(false);
   const [infoDetail, setInfoDetail] = useState({
@@ -36,9 +40,10 @@ const GeoDistributionPage = () => {
   });
   const levelCall = useCallback(
     debounce(({calculateLevel, region}) => {
+      setGetLevel(calculateLevel);
       setRootOfMap(calculateLevel < levelHighOrDeep);
       setLatDelta(region);
-    }, 100),
+    }, 50),
     [],
   );
   const {
@@ -52,7 +57,11 @@ const GeoDistributionPage = () => {
   } = useSelector((state) => state.geo_distribution_filter_reducer);
   useEffect(() => {
     if (!firstRender) {
-      dispatch(getGeoProvince(rootOfMap));
+      if (generatedParams !== '') {
+        dispatch(getGeoProvince(rootOfMap));
+        setLatDelta(defaultLatDelta);
+        setGetLevel(0);
+      }
     } else {
       setFirstRender(false);
     }
@@ -127,13 +136,27 @@ const GeoDistributionPage = () => {
               }
               style={{marginLeft: 0}}
               data={appliedFilter}
-              isRemoveDeleteIcon={true}
+              onDelete={() => {
+                setInfoDetail({
+                  data_label: [],
+                  data_dll: {},
+                });
+                setLatDelta(defaultLatDelta);
+                setShowInfo(false);
+                setGetLevel(0);
+                dispatch(geoDistributionSetToDefault());
+              }}
             />
             {errorText ? (
               <Text>{`Error: ${errorText}`}</Text>
             ) : (
               <React.Fragment />
             )}
+            <Text style={[styles.cardDescriptionText]}>
+              See your Overall SIM card distribution nation-wide in a Google Map
+              View based on our BTS Network Coverage. Available in Province &
+              City Level Detail with Total SIM on each.
+            </Text>
             <MapView
               provider={PROVIDER_GOOGLE}
               style={geoDistributionStyle.map}
@@ -164,41 +187,65 @@ const GeoDistributionPage = () => {
                         latitude: parseFloat(latitude),
                         longitude: parseFloat(longitude),
                       }}
-                      title={province}
-                      description={`Total Active: ${total}`}
+                      title={getLevel >= 7 ? province : null}
+                      description={
+                        getLevel >= 7 ? `Total Active: ${total}` : null
+                      }
                       onPress={(e) => {
                         const {coordinate} = e.nativeEvent || {};
                         const {
                           latitude: thisLatitude,
                           longitude: thisLongitude,
                         } = coordinate;
-                        setShowInfo(true);
-                        setLatDelta({
-                          longitudeDelta: 3.5,
-                          latitudeDelta: 4,
-                          longitude: parseFloat(thisLongitude),
-                          latitude: parseFloat(thisLatitude),
-                        });
-                        setInfoDetail((state) => ({
-                          ...state,
-                          data_label: [
-                            {
-                              title: 'Province',
-                              description: province,
-                            },
-                            {
-                              title: city,
-                              description: city,
-                            },
-                            {
-                              title: 'Total Active',
-                              description: total,
-                            },
-                          ],
-                          data_dll: value,
-                        }));
-                      }}
-                    />
+
+                        if (getLevel <= 7) {
+                          setLatDelta({
+                            longitudeDelta: 3.5,
+                            latitudeDelta: 4,
+                            longitude: parseFloat(thisLongitude),
+                            latitude: parseFloat(thisLatitude),
+                          });
+                        }
+                        if (getLevel >= 7) {
+                          setInfoDetail((state) => ({
+                            ...state,
+                            data_label: [
+                              {
+                                title: 'Province',
+                                description: province,
+                              },
+                              {
+                                title: 'City',
+                                description: city,
+                              },
+                              {
+                                title: 'Total Active',
+                                description: total,
+                              },
+                            ],
+                            data_dll: value,
+                          }));
+                          setShowInfo(true);
+                        }
+                      }}>
+                      {getLevel < 7 ? (
+                        <View
+                          style={{
+                            width: 30,
+                            height: 30,
+                            backgroundColor: colors.main_color,
+                            justifyContent: 'center',
+                            alignItems: 'center',
+                            borderRadius: 50,
+                            borderColor: 'white',
+                            borderWidth: 2,
+                          }}>
+                          <Text style={{color: 'white'}}>{total}</Text>
+                        </View>
+                      ) : (
+                        <React.Fragment />
+                      )}
+                    </Marker>
                   );
                 })}
             </MapView>

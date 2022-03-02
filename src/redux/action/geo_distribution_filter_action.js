@@ -73,7 +73,11 @@ const geoDistributionSetDataGeoMarker = ({geoMaker}) => {
     dataGeoMarker: geoMaker,
   };
 };
-
+const geoDistributionSetToDefault = () => {
+  return {
+    type: reduxString.GEO_DISTRIBUTION_SET_TO_DEFAULT,
+  };
+};
 const getEnterpriseGeo = () => {
   return async (dispatch) => {
     dispatch(
@@ -184,4 +188,5 @@ export {
   geoDistributionResetAllValue,
   geoDistributionGenerateParams,
   geoDistributionSetDataGeoMarker,
+  geoDistributionSetToDefault,
 };

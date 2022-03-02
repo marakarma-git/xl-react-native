@@ -9,7 +9,6 @@ import InputHybrid from '../../components/InputHybrid';
 import {Container} from './subscriptionFilter.page';
 import {useNavigation} from '@react-navigation/native';
 import {useDispatch, useSelector} from 'react-redux';
-import {device_width} from '../../constant/config';
 import lod from 'lodash';
 import {
   geoDistributionDynamicOnchangeDropDown,
@@ -20,17 +19,12 @@ import {
 const GeoDistributionFilterPage = () => {
   const navigation = useNavigation();
   const dispatch = useDispatch();
-  const [testWidth, setTestWidth] = useState(device_width * 0.41 - 1);
   const {dataHeader} = useSelector(
     (state) => state.geo_distribution_filter_reducer,
   );
   const sortedArray = lod.orderBy(dataHeader, ['sort_by_filter', 'asc']) || [];
   useEffect(() => {
     dispatch(getEnterpriseGeo());
-    const timer = setTimeout(() => {
-      setTestWidth(device_width * 0.41);
-    }, 100);
-    return () => timer;
   }, [dispatch]);
   return (
     <HeaderContainer headerTitle={'Geo Distribution'} backIcon={true}>
@@ -65,13 +59,13 @@ const GeoDistributionFilterPage = () => {
                 <InputHybrid
                   isSelected={isSelected}
                   disabled={disabled}
-                  customStyle={{width: testWidth}}
                   type={typeInput}
                   value={value}
                   loading={loading}
                   data={data}
                   errorText={errorText}
                   label={label}
+                  fullWidthInput={true}
                   onChange={(e) => {
                     dispatch(
                       geoDistributionDynamicOnchangeDropDown({
@@ -86,13 +80,13 @@ const GeoDistributionFilterPage = () => {
           </View>
         </Container>
         <View style={subscriptionStyle.buttonContainer}>
-          {['Find'].map((value) => {
+          {['Cancel', 'Find'].map((value) => {
             return (
               <TouchableOpacity
                 style={[
                   {
                     backgroundColor:
-                      value === 'Clear' ? colors.gray_400 : colors.main_color,
+                      value === 'Cancel' ? colors.gray_400 : colors.main_color,
                   },
                   subscriptionStyle.buttonStyle,
                 ]}
@@ -101,11 +95,14 @@ const GeoDistributionFilterPage = () => {
                     dispatch(geoDistributionGenerateParams());
                     navigation.goBack();
                   }
+                  if (value === 'Cancel') {
+                    navigation.goBack();
+                  }
                 }}>
                 <Text
                   fontType={'bold'}
                   style={{
-                    color: value === 'Clear' ? 'black' : 'white',
+                    color: value === 'Cancel' ? 'black' : 'white',
                   }}>
                   {value}
                 </Text>
