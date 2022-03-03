@@ -7,7 +7,7 @@ import Entypo from 'react-native-vector-icons/Entypo';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import {colors, color_theme_one} from '../../constant/color';
 const fieldList = [
-  {title: 'Sim Status :', name: 'status', type: 'text'},
+  {title: 'SIM Status :', name: 'status', type: 'text'},
   {title: 'In Session :', name: 'session', type: 'symbolText'},
   {title: 'Subscription Package :', name: 'packageDesc', type: 'text'},
   {
@@ -68,7 +68,7 @@ const SimInformationComponent = (props) => {
         return (
           <>
             <Text fontType="semi-bold" style={styles.listTitle}>
-              {field.title}{' '}
+              {field.title} {value[field.name] && 'until'}{' '}
               {value[field.otherField] ? `(${value[field.otherField]})` : ''} :
             </Text>
             <Text fontType="semi-bold" style={styles.listTitle}>

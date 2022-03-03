@@ -1,4 +1,4 @@
-import React, {useEffect, useState, useCallback} from 'react';
+import React, {useEffect, useState, useMemo} from 'react';
 import {View, ScrollView, TouchableOpacity} from 'react-native';
 import {
   ButtonCurveTypeComponent,
@@ -76,7 +76,7 @@ const RealtimeDiagnosticPage = ({navigation}) => {
     }
     setSearchCriteria(value);
   };
-  useEffect(() => {
+  const isErrorAlert = useMemo(() => {
     if (errorText) {
       showToast({
         title: 'Error',
@@ -88,18 +88,20 @@ const RealtimeDiagnosticPage = ({navigation}) => {
       });
       dispatch(realtimeDiagnosticSetError(null));
     }
+  }, [errorText]);
+  const isLoadSimDataClose = useMemo(() => {
     if (successText) {
       showToast({
         title: 'Diagnostic Wizard',
         type: 'success',
         message: successText,
-        duration: 3000,
+        duration: 5000,
         showToast: true,
         position: 'top',
       });
-      dispatch(realtimeDiagnosticSetSuccess(null));
     }
-  }, [errorText, successText]);
+    dispatch(realtimeDiagnosticSetSuccess(null));
+  }, [successText]);
   useEffect(() => {
     const pageBlur = navigation.addListener('blur', () => {
       dispatch(realtimeDiagnosticResetSimData());
@@ -109,6 +111,7 @@ const RealtimeDiagnosticPage = ({navigation}) => {
       });
       setSearchCriteria('');
       dispatch(realtimeDiagnosticSetError(null));
+      dispatch(realtimeDiagnosticSetSuccess(null));
     });
     return pageBlur;
   }, [navigation]);

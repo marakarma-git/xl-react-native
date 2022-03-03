@@ -68,6 +68,7 @@ const realtimeDiagnosticFixStatusLoading = (data) => ({
 
 const getRealtimeDiagnosticSimData = (keyword) => {
   return async (dispatch) => {
+    // dispatch(realtimeDiagnosticSetSuccess(null));
     const customHeaders = {
       headers: {
         activityId: 'DW-1',
@@ -202,13 +203,13 @@ const realtimeDiagnosticFixStatus = ({fixType, msisdn}) => {
         const {result, statusCode} = data;
         const {msisdn} = result;
         if (statusCode === 0) {
-          dispatch(
+          await dispatch(realtimeDiagnosticFixLoading(fixType));
+          await dispatch(getRealtimeDiagnosticSimData(msisdn));
+          await dispatch(
             realtimeDiagnosticSetSuccess(
               `A device reconnect request has been sent successfully, please wait about 2 minutes for the SIM card requests for a new location update and check again on the Diagnostic Wizard`,
             ),
           );
-          dispatch(realtimeDiagnosticFixLoading(fixType));
-          dispatch(getRealtimeDiagnosticSimData(msisdn));
         } else {
           dispatch(
             realtimeDiagnosticSetError(
