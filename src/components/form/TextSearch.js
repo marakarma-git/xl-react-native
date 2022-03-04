@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import PropTypes from 'prop-types';
 import styles from '../../style/account.style';
 import {TextInput, View} from 'react-native';
@@ -7,22 +7,27 @@ import {colors} from '../../constant/color';
 
 const TextSearchComponent = (props) => {
   const {inputHandler, value, placeholder, name, editable, onSubmit} = props;
+  const [keyword, setKeyword] = useState('');
   const onChangeHandler = (text) => {
     inputHandler(name, text);
+    setKeyword(text);
   };
   return (
     <View style={styles.textSearchContainer}>
       <View style={styles.textSearchIconContainer}>
         <FontAwesome5Icon name="search" color={colors.gray_400} size={18} />
       </View>
-      <TextInput
-        onBlur={() => onSubmit(value)}
-        onChangeText={onChangeHandler}
-        style={[styles.textSearchInputContainer]}
-        value={value}
-        editable={editable || false}
-        placeholder={placeholder}
-      />
+      <View style={{flex: 1}}>
+        <TextInput
+          onSubmitEditing={() => onSubmit(value)}
+          onChangeText={onChangeHandler}
+          style={[styles.textSearchInputContainer]}
+          value={keyword}
+          editable={editable || false}
+          placeholder={placeholder}
+          defaultValue={''}
+        />
+      </View>
     </View>
   );
 };
