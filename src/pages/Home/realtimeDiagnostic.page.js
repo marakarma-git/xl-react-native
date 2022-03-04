@@ -1,5 +1,5 @@
 import React, {useEffect, useState, useMemo} from 'react';
-import {View, ScrollView, TouchableOpacity} from 'react-native';
+import {View, ScrollView, ActivityIndicator} from 'react-native';
 import {
   ButtonCurveTypeComponent,
   ContentCard,
@@ -23,6 +23,7 @@ import {useToastHooks} from '../../customHooks/customHooks';
 import {Bars} from 'react-native-loader';
 import {colors} from '../../constant/color';
 import RealtimeChartComponent from '../../components/chart/realtimeChart';
+import SearchBarDiagnostic from '../../components/form/searchBarDiagnostic';
 
 const RealtimeDiagnosticPage = ({navigation}) => {
   const dispatch = useDispatch();
@@ -36,6 +37,7 @@ const RealtimeDiagnosticPage = ({navigation}) => {
     successText,
     trafficUsage,
   } = useSelector((state) => state.realtime_diagnostic_reducer);
+  const [pageReady, setPageReady] = useState(false);
   const [searchForm, setSearchForm] = useState({
     keyword: '',
   });
@@ -112,23 +114,15 @@ const RealtimeDiagnosticPage = ({navigation}) => {
       setSearchCriteria('');
       dispatch(realtimeDiagnosticSetError(null));
       dispatch(realtimeDiagnosticSetSuccess(null));
+      setPageReady(false);
     });
     return pageBlur;
   }, [navigation]);
-  const searchFormList = [
-    {
-      title: 'Search',
-      name: 'keyword',
-      validation: false,
-      isRequired: false,
-      type: 'search',
-      editable: true,
-      config: {
-        placeholder: 'Search with IMSI, MSISDN, or ICCID',
-        action: searchSubmit,
-      },
-    },
-  ];
+  useEffect(() => {
+    setTimeout(() => {
+      setPageReady(true);
+    }, 1500);
+  }, []);
   return (
     <View style={styles.container}>
       <HeaderContainer
@@ -144,59 +138,81 @@ const RealtimeDiagnosticPage = ({navigation}) => {
           </Text>
         </View>
       )}
-      <ScrollView showsVerticalScrollIndicator={false}>
+      <ScrollView
+        showsVerticalScrollIndicator={false}
+        removeClippedSubviews={false}>
         <OverlayBackground />
-        <ContentCard
-          isOnlyContent={true}
-          customStyle={{marginBottom: 5}}
-          cardContent={
-            <View style={{marginTop: 5}}>
-              <FormFactory
-                formList={searchFormList}
-                editable={!loadSimData}
-                inputHandler={searchHandler}
-                value={searchForm}
-              />
-            </View>
-          }
-        />
-        <ContentCard
-          customStyle={{marginBottom: 5}}
-          cardTitleStyle={styles.searchCriteriaContainer}
-          cardTitleComponent={
-            <View style={styles.searchCriteriaHeader}>
-              <Text fontType="semi-bold" style={styles.searchCriteriaText}>
-                Search Criteria : {!loadSimData && searchCriteria}
+        <>
+          {!pageReady ? (
+            <View style={{justifyContent: 'center', height: 100}}>
+              <ActivityIndicator color={colors.main_color} />
+              <Text
+                style={{
+                  textAlign: 'center',
+                  fontSize: 14,
+                  paddingVertical: 10,
+                }}>
+                Loading...
               </Text>
             </View>
-          }
-          cardContent={<SimInformationComponent value={simData || {}} />}
-        />
-        <ContentCard
-          isOnlyContent={true}
-          customStyle={{marginBottom: 0}}
-          cardContent={<ViewInformationComponent listInformation={simStatus} />}
-        />
-        <ContentCard
-          cardTitle="Last 30 Days Traffic Usage"
-          cardToolbar={
-            <ButtonCurveTypeComponent
-              label={curveType?.label}
-              setShowModal={setShowCurveType}
-              showModal={showCurveType}
-              curveTypeOptions={curveTypeOptions}
-              curveType={curveType}
-              setCurveType={setCurveType}
-            />
-          }
-          cardContent={
-            <RealtimeChartComponent
-              dataSet1={trafficUsage?.monthUsage}
-              dataSet2={trafficUsage?.cumulativeUsage}
-              chartType={curveType.value}
-            />
-          }
-        />
+          ) : (
+            <>
+              <ContentCard
+                isOnlyContent={true}
+                customStyle={{marginBottom: 5}}
+                cardContent={
+                  <SearchBarDiagnostic
+                    onSubmit={searchSubmit}
+                    editable={!loadSimData}
+                    searchHandler={searchHandler}
+                    value={searchForm}
+                  />
+                }
+              />
+              <ContentCard
+                customStyle={{marginBottom: 5}}
+                cardTitleStyle={styles.searchCriteriaContainer}
+                cardTitleComponent={
+                  <View style={styles.searchCriteriaHeader}>
+                    <Text
+                      fontType="semi-bold"
+                      style={styles.searchCriteriaText}>
+                      Search Criteria : {!loadSimData && searchCriteria}
+                    </Text>
+                  </View>
+                }
+                cardContent={<SimInformationComponent value={simData || {}} />}
+              />
+              <ContentCard
+                isOnlyContent={true}
+                customStyle={{marginBottom: 0}}
+                cardContent={
+                  <ViewInformationComponent listInformation={simStatus} />
+                }
+              />
+              <ContentCard
+                cardTitle="Last 30 Days Traffic Usage"
+                cardToolbar={
+                  <ButtonCurveTypeComponent
+                    label={curveType?.label}
+                    setShowModal={setShowCurveType}
+                    showModal={showCurveType}
+                    curveTypeOptions={curveTypeOptions}
+                    curveType={curveType}
+                    setCurveType={setCurveType}
+                  />
+                }
+                cardContent={
+                  <RealtimeChartComponent
+                    dataSet1={trafficUsage?.monthUsage}
+                    dataSet2={trafficUsage?.cumulativeUsage}
+                    chartType={curveType.value}
+                  />
+                }
+              />
+            </>
+          )}
+        </>
       </ScrollView>
     </View>
   );
