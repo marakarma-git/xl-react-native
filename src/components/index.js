@@ -23,6 +23,7 @@ export {default as FilterDropdown} from './form/FilterDropdown';
 export {default as FormFactory} from './form/FormFactory';
 export {default as SimInformationComponent} from './form/simInformation';
 export {default as ViewInformationComponent} from './form/viewInformation';
+export {default as SearchBarDiagnostic} from './form/SearchBarDiagnostic';
 
 // Modal Component
 export {default as ModalTermCondition} from './modal/ModalTermCondition';

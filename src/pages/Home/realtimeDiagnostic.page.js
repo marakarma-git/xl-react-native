@@ -9,6 +9,7 @@ import {
   SimInformationComponent,
   Text,
   ViewInformationComponent,
+  SearchBarDiagnostic,
 } from '../../components';
 import {useSelector, useDispatch} from 'react-redux';
 import styles from '../../style/reatimeDiagnosticStyle';
@@ -23,7 +24,6 @@ import {useToastHooks} from '../../customHooks/customHooks';
 import {Bars} from 'react-native-loader';
 import {colors} from '../../constant/color';
 import RealtimeChartComponent from '../../components/chart/realtimeChart';
-import SearchBarDiagnostic from '../../components/form/searchBarDiagnostic';
 
 const RealtimeDiagnosticPage = ({navigation}) => {
   const dispatch = useDispatch();
@@ -119,10 +119,13 @@ const RealtimeDiagnosticPage = ({navigation}) => {
     return pageBlur;
   }, [navigation]);
   useEffect(() => {
-    setTimeout(() => {
-      setPageReady(true);
-    }, 1500);
-  }, []);
+    const pageLoad = navigation.addListener('focus', () => {
+      setTimeout(() => {
+        setPageReady(true);
+      }, 1500);
+    });
+    return pageLoad;
+  }, [navigation]);
   return (
     <View style={styles.container}>
       <HeaderContainer
