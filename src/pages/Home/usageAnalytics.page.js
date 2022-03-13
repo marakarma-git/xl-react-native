@@ -82,6 +82,9 @@ const UsageAnalyticsPage = ({route, navigation}) => {
     loading12MonthUsage,
     loadingMonthUsage,
   } = useSelector((state) => state.dashboard_reducer);
+  const {filter: filterPermission} = useSelector(
+    (state) => state.user_menu_permission_reducer.menu.usageAnalytics,
+  );
   const {appliedFilter, generatedParams} = useSelector(
     (state) => state.usage_analytics_filter_reducer,
   );
@@ -225,43 +228,45 @@ const UsageAnalyticsPage = ({route, navigation}) => {
         <View style={styles.cardContainer}>
           <OverlayBackground />
           <View style={styles.cardWrapper}>
-            <AppliedFilter
-              withFilterButton
-              onPressFilter={() =>
-                navigation.navigate('UsageAnalyticsFilterPage')
-              }
-              style={{marginLeft: 0, flex: 1}}
-              data={appliedFilter}
-              onDelete={(e) => {
-                const {formId} = e || {};
-                if (formId === 'usage-analytics-enterprise-hard-code') {
-                  dispatch(usageAnalyticsDynamicResetSelectedValue({formId}));
-                  dispatch(
-                    usageAnalyticsDynamicResetSelectedValue({
-                      formId: 'usage-analytics-package-name-hard-code',
-                    }),
-                  );
-                } else {
-                  const dataEnterprise = [...appliedFilter].find(
-                    (data) =>
-                      data.formId === 'usage-analytics-enterprise-hard-code',
-                  );
-                  dispatch(usageAnalyticsDynamicResetSelectedValue({formId}));
-                  dispatch(
-                    simGetEnterprisePackage({
-                      enterpriseName: dataEnterprise?.value?.label,
-                    }),
-                  );
-                  dispatch(
-                    usageAnalyticsDynamicOnchangeDropDown({
-                      formId: 'usage-analytics-enterprise-hard-code',
-                      dropDown: dataEnterprise?.value,
-                    }),
-                  );
+            {filterPermission && (
+              <AppliedFilter
+                withFilterButton
+                onPressFilter={() =>
+                  navigation.navigate('UsageAnalyticsFilterPage')
                 }
-                dispatch(usageAnalyticsGenerateParams());
-              }}
-            />
+                style={{marginLeft: 0, flex: 1}}
+                data={appliedFilter}
+                onDelete={(e) => {
+                  const {formId} = e || {};
+                  if (formId === 'usage-analytics-enterprise-hard-code') {
+                    dispatch(usageAnalyticsDynamicResetSelectedValue({formId}));
+                    dispatch(
+                      usageAnalyticsDynamicResetSelectedValue({
+                        formId: 'usage-analytics-package-name-hard-code',
+                      }),
+                    );
+                  } else {
+                    const dataEnterprise = [...appliedFilter].find(
+                      (data) =>
+                        data.formId === 'usage-analytics-enterprise-hard-code',
+                    );
+                    dispatch(usageAnalyticsDynamicResetSelectedValue({formId}));
+                    dispatch(
+                      simGetEnterprisePackage({
+                        enterpriseName: dataEnterprise?.value?.label,
+                      }),
+                    );
+                    dispatch(
+                      usageAnalyticsDynamicOnchangeDropDown({
+                        formId: 'usage-analytics-enterprise-hard-code',
+                        dropDown: dataEnterprise?.value,
+                      }),
+                    );
+                  }
+                  dispatch(usageAnalyticsGenerateParams());
+                }}
+              />
+            )}
             <View>
               <Text style={styles.cardDescriptionText}>
                 Analyze the Usage Behaviour to have insights for further
@@ -304,14 +309,15 @@ const UsageAnalyticsPage = ({route, navigation}) => {
               cardTitle="Top Traffic Statistics"
             />
             <ContentCard
-              cardTitle={`Aggregated Traffic`}
+              cardTitle={`Aggregated Traffic ${JSON.stringify(
+                filterPermission,
+              )}`}
               loadingContent={loadingAggregated}
               cardContent={
                 <>
                   {!loadingAggregated && (
                     <GridComponent
                       colHeight={40}
-                      tableMaxHeight={400}
                       isOverflow={true}
                       customTableStyle={styles.customTable}
                       indexIdentifier="title"

@@ -177,16 +177,16 @@ const enterprise_management_header_array_reducer = (
           (f) => f.formId === action.formId,
         ) || 0;
       state.dataHeaderEnterprise[getIndex].value = action.dateTimePicker;
-      state.dataHeaderEnterprise[getIndex].isSelected =
-        !state.dataHeaderEnterprise[getIndex].isSelected;
+      state.dataHeaderEnterprise[getIndex].isSelected = !state
+        .dataHeaderEnterprise[getIndex].isSelected;
       return {
         ...state,
         dataHeaderEnterprise: state.dataHeaderEnterprise,
       };
     }
     case reduxString.ENTERPRISE_MANAGEMENT_CHANGE_CHECK_HEADER: {
-      state.dataHeaderEnterprise[0].valueCheck =
-        !state.dataHeaderEnterprise[0].valueCheck;
+      state.dataHeaderEnterprise[0].valueCheck = !state.dataHeaderEnterprise[0]
+        .valueCheck;
       return {
         ...state,
         dataHeaderEnterprise: state.dataHeaderEnterprise,
@@ -288,6 +288,12 @@ const enterprise_management_header_array_reducer = (
         ...state,
         generatedParams: initialState.generatedParams,
         appliedFilterEnterprise: initialState.appliedFilterEnterprise,
+      };
+    }
+    case reduxString.SET_ENTERPRISE_MANAGEMENT_EDIT_PERMISSION: {
+      return {
+        ...state,
+        dataHeaderEnterprise: action.payload,
       };
     }
     default: {

@@ -24,6 +24,7 @@ const ButtonLabelComponent = (props) => {
     filtered,
     selected,
     typeTwo,
+    isDisabled,
   } = props;
   return (
     <View style={{flexDirection: 'row', alignItems: 'center'}}>
@@ -40,12 +41,13 @@ const ButtonLabelComponent = (props) => {
         </Text>
       )}
       <TouchableOpacity
-        disabled={isLoading}
+        disabled={isLoading || isDisabled}
         style={[
           styles.button,
           {...buttonStyle},
           {
-            backgroundColor: isLoading ? colors.gray_200 : buttonColor,
+            backgroundColor:
+              isLoading || isDisabled ? colors.gray_200 : buttonColor,
             width: buttonWidth,
             height: 30,
           },
@@ -76,6 +78,7 @@ ButtonLabelComponent.propTypes = {
   isLoading: PropTypes.bool,
   total: PropTypes.string,
   filtered: PropTypes.string,
+  isDisabled: PropTypes.bool,
 };
 ButtonLabelComponent.defaultProps = {
   buttonText: 'Label',
@@ -86,6 +89,7 @@ ButtonLabelComponent.defaultProps = {
   textStyle: {},
   buttonAction: () => {},
   isLoading: false,
+  isDisabled: false,
 };
 
 const styles = StyleSheet.create({

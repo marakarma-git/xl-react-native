@@ -94,10 +94,9 @@ const RoleAdministrationPage = ({route, navigation}) => {
     role_params_applied_activity_log,
   } = useSelector((state) => state.role_administration_get_all_role_reducer);
   const [isCheckHeader, setIsCheckHeader] = useState(false);
-  const accessToken = useSelector(
-    (state) => state.auth_reducer.data.access_token,
+  const menuPermission = useSelector(
+    (state) => state.user_menu_permission_reducer.menu.roleAdministration,
   );
-  const {data} = useSelector((state) => state.auth_reducer);
 
   const customConfirmAlert = (
     title,
@@ -271,18 +270,14 @@ const RoleAdministrationPage = ({route, navigation}) => {
   };
 
   const checkActionPriviledge = () => {
-    const dataAction = actionData.slice();
-
-    dataAction.map((action) => {
-      let isVisible = Helper.findAndReturnPriviledge(
-        route.name,
-        action.actionName,
-        data?.authority || [],
-        ADMINISTRATION_PRIVILEDGE_ID,
+    const dataAction = [...actionData];
+    Object.keys(menuPermission).map((key) => {
+      let index = dataAction.findIndex(
+        (data) => data.actionName.toLowerCase() === key,
       );
-      action.isVisible = isVisible;
+      console.log(dataAction[index]?.actionName, key);
+      if (index >= 0) dataAction[index].isVisible = menuPermission[key];
     });
-
     setActionData(dataAction);
   };
 

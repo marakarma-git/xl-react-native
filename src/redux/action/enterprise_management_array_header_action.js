@@ -88,6 +88,19 @@ const enterpriseManagementResetParams = () => {
     type: reduxString.ENTERPRISE_MANAGEMENT_RESET_PARAMS,
   };
 };
+const setEnterpriseManagementEditPermission = (data) => ({
+  type: reduxString.SET_ENTERPRISE_MANAGEMENT_EDIT_PERMISSION,
+  payload: data,
+});
+const enterpriseManagementEditPermission = (isHasPermission) => {
+  return async (dispatch, getState) => {
+    const {dataHeaderEnterprise} = await getState()
+      .enterprise_management_header_array_reducer;
+    const dataHeaderUpdate = [...dataHeaderEnterprise];
+    dataHeaderUpdate[0].config.isNavigate = isHasPermission;
+    dispatch(setEnterpriseManagementEditPermission(dataHeaderUpdate));
+  };
+};
 const getCustomerType = () => {
   return async (dispatch) => {
     dispatch(
@@ -141,4 +154,5 @@ export {
   enterpriseManagementSetSearchText,
   enterpriseManagementUpdateBundleArray,
   enterpriseManagementDynamicReset,
+  enterpriseManagementEditPermission,
 };

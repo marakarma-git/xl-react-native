@@ -9,6 +9,7 @@ import {
   setFalseAfterLogin,
 } from '../redux/action/auth_action';
 import {resetNotificationLimit} from '../redux/action/notification_action';
+import {checkUserMenuPermission} from '../redux/action/user_menu_permission_action';
 
 const Auth = ({navigation}) => {
   const dispatch = useDispatch();
@@ -31,6 +32,7 @@ const Auth = ({navigation}) => {
             dispatch(setFalseAfterLogin());
           }
         } else {
+          dispatch(checkUserMenuPermission(data?.authority));
           navigation.replace('Home');
         }
       }
