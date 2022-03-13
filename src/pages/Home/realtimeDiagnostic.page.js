@@ -37,6 +37,9 @@ const RealtimeDiagnosticPage = ({navigation}) => {
     successText,
     trafficUsage,
   } = useSelector((state) => state.realtime_diagnostic_reducer);
+  const {filter: filerPermission, fixStatus: fixStatusPermission} = useSelector(
+    (state) => state.user_menu_permission_reducer.menu.diagnosticWizard,
+  );
   const [pageReady, setPageReady] = useState(false);
   const [searchForm, setSearchForm] = useState({
     keyword: '',
@@ -190,7 +193,10 @@ const RealtimeDiagnosticPage = ({navigation}) => {
                 isOnlyContent={true}
                 customStyle={{marginBottom: 0}}
                 cardContent={
-                  <ViewInformationComponent listInformation={simStatus} />
+                  <ViewInformationComponent
+                    listInformation={simStatus}
+                    isFixStatusDisabled={!fixStatusPermission}
+                  />
                 }
               />
               <ContentCard

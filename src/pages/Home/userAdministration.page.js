@@ -1,6 +1,5 @@
-import axios from 'axios';
 import React, {useEffect, useState} from 'react';
-import {View, Alert, ToastAndroid} from 'react-native';
+import {View, ToastAndroid} from 'react-native';
 import {
   HeaderContainer,
   OverlayBackground,
@@ -34,7 +33,6 @@ import {dataMatcherArray2D} from '../../redux/action/get_sim_inventory_action';
 import Helper from '../../helpers/helper';
 import Loading from '../../components/loading';
 import {setRequestError} from '../../redux/action/dashboard_action';
-import {ADMINISTRATION_PRIVILEDGE_ID} from '../../constant/actionPriv';
 import {useToastHooks} from '../../customHooks/customHooks';
 import httpRequest from '../../constant/axiosInstance';
 
@@ -93,14 +91,11 @@ const UserAdministrationPage = ({route}) => {
   const {imageBase64} = useSelector((state) => state.enterprise_reducer);
   const [selectIndex, setSelectIndex] = useState([]);
   const [isCheckHeader, setIsCheckHeader] = useState(false);
-  const accessToken = useSelector(
-    (state) => state.auth_reducer.data.access_token,
-  );
-  const userAuthority = useSelector(
-    (state) => state.auth_reducer.data?.authority,
-  );
   const {dataHeader, searchText, generatedParams, appliedFilter} = useSelector(
     (state) => state.user_administration_array_header_reducer,
+  );
+  const menuPermission = useSelector(
+    (state) => state.user_menu_permission_reducer.menu.userAdministration,
   );
   const {
     loading,
@@ -335,28 +330,13 @@ const UserAdministrationPage = ({route}) => {
   };
 
   const checkActionPriviledge = () => {
-    const dataAction = actionData.slice();
-    const isVisible = Helper.findAndReturnPriviledge(
-      route.name,
-      'Filter',
-      userAuthority,
-      ADMINISTRATION_PRIVILEDGE_ID,
-    );
-
-    // Filter
-    setIsFilterVisible(isVisible);
-
-    // Action
-    dataAction.map((action) => {
-      let isVisible = Helper.findAndReturnPriviledge(
-        route.name,
-        action.actionName,
-        userAuthority || [],
-        ADMINISTRATION_PRIVILEDGE_ID,
+    const dataAction = [...actionData];
+    Object.keys(menuPermission).map((key) => {
+      let index = dataAction.findIndex(
+        (data) => data.actionName.toLowerCase() === key,
       );
-      action.isVisible = isVisible;
+      if (index >= 0) dataAction[index].isVisible = menuPermission[key];
     });
-
     setActionData(dataAction);
   };
 

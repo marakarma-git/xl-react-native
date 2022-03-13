@@ -34,6 +34,10 @@ const UsageSubscribersAnalyticsPage = ({route, navigation}) => {
   const {subsAnalytics, loadingSubsAnalytics} = useSelector(
     (state) => state.dashboard_reducer,
   );
+  const {filter: filterPermission} = useSelector(
+    (state) =>
+      state.user_menu_permission_reducer.menu.usageSubscribersAnalytics,
+  );
   const [param1, setParam1] = useState(null);
   const [param2, setParam2] = useState(null);
   const [monthlyWidget, setMonthlyWidget] = useState(null);
@@ -117,56 +121,59 @@ const UsageSubscribersAnalyticsPage = ({route, navigation}) => {
         <View style={styles.cardContainer}>
           <OverlayBackground />
           <View style={styles.cardWrapper}>
-            <AppliedFilter
-              withFilterButton
-              onPressFilter={() =>
-                navigation.navigate('UsageSubscribersAnalyticsFilterPage')
-              }
-              style={{marginLeft: 0, flex: 1}}
-              data={appliedFilter}
-              onDelete={(e) => {
-                const {formId} = e || {};
-                if (
-                  formId === 'usage-subscribers-analytics-enterprise-hard-code'
-                ) {
-                  dispatch(
-                    usageSubscribersAnalyticsDynamicResetSelectedValue({
-                      formId,
-                    }),
-                  );
-                  dispatch(
-                    usageSubscribersAnalyticsDynamicResetSelectedValue({
-                      formId:
-                        'usage-subscribers-analytics-package-name-hard-code',
-                    }),
-                  );
-                } else {
-                  const dataEnterprise = [...appliedFilter].find(
-                    (data) =>
-                      data.formId ===
-                      'usage-subscribers-analytics-enterprise-hard-code',
-                  );
-                  dispatch(
-                    usageSubscribersAnalyticsDynamicResetSelectedValue({
-                      formId,
-                    }),
-                  );
-                  dispatch(
-                    simGetEnterprisePackage({
-                      enterpriseName: dataEnterprise?.value?.label,
-                    }),
-                  );
-                  dispatch(
-                    usageSubscribersAnalyticsDynamicOnchangeDropDown({
-                      formId:
-                        'usage-subscribers-analytics-enterprise-hard-code',
-                      dropDown: dataEnterprise?.value,
-                    }),
-                  );
+            {filterPermission && (
+              <AppliedFilter
+                withFilterButton
+                onPressFilter={() =>
+                  navigation.navigate('UsageSubscribersAnalyticsFilterPage')
                 }
-                dispatch(usageSubscribersAnalyticsGenerateParams());
-              }}
-            />
+                style={{marginLeft: 0, flex: 1}}
+                data={appliedFilter}
+                onDelete={(e) => {
+                  const {formId} = e || {};
+                  if (
+                    formId ===
+                    'usage-subscribers-analytics-enterprise-hard-code'
+                  ) {
+                    dispatch(
+                      usageSubscribersAnalyticsDynamicResetSelectedValue({
+                        formId,
+                      }),
+                    );
+                    dispatch(
+                      usageSubscribersAnalyticsDynamicResetSelectedValue({
+                        formId:
+                          'usage-subscribers-analytics-package-name-hard-code',
+                      }),
+                    );
+                  } else {
+                    const dataEnterprise = [...appliedFilter].find(
+                      (data) =>
+                        data.formId ===
+                        'usage-subscribers-analytics-enterprise-hard-code',
+                    );
+                    dispatch(
+                      usageSubscribersAnalyticsDynamicResetSelectedValue({
+                        formId,
+                      }),
+                    );
+                    dispatch(
+                      simGetEnterprisePackage({
+                        enterpriseName: dataEnterprise?.value?.label,
+                      }),
+                    );
+                    dispatch(
+                      usageSubscribersAnalyticsDynamicOnchangeDropDown({
+                        formId:
+                          'usage-subscribers-analytics-enterprise-hard-code',
+                        dropDown: dataEnterprise?.value,
+                      }),
+                    );
+                  }
+                  dispatch(usageSubscribersAnalyticsGenerateParams());
+                }}
+              />
+            )}
             <View>
               <Text style={styles.cardDescriptionText}>
                 See the Usage Trends as well as Subscriber growth in one single

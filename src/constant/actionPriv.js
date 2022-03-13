@@ -516,6 +516,239 @@ const DIAGNOSTIC_WIZARD_PRIVILEDGE_ID = [
   },
 ];
 
+const PERMISSION_ID = [
+  {
+    menu: 'dashboard',
+    action: 'view',
+    permissionId: '02ac2c76-53ce-11ea-8d77-2e728ce88125',
+  },
+  {
+    menu: 'subscription',
+    action: 'search',
+    permissionId: '4acc9460-7245-11ea-bc55-0242ac130003',
+  },
+  {
+    menu: 'subscription',
+    action: 'pauseSIM',
+    permissionId: '4acc9794-7245-11ea-bc55-0242ac130003',
+  },
+  {
+    menu: 'subscription',
+    action: 'bulkUpdateLabel',
+    permissionId: '4acc9924-7245-11ea-bc55-0242ac130003',
+  },
+  {
+    menu: 'subscription',
+    action: 'deactivateSIM',
+    permissionId: '4acc96b8-7245-11ea-bc55-0242ac130003',
+  },
+  {
+    menu: 'subscription',
+    action: 'terminateSIM',
+    permissionId: '4acc985c-7245-11ea-bc55-0242ac130003',
+  },
+  {
+    menu: 'subscription',
+    action: 'viewSIMInventor',
+    permissionId: '4acc9528-7245-11ea-bc55-0242ac130003',
+  },
+  {
+    menu: 'subscription',
+    action: 'activateSIM',
+    permissionId: '4acc95f0-7245-11ea-bc55-0242ac130003',
+  },
+  {
+    menu: 'subscription',
+    action: 'seeSIMLocation',
+    permissionId: '4acc9c94-7245-11ea-bc55-0242ac130003',
+  },
+  {
+    menu: 'userAdministration',
+    action: 'edit',
+    permissionId: '4acc9ee2-7245-11ea-bc55-0242ac130003',
+  },
+  {
+    menu: 'userAdministration',
+    action: 'create',
+    permissionId: '4acc9e1a-7245-11ea-bc55-0242ac130003',
+  },
+  {
+    menu: 'userAdministration',
+    action: 'filter',
+    permissionId: '5265e528-96b1-11eb-a8b3-0242ac130003',
+  },
+  {
+    menu: 'userAdministration',
+    action: 'delete',
+    permissionId: 'e1dc5db0-91fa-11eb-a8b3-0242ac130003',
+  },
+  {
+    menu: 'userAdministration',
+    action: 'lock',
+    permissionId: 'e1dc5ebe-91fa-11eb-a8b3-0242ac130003',
+  },
+  {
+    menu: 'userAdministration',
+    action: 'unlock',
+    permissionId: 'e1dc5f90-91fa-11eb-a8b3-0242ac130003',
+  },
+  {
+    menu: 'userAdministration',
+    action: 'view',
+    permissionId: '4acc9d5c-7245-11ea-bc55-0242ac130003',
+  },
+  {
+    menu: 'roleAdministration',
+    action: 'edit',
+    permissionId: '4acca338-7245-11ea-bc55-0242ac130003',
+  },
+  {
+    menu: 'roleAdministration',
+    action: 'create',
+    permissionId: '4acca068-7245-11ea-bc55-0242ac130003',
+  },
+  {
+    menu: 'roleAdministration',
+    action: 'filter',
+    permissionId: 'a7d61538-56ff-11eb-ae93-0242ac130002',
+  },
+  {
+    menu: 'roleAdministration',
+    action: 'delete',
+    permissionId: '31a717d4-9b67-11eb-a8b3-0242ac130003',
+  },
+  {
+    menu: 'roleAdministration',
+    action: 'copy',
+    permissionId: '31a718ba-9b67-11eb-a8b3-0242ac130003',
+  },
+  {
+    menu: 'roleAdministration',
+    action: 'view',
+    permissionId: '4acc9faa-7245-11ea-bc55-0242ac130003',
+  },
+  {
+    menu: 'enterpriseManagement',
+    action: 'edit',
+    permissionId: '4acca57c-7245-11ea-bc55-0242ac130003',
+  },
+  {
+    menu: 'enterpriseManagement',
+    action: 'create',
+    permissionId: '4acca4be-7245-11ea-bc55-0242ac130003',
+  },
+  {
+    menu: 'enterpriseManagement',
+    action: 'filter',
+    permissionId: '4acca400-7245-11ea-bc55-0242ac130003',
+  },
+  {
+    menu: 'enterpriseManagement',
+    action: 'view',
+    permissionId: '4acca400-7245-11ea-bc55-0242ac130003',
+  },
+  {
+    menu: 'subscriptionPackage',
+    action: 'filter',
+    permissionId: '50b49964-8d01-11ea-bc55-0242ac130003',
+  },
+  {
+    menu: 'subscriptionPackage',
+    action: 'edit',
+    permissionId: '50b49a7c-8d01-11ea-bc55-0242ac130003',
+  },
+  {
+    menu: 'subscriptionPackage',
+    action: 'view',
+    permissionId: '50b49572-8d01-11ea-bc55-0242ac130003',
+  },
+  {
+    menu: 'smsA2pConfiguration',
+    action: 'create',
+    permissionId: '570b8992-9b2b-48b4-a743-1c38f3db11a3',
+  },
+  {
+    menu: 'smsA2pConfiguration',
+    action: 'edit',
+    permissionId: '838b998f-acaf-4249-8521-c217b73634f2',
+  },
+  {
+    menu: 'smsA2pConfiguration',
+    action: 'delete',
+    permissionId: '99b1ec5b-0cdc-4683-b642-71725ba7e707',
+  },
+  {
+    menu: 'smsA2pConfiguration',
+    action: 'search',
+    permissionId: 'c6363dd0-6684-4b53-aabd-25ffe9728f29',
+  },
+  {
+    menu: 'smsA2pConfiguration',
+    action: 'filter',
+    permissionId: '77f616ba-542d-4997-b2bf-213bd71c93ff',
+  },
+  {
+    menu: 'smsA2pConfiguration',
+    action: 'view',
+    permissionId: 'a9c84041-7829-4678-9f2f-f8baa66d16da',
+  },
+  {
+    menu: 'automation',
+    action: 'create',
+    permissionId: '6b431287-3e27-4e9f-9749-250ff540b9a8',
+  },
+  {
+    menu: 'automation',
+    action: 'edit',
+    permissionId: 'b9941376-e8c2-4df1-92dc-868873d782d1',
+  },
+  {
+    menu: 'automation',
+    action: 'delete',
+    permissionId: '9b253667-9c77-4f35-8c4c-d1acf15dc1ec',
+  },
+  {
+    menu: 'automation',
+    action: 'filter',
+    permissionId: 'a8cf454f-61b7-4c40-81de-67e2f20f1d53',
+  },
+  {
+    menu: 'automation',
+    action: 'view',
+    permissionId: 'dabf1d82-8162-4f2c-98ae-55017c31601b',
+  },
+  {
+    menu: 'diagnosticWizard',
+    action: 'filter',
+    permissionId: 'd154bdb7-d552-4cbc-814c-1f77c15d9a19',
+  },
+  {
+    menu: 'diagnosticWizard',
+    action: 'fixStatus',
+    permissionId: '5c65cf2f-d2fb-4fc8-b38b-12828b120fff',
+  },
+  {
+    menu: 'simProductivity',
+    action: 'filter',
+    permissionId: '43e6210b-221c-4488-a921-5ec68daecd88',
+  },
+  {
+    menu: 'usageAnalytics',
+    action: 'filter',
+    permissionId: 'ee1a526a-6439-11eb-ae93-0242ac130002',
+  },
+  {
+    menu: 'usageSubscribersAnalytics',
+    action: 'filter',
+    permissionId: '99bd51a2-69d6-11eb-9439-0242ac130002',
+  },
+  {
+    menu: 'geoDistribution',
+    action: 'filter',
+    permissionId: 'acf5f391-a469-4d6a-a0b1-1de0bb2f4aba',
+  },
+];
+
 export {
   DASHBOARD_PRIVILEDGE_ID,
   SUBSCRIPTION_PRIVILEDGE_ID,
@@ -526,4 +759,5 @@ export {
   CHANGE_PASSWORD_PRIVILEDGE_ID,
   CUSTOMER_CONSENT_PRIVILEDGE_ID,
   DIAGNOSTIC_WIZARD_PRIVILEDGE_ID,
+  PERMISSION_ID,
 };

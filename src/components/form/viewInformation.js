@@ -16,7 +16,7 @@ import {
 
 const ViewInformationComponent = (props) => {
   const dispatch = useDispatch();
-  const {listInformation} = props;
+  const {listInformation, isFixStatusDisabled} = props;
   const {fixLoading} = useSelector(
     (state) => state.realtime_diagnostic_reducer,
   );
@@ -105,6 +105,7 @@ const ViewInformationComponent = (props) => {
               </Text>
             </View>
             <ButtonLabelComponent
+              isDisabled={isFixStatusDisabled}
               isLoading={fixLoading[list.field]}
               buttonAction={() => {
                 dispatch(realtimeDiagnosticFixLoading(list.field));
@@ -142,9 +143,11 @@ ViewInformationComponent.propTypes = {
       msisdn: PropTypes.string,
     }),
   ),
+  isFixStatusDisabled: PropTypes.bool,
 };
 ViewInformationComponent.defaultProps = {
   listInformation: [],
+  isFixStatusDisabled: false,
 };
 
 export default ViewInformationComponent;

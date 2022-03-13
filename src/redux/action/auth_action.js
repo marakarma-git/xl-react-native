@@ -3,7 +3,6 @@ import reduxString from '../reduxString';
 import subDomain from '../../constant/requestSubPath';
 import {clientId} from '../../constant/connection';
 import {removeEnterPriseLogo} from './enterprise_action';
-import {getListTopicByEnterprise} from './notification_action';
 import httpRequest from '../../constant/axiosInstance';
 
 const authRequest = () => {

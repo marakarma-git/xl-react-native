@@ -21,6 +21,7 @@ import AppliedFilter from '../../components/subscription/appliedFilter';
 import Helper from '../../helpers/helper';
 import {
   enterpriseManagementDynamicReset,
+  enterpriseManagementEditPermission,
   enterpriseManagementGenerateParams,
   enterpriseManagementSetSearchText,
   enterpriseManagementUpdateBundleArray,
@@ -57,6 +58,13 @@ const EnterpriseManagement = () => {
   } = useSelector(
     (state) => state.enterprise_management_get_enterprise_reducer,
   );
+  const {
+    edit: editPermission,
+    create: createPermission,
+    filter: filterPermission,
+  } = useSelector(
+    (state) => state.user_menu_permission_reducer.menu.enterpriseManagement,
+  );
   useEffect(() => {
     if (!firstRender) {
       dispatch(
@@ -68,10 +76,13 @@ const EnterpriseManagement = () => {
       dispatch(getEnterpriseList());
       setFirstRender(false);
     }
-    return () =>
-      navigation.addListener('focus', () => {
-        dispatch(getEnterpriseList());
-      });
+    const firstPageLoad = () => {
+      dispatch(enterpriseManagementEditPermission(editPermission));
+      dispatch(getEnterpriseList());
+    };
+    return navigation.addListener('focus', () => {
+      firstPageLoad();
+    });
   }, [navigation, dispatch, searchText, generatedParams]);
   return (
     <HeaderContainer
@@ -108,21 +119,23 @@ const EnterpriseManagement = () => {
                     dispatch(enterpriseManagementGenerateParams());
                   }}
                 />
-                <ButtonLabelComponent
-                  buttonText={'Onboard Enterprise'}
-                  buttonAction={() =>
-                    navigation.navigate('EnterpriseManagementOnboard')
-                  }
-                  buttonWidth={150}
-                  buttonStyle={{marginHorizontal: 15}}
-                  total={enterprise_elements_static}
-                  filtered={
-                    enterprise_applied_filter &&
-                    !loading &&
-                    data_enterprise_generated.length > 0 &&
-                    data_enterprise_generated.length
-                  }
-                />
+                {createPermission && (
+                  <ButtonLabelComponent
+                    buttonText={'Onboard Enterprise'}
+                    buttonAction={() =>
+                      navigation.navigate('EnterpriseManagementOnboard')
+                    }
+                    buttonWidth={150}
+                    buttonStyle={{marginHorizontal: 15}}
+                    total={enterprise_elements_static}
+                    filtered={
+                      enterprise_applied_filter &&
+                      !loading &&
+                      data_enterprise_generated.length > 0 &&
+                      data_enterprise_generated.length
+                    }
+                  />
+                )}
               </>
             );
           }}
