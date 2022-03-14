@@ -36,6 +36,7 @@ const TableFooter = (props) => {
     onChangePaging,
     onChangePerPage,
     loading,
+    hideAll,
   } = props || {};
   const [showPerPage, setShowPerPage] = useState(false);
   const getTotalPage = () => {
@@ -45,108 +46,114 @@ const TableFooter = (props) => {
     return totalPage;
   };
   return (
-    <View style={tableFooter.tableFooterWrapper}>
-      <View style={tableFooter.row}>
-        {!loading && (
-          <>
-            <Text style={tableFooter.fontColor}>View: </Text>
-            <TouchableOpacity
-              style={tableFooter.pageOptionWrapper}
-              onPress={() => setShowPerPage(true)}>
-              <Text style={tableFooter.fontColor}>
-                {perPageValue || initialPerPage[0].label}
-              </Text>
-              <MaterialCommunityIcons
-                name={'chevron-down'}
-                color={colors.gray}
-                size={20}
-              />
-            </TouchableOpacity>
-            <Text style={tableFooter.fontColor}> per page</Text>
-          </>
-        )}
-      </View>
-      <View style={tableFooter.row}>
-        {!loading && (
-          <>
-            {currentPage > 0 && (
+    <>
+      {!hideAll ? (
+        <View style={tableFooter.tableFooterWrapper}>
+          <View style={tableFooter.row}>
+            {!loading && (
               <>
-                <TouchableOpacity onPress={() => onChangePaging(0)}>
-                  <MaterialIcons
-                    name={'skip-previous'}
-                    color={colors.gray}
-                    size={28}
-                  />
-                </TouchableOpacity>
+                <Text style={tableFooter.fontColor}>View: </Text>
                 <TouchableOpacity
-                  onPress={() => onChangePaging(currentPage - 1)}>
+                  style={tableFooter.pageOptionWrapper}
+                  onPress={() => setShowPerPage(true)}>
+                  <Text style={tableFooter.fontColor}>
+                    {perPageValue || initialPerPage[0].label}
+                  </Text>
                   <MaterialCommunityIcons
-                    name={'chevron-left'}
+                    name={'chevron-down'}
                     color={colors.gray}
-                    size={28}
+                    size={20}
                   />
                 </TouchableOpacity>
+                <Text style={tableFooter.fontColor}> per page</Text>
               </>
             )}
-            <TextInput
-              keyboardType={'numeric'}
-              placeholder={currentPage + 1 + ''}
-              value={currentPage === 0 ? currentPage + 1 : currentPage}
-              style={tableFooter.textInputPaging}
-              maxLength={totalPage?.toString().length || 0}
-              onSubmitEditing={({nativeEvent}) => {
-                if (nativeEvent.text > 0 && nativeEvent.text < totalPage) {
-                  onChangePaging(Number(nativeEvent.text - 1));
-                } else {
-                  Alert.alert(
-                    'Warning',
-                    `Sorry your paging cannot more than ${totalPage}`,
-                  );
-                }
+          </View>
+          <View style={tableFooter.row}>
+            {!loading && (
+              <>
+                {currentPage > 0 && (
+                  <>
+                    <TouchableOpacity onPress={() => onChangePaging(0)}>
+                      <MaterialIcons
+                        name={'skip-previous'}
+                        color={colors.gray}
+                        size={28}
+                      />
+                    </TouchableOpacity>
+                    <TouchableOpacity
+                      onPress={() => onChangePaging(currentPage - 1)}>
+                      <MaterialCommunityIcons
+                        name={'chevron-left'}
+                        color={colors.gray}
+                        size={28}
+                      />
+                    </TouchableOpacity>
+                  </>
+                )}
+                <TextInput
+                  keyboardType={'numeric'}
+                  placeholder={currentPage + 1 + ''}
+                  value={currentPage === 0 ? currentPage + 1 : currentPage}
+                  style={tableFooter.textInputPaging}
+                  maxLength={totalPage?.toString().length || 0}
+                  onSubmitEditing={({nativeEvent}) => {
+                    if (nativeEvent.text > 0 && nativeEvent.text < totalPage) {
+                      onChangePaging(Number(nativeEvent.text - 1));
+                    } else {
+                      Alert.alert(
+                        'Warning',
+                        `Sorry your paging cannot more than ${totalPage}`,
+                      );
+                    }
+                  }}
+                />
+                <Text style={{color: colors.font_gray}}>
+                  {' '}
+                  of {Helper.numberWithDot(totalPage > 0 ? totalPage : 1)}
+                </Text>
+                {currentPage + 1 < totalPage && (
+                  <>
+                    <TouchableOpacity
+                      onPress={() => onChangePaging(currentPage + 1)}>
+                      <MaterialCommunityIcons
+                        name={'chevron-right'}
+                        color={colors.gray}
+                        size={28}
+                      />
+                    </TouchableOpacity>
+                    <TouchableOpacity
+                      onPress={() => onChangePaging(getTotalPage())}>
+                      <MaterialIcons
+                        name={'skip-next'}
+                        color={colors.gray}
+                        size={28}
+                      />
+                    </TouchableOpacity>
+                  </>
+                )}
+              </>
+            )}
+          </View>
+          {showPerPage && (
+            <ModalSearchPicker
+              data={initialPerPage}
+              value={perPageValue}
+              removeSearch={true}
+              title={'Per Page'}
+              onChange={(e) => {
+                onChangePerPage(e);
+                setShowPerPage(false);
               }}
+              onClose={() => setShowPerPage(false)}
             />
-            <Text style={{color: colors.font_gray}}>
-              {' '}
-              of {Helper.numberWithDot(totalPage > 0 ? totalPage : 1)}
-            </Text>
-            {currentPage + 1 < totalPage && (
-              <>
-                <TouchableOpacity
-                  onPress={() => onChangePaging(currentPage + 1)}>
-                  <MaterialCommunityIcons
-                    name={'chevron-right'}
-                    color={colors.gray}
-                    size={28}
-                  />
-                </TouchableOpacity>
-                <TouchableOpacity
-                  onPress={() => onChangePaging(getTotalPage())}>
-                  <MaterialIcons
-                    name={'skip-next'}
-                    color={colors.gray}
-                    size={28}
-                  />
-                </TouchableOpacity>
-              </>
-            )}
-          </>
-        )}
-      </View>
-      {showPerPage && (
-        <ModalSearchPicker
-          data={initialPerPage}
-          value={perPageValue}
-          removeSearch={true}
-          title={'Per Page'}
-          onChange={(e) => {
-            onChangePerPage(e);
-            setShowPerPage(false);
-          }}
-          onClose={() => setShowPerPage(false)}
-        />
+          )}
+          {loading && <ActivityIndicator color={colors.main_color} size={16} />}
+        </View>
+      ) : (
+        <React.Fragment />
       )}
-      {loading && <ActivityIndicator color={colors.main_color} size={16} />}
-    </View>
+    </>
   );
 };
 TableFooter.propTypes = {
@@ -159,6 +166,7 @@ TableFooter.propTypes = {
   onChangePaging: PropTypes.func,
   onChangePerPage: PropTypes.func,
   loading: PropTypes.bool,
+  hideAll: PropTypes.bool,
 };
 TableFooter.defaultProps = {
   onChangePaging: () => {},
