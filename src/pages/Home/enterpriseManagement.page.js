@@ -62,6 +62,7 @@ const EnterpriseManagement = () => {
     edit: editPermission,
     create: createPermission,
     filter: filterPermission,
+    view: viewPermission,
   } = useSelector(
     (state) => state.user_menu_permission_reducer.menu.enterpriseManagement,
   );
@@ -100,25 +101,29 @@ const EnterpriseManagement = () => {
                 <SearchHeader
                   value={''}
                   onSubmitEditing={(e) => {
-                    dispatch(
-                      enterpriseManagementSetSearchText({
-                        searchText: e,
-                      }),
-                    );
+                    if (viewPermission) {
+                      dispatch(
+                        enterpriseManagementSetSearchText({
+                          searchText: e,
+                        }),
+                      );
+                    }
                   }}
                   showMenu={showMenu}
                   onClickColumn={() => setShowMenu(true)}
                   navigateTo={'EnterpriseManagementFilter'}
                   placeholder={'Search enterprise...'}
                 />
-                <AppliedFilter
-                  data={appliedFilterEnterprise}
-                  onDelete={(e) => {
-                    const {formId} = e || {};
-                    dispatch(enterpriseManagementDynamicReset({formId}));
-                    dispatch(enterpriseManagementGenerateParams());
-                  }}
-                />
+                {filterPermission && (
+                  <AppliedFilter
+                    data={appliedFilterEnterprise}
+                    onDelete={(e) => {
+                      const {formId} = e || {};
+                      dispatch(enterpriseManagementDynamicReset({formId}));
+                      dispatch(enterpriseManagementGenerateParams());
+                    }}
+                  />
+                )}
                 {createPermission && (
                   <ButtonLabelComponent
                     buttonText={'Onboard Enterprise'}
@@ -193,8 +198,10 @@ const EnterpriseManagement = () => {
             dispatch(enterpriseManagementHideShow(e.item.enterpriseId))
           }
           selectedHeaderOrderSort={enterprise_applied_header_sort}
+          allTableHide={!viewPermission}
         />
         <TableFooter
+          hideAll={!viewPermission}
           currentPage={enterprise_page}
           totalPage={enterprise_total_page}
           perPageValue={enterprise_total_size}
