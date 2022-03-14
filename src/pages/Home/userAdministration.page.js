@@ -113,13 +113,17 @@ const UserAdministrationPage = ({route}) => {
   } = useSelector((state) => state.user_administration_get_user_reducer);
   useEffect(() => {
     if (!firstRender) {
-      dispatch(
-        callUserAdministrationGetUser({
-          paginate_page: 0,
-        }),
-      );
+      if (menuPermission.view) {
+        dispatch(
+          callUserAdministrationGetUser({
+            paginate_page: 0,
+          }),
+        );
+      }
     } else {
-      dispatch(callUserAdministrationGetUser());
+      if (menuPermission.view) {
+        dispatch(callUserAdministrationGetUser());
+      }
       setFirstRender(false);
     }
   }, [dispatch, searchText, generatedParams]);
@@ -359,11 +363,13 @@ const UserAdministrationPage = ({route}) => {
       checkActionPriviledge();
       setSelectedUser([]);
       updateActionAccess([]);
-      dispatch(
-        callUserAdministrationGetUser({
-          paginate_page: 0,
-        }),
-      );
+      if (menuPermission.view) {
+        dispatch(
+          callUserAdministrationGetUser({
+            paginate_page: 0,
+          }),
+        );
+      }
     });
   }, [navigation]);
 
@@ -380,51 +386,54 @@ const UserAdministrationPage = ({route}) => {
             return (
               <>
                 <OverlayBackground height={isFilterVisible ? 100 : 0} />
-                {isFilterVisible && (
-                  <SearchHeader
-                    value={''}
-                    onSubmitEditing={(e) => {
-                      console.log(e);
+                <SearchHeader
+                  value={''}
+                  onSubmitEditing={(e) => {
+                    if (menuPermission.view) {
                       dispatch(
                         userAdministrationSetSearchText({
                           searchText: e,
                         }),
                       );
-                    }}
-                    showMenu={showMenu}
-                    onClickColumn={() => setShowMenu((state) => !state)}
-                    navigateTo={'UserAdministrationFilter'}
-                    placeholder={'Search with user ID, name or organization'}
-                  />
-                )}
-                <AppliedFilter
-                  data={appliedFilter}
-                  onDelete={(e) => {
-                    const {formId} = e || {};
-                    dispatch(userAdministrationDynamicReset({formId}));
-                    dispatch(userAdministrationGenerateParams());
-                    if (formId === 'organizations-hard-code') {
-                      dispatch(
-                        userAdministrationDynamicDisabled({
-                          formId: 'role-hard-code',
-                        }),
-                      );
                     }
                   }}
+                  showMenu={showMenu}
+                  onClickColumn={() => setShowMenu((state) => !state)}
+                  navigateTo={'UserAdministrationFilter'}
+                  placeholder={'Search with user ID, name or organization'}
                 />
-                <FilterActionLabel
-                  actionData={actionData}
-                  onChange={actionChange}
-                  total={Helper.numberWithDot(total_elements_pagination)}
-                  filtered={
-                    applied_filter &&
-                    !loading &&
-                    data_user_generated.length > 0 &&
-                    !errorText &&
-                    Helper.numberWithDot(total_dynamic_elements_pagination)
-                  }
-                  selected={selectedUser.length}
-                />
+                {menuPermission.filter && (
+                  <AppliedFilter
+                    data={appliedFilter}
+                    onDelete={(e) => {
+                      const {formId} = e || {};
+                      dispatch(userAdministrationDynamicReset({formId}));
+                      dispatch(userAdministrationGenerateParams());
+                      if (formId === 'organizations-hard-code') {
+                        dispatch(
+                          userAdministrationDynamicDisabled({
+                            formId: 'role-hard-code',
+                          }),
+                        );
+                      }
+                    }}
+                  />
+                )}
+                {menuPermission.view && (
+                  <FilterActionLabel
+                    actionData={actionData}
+                    onChange={actionChange}
+                    total={Helper.numberWithDot(total_elements_pagination)}
+                    filtered={
+                      applied_filter &&
+                      !loading &&
+                      data_user_generated.length > 0 &&
+                      !errorText &&
+                      Helper.numberWithDot(total_dynamic_elements_pagination)
+                    }
+                    selected={selectedUser.length}
+                  />
+                )}
               </>
             );
           }}
@@ -481,8 +490,10 @@ const UserAdministrationPage = ({route}) => {
           selectedHeaderOrderSort={applied_header_sort}
           dataHeader={dataHeader}
           dataTable={data_user_generated}
+          allTableHide={!menuPermission.view}
         />
         <TableFooter
+          hideAll={!menuPermission.view}
           totalPage={total_page_pagination}
           currentPage={page_pagination}
           perPageValue={total_size_pagination}

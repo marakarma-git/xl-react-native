@@ -275,7 +275,6 @@ const RoleAdministrationPage = ({route, navigation}) => {
       let index = dataAction.findIndex(
         (data) => data.actionName.toLowerCase() === key,
       );
-      console.log(dataAction[index]?.actionName, key);
       if (index >= 0) dataAction[index].isVisible = menuPermission[key];
     });
     setActionData(dataAction);
@@ -286,7 +285,9 @@ const RoleAdministrationPage = ({route, navigation}) => {
   }, [data_role]);
 
   useEffect(() => {
-    dispatch(callRoleAction());
+    if (menuPermission.view) {
+      dispatch(callRoleAction());
+    }
     setFirstRender(false);
   }, [searchText, generatedParams]);
 
@@ -295,11 +296,13 @@ const RoleAdministrationPage = ({route, navigation}) => {
       checkActionPriviledge();
       setSelectedRoles([]);
       updateActionAccess([]);
-      dispatch(
-        callRoleAction({
-          page_params: 0,
-        }),
-      );
+      if (menuPermission.view) {
+        dispatch(
+          callRoleAction({
+            page_params: 0,
+          }),
+        );
+      }
     });
   }, [navigation]);
 
@@ -319,11 +322,13 @@ const RoleAdministrationPage = ({route, navigation}) => {
                 <SearchHeader
                   value={''}
                   onSubmitEditing={(e) => {
-                    dispatch(
-                      roleAdministrationSetSearchText({
-                        searchText: e,
-                      }),
-                    );
+                    if (menuPermission.view) {
+                      dispatch(
+                        roleAdministrationSetSearchText({
+                          searchText: e,
+                        }),
+                      );
+                    }
                   }}
                   showMenu={showMenu}
                   onClickColumn={() => setShowMenu((state) => !state)}
@@ -332,27 +337,31 @@ const RoleAdministrationPage = ({route, navigation}) => {
                     'Search with role name, organization or description'
                   }
                 />
-                <AppliedFilter
-                  data={appliedFilterRole}
-                  onDelete={(e) => {
-                    const {formId} = e || {};
-                    dispatch(roleAdministrationDynamicReset({formId}));
-                    dispatch(roleAdministrationGenerateParams());
-                  }}
-                />
-                <FilterActionLabel
-                  actionData={actionData}
-                  onChange={actionChange}
-                  total={Helper.numberWithDot(role_elements_static)}
-                  filtered={
-                    role_applied_filter &&
-                    !loading &&
-                    data_role_generated.length > 0 &&
-                    !errorText &&
-                    Helper.numberWithDot(role_elements_dynamic)
-                  }
-                  selected={selectedRoles.length}
-                />
+                {menuPermission.filter && (
+                  <AppliedFilter
+                    data={appliedFilterRole}
+                    onDelete={(e) => {
+                      const {formId} = e || {};
+                      dispatch(roleAdministrationDynamicReset({formId}));
+                      dispatch(roleAdministrationGenerateParams());
+                    }}
+                  />
+                )}
+                {menuPermission.view && (
+                  <FilterActionLabel
+                    actionData={actionData}
+                    onChange={actionChange}
+                    total={Helper.numberWithDot(role_elements_static)}
+                    filtered={
+                      role_applied_filter &&
+                      !loading &&
+                      data_role_generated.length > 0 &&
+                      !errorText &&
+                      Helper.numberWithDot(role_elements_dynamic)
+                    }
+                    selected={selectedRoles.length}
+                  />
+                )}
               </>
             );
           }}
@@ -408,8 +417,10 @@ const RoleAdministrationPage = ({route, navigation}) => {
           selectedHeaderOrderSort={role_applied_header_sort}
           dataHeader={dataRoleHeader}
           dataTable={data_role_generated}
+          allTableHide={!menuPermission.view}
         />
         <TableFooter
+          hideAll={!menuPermission.view}
           currentPage={role_page}
           totalPage={role_total_page}
           perPageValue={role_total_size}
