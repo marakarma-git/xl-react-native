@@ -32,6 +32,7 @@ const SearchHeader = (props) => {
     swapWithButton,
     onPressButton,
     removeButtonAndSearch,
+    removeFilterIcon,
   } = props || {};
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -41,7 +42,11 @@ const SearchHeader = (props) => {
   });
   return (
     <Container style={subscriptionStyle.containerMargin}>
-      <View style={subscriptionStyle.containerTextInput2}>
+      <View
+        style={[
+          subscriptionStyle.containerTextInput2,
+          {height: removeButtonAndSearch ? 45 : null},
+        ]}>
         {!swapWithButton ? (
           !removeButtonAndSearch ? (
             <View
@@ -79,6 +84,7 @@ const SearchHeader = (props) => {
           </TouchableOpacity>
         )}
         <ColumnFilterSearch
+          hideFilter={removeFilterIcon}
           loading={loading}
           onClickFilter={() => navigation.navigate(navigateTo)}
           onClickColumn={onClickColumn}
@@ -98,6 +104,7 @@ SearchHeader.propTypes = {
   swapWithButton: PropTypes.bool,
   onPressButton: PropTypes.func,
   removeButtonAndSearch: PropTypes.bool,
+  removeFilterIcon: PropTypes.bool,
 };
 SearchHeader.defaultProps = {
   showMenu: false,
@@ -113,12 +120,13 @@ const ColumnFilterSearch = ({
   onClickFilter,
   onClickColumn,
   noHeight,
+  hideFilter,
 }) => {
   return (
     <>
       {loading ? (
         <ActivityIndicator size={26} color={colors.main_color} />
-      ) : (
+      ) : !hideFilter ? (
         <TouchableOpacity onPress={onClickFilter}>
           <MaterialCommunityIcon
             name={'filter'}
@@ -126,13 +134,17 @@ const ColumnFilterSearch = ({
             color={colors.gray}
           />
         </TouchableOpacity>
+      ) : (
+        <React.Fragment />
       )}
-      <View
-        style={[
-          subscriptionStyle.spacer,
-          {height: noHeight ? undefined : '50%'},
-        ]}
-      />
+      {!hideFilter && (
+        <View
+          style={[
+            subscriptionStyle.spacer,
+            {height: noHeight ? undefined : '50%'},
+          ]}
+        />
+      )}
       {loading ? (
         <ActivityIndicator size={26} color={colors.main_color} />
       ) : (

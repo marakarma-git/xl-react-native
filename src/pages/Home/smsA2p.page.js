@@ -110,6 +110,7 @@ const SmsA2p = () => {
               <>
                 <OverlayBackground />
                 <SearchHeader
+                  hideFilter={true}
                   value={''}
                   onSubmitEditing={(e) => {
                     dispatch(
