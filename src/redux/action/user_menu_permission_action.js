@@ -18,7 +18,6 @@ const checkUserMenuPermission = (userAuthority) => {
       );
       menuPermissionUpdate[menu][action] = isHasPermission;
     });
-    console.log(JSON.stringify(menuPermissionUpdate, null, 2));
     dispatch(setUserMenuPermission(menuPermissionUpdate));
   };
 };
