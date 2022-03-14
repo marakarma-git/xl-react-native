@@ -27,6 +27,9 @@ const Table = (props) => {
     onPressEdit,
     onPressDelete,
     allTableHide,
+    hideAction,
+    hideEdit,
+    hideDelete,
   } = props || {};
   const headerScrollView = useRef(ScrollView);
   const rowsScrollView = useRef(ScrollView);
@@ -123,7 +126,7 @@ const Table = (props) => {
                   }}
                 />
               )}
-              {dataHeader && dataHeader.length > 0 && onRight && (
+              {!hideAction && dataHeader && dataHeader.length > 0 && onRight && (
                 <TableCell
                   sorted={dataHeader[0].formId === formId ? sortBy : null}
                   type={dataHeader[0].cellType || null}
@@ -161,6 +164,8 @@ const Table = (props) => {
                     borderWidth={borderWidth}
                     onPressEdit={(e) => onPressEdit(e)}
                     onPressDelete={(e) => onPressDelete(e)}
+                    hideEdit={hideEdit}
+                    hideDelete={hideDelete}
                   />
                 )}
                 <ScrollView
@@ -279,7 +284,7 @@ const Table = (props) => {
                     />
                   )}
                 </ScrollView>
-                {onRight && !hideStickySide && (
+                {!hideAction && onRight && !hideStickySide && (
                   <StickyComponent
                     dataTable={dataTable}
                     onPressCell={onPressCell}
@@ -289,6 +294,8 @@ const Table = (props) => {
                     onRight={true}
                     onPressEdit={(e) => onPressEdit(e)}
                     onPressDelete={(e) => onPressDelete(e)}
+                    hideEdit={hideEdit}
+                    hideDelete={hideDelete}
                   />
                 )}
               </View>
@@ -348,6 +355,9 @@ Table.propTypes = {
   isDragNSort: PropTypes.bool,
   onDataChange: PropTypes.func,
   allTableHide: PropTypes.bool,
+  hideAction: PropTypes.bool,
+  hideEdit: PropTypes.bool,
+  hideDelete: PropTypes.bool,
 };
 Table.defaultProps = {
   dataHeader: [],
@@ -372,6 +382,8 @@ const StickyComponent = (props) => {
     onPressTreeArrow,
     onPressEdit,
     onPressDelete,
+    hideEdit,
+    hideDelete,
   } = props || {};
   return (
     <View
@@ -396,6 +408,8 @@ const StickyComponent = (props) => {
               }
               onPressEdit={onPressEdit}
               onPressDelete={onPressDelete}
+              hideEdit={hideEdit}
+              hideDelete={hideDelete}
               {...dataCell[0]}
             />
           );

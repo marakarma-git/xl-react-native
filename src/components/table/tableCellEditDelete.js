@@ -9,7 +9,15 @@ import PropType from 'prop-types';
 import PropTypes from 'prop-types';
 
 const TableCellEditDelete = (props) => {
-  const {config, onPressEdit, onPressDelete, item, subItem} = props || {};
+  const {
+    config,
+    onPressEdit,
+    onPressDelete,
+    item,
+    subItem,
+    hideEdit,
+    hideDelete,
+  } = props || {};
   const {width, height, backgroundColor, key, removeDelete} = config || {};
   return (
     <View
@@ -22,20 +30,22 @@ const TableCellEditDelete = (props) => {
         alignItems: 'center',
         backgroundColor: backgroundColor || 'white',
       }}>
-      <TouchableOpacity
-        style={{
-          width: 28,
-          height: 28,
-          backgroundColor: colors.tab_edit,
-          marginRight: !removeDelete ? 8 : 0,
-          justifyContent: 'center',
-          alignItems: 'center',
-          borderRadius: border_radius,
-        }}
-        onPress={() => onPressEdit(props)}>
-        <Feather name={'edit'} size={20} color={'white'} />
-      </TouchableOpacity>
-      {!removeDelete && (
+      {!hideEdit && (
+        <TouchableOpacity
+          style={{
+            width: 28,
+            height: 28,
+            backgroundColor: colors.tab_edit,
+            marginRight: !removeDelete ? 8 : 0,
+            justifyContent: 'center',
+            alignItems: 'center',
+            borderRadius: border_radius,
+          }}
+          onPress={() => onPressEdit(props)}>
+          <Feather name={'edit'} size={20} color={'white'} />
+        </TouchableOpacity>
+      )}
+      {!removeDelete && !hideDelete && (
         <TouchableOpacity
           style={{
             width: 28,
