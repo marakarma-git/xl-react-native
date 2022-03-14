@@ -735,7 +735,7 @@ const PERMISSION_ID = [
   {
     menu: 'usageAnalytics',
     action: 'filter',
-    permissionId: 'ee1a526a-6439-11eb-ae93-0242ac130002',
+    permissionId: 'ee1a51ac-6439-11eb-ae93-0242ac130002',
   },
   {
     menu: 'usageSubscribersAnalytics',
