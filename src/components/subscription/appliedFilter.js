@@ -35,8 +35,14 @@ const LocalComponent = (props) => {
   );
 };
 const AppliedFilter = (props) => {
-  const {data, onDelete, withFilterButton, onPressFilter, isRemoveDeleteIcon} =
-    props || {};
+  const {
+    data,
+    onDelete,
+    withFilterButton,
+    onPressFilter,
+    isRemoveDeleteIcon,
+    removeFilterButton,
+  } = props || {};
   return (
     <View
       style={{
@@ -76,7 +82,7 @@ const AppliedFilter = (props) => {
             }
           })}
       </ScrollView>
-      {withFilterButton && (
+      {withFilterButton && !removeFilterButton && (
         <TouchableOpacity onPress={onPressFilter}>
           <MaterialCommunityIcon
             name={'filter'}
@@ -94,6 +100,7 @@ AppliedFilter.propTypes = {
   isRemoveDeleteIcon: PropTypes.bool, //only true for remove the button
 
   withFilterButton: PropTypes.bool,
+  removeFilterButton: PropTypes.bool,
   onPressFilter: PropTypes.func,
 };
 AppliedFilter.defaultProps = {

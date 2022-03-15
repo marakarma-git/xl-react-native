@@ -54,6 +54,9 @@ const SmsA2p = () => {
   const {imageBase64} = useSelector((state) => state.enterprise_reducer);
   const {dataSmsHeader, searchText, generatedParams, appliedFilterSms} =
     useSelector((state) => state.sms_a2p_array_header_reducer);
+  const menuPermission = useSelector(
+    (state) => state.user_menu_permission_reducer.menu.smsA2pConfiguration,
+  );
   const {
     loading,
     errorText,
@@ -69,15 +72,17 @@ const SmsA2p = () => {
     sms_params_applied_activity_log,
   } = useSelector((state) => state.sms_a2p_get_all_sms_reducer);
   useEffect(() => {
-    if (!firstRender) {
-      dispatch(
-        getSmsA2p({
-          page_params: 0,
-        }),
-      );
-    } else {
-      dispatch(getSmsA2p());
-      setFirstRender(false);
+    if (menuPermission.view) {
+      if (!firstRender) {
+        dispatch(
+          getSmsA2p({
+            page_params: 0,
+          }),
+        );
+      } else {
+        dispatch(getSmsA2p());
+        setFirstRender(false);
+      }
     }
   }, [dispatch, searchText, generatedParams]);
   return (
@@ -87,6 +92,10 @@ const SmsA2p = () => {
       companyLogo={imageBase64}>
       <View style={subscriptionStyle.containerBackground}>
         <Table
+          hideEdit={!menuPermission.edit}
+          hideDelete={!menuPermission.delete}
+          hideAction={!menuPermission.edit && !menuPermission.delete}
+          allTableHide={!menuPermission.view}
           onRight
           onPressEdit={({position_table_index}) => {
             const getConfigId =
@@ -110,6 +119,8 @@ const SmsA2p = () => {
               <>
                 <OverlayBackground />
                 <SearchHeader
+                  removeButtonAndSearch={!menuPermission.search}
+                  removeFilterIcon={!menuPermission.filter}
                   hideFilter={true}
                   value={''}
                   onSubmitEditing={(e) => {
@@ -135,6 +146,7 @@ const SmsA2p = () => {
                   }}
                 />
                 <FilterActionRightCreate
+                  removeCreateButton={!menuPermission.create}
                   onChange={() => {
                     navigation.navigate('SmsA2pEdit', {
                       layoutType: 'Create',

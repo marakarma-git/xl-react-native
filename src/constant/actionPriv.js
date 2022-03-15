@@ -524,7 +524,7 @@ const PERMISSION_ID = [
   },
   {
     menu: 'subscription',
-    action: 'search',
+    action: 'searchFilter',
     permissionId: '4acc9460-7245-11ea-bc55-0242ac130003',
   },
   {

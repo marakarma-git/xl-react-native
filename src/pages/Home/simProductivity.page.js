@@ -23,6 +23,9 @@ const SimProductivityPage = () => {
   const [firstRender, setFirstRender] = useState(true);
   const [widthChart, setWidthChart] = useState(0);
   const {imageBase64} = useSelector((state) => state.enterprise_reducer);
+  const menuPermission = useSelector(
+    (state) => state.user_menu_permission_reducer.menu.simProductivity,
+  );
   const {
     dataHeader,
     loading,
@@ -73,6 +76,7 @@ const SimProductivityPage = () => {
                 setWidthChart(width);
               }}>
               <AppliedFilter
+                removeFilterButton={!menuPermission.filter}
                 withFilterButton
                 onPressFilter={() =>
                   navigation.navigate('SimProductivityFilterPage')

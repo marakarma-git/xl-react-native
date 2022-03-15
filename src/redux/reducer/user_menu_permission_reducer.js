@@ -9,9 +9,9 @@ const initialState = {
       bulkUpdateLabel: false,
       deactivateSIM: false,
       terminateSIM: false,
-      viewSIMInventory: false,
       activateSIM: false,
       seeSIMLocation: false,
+      viewSIMInventor: false,
     },
     userAdministration: {
       edit: false,

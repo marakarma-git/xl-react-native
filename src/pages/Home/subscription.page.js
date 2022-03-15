@@ -55,6 +55,9 @@ const Subscription = ({route}) => {
   const [mapData, setMapData] = useState({});
   const {imageBase64} = useSelector((state) => state.enterprise_reducer);
   const {customerNo} = useSelector((state) => state.auth_reducer.data);
+  const menuPermission = useSelector(
+    (state) => state.user_menu_permission_reducer.menu.subscription,
+  );
   const {
     array_filter,
     loading_array_filter,
@@ -78,18 +81,20 @@ const Subscription = ({route}) => {
     current_params_applied,
   } = useSelector((state) => state.get_sim_inventory_reducer);
   useEffect(() => {
-    if (!firstRender) {
-      dispatch(
-        callSimInventory({
-          page_value: 0,
-        }),
-      );
-    }
-    if (lod.isEmpty(navigationFrom) && firstRender) {
-      // alert('78');
-      dispatch(callSimInventory());
-      dispatch(getCustomLabel(navigation));
-      setFirstRender(false);
+    if (menuPermission.viewSIMInventor) {
+      if (!firstRender) {
+        dispatch(
+          callSimInventory({
+            page_value: 0,
+          }),
+        );
+      }
+      if (lod.isEmpty(navigationFrom) && firstRender) {
+        // alert('78');
+        dispatch(callSimInventory());
+        dispatch(getCustomLabel(navigation));
+        setFirstRender(false);
+      }
     }
   }, [current_size, dispatch, navigation, searchText, generatedParams]);
   useEffect(() => {
@@ -176,6 +181,7 @@ const Subscription = ({route}) => {
         }}>
         <View style={subscriptionStyle.containerBackground}>
           <Table
+            allTableHide={!menuPermission.viewSIMInventor}
             isScrollView={true}
             stickHeaderIndices={[1]}
             headerOtherLayout={() => {
@@ -183,6 +189,8 @@ const Subscription = ({route}) => {
                 <>
                   <OverlayBackground />
                   <SearchHeader
+                    removeFilterIcon={!menuPermission.searchFilter}
+                    removeButtonAndSearch={!menuPermission.searchFilter}
                     value={searchText}
                     onSubmitEditing={(e) => dispatch(updateDataSearchText(e))}
                     showMenu={showMenu}

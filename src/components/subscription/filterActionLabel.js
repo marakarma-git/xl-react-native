@@ -50,6 +50,7 @@ const FilterActionLabel = (props) => {
     onClickColumn,
 
     forceRemoveActions,
+    removeFilterIcon,
   } = props || {};
   const [showAction, setShowAction] = useState(false);
 
@@ -98,6 +99,7 @@ const FilterActionLabel = (props) => {
               flexDirection: 'row',
             }}>
             <ColumnFilterSearch
+              hideFilter={removeFilterIcon}
               noHeight
               onClickFilter={onClickFilter}
               onClickColumn={onClickColumn}
@@ -147,7 +149,7 @@ FilterActionLabel.defaultProps = {
 };
 
 const FilterActionRightCreate = (props) => {
-  const {total, filtered, selected, onChange} = props || {};
+  const {total, filtered, selected, onChange, removeCreateButton} = props || {};
   return (
     <View style={[subscriptionStyle.wrapperMenuOption]}>
       {total || filtered || selected ? (
@@ -160,13 +162,15 @@ const FilterActionRightCreate = (props) => {
       ) : (
         <View style={{flex: 1}} />
       )}
-      <TouchableOpacity
-        style={subscriptionStyle.rightButtonStyle}
-        onPress={(e) => onChange(e)}>
-        <Text style={{color: 'white'}} fontType={'bold'}>
-          New Configuration
-        </Text>
-      </TouchableOpacity>
+      {!removeCreateButton && (
+        <TouchableOpacity
+          style={subscriptionStyle.rightButtonStyle}
+          onPress={(e) => onChange(e)}>
+          <Text style={{color: 'white'}} fontType={'bold'}>
+            New Configuration
+          </Text>
+        </TouchableOpacity>
+      )}
     </View>
   );
 };
@@ -175,6 +179,7 @@ FilterActionRightCreate.propTypes = {
   total: PropTypes.string || PropTypes.number,
   filtered: PropTypes.string || PropTypes.number,
   selected: PropTypes.string || PropTypes.number,
+  removeCreateButton: PropTypes.bool,
 };
 FilterActionRightCreate.defaultProps = {
   onChange: () => {},

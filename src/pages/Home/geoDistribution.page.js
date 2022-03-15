@@ -29,6 +29,9 @@ const GeoDistributionPage = () => {
   const navigation = useNavigation();
   const dispatch = useDispatch();
   const {imageBase64} = useSelector((state) => state.enterprise_reducer);
+  const menuPermission = useSelector(
+    (state) => state.user_menu_permission_reducer.menu.geoDistribution,
+  );
   const [rootOfMap, setRootOfMap] = useState(true);
   const [latDelta, setLatDelta] = useState(defaultLatDelta);
   const [getLevel, setGetLevel] = useState(0);
@@ -130,7 +133,8 @@ const GeoDistributionPage = () => {
           style={[geoDistributionStyle.afterOverLay, analyticStyle.container]}>
           <View style={{flex: 1}}>
             <AppliedFilter
-              withFilterButton
+              removeFilterButton={!menuPermission.filter}
+              withFilterButton={true}
               onPressFilter={() =>
                 navigation.navigate('GeoDistributionFilterPage')
               }

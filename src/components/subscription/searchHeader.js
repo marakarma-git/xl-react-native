@@ -33,6 +33,7 @@ const SearchHeader = (props) => {
     onPressButton,
     removeButtonAndSearch,
     removeFilterIcon,
+    removeCreateButton,
   } = props || {};
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -45,7 +46,7 @@ const SearchHeader = (props) => {
       <View
         style={[
           subscriptionStyle.containerTextInput2,
-          {height: removeButtonAndSearch ? 45 : null},
+          {height: removeButtonAndSearch || removeCreateButton ? 45 : null},
         ]}>
         {!swapWithButton ? (
           !removeButtonAndSearch ? (
@@ -75,13 +76,17 @@ const SearchHeader = (props) => {
             <></>
           )
         ) : (
-          <TouchableOpacity
-            style={subscriptionStyle.createButton}
-            onPress={onPressButton}>
-            <Text fontType={'bold'} style={{color: 'white'}}>
-              Create
-            </Text>
-          </TouchableOpacity>
+          <>
+            {!removeCreateButton && (
+              <TouchableOpacity
+                style={subscriptionStyle.createButton}
+                onPress={onPressButton}>
+                <Text fontType={'bold'} style={{color: 'white'}}>
+                  Create
+                </Text>
+              </TouchableOpacity>
+            )}
+          </>
         )}
         <ColumnFilterSearch
           hideFilter={removeFilterIcon}
@@ -105,6 +110,7 @@ SearchHeader.propTypes = {
   onPressButton: PropTypes.func,
   removeButtonAndSearch: PropTypes.bool,
   removeFilterIcon: PropTypes.bool,
+  removeCreateButton: PropTypes.bool,
 };
 SearchHeader.defaultProps = {
   showMenu: false,

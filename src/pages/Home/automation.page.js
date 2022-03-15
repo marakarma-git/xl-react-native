@@ -41,6 +41,9 @@ const AutomationPage = () => {
   const [confirmationModal, setConfirmationModal] = useState(false);
   const [dataConfirmation, setDataConfirmation] = useState({});
   const {imageBase64} = useSelector((state) => state.enterprise_reducer);
+  const menuPermission = useSelector(
+    (state) => state.user_menu_permission_reducer.menu.automation,
+  );
   const {
     dataAutomationHeader,
     searchText,
@@ -92,15 +95,17 @@ const AutomationPage = () => {
       });
   };
   useEffect(() => {
-    if (!firstRender) {
-      dispatch(
-        getAutomation({
-          page_params: 0,
-        }),
-      );
-    } else {
-      dispatch(getAutomation());
-      setFirstRender(false);
+    if (menuPermission.view) {
+      if (!firstRender) {
+        dispatch(
+          getAutomation({
+            page_params: 0,
+          }),
+        );
+      } else {
+        dispatch(getAutomation());
+        setFirstRender(false);
+      }
     }
   }, [dispatch, searchText, generatedParams]);
 
@@ -120,6 +125,10 @@ const AutomationPage = () => {
       companyLogo={imageBase64}>
       <View style={subscriptionStyle.containerBackground}>
         <Table
+          allTableHide={!menuPermission.view}
+          hideDelete={!menuPermission.delete}
+          hideEdit={!menuPermission.edit}
+          hideAction={!menuPermission.edit && !menuPermission.delete}
           isScrollView={true}
           onRight
           stickHeaderIndices={[1]}
@@ -136,6 +145,8 @@ const AutomationPage = () => {
               <>
                 <OverlayBackground />
                 <SearchHeader
+                  removeCreateButton={!menuPermission.create}
+                  removeFilterIcon={!menuPermission.filter}
                   value={''}
                   swapWithButton
                   onPressButton={() =>

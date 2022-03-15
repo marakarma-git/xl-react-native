@@ -18,12 +18,9 @@ import {
 } from '../../redux/action/subscription_package_array_header_action';
 import Table from '../../components/table/Table';
 import AppliedFilter from '../../components/subscription/appliedFilter';
-import FilterActionLabel from '../../components/subscription/filterActionLabel';
 import Helper from '../../helpers/helper';
 import TableFooter from '../../components/subscription/tableFooter';
-import SearchHeader, {
-  SearchHeaderTwo,
-} from '../../components/subscription/searchHeader';
+import {SearchHeaderTwo} from '../../components/subscription/searchHeader';
 import Loading from '../../components/loading';
 import {useNavigation} from '@react-navigation/native';
 
@@ -33,6 +30,9 @@ const SubscriptionPackagePage = () => {
   const [firstRender, setFirstRender] = useState(true);
   const [showMenu, setShowMenu] = useState(false);
   const {imageBase64} = useSelector((state) => state.enterprise_reducer);
+  const menuPermission = useSelector(
+    (state) => state.user_menu_permission_reducer.menu.subscriptionPackage,
+  );
   const {
     dataSubscriptionHeader,
     searchText,
@@ -51,20 +51,21 @@ const SubscriptionPackagePage = () => {
     subscription_elements_dynamic,
     subscription_applied_header_sort,
     subscription_applied_filter,
-    subscription_params_applied_activity_log,
   } = useSelector(
     (state) => state.subscription_package_get_subscription_reducer,
   );
   useEffect(() => {
-    if (!firstRender) {
-      dispatch(
-        callSubscriptionPackage({
-          page_params: 0,
-        }),
-      );
-    } else {
-      dispatch(callSubscriptionPackage());
-      setFirstRender(false);
+    if (menuPermission.view) {
+      if (!firstRender) {
+        dispatch(
+          callSubscriptionPackage({
+            page_params: 0,
+          }),
+        );
+      } else {
+        dispatch(callSubscriptionPackage());
+        setFirstRender(false);
+      }
     }
   }, [dispatch, searchText, generatedParams]);
   return (
@@ -74,17 +75,13 @@ const SubscriptionPackagePage = () => {
       companyLogo={imageBase64}>
       <View style={subscriptionStyle.containerBackground}>
         <Table
+          allTableHide={!menuPermission.view}
+          hideEdit={!menuPermission.edit}
+          hideAction={!menuPermission.edit}
           onPressEdit={({position_table_index}) => {
             navigation.navigate('SubscriptionPackageEdit', {
               positionTableIndex: position_table_index,
             });
-            // console.log(
-            //   JSON.stringify(
-            //     data_subscription_generated[position_table_index],
-            //     null,
-            //     2,
-            //   ),
-            // )
           }}
           isScrollView={true}
           stickHeaderIndices={[1]}
@@ -94,6 +91,7 @@ const SubscriptionPackagePage = () => {
               <>
                 <OverlayBackground />
                 <SearchHeaderTwo
+                  removeFilterIcon={!menuPermission.filter}
                   total={Helper.numberWithDot(subscription_elements_static)}
                   filtered={
                     subscription_applied_filter &&
