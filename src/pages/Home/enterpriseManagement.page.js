@@ -99,6 +99,7 @@ const EnterpriseManagement = () => {
               <>
                 <OverlayBackground />
                 <SearchHeader
+                  removeFilterIcon={!filterPermission}
                   value={''}
                   onSubmitEditing={(e) => {
                     if (viewPermission) {
