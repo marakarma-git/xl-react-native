@@ -387,6 +387,8 @@ const UserAdministrationPage = ({route}) => {
               <>
                 <OverlayBackground height={isFilterVisible ? 100 : 0} />
                 <SearchHeader
+                  removeFilterIcon={!menuPermission.filter}
+                  // removeButtonAndSearch={!menuPermission.filter}
                   value={''}
                   onSubmitEditing={(e) => {
                     if (menuPermission.view) {

@@ -320,6 +320,8 @@ const RoleAdministrationPage = ({route, navigation}) => {
               <>
                 <OverlayBackground />
                 <SearchHeader
+                  removeFilterIcon={!menuPermission.searchFilter}
+                  // removeButtonAndSearch={!menuPermission.searchFilter}
                   value={''}
                   onSubmitEditing={(e) => {
                     if (menuPermission.view) {
