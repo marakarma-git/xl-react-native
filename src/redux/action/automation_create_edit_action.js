@@ -194,10 +194,10 @@ const createForRuleValueParams = (dataParams = {}, result = {}) => {
 const callAutomationEnterprise = (localValue) => {
   return (dispatch) => {
     dispatch(automationCreateReduxLoading());
-    const {customerNumber, isReset, dataParams} = localValue || {};
+    const {enterpriseId, isReset, dataParams} = localValue || {};
     httpRequest
       .get(
-        `/dcp/automation/getAutomationEnterprise?customerNumber=${customerNumber}`,
+        `/dcp/automation/getAutomationEnterprise?enterpriseId=${enterpriseId}`,
       )
       .then(({data}) => {
         const {result, statusCode} = data || {};

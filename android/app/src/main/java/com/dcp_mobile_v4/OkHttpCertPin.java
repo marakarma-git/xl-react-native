@@ -7,11 +7,11 @@ import java.util.concurrent.TimeUnit;
 import okhttp3.CertificatePinner;
 import okhttp3.OkHttpClient;
 public class OkHttpCertPin implements OkHttpClientFactory {
-private static String hostname = "*.adlsandbox.com";
+private static String hostname = "*.xl.co.id";
 @Override
 public OkHttpClient createNewNetworkModuleClient() {
 CertificatePinner certificatePinner = new CertificatePinner.Builder()
-.add(hostname, "sha256/ypLAu5dA18sUQaGqjVkelyn/27G5YG3eQnkIieZt9yg=")
+.add(hostname, "sha256/yixvQex0QIH/u5VNGykPpnlJSDGqSUHil/yz6FYP6gE=")
 .build();
 OkHttpClient.Builder client = new OkHttpClient.Builder()
 .connectTimeout(0, TimeUnit.MILLISECONDS)
