@@ -42,8 +42,8 @@ const AutomationCreateEditPage = () => {
   useEffect(() => {
     dispatch(callAutomationActiveEnterprise());
     if (!lod.isEmpty(result)) {
-      const {customerNumber} = result || {};
-      dispatch(callAutomationEnterprise({customerNumber, dataParams: params}));
+      const {enterpriseId} = result || {};
+      dispatch(callAutomationEnterprise({enterpriseId, dataParams: params}));
     }
   }, [navigation, params, result]);
 
@@ -244,11 +244,13 @@ const AutomationCreateEditPage = () => {
                     navigation.goBack();
                   }
                   if (indexForm < 3) {
-                    const {containerErrorString, counterFalse} =
-                      automationValidationForm({
-                        dataForm: automationDefaultFormData[indexForm],
-                        dataContainerValue: containerValue,
-                      });
+                    const {
+                      containerErrorString,
+                      counterFalse,
+                    } = automationValidationForm({
+                      dataForm: automationDefaultFormData[indexForm],
+                      dataContainerValue: containerValue,
+                    });
                     if (counterFalse === 0) {
                       setIndexForm((state) => state + 1);
                     } else {

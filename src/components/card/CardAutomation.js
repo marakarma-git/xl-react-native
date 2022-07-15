@@ -55,10 +55,10 @@ const InputWrapper = (props) => {
                     if (
                       inputId === 'enterprise-drop-down-the-only-one-have-id'
                     ) {
-                      const {customerNumber} = e || {};
+                      const {value} = e || {};
                       dispatch(
                         callAutomationEnterprise({
-                          customerNumber,
+                          enterpriseId: value,
                           isReset: true,
                         }),
                       );
