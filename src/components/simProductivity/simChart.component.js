@@ -17,7 +17,7 @@ const SimChart = (props) => {
   const [activeIndex, setActiveIndex] = useState(null);
   const [afterLongPress, setAfterLongPress] = useState(false);
   const {widthChart, onPressPie, data, dataColor} = props || {};
-  const isNoUsage = data[0].label === 'No Usage' && data.length === 1;
+  const isNoUsage = data[0]?.label === 'No Usage' && data.length === 1;
   const _onPressIn = (thisData) => {
     setActiveIndex(thisData?.index);
     return {active: undefined};

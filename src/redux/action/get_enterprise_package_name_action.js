@@ -25,7 +25,7 @@ const getEnterprisePackageNameReset = () => {
     type: reduxString.GET_ENTERPRISE_PACKAGE_NAME_RESET,
   };
 };
-const getEnterprisePackageName = (enterpriseName, navigation) => {
+const getEnterprisePackageName = (enterpriseId, navigation) => {
   return async (dispatch, getState) => {
     dispatch(getEnterprisePackageNameLoading());
     dispatch(
@@ -43,7 +43,7 @@ const getEnterprisePackageName = (enterpriseName, navigation) => {
     const {auth_reducer} = getState();
     httpRequest
       .get(
-        `/dcp/analytics/getListSubscriptionPackageName?enterpriseName=${enterpriseName}`,
+        `/dcp/analytics/getListSubscriptionPackageName?enterpriseId=${enterpriseId}`,
       )
       .then(({data}) => {
         if (data.error === 'invalid_token') {
