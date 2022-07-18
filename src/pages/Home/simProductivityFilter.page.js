@@ -83,7 +83,7 @@ const SimProductivityFilterPage = () => {
                         }),
                       );
                       dispatch(
-                        simGetEnterprisePackage({enterpriseName: e?.label}),
+                        simGetEnterprisePackage({enterpriseId: e?.toPackage}),
                       );
                     }
                     dispatch(

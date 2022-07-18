@@ -78,9 +78,11 @@ const simGetEnterprise = () => {
               enterpriseId: thisEnterprise,
               enterpriseName,
               customerNumber,
+              enterpriseId,
             }) => ({
               value: customerNumber,
               label: enterpriseName,
+              toPackage: enterpriseId,
             }),
           );
           dispatch(
@@ -109,7 +111,7 @@ const simGetEnterprise = () => {
       });
   };
 };
-const simGetEnterprisePackage = ({enterpriseName}) => {
+const simGetEnterprisePackage = ({enterpriseId}) => {
   return async (dispatch) => {
     dispatch(
       usageAnalyticsDynamicLoading({
@@ -118,7 +120,7 @@ const simGetEnterprisePackage = ({enterpriseName}) => {
     );
     httpRequest
       .get(
-        `/dcp/analytics/getListSubscriptionPackageName?enterpriseName=${enterpriseName}`
+        `/dcp/analytics/getListSubscriptionPackageName?enterpriseId=${enterpriseId}`
           .split(' ')
           .join('+'),
       )

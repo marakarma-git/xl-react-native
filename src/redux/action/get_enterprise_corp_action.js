@@ -59,11 +59,14 @@ const getEnterpriseCorp = (navigation) => {
               {
                 formId: 'enterprise-hard-code',
                 needs: 'AddFilterData',
-                data: data.result.map(({enterpriseName, ...rest}) => ({
-                  value: enterpriseName,
-                  label: enterpriseName,
-                  ...rest,
-                })),
+                data: data.result.map(
+                  ({enterpriseName, enterpriseId, ...rest}) => ({
+                    value: enterpriseName,
+                    label: enterpriseName,
+                    toPackage: enterpriseId,
+                    ...rest,
+                  }),
+                ),
               },
             ]),
           );

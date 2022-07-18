@@ -107,7 +107,7 @@ const SubscriptionFilter = () => {
                   }
                   onChange={(e) => {
                     if (formId === 'enterprise-hard-code') {
-                      dispatch(getEnterprisePackageName(e.value));
+                      dispatch(getEnterprisePackageName(e?.toPackage));
                       dispatch(
                         setSomethingToFilter([
                           {

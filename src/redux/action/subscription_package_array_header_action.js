@@ -82,7 +82,7 @@ const subscriptionPackageResetParams = () => {
     type: reduxString.SUBSCRIPTION_PACKAGE_RESET_PARAMS,
   };
 };
-const getSubscriptionDescription = (description) => {
+const getSubscriptionDescription = (enterpriseId) => {
   return async (dispatch) => {
     dispatch(
       subscriptionPackageDynamicLoading({
@@ -91,7 +91,7 @@ const getSubscriptionDescription = (description) => {
     );
     httpRequest
       .get(
-        `/dcp/analytics/getListSubscriptionPackageName?enterpriseName=${description}`
+        `/dcp/analytics/getListSubscriptionPackageName?enterpriseId=${enterpriseId}`
           .split(' ')
           .join('+'),
       )
@@ -143,9 +143,10 @@ const getActiveEnterpriseSubscription = () => {
         const {result, statusCode} = data || {};
         if (statusCode === 0) {
           const changeArray = result.map(
-            ({enterpriseId: thisEnterprise, enterpriseName}) => ({
+            ({enterpriseId: thisEnterprise, enterpriseName, enterpriseId}) => ({
               value: enterpriseName,
               label: enterpriseName,
+              toPackage: enterpriseId,
             }),
           );
           dispatch(

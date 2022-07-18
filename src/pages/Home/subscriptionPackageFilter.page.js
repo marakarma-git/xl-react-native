@@ -90,8 +90,8 @@ const SubscriptionPackageFilterPage = () => {
                         }),
                       );
                       if (formId === 'subscription-enterprise-hard-code') {
-                        const {label} = e || {};
-                        dispatch(getSubscriptionDescription(label));
+                        const {toPackage} = e || {};
+                        dispatch(getSubscriptionDescription(toPackage));
                       }
                     }
                   }}

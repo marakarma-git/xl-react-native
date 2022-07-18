@@ -92,9 +92,10 @@ const simGetEnterprise = () => {
         const {result, statusCode} = data || {};
         if (statusCode === 0) {
           const changeArray = result.map(
-            ({enterpriseId: thisEnterprise, enterpriseName}) => ({
+            ({enterpriseId: thisEnterprise, enterpriseName, enterpriseId}) => ({
               value: enterpriseName,
               label: enterpriseName,
+              toPackage: enterpriseId,
             }),
           );
           dispatch(
@@ -123,7 +124,7 @@ const simGetEnterprise = () => {
       });
   };
 };
-const simGetEnterprisePackage = ({enterpriseName}) => {
+const simGetEnterprisePackage = ({enterpriseId}) => {
   return async (dispatch) => {
     dispatch(
       simProductivityDynamicLoading({
@@ -132,7 +133,7 @@ const simGetEnterprisePackage = ({enterpriseName}) => {
     );
     httpRequest
       .get(
-        `/dcp/analytics/getListSubscriptionPackageName?enterpriseName=${enterpriseName}`
+        `/dcp/analytics/getListSubscriptionPackageName?enterpriseId=${enterpriseId}`
           .split(' ')
           .join('+'),
       )
