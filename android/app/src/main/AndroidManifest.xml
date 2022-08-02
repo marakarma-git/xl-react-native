@@ -1,5 +1,7 @@
-<manifest xmlns:android="http://schemas.android.com/apk/res/android"
-  package="com.dcp_mobile_v4">
+<manifest 
+  xmlns:android="http://schemas.android.com/apk/res/android"
+  package="com.dcp_mobile_v4"
+  xmlns:tools="http://schemas.android.com/tools">
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.VIBRATE" />
@@ -12,7 +14,8 @@
       android:roundIcon="@mipmap/ic_launcher"
       android:allowBackup="false"
       android:theme="@style/AppTheme"
-      android:usesCleartextTraffic="true">
+      android:usesCleartextTraffic="false"
+    >
       <meta-data android:name="com.google.android.geo.API_KEY" android:value="AIzaSyBtwMDnsKNtjJzYtSLBWn65LbTjdZHjyk8"/>
             <!-- Change the value to true to enable pop-up for in foreground on receiving remote notifications (for prevent duplicating while showing local notifications set this to false) -->
       <meta-data  android:name="com.dieam.reactnativepushnotification.notification_foreground"
