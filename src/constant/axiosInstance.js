@@ -80,8 +80,31 @@ const errorHandler = (error) => {
 };
 
 httpRequest.interceptors.request.use(
-  (request) => requestHandler(request),
-  (error) => errorHandler(error),
+  (request) => {
+    const originalConfig = request;
+    console.log(
+      '\x1b[34m',
+      '\n\n************ REQUEST ************\n',
+      `\nURL: ${request?.url}
+        \nMethod: ${request?.method}
+        \nHeaders: ${JSON.stringify(originalConfig?.headers, null, 2)}
+        \nBody: ${JSON.stringify(request?.data, null, 2)}`,
+      '\n\n******************************************',
+      '\x1b[37m',
+    );
+    return requestHandler(request);
+  },
+  (error) => {
+    console.log(
+      '\x1b[91m',
+      '\n\n************ ERROR RESPONSE ************\n',
+      `\nURL:${response?.config?.url}
+      \nBody: ${JSON.stringify(err, null, 2)}`,
+      '\n\n******************************************',
+      '\x1b[37m',
+    );
+    return errorHandler(error);
+  },
 );
 
 const activityLogHandler = {

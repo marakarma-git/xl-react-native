@@ -104,8 +104,12 @@ const checkLogin = (username, password, loginDropDown) => {
   return async (dispatch) => {
     dispatch(authRequest());
     const dataObj = {username, password, clientId: clientId};
+
     try {
-      const {data} = await httpRequest.post(`${subDomain.checkLogin}`, dataObj);
+      const {data} = await httpRequest.post(
+        `${subDomain?.checkLogin}`,
+        dataObj,
+      );
 
       if (data) {
         dispatch(
@@ -117,7 +121,8 @@ const checkLogin = (username, password, loginDropDown) => {
         dispatch(authLogin(username, password, loginDropDown));
       }
     } catch (error) {
-      dispatch(authFailed(error.response.data));
+      console.log('leeeerrrrr', error);
+      dispatch(authFailed(error?.response?.data));
     }
   };
 };
@@ -132,9 +137,9 @@ const authLogin = (username, password, loginDropDown) => {
   const customHeaders = {
     headers: {
       'Content-Type': 'multipart/form-data',
-      activityId: 'LLP-1',
-      descSuffix: ` as ${username}`,
-      isStatic: true,
+      // activityId: 'LLP-1',
+      //descSuffix: ` as ${username}`,
+      //isStatic: true,
     },
   };
 
@@ -153,6 +158,7 @@ const authLogin = (username, password, loginDropDown) => {
 
   return async (dispatch) => {
     dispatch(authRequest());
+
     try {
       const {data} = await httpRequest.post(
         `${subDomain.fetchLogin}`,

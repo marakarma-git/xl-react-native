@@ -14,6 +14,7 @@ import Route from './pages/route';
 import RootReducers from './redux/reducer';
 import {ToastContextProvider} from './context/ToastContext';
 import {colors} from './constant/color';
+import {startNetworkLogging} from 'react-native-network-logger';
 
 const persistConfig = {
   key: 'root',
@@ -34,6 +35,7 @@ const store = createStore(
   applyMiddleware(thunk, validateTokenMiddleware),
 );
 const persist = persistStore(store);
+startNetworkLogging();
 
 const App = () => {
   return (

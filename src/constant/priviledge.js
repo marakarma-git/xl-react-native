@@ -56,6 +56,9 @@ import {
   DIAGNOSTIC_WIZARD_PRIVILEDGE_ID,
 } from './actionPriv';
 
+import NetworkLogger from 'react-native-network-logger';
+import {NETWORK} from '../../env.json';
+console.log('ooooooo', NETWORK);
 export const DRAWER_MENU_PRIVILEDGE = [
   {
     name: 'Home',
@@ -348,5 +351,12 @@ export const DRAWER_MENU_PRIVILEDGE = [
     width: 25,
     height: 25,
     components: UsageSubscribersAnalyticsFilterPage,
+  },
+  {
+    name: 'Network Logger',
+    icon: '',
+    type: 'drawer',
+    components: NetworkLogger,
+    priviledgeIds: !NETWORK ? ['not-allowed'] : [],
   },
 ];

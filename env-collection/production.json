@@ -1,3 +1,8 @@
 {
-    "API_URL": "https://connectivityplus.xl.co.id"
+  "API_URL": "https://connectivityplus.xl.co.id/",
+  "CLIENT_ID": "mobile-xl-dcp-id",
+  "BASIC_TOKEN": "Basic bW9iaWxlLXhsLWRjcC1pZDp4bC1kY3Atc2VjdXJpdHktc2VjcmV0",
+  "RECAPTCHA_TOKEN": "6Le1IegUAAAAAF3KF03xZ9GIYDEKFMsnJmIf8g0V",
+  "RECAPTCHA_SECRET_KEY": "6Le1IegUAAAAACr1CpNI3_85Fm5N1EYo4DqxtQbL",
+  "NETWORK": false
 }

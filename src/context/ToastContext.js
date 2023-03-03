@@ -15,7 +15,9 @@ const defaultConfig = {
 
 const ToastContextProvider = ({children}) => {
   const dispatch = useDispatch();
-  const {isSessionExpired} = useSelector((state) => state?.auth_reducer);
+  const {isSessionExpired} = useSelector(
+    (state) => state?.auth_reducer ?? false,
+  );
 
   const [config, setConfig] = useState(defaultConfig);
   const [showToast, setShowToast] = useState(false);
