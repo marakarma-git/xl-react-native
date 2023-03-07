@@ -588,7 +588,7 @@ class Helper {
   }
 
   static requiredValidation(title, value) {
-    return value.trim().length > 0 ? null : `${title} Required`;
+    return value?.trim().length > 0 ? null : `${title} Required`;
   }
 
   static validationIsRequired(formKey, formTitle, formData) {
