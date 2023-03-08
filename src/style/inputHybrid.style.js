@@ -97,6 +97,9 @@ export default {
     backgroundColor: colors.main_color,
     marginBottom: 0,
     padding: 12,
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
   },
   modalTitleText: {
     fontWeight: 'bold',
@@ -175,12 +178,14 @@ export default {
     marginHorizontal: 3,
   },
   buttonNext: {
-    width: 100,
+    minWidth: 100,
     alignItems: 'center',
     justifyContent: 'center',
     height: 30,
     backgroundColor: colors.main_color,
     marginHorizontal: 3,
+    display: 'flex',
+    flexDirection: 'row',
   },
   buttonText: {
     fontSize: 16,

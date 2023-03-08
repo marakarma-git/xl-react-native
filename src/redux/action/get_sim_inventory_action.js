@@ -286,7 +286,9 @@ const callSimInventory = (paginate) => {
     };
     httpRequest
       .get(
-        `/dcp/sim/getSimInventory?page=${getPage()}&size=${getSize}&keyword=${searchText}&sort=${getOrderBy()}&order=${getSortBy()}${generatedParams}`
+        `/dcp/sim/getSimInventory?page=${getPage()}&size=${getSize}&keyword=${encodeURIComponent(
+          searchText,
+        )}&sort=${getOrderBy()}&order=${getSortBy()}${generatedParams}`
           .split(' ')
           .join('+'),
         customHeaders,

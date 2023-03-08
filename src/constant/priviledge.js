@@ -58,7 +58,6 @@ import {
 
 import NetworkLogger from 'react-native-network-logger';
 import {NETWORK} from '../../env.json';
-console.log('ooooooo', NETWORK);
 export const DRAWER_MENU_PRIVILEDGE = [
   {
     name: 'Home',

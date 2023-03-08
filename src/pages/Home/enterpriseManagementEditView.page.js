@@ -5,6 +5,7 @@ import {
   ButtonLabelComponent,
   ContentCard,
   HeaderContainer,
+  ModalConfirmation,
   OverlayBackground,
   Text,
 } from '../../components';
@@ -71,6 +72,7 @@ const EnterpriseManagementEditView = ({route, navigation}) => {
   const [localEnterpriseId, setLocalEnterpriseId] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const [customLabelValidation, setCustomLabelValidation] = useState([]);
+  const [showModal, setShowModal] = useState(false);
   //Function
   const basicInformationInputHandler = (name, value) => {
     setBasicInformation({
@@ -253,6 +255,7 @@ const EnterpriseManagementEditView = ({route, navigation}) => {
         if (data) {
           setIsLoading(false);
           const {statusCode, statusDescription} = data;
+          setShowModal(false);
           if (statusCode === 0) {
             showToast({
               title: 'Edit Onboard Enterprise',
@@ -432,8 +435,14 @@ const EnterpriseManagementEditView = ({route, navigation}) => {
               editText={'Save'}
               cancelAction={() => formCancelAction(2)}
               setIsEditActive={setIsEditCustomLabelActive}
-              editAction={() =>
+              showModal={showModal}
+              onCloseModal={() => setShowModal(false)}
+              onSubmit={() =>
                 onSubmit('Success, Custom Label has been updated ', 2)
+              }
+              editAction={
+                () => setShowModal(true)
+                // onSubmit('Success, Custom Label has been updated ', 2)
               }
             />
           }
@@ -468,7 +477,11 @@ const CardTitleComponent = (props) => {
     cancelAction,
     isLoading,
     setIsEditActive,
+    showModal,
+    onCloseModal,
+    onSubmit = () => {},
   } = props;
+
   return (
     <View style={enterpriseStyle.toolBar}>
       <Text fontType="bold" style={{fontSize: 13, color: 'black'}}>
@@ -499,6 +512,21 @@ const CardTitleComponent = (props) => {
           buttonAction={() => setIsEditActive(true)}
         />
       )}
+
+      <ModalConfirmation
+        showModal={showModal}
+        loading={isLoading}
+        closeModal={onCloseModal}
+        title={'Custom Label'}
+        description={'Are you sure you want to customize these labels?'}
+        subDescription={'Lorem ipsum dolor amet'}
+        confirmText={'Submit'}
+        confirmAction={() =>
+          onSubmit('Success, Custom Label has been updated ', 2)
+        }
+        alignContent={'center'}
+        iconClose
+      />
     </View>
   );
 };

@@ -8,6 +8,8 @@ import {
 import {inputHybridStyle} from '../../style';
 import {Text} from '../index';
 import PropTypes from 'prop-types';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import {ActivityIndicator} from 'react-native-paper';
 
 const ModalConfirmation = (props) => {
   return (
@@ -31,12 +33,38 @@ const ModalConfirmation = (props) => {
             <Text style={(inputHybridStyle.modalTitleText, {color: 'white'})}>
               {props.title}
             </Text>
+            {props?.iconClose && (
+              <TouchableOpacity onPress={props.closeModal}>
+                <MaterialCommunityIcons
+                  name={'close-circle'}
+                  color={'white'}
+                  size={24}
+                />
+              </TouchableOpacity>
+            )}
           </View>
+
           <View style={{padding: 15}}>
-            <Text fontType="semi-bold" style={inputHybridStyle.tcText}>
+            <Text
+              fontType="semi-bold"
+              style={{
+                ...inputHybridStyle.tcText,
+                textAlign: props.alignContent,
+              }}>
               {props.description}
             </Text>
           </View>
+          {props?.subDescription && (
+            <View style={{paddingLeft: 15, paddingBottom: 15}}>
+              <Text
+                style={{
+                  ...inputHybridStyle.tcText,
+                  textAlign: props.alignContent,
+                }}>
+                {props.subDescription}
+              </Text>
+            </View>
+          )}
           <View style={inputHybridStyle.modalFooter}>
             <View style={inputHybridStyle.buttonContainer}>
               <TouchableOpacity
@@ -58,11 +86,22 @@ const ModalConfirmation = (props) => {
                 onPress={props.confirmAction}
                 style={[
                   inputHybridStyle.buttonNext,
-                  {borderRadius: 5, borderColor: 'none'},
+                  {
+                    borderRadius: 5,
+                    borderColor: 'none',
+                    backgroundColor: props?.loading ? '#CBC9C9' : 'inherit',
+                  },
                 ]}>
                 <Text style={inputHybridStyle.buttonText}>
                   {props.confirmText}
                 </Text>
+                {props?.loading && (
+                  <ActivityIndicator
+                    size={'small'}
+                    color={'white'}
+                    style={{marginLeft: 5}}
+                  />
+                )}
               </TouchableOpacity>
             </View>
           </View>
@@ -81,6 +120,8 @@ ModalConfirmation.propTypes = {
   confirmText: PropTypes.string,
   loading: PropTypes.bool,
   confirmAction: PropTypes.func,
+  alignContent: PropTypes.string,
+  iconClose: PropTypes.bool,
 };
 
 ModalConfirmation.defaultProps = {
@@ -92,6 +133,8 @@ ModalConfirmation.defaultProps = {
   confirmText: 'Confirm',
   loading: false,
   confirmAction: () => {},
+  alignContent: 'left',
+  iconClose: false,
 };
 
 export default ModalConfirmation;
