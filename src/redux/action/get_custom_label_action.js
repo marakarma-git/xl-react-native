@@ -22,7 +22,7 @@ const getCustomLabel = () => {
     const {principal} = auth_reducer.data || {};
     const {enterpriseId} = principal || {};
     httpRequest
-      .get(`$/user/corp/getCustLabelSubscription?enterpriseId=${enterpriseId}`)
+      .get(`/user/corp/getCustLabelSubscription?enterpriseId=${enterpriseId}`)
       .then(({data}) => {
         if (data.statusCode === 0) {
           const modifyArray = data.result.map(
@@ -59,6 +59,7 @@ const getCustomLabel = () => {
         }
       })
       .catch((error) => {
+        console.log(error);
         // dispatch(authFailed(error.response.data));
       });
   };

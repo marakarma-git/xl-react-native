@@ -10,6 +10,7 @@ import {Text} from '../index';
 import PropTypes from 'prop-types';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import {ActivityIndicator} from 'react-native-paper';
+import {colors} from '../../constant/color';
 
 const ModalConfirmation = (props) => {
   return (
@@ -89,7 +90,9 @@ const ModalConfirmation = (props) => {
                   {
                     borderRadius: 5,
                     borderColor: 'none',
-                    backgroundColor: props?.loading ? '#CBC9C9' : 'inherit',
+                    backgroundColor: props?.loading
+                      ? '#CBC9C9'
+                      : colors.main_color,
                   },
                 ]}>
                 <Text style={inputHybridStyle.buttonText}>
