@@ -82,13 +82,13 @@ const Subscription = ({route}) => {
   } = useSelector((state) => state.get_sim_inventory_reducer);
   useEffect(() => {
     if (menuPermission.viewSIMInventor) {
-      if (!firstRender) {
-        dispatch(
-          callSimInventory({
-            page_value: 0,
-          }),
-        );
-      }
+      // if (!firstRender) {
+      //   dispatch(
+      //     callSimInventory({
+      //       page_value: 0,
+      //     }),
+      //   );
+      // }
       if (lod.isEmpty(navigationFrom) && firstRender) {
         // alert('78');
         dispatch(callSimInventory());
