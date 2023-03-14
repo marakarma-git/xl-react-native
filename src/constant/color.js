@@ -33,7 +33,6 @@ export const colors = {
   background_overlay: '#00D3A0',
   yellow_bell: '#F9DD25',
   black: '',
-  white: '',
   white_header_asc_desc: '#2392FF',
   chart_axis_stroke: '#e6e6e6',
   chart_line_red: color_theme_one.red,
@@ -50,6 +49,7 @@ export const colors = {
   checked_box: color_theme_one.green,
   disabled_table: '#eee',
   link_color: '#3357da',
+  white: 'white',
 };
 
 export const preDefineColorPallete = [

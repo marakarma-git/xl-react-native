@@ -21,11 +21,12 @@ import {colors} from '../../constant/color';
 const ModalMapOnly = (props) => {
   const dispatch = useDispatch();
   const {onClose, mapData} = props || {};
-  const {inventoryId, msisdn} = mapData || {};
+  const {inventoryId, msisdn, lastActivity, location} = mapData || {};
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
   const [longLat, setLongLat] = useState({longitude: '0.1', latitude: '0.1'});
+  const [mapType, setMapType] = useState('standard');
   const {access_token} = useSelector((state) => state.auth_reducer?.data) || {};
   useEffect(() => {
     setError(false);
@@ -40,6 +41,7 @@ const ModalMapOnly = (props) => {
       .then(({data}) => {
         console.log(JSON.stringify(data, null, 2));
         const {statusCode, statusDescription, result} = data || {};
+
         if (statusCode === 0) {
           const {longitude, latitude} = result || '0';
           setLongLat({
@@ -60,6 +62,9 @@ const ModalMapOnly = (props) => {
         // dispatch(authFailed(e.response.data));
       });
   }, [dispatch, mapData]);
+  const toggleMapView = (type) => {
+    setMapType(type);
+  };
   return (
     <Modal animationType="slide" transparent onRequestClose={onClose}>
       <View style={inputHybridStyle.modalBackdrop} />
@@ -86,6 +91,8 @@ const ModalMapOnly = (props) => {
           <MapView
             provider={PROVIDER_GOOGLE}
             style={{flex: 1}}
+            mapType={mapType ?? 'standard'}
+            zoomControlEnabled
             region={{
               latitude: parseFloat(longLat.latitude) || 0,
               longitude: parseFloat(longLat.longitude) || 0,
@@ -105,59 +112,136 @@ const ModalMapOnly = (props) => {
               radius={1500}
             />
           </MapView>
-          {loading ||
-            (error && (
-              <View
-                style={{
-                  position: 'absolute',
-                  top: 0,
-                  bottom: 0,
-                  right: 0,
-                  left: 0,
-                  backgroundColor: 'white',
-                  justifyContent: 'center',
-                  alignItems: 'center',
-                }}>
-                {loading && (
-                  <ActivityIndicator color={colors.main_color} size={'large'} />
-                )}
-                {error && errorMessage && (
-                  <>
-                    <View
+          <View
+            style={{
+              position: 'absolute',
+              top: 20,
+              bottom: 0,
+              right: 12,
+              left: 12,
+            }}>
+            <View style={styles.info}>
+              <TouchableOpacity
+                style={[styles.mapBtn, styles.mapBtnContainer]}
+                onPress={() => toggleMapView('standard')}>
+                <Text style={styles.mapBtnLabel}>Map</Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                style={[styles.sateliteBtn, styles.sateliteBtnContainer]}
+                onPress={() => toggleMapView('satellite')}>
+                <Text style={styles.sateliteBtnLabel}>Satelite</Text>
+              </TouchableOpacity>
+            </View>
+          </View>
+          {(loading || error) && (
+            <View
+              style={{
+                position: 'absolute',
+                top: 0,
+                bottom: 0,
+                right: 0,
+                left: 0,
+                backgroundColor: 'white',
+                justifyContent: 'center',
+                alignItems: 'center',
+              }}>
+              {loading && !errorMessage && (
+                <ActivityIndicator color={colors.main_color} size={'large'} />
+              )}
+              {error && errorMessage && (
+                <>
+                  <View
+                    style={{
+                      width: device_width * 0.7,
+                      height: device_width * 0.7,
+                    }}>
+                    <Image
+                      source={require('../../assets/images/404/location-not-found.png')}
                       style={{
-                        width: device_width * 0.7,
-                        height: device_width * 0.7,
-                      }}>
-                      <Image
-                        source={require('../../assets/images/404/location-not-found.png')}
-                        style={{
-                          flex: 1,
-                          resizeMode: 'contain',
-                          width: '100%',
-                          height: '100%',
-                        }}
-                      />
-                    </View>
-                    <Text style={{fontWeight: 'bold'}}>
-                      Sorry, the location could not be displayed
-                    </Text>
-                    <Text style={{marginVertical: 4}}>{errorMessage}</Text>
-                    <TouchableOpacity
-                      onPress={onClose}
-                      style={[
-                        inputHybridStyle.buttonStyle,
-                        {flex: 0, paddingHorizontal: '10%'},
-                      ]}>
-                      <Text style={{color: 'white'}}>Close</Text>
-                    </TouchableOpacity>
-                  </>
-                )}
-              </View>
-            ))}
+                        flex: 1,
+                        resizeMode: 'contain',
+                        width: '100%',
+                        height: '100%',
+                      }}
+                    />
+                  </View>
+                  <Text style={{fontWeight: 'bold'}}>
+                    Sorry, the location could not be displayed
+                  </Text>
+                  <Text style={{marginVertical: 4}}>{errorMessage}</Text>
+                  <TouchableOpacity
+                    onPress={onClose}
+                    style={[
+                      inputHybridStyle.buttonStyle,
+                      {flex: 0, paddingHorizontal: '10%'},
+                    ]}>
+                    <Text style={{color: 'white'}}>Close</Text>
+                  </TouchableOpacity>
+                </>
+              )}
+            </View>
+          )}
+          <View style={styles.additionalInfoMap}>
+            <View style={{...styles.info, marginBottom: 8}}>
+              <Text style={styles.infoTitle}>Location:</Text>
+              <Text>{location ?? '-'}</Text>
+            </View>
+            <View style={styles.info}>
+              <Text style={styles.infoTitle}>Last Network Activity:</Text>
+              <Text>{lastActivity ?? '-'}</Text>
+            </View>
+          </View>
         </View>
       </View>
     </Modal>
   );
+};
+const styles = {
+  additionalInfoMap: {
+    display: 'flex',
+    backgroundColor: colors.white,
+    padding: 8,
+  },
+  info: {
+    flexDirection: 'row',
+    display: 'flex',
+  },
+  infoTitle: {
+    fontWeight: 'bold',
+    marginRight: 8,
+  },
+  mapBtn: {
+    backgroundColor: colors.main_color,
+    width: '50%',
+  },
+  sateliteBtn: {
+    width: '50%',
+    backgroundColor: colors.white,
+  },
+  mapBtnLabel: {
+    color: colors.white,
+    fontSize: 14,
+    textAlign: 'center',
+    marginVertical: 6.5,
+  },
+  sateliteBtnLabel: {
+    color: 'black',
+    fontSize: 14,
+    textAlign: 'center',
+    marginVertical: 6.5,
+  },
+  mapBtnContainer: {
+    borderTopLeftRadius: 8,
+    borderTopRightRadius: 0,
+    borderBottomLeftRadius: 8,
+    borderBottomRightRadius: 0,
+  },
+  sateliteBtnContainer: {
+    borderTopLeftRadius: 0,
+    borderTopRightRadius: 8,
+    borderBottomLeftRadius: 0,
+    borderBottomRightRadius: 8,
+  },
 };
 ModalMapOnly.propTypes = {
   onClose: PropTypes.func,
