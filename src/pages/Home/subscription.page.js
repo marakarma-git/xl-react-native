@@ -43,6 +43,7 @@ import lod from 'lodash';
 import Loading from '../../components/loading';
 import generateLink from '../../helpers/generateLink';
 import httpRequest from '../../constant/axiosInstance';
+import moment from 'moment';
 
 const Subscription = ({route}) => {
   const dispatch = useDispatch();
@@ -305,17 +306,25 @@ const Subscription = ({route}) => {
             }
             onPressCell={(e) => {
               const {subItem, item} = e || {};
-              const {imsi, msisdn, inventoryId} = item || '';
+
+              const {imsi, msisdn, inventoryId, lastActivity, province} =
+                item || '';
               const {formId} = subItem || '';
               if (formId === 'dummy-map-hard-code') {
                 setShowMap(true);
                 setMapData({
-                  inventoryId: inventoryId,
-                  msisdn: msisdn,
+                  inventoryId,
+                  msisdn,
+                  lastActivity: lastActivity
+                    ? moment(lastActivity).format('DD/MM/YYYY, hh:mm A')
+                    : null,
+                  province,
                 });
               } else if (formId === 'imsi-hard-code') {
                 const createLink = `https://xl.dcp.ericsson.net/portal/#/en/${customerNo}/subscription-inventory/${imsi}`;
                 Linking.openURL(createLink);
+              } else if (formId === 'diagnostic') {
+                navigation.navigate('Diagnostic Wizard', {imsi});
               }
             }}
           />
