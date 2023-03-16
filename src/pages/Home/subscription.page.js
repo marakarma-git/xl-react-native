@@ -307,7 +307,7 @@ const Subscription = ({route}) => {
             onPressCell={(e) => {
               const {subItem, item} = e || {};
 
-              const {imsi, msisdn, inventoryId, lastActivity, province} =
+              const {imsi, msisdn, inventoryId, lastActivity, city, province} =
                 item || '';
               const {formId} = subItem || '';
               if (formId === 'dummy-map-hard-code') {
@@ -318,7 +318,8 @@ const Subscription = ({route}) => {
                   lastActivity: lastActivity
                     ? moment(lastActivity).format('DD/MM/YYYY, hh:mm A')
                     : null,
-                  province,
+                  province: province ?? null,
+                  city: city ?? null,
                 });
               } else if (formId === 'imsi-hard-code') {
                 const createLink = `https://xl.dcp.ericsson.net/portal/#/en/${customerNo}/subscription-inventory/${imsi}`;

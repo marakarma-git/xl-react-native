@@ -21,7 +21,7 @@ import {colors} from '../../constant/color';
 const ModalMapOnly = (props) => {
   const dispatch = useDispatch();
   const {onClose, mapData} = props || {};
-  const {inventoryId, msisdn, lastActivity, province} = mapData || {};
+  const {inventoryId, msisdn, lastActivity, city, province} = mapData || {};
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
@@ -133,7 +133,7 @@ const ModalMapOnly = (props) => {
               </TouchableOpacity>
             </View>
           </View>
-          {(loading || error) && (
+          {(loading || !!error) && (
             <View
               style={{
                 position: 'absolute',
@@ -148,7 +148,7 @@ const ModalMapOnly = (props) => {
               {loading && !errorMessage && (
                 <ActivityIndicator color={colors.main_color} size={'large'} />
               )}
-              {error && errorMessage && (
+              {!!error && errorMessage && (
                 <>
                   <View
                     style={{
@@ -184,7 +184,7 @@ const ModalMapOnly = (props) => {
           <View style={styles.additionalInfoMap}>
             <View style={{...styles.info, marginBottom: 8}}>
               <Text style={styles.infoTitle}>Location:</Text>
-              <Text>{province ?? '-'}</Text>
+              <Text>{city && province ? city + ', ' + province : '-'}</Text>
             </View>
             <View style={styles.info}>
               <Text style={styles.infoTitle}>Last Network Activity:</Text>
