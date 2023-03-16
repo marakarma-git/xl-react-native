@@ -43,6 +43,20 @@ const dynamicFilter = [
     valueOption: null,
     sort_by_filter: 0,
   },
+
+  {
+    formId: 'diagnostic',
+    cellType: 'TableCellHeader',
+    cellRowType: 'TableCellIcon',
+    hard_code: true,
+    config: {
+      label: '',
+      doNotShowOnFilter: true,
+      width: 30,
+    },
+    shown: true,
+    sort_by_filter: 19,
+  },
   {
     formId: 'in-session-hard-code',
     api_id: 'inSession',

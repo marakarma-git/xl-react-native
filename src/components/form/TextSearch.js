@@ -7,7 +7,7 @@ import {colors} from '../../constant/color';
 
 const TextSearchComponent = (props) => {
   const {inputHandler, value, placeholder, name, editable, onSubmit} = props;
-  const [keyword, setKeyword] = useState('');
+  const [keyword, setKeyword] = useState(value ?? '');
   const onChangeHandler = (text) => {
     inputHandler(name, text);
     setKeyword(text);

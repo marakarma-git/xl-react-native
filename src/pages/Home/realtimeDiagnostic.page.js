@@ -25,7 +25,7 @@ import {Bars} from 'react-native-loader';
 import {colors} from '../../constant/color';
 import RealtimeChartComponent from '../../components/chart/realtimeChart';
 
-const RealtimeDiagnosticPage = ({navigation}) => {
+const RealtimeDiagnosticPage = ({route, navigation}) => {
   const dispatch = useDispatch();
   const showToast = useToastHooks();
   const {imageBase64} = useSelector((state) => state.enterprise_reducer);
@@ -123,6 +123,13 @@ const RealtimeDiagnosticPage = ({navigation}) => {
   }, [navigation]);
   useEffect(() => {
     const pageLoad = navigation.addListener('focus', () => {
+      if (route?.params?.imsi) {
+        const imsi = route.params.imsi;
+        setSearchForm({
+          keyword: imsi,
+        });
+        dispatch(getRealtimeDiagnosticSimData(imsi));
+      }
       setTimeout(() => {
         setPageReady(true);
       }, 1500);

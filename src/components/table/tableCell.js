@@ -12,6 +12,7 @@ import TableCellCheckBoxTreeView from './tableCellCheckBoxTreeView';
 import TableCellButton from './tableCellButton';
 import TableCellEditDelete from './tableCellEditDelete';
 import TableCellUserAdministrationOrganization from './tableCellUserAdministrationOrganization';
+import TableCellIcon from './tableCellIcon';
 
 const TableCell = (props) => {
   const {type} = props || {};
@@ -40,6 +41,8 @@ const TableCell = (props) => {
       return <TableCellEditDelete {...props} />;
     case 'TableCellUserAdministrationOrganization':
       return <TableCellUserAdministrationOrganization {...props} />;
+    case 'TableCellIcon':
+      return <TableCellIcon {...props} />;
     default:
       return <React.Fragment />;
   }
