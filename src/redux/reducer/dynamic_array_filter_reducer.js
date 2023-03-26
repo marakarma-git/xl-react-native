@@ -21,20 +21,20 @@ const dynamicFilter = [
       doNotShowOnFilter: true,
     },
     dataOption: [
+      // {
+      //   label: 'Select All',
+      //   value: 'select_all',
+      // },
+      // {
+      //   label: 'Deselect All',
+      //   value: 'deselect_all',
+      // },
       {
-        label: 'Select All',
-        value: 'select_all',
-      },
-      {
-        label: 'Deselect All',
-        value: 'deselect_all',
-      },
-      {
-        label: 'Select All Local',
+        label: 'Select all on this page',
         value: 'select_all_local',
       },
       {
-        label: 'DeSelect All Local',
+        label: 'Deselect all on this page',
         value: 'deselect_all_local',
       },
     ],

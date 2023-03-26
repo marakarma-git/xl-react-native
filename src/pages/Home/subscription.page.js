@@ -8,12 +8,16 @@ import {
   Text,
   View,
 } from 'react-native';
-import {useNavigation, useRoute} from '@react-navigation/native';
+import {useNavigation} from '@react-navigation/native';
 import {subscriptionStyle} from '../../style';
 import Table from '../../components/table/Table';
 import TableFooter from '../../components/subscription/tableFooter';
 import SearchHeader from '../../components/subscription/searchHeader';
-import {HeaderContainer, OverlayBackground} from '../../components/index';
+import {
+  HeaderContainer,
+  ModalConfirmation,
+  OverlayBackground,
+} from '../../components/index';
 import {getCustomLabel} from '../../redux/action/get_custom_label_action';
 import FilterActionLabel from '../../components/subscription/filterActionLabel';
 import Helper from '../../helpers/helper';
@@ -23,6 +27,7 @@ import callSimInventory, {
   changeCheckSimInventoryAllTrue,
   dataMatcherArray2D,
   hardCodeCurrentTotalElements,
+  postBulkReconnect,
   setSimInventoryTable,
 } from '../../redux/action/get_sim_inventory_action';
 import {
@@ -44,6 +49,7 @@ import Loading from '../../components/loading';
 import generateLink from '../../helpers/generateLink';
 import httpRequest from '../../constant/axiosInstance';
 import moment from 'moment';
+import {bulkReconnectModal} from '../../constant/wording';
 
 const Subscription = ({route}) => {
   const dispatch = useDispatch();
@@ -54,6 +60,13 @@ const Subscription = ({route}) => {
   const [showMenu, setShowMenu] = useState(false);
   const [showMap, setShowMap] = useState(false);
   const [mapData, setMapData] = useState({});
+  const [showModalPost, setShowModalPost] = useState({
+    type: 'bulk-reconnect',
+    show: false,
+    title: 'Reconnected Successfully',
+  });
+  const [selectedData, setSelectedData] = useState([]);
+  const [modalConfirmation, setModalConfirmation] = useState({});
   const {imageBase64} = useSelector((state) => state.enterprise_reducer);
   const {customerNo} = useSelector((state) => state.auth_reducer.data);
   const menuPermission = useSelector(
@@ -80,6 +93,8 @@ const Subscription = ({route}) => {
     current_applied_filter,
     current_header_sort,
     current_params_applied,
+    bulkReconnect,
+    loadingBulkReconnect,
   } = useSelector((state) => state.get_sim_inventory_reducer);
   useEffect(() => {
     if (menuPermission.viewSIMInventor) {
@@ -100,7 +115,7 @@ const Subscription = ({route}) => {
   }, [current_size, dispatch, navigation, searchText, generatedParams]);
   useEffect(() => {
     if (current_params_applied) {
-      console.log('params_ada_isi: ' + current_params_applied);
+      console.log('params: ' + current_params_applied);
     }
   }, [current_params_applied]);
 
@@ -166,6 +181,24 @@ const Subscription = ({route}) => {
     });
   }, [BackHandler, navigationFrom]);
   // End for params handling ===============
+  const actionChange = (e) => {
+    switch (e.value) {
+      case 0:
+        setModalConfirmation({
+          show: true,
+          title: 'Reconnect Device',
+          description:
+            'Are you sure?\n\nSelected device(s) will be reconnected',
+          confirmText: 'Confirm',
+        });
+
+        break;
+
+      default:
+        console.log(e);
+        break;
+    }
+  };
 
   return (
     <>
@@ -244,6 +277,15 @@ const Subscription = ({route}) => {
                       Helper.numberWithDot(current_dynamic_total_elements)
                     }
                     total={Helper.numberWithDot(current_total_elements)}
+                    onChange={actionChange}
+                    actionData={[
+                      {
+                        value: 0,
+                        label: 'Reconnect Device',
+                        isVisible: true,
+                        isDisabled: selectedData?.length === 0,
+                      },
+                    ]}
                   />
                 </>
               );
@@ -292,18 +334,37 @@ const Subscription = ({route}) => {
             }}
             onPressCheckHeader={({selectedValue}) => {
               const {value} = selectedValue || {};
+
               switch (value) {
                 case 'select_all_local':
+                  const allData = Helper.getExtractedArrayValue(
+                    data_sim_inventory?.result?.content,
+                    'imsi',
+                  );
+                  setSelectedData(allData);
                   return dispatch(changeCheckSimInventoryAllTrue());
                 case 'deselect_all_local':
+                  setSelectedData([]);
                   return dispatch(changeCheckSimInventoryAllFalse());
                 default:
                   return null;
               }
             }}
-            onPressCheckCell={({index}) =>
-              dispatch(changeCheckSimInventory(index))
-            }
+            onPressCheckCell={({index, item}) => {
+              if (!selectedData?.includes(item?.item?.msisdn)) {
+                setSelectedData((prevState) => [
+                  ...prevState,
+                  item?.item?.msisdn,
+                ]);
+              } else {
+                const filteredArray = selectedData.filter(
+                  (val) => val !== item?.item?.msisdn,
+                );
+                setSelectedData(filteredArray);
+              }
+
+              dispatch(changeCheckSimInventory(index));
+            }}
             onPressCell={(e) => {
               const {subItem, item} = e || {};
 
@@ -370,6 +431,41 @@ const Subscription = ({route}) => {
           onClose={() => setShowMenu((state) => !state)}
         />
       )}
+      <ModalConfirmation
+        showModal={showModalPost?.show}
+        title={showModalPost?.title}
+        description={bulkReconnectModal({
+          total: bulkReconnect?.totalMsisdn,
+          success: bulkReconnect?.totalSuccess,
+          fail: bulkReconnect?.totalFailed,
+        })}
+        cancelText={'Close'}
+        confirmAction={() =>
+          onSubmit('Success, Custom Label has been updated ', 2)
+        }
+        fontStyle={'regular'}
+        iconClose
+        hidePrimaryBtn
+        closeModal={() => setShowModalPost({...showModalPost, show: false})}
+      />
+
+      <ModalConfirmation
+        showModal={modalConfirmation?.show}
+        closeModal={() => {
+          setModalConfirmation({...modalConfirmation, show: false});
+        }}
+        loading={loadingBulkReconnect}
+        title={modalConfirmation?.title}
+        description={modalConfirmation?.description}
+        confirmText={modalConfirmation?.confirmText}
+        confirmAction={async () => {
+          await dispatch(postBulkReconnect({devices: selectedData}));
+          if (!loadingBulkReconnect) {
+            setModalConfirmation({...modalConfirmation, show: false});
+            setShowModalPost({...showModalPost, show: true});
+          }
+        }}
+      />
     </>
   );
 };

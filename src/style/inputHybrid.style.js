@@ -55,8 +55,10 @@ export default {
   },
   modalContainer: {
     marginHorizontal: 32,
-    marginVertical: 64,
-    flex: 1,
+    marginTop: '50%',
+    // marginVertical: 64,
+    //flex: 1,
+    justifyContent: 'center',
     backgroundColor: 'white',
     padding: 12,
     borderRadius: border_radius,

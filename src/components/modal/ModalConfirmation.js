@@ -47,7 +47,7 @@ const ModalConfirmation = (props) => {
 
           <View style={{padding: 15}}>
             <Text
-              fontType="semi-bold"
+              fontType={props?.fontStyle ?? 'semi-bold'}
               style={{
                 ...inputHybridStyle.tcText,
                 textAlign: props.alignContent,
@@ -77,35 +77,40 @@ const ModalConfirmation = (props) => {
                     backgroundColor: '#CBC9C9',
                     borderColor: '#CBC9C9',
                   },
+                  !props?.hidePrimaryBtn
+                    ? {}
+                    : {flex: 1, marginHorizontal: 16, marginBottom: 8},
                 ]}>
                 <Text style={[inputHybridStyle.buttonText, {color: 'black'}]}>
                   {props.cancelText}
                 </Text>
               </TouchableOpacity>
-              <TouchableOpacity
-                disabled={props.loading}
-                onPress={props.confirmAction}
-                style={[
-                  inputHybridStyle.buttonNext,
-                  {
-                    borderRadius: 5,
-                    borderColor: 'none',
-                    backgroundColor: props?.loading
-                      ? '#CBC9C9'
-                      : colors.main_color,
-                  },
-                ]}>
-                <Text style={inputHybridStyle.buttonText}>
-                  {props.confirmText}
-                </Text>
-                {props?.loading && (
-                  <ActivityIndicator
-                    size={'small'}
-                    color={'white'}
-                    style={{marginLeft: 5}}
-                  />
-                )}
-              </TouchableOpacity>
+              {!props?.hidePrimaryBtn && (
+                <TouchableOpacity
+                  disabled={props.loading}
+                  onPress={props.confirmAction}
+                  style={[
+                    inputHybridStyle.buttonNext,
+                    {
+                      borderRadius: 5,
+                      borderColor: 'none',
+                      backgroundColor: props?.loading
+                        ? '#CBC9C9'
+                        : colors.main_color,
+                    },
+                  ]}>
+                  <Text style={inputHybridStyle.buttonText}>
+                    {props.confirmText}
+                  </Text>
+                  {props?.loading && (
+                    <ActivityIndicator
+                      size={'small'}
+                      color={'white'}
+                      style={{marginLeft: 5}}
+                    />
+                  )}
+                </TouchableOpacity>
+              )}
             </View>
           </View>
         </KeyboardAvoidingView>

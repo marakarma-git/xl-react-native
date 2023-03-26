@@ -19,6 +19,9 @@ const initialState = {
   },
   current_params_applied: null,
   get_sim_inventory_snapshot: {},
+  bulkReconnect: {},
+  loadingBulkReconnect: false,
+  errorBulkReconnect: false,
 };
 const get_sim_inventory_reducer = (state = initialState, action) => {
   switch (action.type) {
@@ -89,8 +92,8 @@ const get_sim_inventory_reducer = (state = initialState, action) => {
       };
     case reduxString.CHANGE_CHECK_SIM_INVENTORY:
       let newArr = lod.cloneDeep(state.data_sim_inventory_table);
-      newArr[action.index].is_checked_root =
-        !newArr[action.index].is_checked_root;
+      newArr[action.index].is_checked_root = !newArr[action.index]
+        .is_checked_root;
       return {
         ...state,
         data_sim_inventory_table: newArr,
@@ -134,6 +137,24 @@ const get_sim_inventory_reducer = (state = initialState, action) => {
           orderBy: '',
           sortBy: '',
         },
+      };
+    case reduxString.BULK_RECONNECT_LOADING:
+      return {
+        ...state,
+        loadingBulkReconnect: true,
+      };
+    case reduxString.BULK_RECONNECT_FAILED:
+      return {
+        ...state,
+        loadingBulkReconnect: false,
+        errorBulkReconnect: true,
+      };
+    case reduxString.BULK_RECONNECT_SUCCESS:
+      return {
+        ...state,
+        loadingBulkReconnect: false,
+        errorBulkReconnect: false,
+        bulkReconnect: action?.bulkReconnect,
       };
     default:
       return state;

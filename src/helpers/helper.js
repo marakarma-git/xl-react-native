@@ -970,6 +970,14 @@ class Helper {
       errorCount: countError,
     };
   };
+
+  static getExtractedArrayValue = (datas, key) => {
+    if (Array.isArray(datas)) {
+      return datas?.map((val) => val[key]);
+    } else {
+      return datas;
+    }
+  };
 }
 
 export default Helper;

@@ -5,6 +5,7 @@ import dayjs from 'dayjs';
 import Helper from '../../helpers/helper';
 import httpRequest from '../../constant/axiosInstance';
 import moment from 'moment';
+import {ToastAndroid} from 'react-native';
 const getSimInventoryLoading = () => {
   return {
     type: reduxString.GET_SIM_INVENTORY_LOADING,
@@ -87,6 +88,23 @@ const hardCodeCurrentTotalElements = (value) => {
     currentTotalElements: value,
   };
 };
+const doPostBulkReconnectLoading = () => {
+  return {
+    type: reduxString.BULK_RECONNECT_LOADING,
+  };
+};
+const doPostBulkReconnectFailed = () => {
+  return {
+    type: reduxString.BULK_RECONNECT_FAILED,
+  };
+};
+const doPostBulkReconnectSuccess = (value) => {
+  return {
+    type: reduxString.BULK_RECONNECT_SUCCESS,
+    bulkReconnect: value,
+  };
+};
+
 const dataMatcherArray2D = (listData = [], headerData = []) => {
   const generated = [];
   listData.map((item, index) => {
@@ -324,6 +342,35 @@ const callSimInventory = (paginate) => {
       });
   };
 };
+
+const postBulkReconnect = ({devices}) => {
+  return async (dispatch) => {
+    try {
+      dispatch(doPostBulkReconnectLoading());
+
+      const {data} = await httpRequest.post(
+        '/dcp/recon/submitReconBulkDevice',
+        devices,
+      );
+
+      if (data) {
+        const {result} = data;
+        if (data?.statusCode === 0) {
+          dispatch(doPostBulkReconnectSuccess(result));
+          return {isSuccess: true, result};
+        }
+      }
+    } catch (error) {
+      dispatch(doPostBulkReconnectFailed());
+      ToastAndroid.show(
+        error.response.data.error_description || error.message,
+        ToastAndroid.LONG,
+      );
+      console.error(error);
+    }
+  };
+};
+
 export default callSimInventory;
 export {
   reGenerateHideNShow,
@@ -335,4 +382,5 @@ export {
   changeCheckSimInventoryAllTrue,
   changeCheckSimInventoryAllFalse,
   hardCodeCurrentTotalElements,
+  postBulkReconnect,
 };
