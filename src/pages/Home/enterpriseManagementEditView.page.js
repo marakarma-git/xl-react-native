@@ -46,6 +46,7 @@ const personalizationObj = {
   fileName: '',
   topBarColour: '#FFFFFF',
 };
+const nonRequiredFields = ['organizationalUnit', 'laNumber'];
 
 const EnterpriseManagementEditView = ({route, navigation}) => {
   const showToast = useToastHooks();
@@ -159,6 +160,7 @@ const EnterpriseManagementEditView = ({route, navigation}) => {
     let validateError = {};
     let validateErrorCnt = 0;
     Object.keys(basicInformation).map((key) => {
+      if (nonRequiredFields?.includes(key)) return;
       let title = Helper.makeCamelCaseToTitle(key);
       let errorValidation = Helper.requiredValidation(
         title,

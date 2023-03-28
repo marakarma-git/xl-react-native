@@ -38,6 +38,7 @@ const basicInformationObj = {
   bpVat: '',
   laNumber: '',
 };
+const nonRequiredFields = ['organizationalUnit', 'laNumber'];
 const personalizationObj = {
   companyLogo: null,
   fileName: '',
@@ -75,10 +76,12 @@ const EnterpriseManagementOnBoardPage = ({route, navigation}) => {
     let validateError = {};
     let validateErrorCnt = 0;
     Object.keys(basicInformation).map((key) => {
+      if (nonRequiredFields?.includes(key)) return;
       let title = Helper.makeCamelCaseToTitle(key);
       let errorValidation = Helper.requiredValidation(
         title,
         basicInformation[key],
+        nonRequiredFields,
       );
       if (errorValidation) {
         validateError[key] = errorValidation;
@@ -358,6 +361,7 @@ const EnterpriseManagementOnBoardPage = ({route, navigation}) => {
   useEffect(() => {
     setChangesLabelRow([]);
   }, [basicInformation.businessCategory]);
+  console.log('koooooo', basicInformation);
   return (
     <View style={enterpriseStyle.container}>
       <HeaderContainer
