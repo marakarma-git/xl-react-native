@@ -12,6 +12,7 @@ const height_keyboard = 43;
 const reguler_font_size = 14;
 const defaultHeightCell = 40;
 const defaultWidthCell = 150;
+const enterpriseParentId = 'a06e38ea-d871-4945-8126-44fab717180a';
 export {
   device_height,
   device_width,
@@ -27,4 +28,5 @@ export {
   defaultHeightCell,
   defaultWidthCell,
   title_font_size,
+  enterpriseParentId,
 };

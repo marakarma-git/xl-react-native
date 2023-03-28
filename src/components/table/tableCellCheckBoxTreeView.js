@@ -9,7 +9,11 @@ import {
   View,
 } from 'react-native';
 import Text from '../global/text';
-import {defaultHeightCell, defaultWidthCell} from '../../constant/config';
+import {
+  defaultHeightCell,
+  defaultWidthCell,
+  enterpriseParentId,
+} from '../../constant/config';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import styles from '../../style/drawer.style';
 import CustomCheckBox from '../customCheckBox';
@@ -23,8 +27,7 @@ const TableCellText = (props) => {
   const [moreText, setMoreText] = useState(false);
   const [showMore, setShowMore] = useState(false);
   const [textRaw, setTextRaw] = useState('');
-  const {config, onPress, otherInformation, onPressArrow, onChangeCheck} =
-    props || {};
+  const {config, onPress, otherInformation, onPressArrow, item} = props || {};
   const {
     label,
     width,
@@ -100,7 +103,10 @@ const TableCellText = (props) => {
                   numberOfLines={1}
                   style={{
                     flex: 1,
-                    color: isNavigate ? colors.link_color : 'black',
+                    color:
+                      isNavigate && item?.enterpriseId !== enterpriseParentId
+                        ? colors.link_color
+                        : 'black',
                   }}
                   onLongPress={onLongPress}
                   onPress={() => {

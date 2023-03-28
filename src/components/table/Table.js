@@ -385,6 +385,7 @@ const StickyComponent = (props) => {
     hideEdit,
     hideDelete,
   } = props || {};
+
   return (
     <View
       style={{
@@ -396,6 +397,7 @@ const StickyComponent = (props) => {
       {dataTable &&
         dataTable.map((value, index) => {
           const {dataCell, is_checked_root} = value || {};
+
           return (
             <TableCell
               value={is_checked_root}

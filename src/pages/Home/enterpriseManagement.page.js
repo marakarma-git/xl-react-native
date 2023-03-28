@@ -30,6 +30,7 @@ import TableFooter from '../../components/subscription/tableFooter';
 import ModalMenuPicker from '../../components/modal/ModalMenuPicker';
 import {dataMatcherArray2D} from '../../redux/action/get_sim_inventory_action';
 import {useNavigation} from '@react-navigation/native';
+import {enterpriseParentId} from '../../constant/config';
 
 const EnterpriseManagement = () => {
   const navigation = useNavigation();
@@ -187,8 +188,12 @@ const EnterpriseManagement = () => {
           dataHeader={dataHeaderEnterprise}
           dataTable={data_enterprise_generated}
           onPressCell={(e) => {
-            dispatch(enterpriseManagementSetDetailParams(e.item.enterpriseId));
-            navigation.navigate('EnterpriseManagementEditView');
+            if (e?.item?.enterpriseId !== enterpriseParentId) {
+              dispatch(
+                enterpriseManagementSetDetailParams(e.item.enterpriseId),
+              );
+              navigation.navigate('EnterpriseManagementEditView');
+            }
           }}
           onPressCheckCell={(e) =>
             dispatch(
