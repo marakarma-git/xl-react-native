@@ -358,7 +358,8 @@ export const requestWidgetData = (
         filterParams,
         customHeaders,
       );
-      console.log(JSON.stringify(data, null, 2));
+      // console.log(JSON.stringify(data, null, 2));
+      console.log(filterParams, customHeaders)
       if (data) {
         if (data.statusCode === 0) {
           if (type === 'sim') {

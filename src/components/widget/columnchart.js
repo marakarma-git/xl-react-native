@@ -18,7 +18,6 @@ import {
   View,
   ActivityIndicator,
   Dimensions,
-  TouchableOpacity,
 } from 'react-native';
 import Orientation from '../../helpers/orientation';
 
@@ -26,9 +25,8 @@ import Helper from '../../helpers/helper';
 import style from '../../style/home.style';
 import {FilterDropdown, NoDataText, Text} from '..';
 import {colors} from '../../constant/color';
-import ModalSearchPicker from '../modal/ModalSearchPickerCustom';
 
-const BarChartComponent = ({
+const ColumnChartComponent = ({
   item,
   viewType = 'dashboard',
   filterParams = {},
@@ -44,40 +42,14 @@ const BarChartComponent = ({
     (state) => state.dashboard_reducer,
   );
   const [orientation, setOrientation] = useState('potrait');
-  const [firstRender, setFirstRender] = useState(true);
-  const [isFirstHit, setIsFirstHit] = useState(true);
-  const [param3, setParam3] = useState(30);
-  const [param3List, setParam3List] = useState([
-    {label: '2 Days ago', value: 2, isDisabled: false, isVisible: true},
-    {
-      label: 'Previous 7 Days ago',
-      value: 7,
-      isDisabled: false,
-      isVisible: true,
-    },
-    {
-      label: 'Previous 30 Days ago',
-      value: 30,
-      isDisabled: false,
-      isVisible: true,
-    },
-  ]);
+  const [param3, setParam3] = useState(2);
   const [param4, setParam4] = useState(10);
-  const [param4List, setParam4List] = useState([
-    {label: 'Top 10', value: 10, isDisabled: false, isVisible: true},
-    {label: 'Top 20', value: 20, isDisabled: false, isVisible: true},
-  ]);
-  const [periodLabel, setPeriodLabel] = useState('30 Days ago');
-  const [countLabel, setCountLabel] = useState('Top 10');
-  const [showPeriodFilter, setShowPeriodFilter] = useState(false);
-  const [showCountFilter, setShowCountFilter] = useState(false);
   const getTickValues = (data) => {
     const dataUsage = [...data].map((datas) => datas.y);
     const tickTimes = [0, 0.25, 0.5, 0.75, 1];
     const tickValues = tickTimes.map((tick) => Math.max(...dataUsage) * tick);
     return tickValues;
   };
-
   const getAxis = (data) => {
     // const dataUsage = [...data].map((datas) => datas.y);
     var loaddata = []
@@ -87,7 +59,6 @@ const BarChartComponent = ({
 
     return loaddata;
   };
-  
   const generateChart = () => (
     <View style={{position: 'relative', top: -20, left: 0}}>
       {dataSet.length > 0 ? (
@@ -98,7 +69,6 @@ const BarChartComponent = ({
             }
             height={barTotal ? +barTotal * 30 : +param4 * 30}>
             <VictoryAxis
-              offsetX={50}
               crossAxis
               label=""
               tickValues={getAxis(dataSet)}
@@ -139,7 +109,7 @@ const BarChartComponent = ({
                   },
                 },
               ]}
-              horizontal
+              vertical
               style={{
                 data: {fill: colors.tab_edit, width: 15},
               }}
@@ -176,22 +146,6 @@ const BarChartComponent = ({
               <Text fontType="bold" style={{fontSize: 14}}>
                 {item.jsonData?.title?.text || ''}
               </Text>
-              <TouchableOpacity
-                onPress={() => navigation.navigate('Usage Analytics')}>
-                <Text style={style.linkText}>See Details</Text>
-              </TouchableOpacity>
-            </View>
-            <View style={style.cardBody}>
-              <FilterDropdown
-                setShowToggle={setShowPeriodFilter}
-                dropdownText={periodLabel}
-                dropDownTitle={'Period'}
-              />
-              <FilterDropdown
-                setShowToggle={setShowCountFilter}
-                dropdownText={countLabel}
-                dropDownTitle={'Count'}
-              />
             </View>
             {loadingTopTraffic ? (
               <ActivityIndicator color={colors.main_color} size="large" />
@@ -199,52 +153,6 @@ const BarChartComponent = ({
               <>{dataSet && generateChart()}</>
             )}
           </Card.Content>
-          {showPeriodFilter && (
-            <ModalSearchPicker
-              modalHeight={230}
-              data={param3List}
-              onChange={(e) => {
-                setParam3(e.value);
-                dispatch(
-                  requestWidgetData(
-                    userData.access_token,
-                    item,
-                    Object.assign(filterParams, {param3: e.value, param4}),
-                    (type = 'top'),
-                  ),
-                );
-                setShowPeriodFilter(false);
-                setPeriodLabel(e.label);
-              }}
-              onClose={() => setShowPeriodFilter(false)}
-              removeSearch={true}
-              title={'Period Filter'}
-              value={param3}
-            />
-          )}
-          {showCountFilter && (
-            <ModalSearchPicker
-              modalHeight={180}
-              data={param4List}
-              onChange={(e) => {
-                setParam4(e.value);
-                dispatch(
-                  requestWidgetData(
-                    userData.access_token,
-                    item,
-                    Object.assign(filterParams, {param3: e.value, param4}),
-                    (type = 'top'),
-                  ),
-                );
-                setShowCountFilter(false);
-                setCountLabel(e.label);
-              }}
-              onClose={() => setShowCountFilter(false)}
-              removeSearch={true}
-              title={'Count Filter'}
-              value={param4}
-            />
-          )}
         </Card>
       );
     } else {
@@ -254,7 +162,7 @@ const BarChartComponent = ({
 
   const detectOrientation = useCallback(() => {
     if (Orientation.getHeight() <= Orientation.getWidth()) {
-      setOrientation('landscape');
+      setOrientation('potrait');
     }
     Dimensions.addEventListener('change', () => {
       setOrientation(Orientation.isPortrait() ? 'potrait' : 'landscape');
@@ -274,14 +182,11 @@ const BarChartComponent = ({
           (type = 'top'),
         ),
       );
-      setIsFirstHit(false);
     }
   }, [dataSet]);
 
   useEffect(() => {
     const pageLoad = navigation.addListener('focus', () => {
-      setFirstRender(false);
-      setIsFirstHit(true);
     });
 
     detectOrientation();
@@ -311,4 +216,4 @@ const CustomLabel = (props) => {
   );
 };
 
-export default BarChartComponent;
+export default ColumnChartComponent;
