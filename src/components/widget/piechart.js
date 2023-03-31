@@ -12,11 +12,15 @@ import style from '../../style/home.style';
 import {colors} from '../../constant/color';
 import {TouchableOpacity} from 'react-native';
 
-const PieChartComponent = ({item, filterParams = {}}) => {
+const PieChartComponent = ({item, datareduce, filterParams = {}}) => {
   const dispatch = useDispatch();
   const navigation = useNavigation();
   const userData = useSelector((state) => state.auth_reducer.data);
-  const dataSet = useSelector((state) => state.dashboard_reducer.simStatistics);
+  if (datareduce == 'sim') {
+    var dataSet = useSelector((state) => state.dashboard_reducer.simStatistics);
+  } else {
+    var dataSet = useSelector((state) => state.dashboard_reducer.customStatistics);
+  }
   const {loading, error} = useSelector((state) => state.dashboard_reducer);
   const [chartColor, setChartColor] = useState([]);
 
@@ -66,17 +70,29 @@ const PieChartComponent = ({item, filterParams = {}}) => {
 
   useEffect(() => {
     const pageLoad = navigation.addListener('focus', () => {
-      dispatch(
-        requestWidgetData(userData.access_token, item, filterParams, 'sim'),
-      );
+      if(datareduce == 'sim'){
+        dispatch(
+          requestWidgetData(userData.access_token, item, filterParams, 'sim'),
+        );
+      }else{
+        dispatch(
+          requestWidgetData(userData.access_token, item, filterParams, 'custom'),
+        );
+      }
     });
 
     if (dataSet !== null) {
       generateChartColor();
     } else if (dataSet === null) {
-      dispatch(
-        requestWidgetData(userData.access_token, item, filterParams, 'sim'),
-      );
+      if(datareduce == 'sim'){
+        dispatch(
+          requestWidgetData(userData.access_token, item, filterParams, 'sim'),
+        );
+      }else{
+        dispatch(
+          requestWidgetData(userData.access_token, item, filterParams, 'custom'),
+        );
+      }
     }
 
     return pageLoad;
@@ -90,7 +106,7 @@ const PieChartComponent = ({item, filterParams = {}}) => {
             {item.jsonData?.title?.text || ''}
           </Text>
           <TouchableOpacity
-            onPress={() => navigation.navigate('Sim Productivity')}>
+            onPress={() => datareduce == 'sim' ? navigation.navigate('Sim Productivity') : navigation.navigate('Custom Statistics')}>
             <Text style={style.linkText}>See Details</Text>
           </TouchableOpacity>
         </View>

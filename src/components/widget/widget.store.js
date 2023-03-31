@@ -2,11 +2,12 @@ import React from 'react';
 import {View} from 'react-native';
 import PieChart from './piechart';
 import BarChart from './barchart';
+import BarChartWithoutFilter from './barchartwithoutfilter';
 import ColumnChart from './columnchart';
 
 const WidgetStore = ({widgetList}) => {
   var widgetListdata = widgetList.sort(function (a, b) {
-    return a.position < b.position;
+    return a.jsonData.position > b.jsonData.position ? 1 : (a.jsonData.position === b.jsonData.position ? 0 : -1 );
   });
   const generateWidget = () => (
     <>
@@ -17,33 +18,21 @@ const WidgetStore = ({widgetList}) => {
   );
 
   const widgetType = (item) => {
-    console.log(item)
     switch (item.widgetCode) {
       case 'SIM-Statistics':
-        return <PieChart item={item} />;
+        return <PieChart item={item} datareduce="sim"/>;
       case 'Top-Traffic':
-        return <BarChart viewType="dashboard" item={item} filterParams={{}} />;
-      // case 'Aggregated-Traffic':
-      //     return(
-      //         <AggregateTraffic
-      //             item={item}
-      //             navigation={navigation}
-      //         />
-      //     )
-      // case 'SIM-Statistics':
-      //   return <PieChart item={item} />;
+        return <BarChart viewType="dashboard" item={item} filterParams={{}}/>;
       case 'Financial-Report':
-        return <ColumnChart viewType="dashboard" item={item} filterParams={{}} />;
-      // case 'Top-Traffic':
-      //   return <BarChart viewType="dashboard" item={item} filterParams={{}} />;
+        return <ColumnChart item={item} />;
+      case 'custom-statistics':
+        return <PieChart item={item} datareduce="custom"/>; 
       // case 'Aggregated-Traffic':
       //   return <Aggregate item={item} filterParams={{}} />; 
-      // case 'custom-statistics':
-      //   return <BarChart viewType="dashboard" item={item} filterParams={{}} />; 
       // case 'Device-Network-Statistics':
       //   return <BarChart viewType="dashboard" item={item} filterParams={{}} />; 
-      // case 'Top-Device':
-      //   return <ColumnChart viewType="dashboard" item={item} filterParams={{}} />;
+      case 'Top-Device':
+        return <BarChartWithoutFilter item={item}/>;
       default:
         return;
     }

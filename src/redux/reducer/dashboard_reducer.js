@@ -6,13 +6,18 @@ const initialState = {
   carousel: [],
   loading: false,
   loadingTopTraffic: false,
+  loadingTopDeviceBrand: false,
+  loadingFinancialReport: false,
   loadingAggregated: false,
   loading12MonthUsage: false,
   loadingMonthUsage: false,
   loadingSubsAnalytics: false,
   error: '',
   simStatistics: null,
+  customStatistics: null,
   topTrafficStatistics: null,
+  topDeviceBrand: null,
+  financialReportStatistics: null,
   aggregatedTraffic: null,
   last12MonthUsage: null,
   monthUsage: null,
@@ -46,11 +51,29 @@ const dashboard_reducer = (state = initialState, action) => {
         loading: false,
         simStatistics: action.payload,
       };
+    case reduxString.SET_CUSTOM_STATISTICS:
+      return {
+        ...state,
+        loading: false,
+        customStatistics: action.payload,
+      };
     case reduxString.SET_TOP_TRAFFIC_STATISTICS:
       return {
         ...state,
         loadingTopTraffic: false,
         topTrafficStatistics: action.payload,
+      };
+    case reduxString.SET_TOP_DEVICE_BRAND:
+      return {
+        ...state,
+        loadingTopDeviceBrand: false,
+        topDeviceBrand: action.payload,
+      };
+    case reduxString.SET_FINANCIAL_REPORT:
+      return {
+        ...state,
+        loadingFinancialReport: false,
+        financialReportStatistics: action.payload,
       };
     case reduxString.SET_AGGREGATED_TRAFFIC:
       return {
@@ -110,6 +133,16 @@ const dashboard_reducer = (state = initialState, action) => {
         loadingMonthUsage: true,
       };
     case reduxString.REQUEST_TOP_TRAFFIC:
+      return {
+        ...state,
+        loadingTopTraffic: true,
+      };
+    case reduxString.REQUEST_TOP_DEVICE_BRAND:
+      return {
+        ...state,
+        loadingTopDeviceBrand: true,
+      };
+    case reduxString.REQUEST_FINANCE_REPORT:
       return {
         ...state,
         loadingTopTraffic: true,

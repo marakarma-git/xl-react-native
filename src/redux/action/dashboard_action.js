@@ -16,6 +16,18 @@ const requestTopTraffic = () => ({
   type: reduxString.REQUEST_TOP_TRAFFIC,
 });
 
+const requestTopDevice = () => ({
+  type: reduxString.REQUEST_TOP_DEVICE_BRAND,
+});
+
+const requestCustomStatistics = () => ({
+  type: reduxString.REQUEST_CUSTOM_STATISTICS,
+});
+
+const requestFinanceReport = () => ({
+  type: reduxString.REQUEST_FINANCE_REPORT,
+});
+
 const request12MonthUsage = () => ({
   type: reduxString.REQUEST_12_MONTH_USAGE,
 });
@@ -164,6 +176,28 @@ const setSimStatistics = (data, params) => {
   };
 };
 
+const setCustomStatistics = (data, params) => {
+  const newDataSet = [];
+  const pieChartColor = ['#2ECFD3', '#124EAB', '#0064FB', '#22385A'];
+
+  data.map((datas, i) => {
+    newDataSet.push({
+      y: +datas.total,
+      percentage: +datas.percentage,
+      status: datas.businesscat,
+      color: pieChartColor[i],
+      total: +datas.total,
+    });
+  });
+  Helper.sortDescending(newDataSet, 'total');
+
+  return {
+    type: 'SET_CUSTOM_STATISTICS',
+    payload: newDataSet,
+    params,
+  };
+};
+
 const setTopTrafficStatistics = (data, params) => {
   const newDataSet = [];
 
@@ -184,6 +218,55 @@ const setTopTrafficStatistics = (data, params) => {
 
   return {
     type: 'SET_TOP_TRAFFIC_STATISTICS',
+    payload: newDataSet,
+    params,
+  };
+};
+
+const setTopDevice = (data, params) => {
+  const newDataSet = [];
+
+  data.map((datas) => {
+    newDataSet.push({
+      x: datas.brand +" ("+datas.type+")",
+      y: datas.totalcount,
+      label: [
+        `Brand: `,
+        `${datas.brand} (${datas.type})`,
+        `Total: `,
+        `${datas.totalcount}`,
+      ],
+    });
+  });
+
+  Helper.sortAscending(newDataSet, 'y');
+
+  return {
+    type: 'SET_TOP_DEVICE_BRAND',
+    payload: newDataSet,
+    params,
+  };
+};
+
+const setFinanceReport = (data, params) => {
+  const newDataSet = [];
+  data.map((datas) => {
+    newDataSet.push({
+      x: datas.datePeriod,
+      y: datas.totalInvoice,
+      label: [
+        `Period: `,
+        `${datas.datePeriod}`,
+        `Invoice: `,
+        `${datas.totalInvoice}`,
+      ],
+    });
+  });
+
+  // Helper.sortAscending(newDataSet, 'y');
+
+  return {
+    type: 'SET_FINANCIAL_REPORT',
     payload: newDataSet,
     params,
   };
@@ -337,12 +420,14 @@ export const requestWidgetData = (
 ) => {
   return async (dispatch) => {
     let isHasParams = Object.keys(filterParams).length > 0;
-    console.log(filterParams, ' FILTER PARAMS', type);
     if (type === 'sim') dispatch(requestDashboardData());
     if (type === 'top') dispatch(requestTopTraffic());
+    if (type === 'custom') dispatch(requestCustomStatistics());
+    if (type === 'topdevice') dispatch(requestTopDevice());
     let activityId;
     if (type === 'sim') activityId = isHasParams ? 'DP-4' : 'DP-1';
     else if (type === 'top') activityId = isHasParams ? 'DP-5' : 'DP-3';
+    else if (type === 'custom') activityId = isHasParams ? 'DP-8' : 'DP-9';
     const customHeaders = {
       headers: {
         activityId,
@@ -358,8 +443,7 @@ export const requestWidgetData = (
         filterParams,
         customHeaders,
       );
-      // console.log(JSON.stringify(data, null, 2));
-      console.log(filterParams, customHeaders)
+      // console.log(JSON.stringify(data));
       if (data) {
         if (data.statusCode === 0) {
           if (type === 'sim') {
@@ -368,6 +452,10 @@ export const requestWidgetData = (
             dispatch(
               setTopTrafficStatistics(data.result.dataset, filterParams),
             );
+          } else if (type === 'custom') {
+            dispatch(setCustomStatistics(data.result.dataset, filterParams));
+          } else if (type === 'topdevice') {
+            dispatch(setTopDevice(data.result.dataset, filterParams));
           }
         } else {
           dispatch(setRequestError(data.statusDescription));
@@ -376,6 +464,102 @@ export const requestWidgetData = (
     } catch (error) {
       dispatch(setRequestError(error.response.data));
     }
+  };
+};
+
+export const requestWidgetDataFinance = (
+  accessToken,
+  item,
+  filterParams = {},
+  type,
+) => {
+  return async (dispatch) => {
+    let isHasParams = Object.keys(filterParams).length > 0;
+    if (type === 'finance') dispatch(requestFinanceReport());
+    let activityId;
+    if (type === 'finance') activityId = isHasParams ? 'DP-6' : 'DP-7';
+    const customHeaders = {
+      headers: {
+        activityId,
+        showParams: isHasParams ? true : false,
+        excludeParamsKey: '',
+        Authorization: 'Bearer a4870c9a-7bc6-4a90-a917-60e6e5726a27',
+        paramKeyDescription:
+          'param1:Enterprise Number|param2:Package Name|param3:Period (days)|param4:Count By',
+      },
+    };
+    dispatch(setFinanceReport([
+      {
+        "datePeriod": "Mar-2022",
+        "totalInvoice": 648095710
+      },
+      {
+        "datePeriod": "Apr-2022",
+        "totalInvoice": 24723500
+      },
+      {
+        "datePeriod": "May-2022",
+        "totalInvoice": null
+      },
+      {
+        "datePeriod": "Jun-2022",
+        "totalInvoice": null
+      },
+      {
+        "datePeriod": "Jul-2022",
+        "totalInvoice": null
+      },
+      {
+        "datePeriod": "Aug-2022",
+        "totalInvoice": null
+      },
+      {
+        "datePeriod": "Sep-2022",
+        "totalInvoice": 0
+      },
+      {
+        "datePeriod": "Oct-2022",
+        "totalInvoice": null
+      },
+      {
+        "datePeriod": "Nov-2022",
+        "totalInvoice": null
+      },
+      {
+        "datePeriod": "Dec-2022",
+        "totalInvoice": 152039335
+      },
+      {
+        "datePeriod": "Jan-2023",
+        "totalInvoice": 80000
+      },
+      {
+        "datePeriod": "Feb-2023",
+        "totalInvoice": null
+      },
+      {
+        "datePeriod": "Mar-2023",
+        "totalInvoice": null
+      }
+    ], filterParams));
+
+    // try {
+    //   const {data} = await httpRequest.post(
+    //     `http://18.141.189.242/api/dcp/financial/getInvoiceSummary?enterpriseId=${item.datasetId}`,
+    //     filterParams,
+    //     customHeaders,
+    //   );
+    //   // console.log(JSON.stringify(data, null, 2));
+    //   if (data) {
+    //     if (data.statusCode === 0) {
+    //       dispatch(setFinanceReport(data.result.dataset, filterParams));
+    //     } else {
+    //       dispatch(setRequestError(data.statusDescription));
+    //     }
+    //   }
+    // } catch (error) {
+    //   dispatch(setRequestError(error.response.data));
+    // }
   };
 };
 
@@ -453,7 +637,6 @@ export const getMonthUsage = (item, filterParams = {}) => {
         paramKeyDescription: 'param3:Data in Month',
       },
     };
-    console.log(filterParams);
     try {
       dispatch(requestMonthUsage());
       const {data} = await httpRequest.post(

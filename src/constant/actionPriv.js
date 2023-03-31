@@ -34,6 +34,48 @@ const DASHBOARD_PRIVILEDGE_ID = [
     actionName: 'TopTraffic',
     activityLog: 'Traffic Statistics with criteria : ',
   },
+  {
+    activityId: 'DP-6',
+    privId: '02ac2c76-53ce-11ea-8d77-2e728ce88125',
+    menuName: 'Dashboard',
+    actionName: 'FinancialReport',
+    activityLog: 'Financial Report',
+  },
+  {
+    activityId: 'DP-7',
+    privId: '02ac2c76-53ce-11ea-8d77-2e728ce88125',
+    menuName: 'Dashboard',
+    actionName: 'FinancialReport',
+    activityLog: 'Financial Report with criteria :',
+  },
+  {
+    activityId: 'DP-8',
+    privId: '02ac2c76-53ce-11ea-8d77-2e728ce88125',
+    menuName: 'Dashboard',
+    actionName: 'Dashboard',
+    activityLog: 'Custom Statistics',
+  },
+  {
+    activityId: 'DP-9',
+    privId: '02ac2c76-53ce-11ea-8d77-2e728ce88125',
+    menuName: 'Dashboard',
+    actionName: 'Dashboard',
+    activityLog: 'Custom Statistics with criteria : ',
+  },
+  {
+    activityId: 'DP-10',
+    privId: '02ac2c76-53ce-11ea-8d77-2e728ce88125',
+    menuName: 'Dashboard',
+    actionName: 'TopDevice',
+    activityLog: 'Top 10 Devices Brand and Model',
+  },
+  {
+    activityId: 'DP-11',
+    privId: '02ac2c76-53ce-11ea-8d77-2e728ce88125',
+    menuName: 'Dashboard',
+    actionName: 'TopDevice',
+    activityLog: 'Top 10 Devices Brand and Model with criteria : ',
+  },
 ];
 
 const SUBSCRIPTION_PRIVILEDGE_ID = [

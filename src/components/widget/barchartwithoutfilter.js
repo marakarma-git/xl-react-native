@@ -1,8 +1,6 @@
 import React, {useState, useEffect, useCallback} from 'react';
 import {useNavigation} from '@react-navigation/native';
-import {
-  requestWidgetDataFinance,
-} from '../../redux/action/dashboard_action';
+import {requestWidgetData} from '../../redux/action/dashboard_action';
 import {useSelector, useDispatch} from 'react-redux';
 import {
   VictoryBar,
@@ -17,41 +15,31 @@ import {
   View,
   ActivityIndicator,
   Dimensions,
+  TouchableOpacity,
 } from 'react-native';
 import Orientation from '../../helpers/orientation';
 
+import Helper from '../../helpers/helper';
 import style from '../../style/home.style';
-import {FilterDropdown, NoDataText, Text} from '..';
+import {oDataText, Text} from '..';
 import {colors} from '../../constant/color';
 
-const ColumnChartComponent = ({
-  item,
-  barTotal = null,
-}) => {
+const BarChartWithoutFilterComponent = ({item, barTotal = null}) => {
   const dispatch = useDispatch();
   const navigation = useNavigation();
-  const dataSet = useSelector(
-    (state) => state.dashboard_reducer.financialReportStatistics
-  );
+  var dataSet = useSelector((state) => state.dashboard_reducer.topDeviceBrand);
+  console.log(dataSet)
   const userData = useSelector((state) => state.auth_reducer.data);
-  const {loadingFinancialReport, error} = useSelector(
+  const {loadingTopDeviceBrand, error} = useSelector(
     (state) => state.dashboard_reducer,
   );
   const [orientation, setOrientation] = useState('potrait');
+  
   const getTickValues = (data) => {
     const dataUsage = [...data].map((datas) => datas.y);
     const tickTimes = [0, 0.25, 0.5, 0.75, 1];
     const tickValues = tickTimes.map((tick) => Math.max(...dataUsage) * tick);
     return tickValues;
-  };
-  const getAxis = (data) => {
-    // const dataUsage = [...data].map((datas) => datas.y);
-    var loaddata = []
-    data ? data.map(function (index, val) {
-          loaddata.push(index.label[1]);
-    }) : null
-
-    return loaddata;
   };
 
   const formatCash = n => {
@@ -61,8 +49,19 @@ const ColumnChartComponent = ({
     if (n >= 1e9 && n < 1e12) return +(n / 1e9).toFixed(0) + "B";
     if (n >= 1e12) return +(n / 1e12).toFixed(0) + "T";
   };
+
+  const getAxis = (data) => {
+    // const dataUsage = [...data].map((datas) => datas.y);
+    var loaddata = []
+    var jsondata = data ? data.map(function (index, val) {
+          loaddata.push(index.label[1]);
+    }) : null
+
+    return loaddata;
+  };
+  
   const generateChart = () => (
-    <View style={{position: 'relative', top: -20, left: -10}}>
+    <View style={{position: 'relative', top: -20, left: 0}}>
       {dataSet.length > 0 ? (
         <VictoryContainer>
           <VictoryChart
@@ -71,11 +70,11 @@ const ColumnChartComponent = ({
             }
             height={barTotal ? +barTotal * 30 : + 10 * 30}>
             <VictoryAxis
+              offsetX={50}
               crossAxis
               label=""
               tickValues={getAxis(dataSet)}
               tickFormat={(t) => `${t.substring(0, 12)}`}
-              style={{ tickLabels: {angle :45}}}
             />
             <VictoryAxis
               dependentAxis
@@ -112,9 +111,9 @@ const ColumnChartComponent = ({
                   },
                 },
               ]}
-              vertical
+              horizontal
               style={{
-                data: {fill: "#165096", width: 10},
+                data: {fill: "#165096", width: 15},
               }}
               labelComponent={
                 <VictoryTooltip
@@ -144,24 +143,28 @@ const ColumnChartComponent = ({
     return (
       <Card style={[style.cardSection]}>
         <Card.Content style={[style.cardContentWrapper, {flex: 1}]}>
-          <View style={style.cardTitleContainer}>
+        <View style={style.cardTitleContainer}>
             <Text fontType="bold" style={{fontSize: 14}}>
-              {item.jsonData?.title?.text || ''}
+            {item.jsonData?.title?.text || ''}
             </Text>
-          </View>
-          {loadingFinancialReport ? (
+            <TouchableOpacity
+            onPress={() => navigation.navigate('Usage Analytics')}>
+            <Text style={style.linkText}>See Details</Text>
+            </TouchableOpacity>
+        </View>
+        {loadingTopDeviceBrand ? (
             <ActivityIndicator color={colors.main_color} size="large" />
-          ) : (
+        ) : (
             <>{dataSet && generateChart()}</>
-          )}
+        )}
         </Card.Content>
-      </Card>
+    </Card>
     );
   };
 
   const detectOrientation = useCallback(() => {
     if (Orientation.getHeight() <= Orientation.getWidth()) {
-      setOrientation('potrait');
+      setOrientation('landscape');
     }
     Dimensions.addEventListener('change', () => {
       setOrientation(Orientation.isPortrait() ? 'potrait' : 'landscape');
@@ -170,18 +173,17 @@ const ColumnChartComponent = ({
 
   useEffect(() => {
     if (dataSet === null) {
-      dispatch(requestWidgetDataFinance(userData.access_token, item, {}, 'finance'));
+      dispatch(
+        requestWidgetData(
+          userData.access_token,
+          item,
+          {},
+          (type = 'topdevice'),
+        ),
+      );
     }
   }, [dataSet]);
 
-  useEffect(() => {
-    const pageLoad = navigation.addListener('focus', () => {
-    });
-
-    detectOrientation();
-
-    return pageLoad;
-  }, [navigation]);
   return <>{generateView()}</>;
 };
 
@@ -205,4 +207,4 @@ const CustomLabel = (props) => {
   );
 };
 
-export default ColumnChartComponent;
+export default BarChartWithoutFilterComponent;
