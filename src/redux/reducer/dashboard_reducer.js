@@ -15,6 +15,7 @@ const initialState = {
   error: '',
   simStatistics: null,
   customStatistics: null,
+  devicePopulation: null,
   topTrafficStatistics: null,
   topDeviceBrand: null,
   financialReportStatistics: null,
@@ -56,6 +57,12 @@ const dashboard_reducer = (state = initialState, action) => {
         ...state,
         loading: false,
         customStatistics: action.payload,
+      };
+    case reduxString.SET_DEVICE_POPULATION:
+      return {
+        ...state,
+        loading: false,
+        devicePopulation: action.payload,
       };
     case reduxString.SET_TOP_TRAFFIC_STATISTICS:
       return {
@@ -141,6 +148,11 @@ const dashboard_reducer = (state = initialState, action) => {
       return {
         ...state,
         loadingTopDeviceBrand: true,
+      };
+    case reduxString.REQUEST_DEVICE_POPULATION:
+      return {
+        ...state,
+        loading: true,
       };
     case reduxString.REQUEST_FINANCE_REPORT:
       return {

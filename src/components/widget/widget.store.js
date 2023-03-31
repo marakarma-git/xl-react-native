@@ -4,6 +4,8 @@ import PieChart from './piechart';
 import BarChart from './barchart';
 import BarChartWithoutFilter from './barchartwithoutfilter';
 import ColumnChart from './columnchart';
+import RadarChart from './radarchart';
+import Aggregate from './aggregate.traffic';
 
 const WidgetStore = ({widgetList}) => {
   var widgetListdata = widgetList.sort(function (a, b) {
@@ -27,10 +29,10 @@ const WidgetStore = ({widgetList}) => {
         return <ColumnChart item={item} />;
       case 'custom-statistics':
         return <PieChart item={item} datareduce="custom"/>; 
-      // case 'Aggregated-Traffic':
-      //   return <Aggregate item={item} filterParams={{}} />; 
-      // case 'Device-Network-Statistics':
-      //   return <BarChart viewType="dashboard" item={item} filterParams={{}} />; 
+      case 'Aggregated-Traffic':
+        return <Aggregate item={item} filterParams={{}} />; 
+      case 'Device-Network-Statistics':
+        return <RadarChart item={item}/>; 
       case 'Top-Device':
         return <BarChartWithoutFilter item={item}/>;
       default:

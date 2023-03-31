@@ -19,6 +19,7 @@ import {
   Dimensions,
 } from 'react-native';
 import Orientation from '../../helpers/orientation';
+import Helper from '../../helpers/helper';
 
 import style from '../../style/home.style';
 import {FilterDropdown, NoDataText, Text} from '..';
@@ -62,28 +63,34 @@ const ColumnChartComponent = ({
     if (n >= 1e12) return +(n / 1e12).toFixed(0) + "T";
   };
   const generateChart = () => (
-    <View style={{position: 'relative', top: -20, left: -10}}>
+    <View style={{position: 'relative', top: -20, left: -20}}>
       {dataSet.length > 0 ? (
         <VictoryContainer>
           <VictoryChart
             width={
-              Orientation.getWidth() - (orientation === 'landscape' ? 120 : 45)
+              Orientation.getWidth() + (orientation === 'landscape' ? 0 : 0)
             }
+            containerComponent={<VictoryContainer responsive={false} />}
+            domainPadding={5}
             height={barTotal ? +barTotal * 30 : + 10 * 30}>
             <VictoryAxis
               crossAxis
               label=""
               tickValues={getAxis(dataSet)}
               tickFormat={(t) => `${t.substring(0, 12)}`}
-              style={{ tickLabels: {angle :45}}}
+              style={{tickLabels: {angle: 90, fontSize: 12, padding: 30}}}
             />
             <VictoryAxis
               dependentAxis
+              label="Total Invoice (IDR)"
+              style={{
+                tickLabels: {fontSize: 15, padding: 0}
+              }}
               standalone={false}
               tickValues={getTickValues(dataSet)}
               tickFormat={(t) => formatCash(t)}
               fixLabelOverlap
-              tickLabelComponent={<VictoryLabel style={{fontSize: 10}} />}
+              tickLabelComponent={<VictoryLabel style={{fontSize: 9}} />}
             />
             <VictoryBar
               alignment="start"
@@ -199,7 +206,7 @@ const CustomLabel = (props) => {
       </Text>
       <Text style={{fontSize: 10}}>
         {text[2]}
-        <Text style={{fontWeight: 'bold'}}>{text[3]}</Text>
+        <Text style={{fontWeight: 'bold'}}>IDR {Helper.numberFormat(parseFloat(text[3]), '.')}</Text>
       </Text>
     </View>
   );

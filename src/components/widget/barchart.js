@@ -102,7 +102,8 @@ const BarChartComponent = ({
               crossAxis
               label=""
               tickValues={getAxis(dataSet)}
-              tickFormat={(t) => `${t.substring(0, 12)}`}
+              tickFormat={(t) => `${t.substring(0, 20)}`}
+              style={{tickLabels: {fontSize: 9}}}
             />
             <VictoryAxis
               dependentAxis
@@ -110,7 +111,7 @@ const BarChartComponent = ({
               tickValues={getTickValues(dataSet)}
               tickFormat={(t) => Helper.formatBytes(t)}
               fixLabelOverlap
-              tickLabelComponent={<VictoryLabel style={{fontSize: 10}} />}
+              tickLabelComponent={<VictoryLabel style={{fontSize: 12}} />}
             />
             <VictoryBar
               alignment="start"

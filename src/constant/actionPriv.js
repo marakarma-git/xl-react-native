@@ -76,6 +76,20 @@ const DASHBOARD_PRIVILEDGE_ID = [
     actionName: 'TopDevice',
     activityLog: 'Top 10 Devices Brand and Model with criteria : ',
   },
+  {
+    activityId: 'DP-12',
+    privId: '02ac2c76-53ce-11ea-8d77-2e728ce88125',
+    menuName: 'Dashboard',
+    actionName: 'DeviceNetworkStatistics',
+    activityLog: 'Device Network Statistics',
+  },
+  {
+    activityId: 'DP-13',
+    privId: '02ac2c76-53ce-11ea-8d77-2e728ce88125',
+    menuName: 'Dashboard',
+    actionName: 'DeviceNetworkStatistics',
+    activityLog: 'Device Network Statistics with criteria : ',
+  },
 ];
 
 const SUBSCRIPTION_PRIVILEDGE_ID = [

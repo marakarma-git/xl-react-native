@@ -1,9 +1,10 @@
 import React, {useState, useEffect} from 'react';
 import {useSelector} from 'react-redux';
-import {View, ActivityIndicator, Text} from 'react-native';
+import {View, ActivityIndicator} from 'react-native';
 import {base_url} from '../../constant/connection';
 import {dashboardHeaderAuth} from '../../constant/headers';
 import {Card, Title} from 'react-native-paper';
+import {Text} from '../index';
 
 import Axios from 'axios';
 import Helper from '../../helpers/helper';
@@ -85,24 +86,28 @@ const AggregateTrafficComponent = ({item, navigation, filterParams = {}}) => {
       getWidgetData();
     }
 
-    const pageLoad = navigation.addListener('focus', () => {
-      getWidgetData();
-    });
+    // const pageLoad = navigation.addListener('focus', () => {
+    //   getWidgetData();
+    // });
 
-    return pageLoad;
+    // return pageLoad;
   }, [navigation]);
 
   return (
     <Card style={style.cardSection}>
       <Card.Content style={style.cardContentWrapper}>
-        <Title>{item.jsonData.title.text}</Title>
-        {loading ? (
+        <View style={style.cardTitleContainer}>
+          <Text fontType="bold" style={{fontSize: 14}}>
+            {item.jsonData?.title?.text || ''}
+          </Text>
+        </View>
+        {/* {loading ? (
           <ActivityIndicator color={colors.main_color} size="large" />
         ) : (
           <View style={style.containerPie} pointerEvents="none">
             {dataSet && parseData()}
           </View>
-        )}
+        )} */}
       </Card.Content>
     </Card>
   );

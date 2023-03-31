@@ -28,7 +28,6 @@ const BarChartWithoutFilterComponent = ({item, barTotal = null}) => {
   const dispatch = useDispatch();
   const navigation = useNavigation();
   var dataSet = useSelector((state) => state.dashboard_reducer.topDeviceBrand);
-  console.log(dataSet)
   const userData = useSelector((state) => state.auth_reducer.data);
   const {loadingTopDeviceBrand, error} = useSelector(
     (state) => state.dashboard_reducer,
@@ -74,7 +73,8 @@ const BarChartWithoutFilterComponent = ({item, barTotal = null}) => {
               crossAxis
               label=""
               tickValues={getAxis(dataSet)}
-              tickFormat={(t) => `${t.substring(0, 12)}`}
+              tickFormat={(t) => `${t.substring(0, 8)}`}
+              style={{tickLabels: {fontSize: 9}}}
             />
             <VictoryAxis
               dependentAxis
@@ -82,7 +82,7 @@ const BarChartWithoutFilterComponent = ({item, barTotal = null}) => {
               tickValues={getTickValues(dataSet)}
               tickFormat={(t) => formatCash(t)}
               fixLabelOverlap
-              tickLabelComponent={<VictoryLabel style={{fontSize: 10}} />}
+              tickLabelComponent={<VictoryLabel style={{fontSize: 12}} />}
             />
             <VictoryBar
               alignment="start"
@@ -201,7 +201,7 @@ const CustomLabel = (props) => {
       </Text>
       <Text style={{fontSize: 10}}>
         {text[2]}
-        <Text style={{fontWeight: 'bold'}}>{text[3]}</Text>
+        <Text style={{fontWeight: 'bold'}}>{Helper.numberFormat(parseFloat(text[3]), '.')}</Text>
       </Text>
     </View>
   );

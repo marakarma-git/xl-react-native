@@ -20,6 +20,10 @@ const requestTopDevice = () => ({
   type: reduxString.REQUEST_TOP_DEVICE_BRAND,
 });
 
+const requestDevicePopulation = () => ({
+  type: reduxString.REQUEST_DEVICE_POPULATION,
+});
+
 const requestCustomStatistics = () => ({
   type: reduxString.REQUEST_CUSTOM_STATISTICS,
 });
@@ -248,6 +252,45 @@ const setTopDevice = (data, params) => {
   };
 };
 
+const setDevicePopulation = (data, params) => {
+  const newDataSet = [];
+
+  const pieChartColor = ['#F1DD47', '#EB5777', '#165096'];
+  var getobj = Object.keys(data[0]);
+  var data2g3g = data[0][getobj[0]]
+  var data4g = data[0][getobj[1]]
+  var data5g = data[0][getobj[2]]
+  var datatotal = data[0][getobj[3]]
+
+  newDataSet.push({
+    y: data2g3g,
+    percentage: (parseFloat(data2g3g/datatotal).toFixed(2))*10,
+    status: "5g",
+    color: pieChartColor[2],
+    total: data2g3g,
+  },{
+    y: data4g,
+    percentage: (parseFloat(data4g/datatotal).toFixed(2))*10,
+    status: "4g",
+    color: pieChartColor[1],
+    total: data4g,
+  },{
+    y: data5g,
+    percentage: (parseFloat(data5g/datatotal).toFixed(2))*10,
+    status: "2g/3g",
+    color: pieChartColor[0],
+    total: data5g,
+  });
+
+  // Helper.sortAscending(newDataSet, 'y');
+
+  return {
+    type: 'SET_DEVICE_POPULATION',
+    payload: newDataSet,
+    params,
+  };
+};
+
 const setFinanceReport = (data, params) => {
   const newDataSet = [];
   data.map((datas) => {
@@ -424,10 +467,13 @@ export const requestWidgetData = (
     if (type === 'top') dispatch(requestTopTraffic());
     if (type === 'custom') dispatch(requestCustomStatistics());
     if (type === 'topdevice') dispatch(requestTopDevice());
+    if (type === 'devicepopulation') dispatch(requestDevicePopulation());
     let activityId;
     if (type === 'sim') activityId = isHasParams ? 'DP-4' : 'DP-1';
     else if (type === 'top') activityId = isHasParams ? 'DP-5' : 'DP-3';
     else if (type === 'custom') activityId = isHasParams ? 'DP-8' : 'DP-9';
+    else if (type === 'topdevice') activityId = isHasParams ? 'DP-10' : 'DP-11';
+    else if (type === 'devicepopulation') activityId = isHasParams ? 'DP-12' : 'DP-13';
     const customHeaders = {
       headers: {
         activityId,
@@ -456,6 +502,8 @@ export const requestWidgetData = (
             dispatch(setCustomStatistics(data.result.dataset, filterParams));
           } else if (type === 'topdevice') {
             dispatch(setTopDevice(data.result.dataset, filterParams));
+          } else if (type === 'devicepopulation') {
+            dispatch(setDevicePopulation(data.result.dataset, filterParams));
           }
         } else {
           dispatch(setRequestError(data.statusDescription));
