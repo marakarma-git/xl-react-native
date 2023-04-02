@@ -520,94 +520,54 @@ export const requestWidgetDataFinance = (
   item,
   filterParams = {},
   type,
+  username
 ) => {
   return async (dispatch) => {
     let isHasParams = Object.keys(filterParams).length > 0;
     if (type === 'finance') dispatch(requestFinanceReport());
     let activityId;
     if (type === 'finance') activityId = isHasParams ? 'DP-6' : 'DP-7';
-    const customHeaders = {
-      headers: {
-        activityId,
-        showParams: isHasParams ? true : false,
-        excludeParamsKey: '',
-        Authorization: 'Bearer a4870c9a-7bc6-4a90-a917-60e6e5726a27',
-        paramKeyDescription:
-          'param1:Enterprise Number|param2:Package Name|param3:Period (days)|param4:Count By',
-      },
-    };
-    dispatch(setFinanceReport([
-      {
-        "datePeriod": "Mar-2022",
-        "totalInvoice": 648095710
-      },
-      {
-        "datePeriod": "Apr-2022",
-        "totalInvoice": 24723500
-      },
-      {
-        "datePeriod": "May-2022",
-        "totalInvoice": null
-      },
-      {
-        "datePeriod": "Jun-2022",
-        "totalInvoice": null
-      },
-      {
-        "datePeriod": "Jul-2022",
-        "totalInvoice": null
-      },
-      {
-        "datePeriod": "Aug-2022",
-        "totalInvoice": null
-      },
-      {
-        "datePeriod": "Sep-2022",
-        "totalInvoice": 0
-      },
-      {
-        "datePeriod": "Oct-2022",
-        "totalInvoice": null
-      },
-      {
-        "datePeriod": "Nov-2022",
-        "totalInvoice": null
-      },
-      {
-        "datePeriod": "Dec-2022",
-        "totalInvoice": 152039335
-      },
-      {
-        "datePeriod": "Jan-2023",
-        "totalInvoice": 80000
-      },
-      {
-        "datePeriod": "Feb-2023",
-        "totalInvoice": null
-      },
-      {
-        "datePeriod": "Mar-2023",
-        "totalInvoice": null
-      }
-    ], filterParams));
+    // const customHeaders = {
+    //   headers: {
+    //     activityId,
+    //     showParams: isHasParams ? true : false,
+    //     excludeParamsKey: '',
+    //     Authorization: 'Bearer ',
+    //     username: 'super.rama',
+    //     paramKeyDescription:
+    //       'param1:Enterprise Number|param2:Package Name|param3:Period (days)|param4:Count By',
+    //   },
+    // };
 
-    // try {
-    //   const {data} = await httpRequest.post(
-    //     `http://18.141.189.242/api/dcp/financial/getInvoiceSummary?enterpriseId=${item.datasetId}`,
-    //     filterParams,
-    //     customHeaders,
-    //   );
-    //   // console.log(JSON.stringify(data, null, 2));
-    //   if (data) {
-    //     if (data.statusCode === 0) {
-    //       dispatch(setFinanceReport(data.result.dataset, filterParams));
-    //     } else {
-    //       dispatch(setRequestError(data.statusDescription));
-    //     }
-    //   }
-    // } catch (error) {
-    //   dispatch(setRequestError(error.response.data));
-    // }
+    let config = {
+      method: 'get',
+      url: 'http://18.141.189.242:18084/financial/getInvoiceSummary?enterpriseId=a06e38ea-d871-4945-8126-44fab717180a',
+      headers: { 
+        'username': username
+      },
+      activityId,
+      showParams: isHasParams ? true : false,
+      excludeParamsKey: '',
+      Authorization: 'Bearer ',
+      paramKeyDescription:
+        'param1:Enterprise Number|param2:Package Name|param3:Period (days)|param4:Count By',
+    };
+    
+    await Axios.request(config)
+    .then((response) => {
+      // var resdata = JSON.stringify(response.data);
+      var resdata = response.data;
+      if (resdata) {
+        if (resdata.statusCode === 0) {
+          dispatch(setFinanceReport(resdata.result, filterParams));
+        } else {
+          dispatch(setRequestError(resdata.statusDescription));
+        }
+      }
+    })
+    .catch((error) => {
+      dispatch(setRequestError(error.response.data));
+    });
   };
 };
 

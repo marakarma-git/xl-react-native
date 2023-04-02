@@ -68,7 +68,7 @@ const ColumnChartComponent = ({
         <VictoryContainer>
           <VictoryChart
             width={
-              Orientation.getWidth() + (orientation === 'landscape' ? 0 : 0)
+              Orientation.getWidth() + (orientation === 'landscape' ? 0 : -30)
             }
             containerComponent={<VictoryContainer responsive={false} />}
             domainPadding={5}
@@ -78,7 +78,7 @@ const ColumnChartComponent = ({
               label=""
               tickValues={getAxis(dataSet)}
               tickFormat={(t) => `${t.substring(0, 12)}`}
-              style={{tickLabels: {angle: 90, fontSize: 12, padding: 30}}}
+              style={{tickLabels: {angle: 90, fontSize: 11, padding: 30}}}
             />
             <VictoryAxis
               dependentAxis
@@ -177,7 +177,7 @@ const ColumnChartComponent = ({
 
   useEffect(() => {
     if (dataSet === null) {
-      dispatch(requestWidgetDataFinance(userData.access_token, item, {}, 'finance'));
+      dispatch(requestWidgetDataFinance(userData.access_token, item, {}, 'finance', userData.principal.username));
     }
   }, [dataSet]);
 
