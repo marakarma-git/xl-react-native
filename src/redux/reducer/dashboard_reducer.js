@@ -3,6 +3,7 @@ import reduxString from '../reduxString';
 const initialState = {
   summaryData: [],
   widgetList: [],
+  enterpriseList: [],
   carousel: [],
   loading: false,
   loadingTopTraffic: false,
@@ -39,6 +40,12 @@ const dashboard_reducer = (state = initialState, action) => {
         ...state,
         loading: false,
         widgetList: action.payload,
+      };
+    case reduxString.SET_ENTERPRISE_LIST:
+      return {
+        ...state,
+        loading: false,
+        enterpriseList: action.payload,
       };
     case reduxString.SET_CAROUSEL:
       return {
