@@ -12,7 +12,7 @@ import style from '../../style/home.style';
 import {colors} from '../../constant/color';
 import {TouchableOpacity} from 'react-native';
 
-const RadarChartComponent = ({item, datareduce, filterParams = {}}) => {
+const RadarChartComponent = ({item, datareduce, filterParams = {}, param1}) => {
   const dispatch = useDispatch();
   const navigation = useNavigation();
   const userData = useSelector((state) => state.auth_reducer.data);

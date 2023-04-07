@@ -21,10 +21,10 @@ import Orientation from '../../helpers/orientation';
 
 import Helper from '../../helpers/helper';
 import style from '../../style/home.style';
-import {oDataText, Text} from '..';
+import {oDataText, Text, NoDataText} from '..';
 import {colors} from '../../constant/color';
 
-const BarChartWithoutFilterComponent = ({item, barTotal = null}) => {
+const BarChartWithoutFilterComponent = ({item, param1, barTotal = null}) => {
   const dispatch = useDispatch();
   const navigation = useNavigation();
   var dataSet = useSelector((state) => state.dashboard_reducer.topDeviceBrand);

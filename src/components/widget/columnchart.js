@@ -27,6 +27,7 @@ import {colors} from '../../constant/color';
 
 const ColumnChartComponent = ({
   item,
+  param1,
   barTotal = null,
 }) => {
   const dispatch = useDispatch();
@@ -54,6 +55,7 @@ const ColumnChartComponent = ({
 
     return loaddata;
   };
+  const filterParams = {}
 
   const formatCash = n => {
     if (n < 1e3) return n;
@@ -178,6 +180,7 @@ const ColumnChartComponent = ({
   useEffect(() => {
     if (dataSet === null) {
       dispatch(requestWidgetDataFinance(userData.access_token, item, {}, 'finance', userData.principal.username));
+      console.log(dataSet)
     }
   }, [dataSet]);
 
