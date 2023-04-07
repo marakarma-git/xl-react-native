@@ -53,50 +53,99 @@ export const setRequestError = (error) => ({
   payload: error,
 });
 
-export const getDashboardSummary = (params) => {
+export const getDashboardSummary = (access_token, params) => {
   return async (dispatch) => {
-    const customHeaders = {
-      headers: {
-        activityId: 'DP-2',
-      },
-    };
-    let keys = Object.keys(params)[0];
+    // const customHeaders = {
+    //   headers: {
+    //     activityId: 'DP-2',
+    //   },
+    // };
+    // let keys = Object.keys(params)[0];
     let value = Object.values(params)[0];
-    let fullurl = `?${keys}=${value}`
-    try {
-      dispatch(requestDashboardData());
-      const {data} = await httpRequest.get(
-        `/dcp/dashboard/getSummaryDashboard${fullurl}`,
-        Object.assign({}, {param1: value}),
-        customHeaders,
-      );
-      if (data) {
-        if (data.statusCode === 0) {
-          const summaryData = [
-            {title: 'Total SIM Card', resultId: 'totalsimcard'},
-            {title: 'Total Active Session', resultId: 'totalactivesession'},
-            {title: 'Total Active SIM Card', resultId: 'totalactivesim'},
-            {
-              title: 'Total Aggregated Traffic',
-              resultId: 'totalaggregatedtraffic',
-            },
-          ];
-          Object.keys(data.result).map((keys) => {
-            summaryData.map((sumData, index) => {
-              if (keys === sumData.resultId) {
-                summaryData[index].value = data.result[keys];
-              }
-            });
-          });
+    // let fullurl = `?${keys}=${value}`
+    // try {
+    //   dispatch(requestDashboardData());
+    //   const {data} = await httpRequest.get(
+    //     `/dcp/dashboard/getSummaryDashboard${fullurl}`,
+    //     Object.assign({}, {param1: value}),
+    //     customHeaders,
+    //   );
+    //   if (data) {
+    //     if (data.statusCode === 0) {
+    //       const summaryData = [
+    //         {title: 'Total SIM Card', resultId: 'totalsimcard'},
+    //         {title: 'Total Active Session', resultId: 'totalactivesession'},
+    //         {title: 'Total Active SIM Card', resultId: 'totalactivesim'},
+    //         {
+    //           title: 'Total Aggregated Traffic',
+    //           resultId: 'totalaggregatedtraffic',
+    //         },
+    //       ];
+    //       Object.keys(data.result).map((keys) => {
+    //         summaryData.map((sumData, index) => {
+    //           if (keys === sumData.resultId) {
+    //             summaryData[index].value = data.result[keys];
+    //           }
+    //         });
+    //       });
 
-          dispatch(setDashboardSummary(summaryData));
-        } else {
-          throw new Error(data);
+    //       dispatch(setDashboardSummary(summaryData));
+    //     } else {
+    //       throw new Error(data);
+    //     }
+    //   }
+    // } catch (error) {
+    //   dispatch(setRequestError(error.response.data));
+    // }
+    let data = JSON.stringify({
+      "param1": value ? value : "07000001",
+      "param2": "",
+      "param3": "",
+      "param4": ""
+    });
+
+    let config = {
+      method: 'post',
+      maxBodyLength: Infinity,
+      url: 'https://dcp4.adlsandbox.com/api/dcp/dashboard/v2/getSummaryDashboard',
+      headers: { 
+        'authorization': 'Bearer ' + access_token, 
+        'Content-Type': 'application/json'
+      },
+      data : data
+    };
+
+    await Axios.request(config)
+      .then((response) => {
+        var datares = response.data
+        if (datares) {
+          if (datares.statusCode === 0) {
+            const summaryData = [
+              {title: 'Total SIM Card', resultId: 'totalsimcard'},
+              {title: 'Total Active Session', resultId: 'totalactivesession'},
+              {title: 'Total Active SIM Card', resultId: 'totalactivesim'},
+              {
+                title: 'Total Aggregated Traffic',
+                resultId: 'totalaggregatedtraffic',
+              },
+            ];
+            Object.keys(datares.result).map((keys) => {
+              summaryData.map((sumData, index) => {
+                if (keys === sumData.resultId) {
+                  summaryData[index].value = datares.result[keys];
+                }
+              });
+            });
+
+            dispatch(setDashboardSummary(summaryData));
+          } else {
+            throw new Error(datares);
+          }
         }
-      }
-    } catch (error) {
-      dispatch(setRequestError(error.response.data));
-    }
+      })
+      .catch((error) => {
+        dispatch(setRequestError(error.response.data));
+      });
   };
 };
 
@@ -111,7 +160,7 @@ const setEnterpriseList = (data) => {
   data.map((datas, i) => {
     newDataSet.push({
       label: datas.enterpriseName,
-      value: datas.customerNumber,
+      value: datas.customerNumber + ' - ' + datas.enterpriseId + ' - ' + datas.enterpriseName,
     });
   });
   return {
@@ -273,7 +322,6 @@ const setTopTrafficStatistics = (data, params) => {
 
 const setTopDevice = (data, params) => {
   const newDataSet = [];
-
   data.map((datas) => {
     newDataSet.push({
       x: datas.brand +" ("+datas.type+")",
@@ -503,60 +551,100 @@ export const requestWidgetData = (
   accessToken,
   item,
   filterParams = {},
-  type = 'sim',
+  typereq,
 ) => {
   return async (dispatch) => {
     let isHasParams = Object.keys(filterParams).length > 0;
     let params1 = filterParams.param1 ? filterParams.param1 : 'Enterprise Number'
-    if (type === 'sim') dispatch(requestDashboardData());
-    if (type === 'top') dispatch(requestTopTraffic());
-    if (type === 'custom') dispatch(requestCustomStatistics());
-    if (type === 'topdevice') dispatch(requestTopDevice());
-    if (type === 'devicepopulation') dispatch(requestDevicePopulation());
+    if (typereq == 'sim') dispatch(requestDashboardData());
+    if (typereq == 'top') dispatch(requestTopTraffic());
+    if (typereq == 'custom') dispatch(requestCustomStatistics());
+    if (typereq == 'topdevice') dispatch(requestTopDevice());
+    if (typereq == 'devicepopulation') dispatch(requestDevicePopulation());
     let activityId;
-    if (type === 'sim') activityId = isHasParams ? 'DP-4' : 'DP-1';
-    else if (type === 'top') activityId = isHasParams ? 'DP-5' : 'DP-3';
-    else if (type === 'custom') activityId = isHasParams ? 'DP-8' : 'DP-9';
-    else if (type === 'topdevice') activityId = isHasParams ? 'DP-10' : 'DP-11';
-    else if (type === 'devicepopulation') activityId = isHasParams ? 'DP-12' : 'DP-13';
-    const customHeaders = {
-      headers: {
-        activityId,
-        showParams: isHasParams ? true : false,
-        excludeParamsKey: '',
-        paramKeyDescription:
-          `param1:${params1}|param2:Package Name|param3:Period (days)|param4:Count By`,
+    if (typereq == 'sim') activityId = isHasParams ? 'DP-4' : 'DP-1';
+    else if (typereq == 'top') activityId = isHasParams ? 'DP-5' : 'DP-3';
+    else if (typereq == 'custom') activityId = isHasParams ? 'DP-8' : 'DP-9';
+    else if (typereq == 'topdevice') activityId = isHasParams ? 'DP-10' : 'DP-11';
+    else if (typereq == 'devicepopulation') activityId = isHasParams ? 'DP-12' : 'DP-13';
+    // const customHeaders = {
+    //   headers: {
+    //     activityId,
+    //     showParams: isHasParams ? true : false,
+    //     excludeParamsKey: '',
+    //     paramKeyDescription:
+    //       `param1:${params1}|param2:Package Name|param3:Period (days)|param4:Count By`,
+    //   },
+    // };
+    // try {
+    //   const {data} = await httpRequest.post(
+    //     `/dcp/dashboard/v2/getDataSet?datasetId=${item.datasetId}`,
+    //     filterParams,
+    //     customHeaders,
+    //   );
+    //   // console.log(JSON.stringify(data));
+    //   if (data) {
+    //     if (data.statusCode == 0) {
+    //       if (typereq == 'sim') {
+    //         dispatch(setSimStatistics(data.result.dataset, filterParams));
+    //       } else if (typereq == 'top') {
+    //         dispatch(
+    //           setTopTrafficStatistics(data.result.dataset, filterParams),
+    //         );
+    //       } else if (typereq == 'custom') {
+    //         dispatch(setCustomStatistics(data.result.dataset, filterParams));
+    //       } else if (typereq == 'topdevice') {
+    //         dispatch(setTopDevice(data.result.dataset, filterParams));
+    //       } else if (typereq == 'devicepopulation') {
+    //         dispatch(setDevicePopulation(data.result.dataset, filterParams));
+    //       }
+    //     } else {
+    //       dispatch(setRequestError(data.statusDescription));
+    //     }
+    //   }
+    // } catch (error) {
+    //   dispatch(setRequestError(error.response.data));
+    // }
+
+    let data = JSON.stringify(filterParams);
+
+    let config = {
+      method: 'post',
+      maxBodyLength: Infinity,
+      url: `https://dcp4.adlsandbox.com/api/dcp/dashboard/v2/getDataSet?datasetId=${item.datasetId}`,
+      headers: { 
+        'authorization': 'Bearer ' + accessToken, 
+        'Content-type': 'application/json'
       },
+      data : data
     };
-    try {
-      const {data} = await httpRequest.post(
-        `/dcp/dashboard/v2/getDataSet?datasetId=${item.datasetId}`,
-        filterParams,
-        customHeaders,
-      );
-      // console.log(JSON.stringify(data));
-      if (data) {
-        if (data.statusCode === 0) {
-          if (type === 'sim') {
-            dispatch(setSimStatistics(data.result.dataset, filterParams));
-          } else if (type === 'top') {
+
+    await Axios.request(config)
+    .then((response) => {
+      var datares = response.data
+      if (datares) {
+        if (datares.statusCode == 0) {
+          if (typereq == 'sim') {
+            dispatch(setSimStatistics(datares.result.dataset, filterParams));
+          } else if (typereq == 'top') {
             dispatch(
-              setTopTrafficStatistics(data.result.dataset, filterParams),
+              setTopTrafficStatistics(datares.result.dataset, filterParams),
             );
-          } else if (type === 'custom') {
-            dispatch(setCustomStatistics(data.result.dataset, filterParams));
-          } else if (type === 'topdevice') {
-            dispatch(setTopDevice(data.result.dataset, filterParams));
-          } else if (type === 'devicepopulation') {
-            dispatch(setDevicePopulation(data.result.dataset, filterParams));
+          } else if (typereq == 'custom') {
+            dispatch(setCustomStatistics(datares.result.dataset, filterParams));
+          } else if (typereq == 'devicepopulation') {
+            dispatch(setDevicePopulation(datares.result.dataset, filterParams));
+          } else if (typereq == 'topdevice') {
+            dispatch(setTopDevice(datares.result.dataset, filterParams));
           }
         } else {
-          dispatch(setRequestError(data.statusDescription));
+          dispatch(setRequestError(datares.statusDescription));
         }
       }
-    } catch (error) {
+    })
+    .catch((error) => {
       dispatch(setRequestError(error.response.data));
-    }
+    });
   };
 };
 
@@ -569,9 +657,9 @@ export const requestWidgetDataFinance = (
 ) => {
   return async (dispatch) => {
     let isHasParams = Object.keys(filterParams).length > 0;
-    if (type === 'finance') dispatch(requestFinanceReport());
+    if (type == 'finance') dispatch(requestFinanceReport());
     let activityId;
-    if (type === 'finance') activityId = isHasParams ? 'DP-6' : 'DP-7';
+    if (type == 'finance') activityId = isHasParams ? 'DP-6' : 'DP-7';
     const customHeaders = {
       headers: {
         activityId,
@@ -582,10 +670,11 @@ export const requestWidgetDataFinance = (
           'param1:Enterprise Number|param2:Package Name|param3:Period (days)|param4:Count By',
       },
     };
-
+    let value = Object.values(filterParams)[0]
+    let fullurl = value ? value :'a06e38ea-d871-4945-8126-44fab717180a'
     try {
       const {data} = await httpRequest.get(
-        `/dcp/financial/getInvoiceSummary?enterpriseId=a06e38ea-d871-4945-8126-44fab717180a`,
+        `/dcp/financial/getInvoiceSummary?enterpriseId=${fullurl}`,
         filterParams,
         customHeaders,
       );

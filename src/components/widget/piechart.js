@@ -12,7 +12,7 @@ import style from '../../style/home.style';
 import {colors} from '../../constant/color';
 import {TouchableOpacity} from 'react-native';
 
-const PieChartComponent = ({item, datareduce, filterParams = {}, param1}) => {
+const PieChartComponent = ({item, datareduce, filterParams = {}}) => {
   const dispatch = useDispatch();
   const navigation = useNavigation();
   const userData = useSelector((state) => state.auth_reducer.data);

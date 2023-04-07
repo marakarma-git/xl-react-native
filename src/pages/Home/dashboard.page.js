@@ -23,7 +23,7 @@ import {
   getEnterpriseList,
   resetTopTrafficStatistics,
   requestWidgetData,
-  requestWidgetDataFinance
+  requestWidgetDataFinance,
 } from '../../redux/action/dashboard_action';
 import Orientation from '../../helpers/orientation';
 
@@ -40,11 +40,12 @@ const DashboardPage = ({navigation}) => {
   );
   const loading = useSelector((state) => state.dashboard_reducer.loading);
   const {access_token} = useSelector((state) => state.auth_reducer?.data) || {};
-  const [filteringData, setFilteringData] = useState("") 
+  const [filteringData, setFilteringData] = useState(null) 
   const [modalVisible, setModalVisible] = useState(false) 
   const [open, setOpen] = useState(false);
   const [value, setValue] = useState(null);
   const [valueSelect, setValueSelect] = useState(null);
+  const [valueSelectEnterprise, setValueSelectEnterprise] = useState(null);
   const [items, setItems] = useState([]);
   const listItems = useSelector((state) => state.dashboard_reducer.enterpriseList);
   const filterParams = {}
@@ -86,55 +87,106 @@ const DashboardPage = ({navigation}) => {
   }, [dispatch, navigation]);
 
   const changeParams = () =>{
-    // widgetList.map((item, index) => {
-    //   switch (item.widgetCode) {
-    //     case 'SIM-Statistics':
-    //       dispatch(requestWidgetData(
-    //         userData.access_token,
-    //         item,
-    //         Object.assign(filterParams, {param1: value}),
-    //         (type = 'sim'),
-    //       ))
-    //     case 'Top-Traffic':
-    //       // dispatch(resetTopTrafficStatistics());
-    //       dispatch(requestWidgetData(
-    //         userData.access_token,
-    //         item,
-    //         Object.assign(filterParams, {param1: value}),
-    //         (type = 'top'),
-    //       ))
-    //     case 'Financial-Report':
-    //       dispatch(requestWidgetDataFinance(userData.access_token, item, Object.assign(filterParams, {param1: value}), 'finance', userData.principal.username))
-    //     case 'custom-statistics':
-    //       dispatch(requestWidgetData(
-    //         userData.access_token,
-    //         item,
-    //         Object.assign(filterParams, {param1: value}),
-    //         (type = 'custom'),
-    //       ))
-    //     // case 'Aggregated-Traffic':
-    //     //   return <Aggregate item={item} filterParams={{}} />; 
-    //     case 'Device-Network-Statistics':
-    //       dispatch(requestWidgetData(
-    //         userData.access_token,
-    //         item,
-    //         Object.assign(filterParams, {param1: value}),
-    //         (type = 'devicepopulation'),
-    //       ))
-    //     case 'Top-Device':
-    //       dispatch(requestWidgetData(
-    //         userData.access_token,
-    //         item,
-    //         Object.assign(filterParams, {param1: value}),
-    //         (type = 'topdevice'),
-    //       ))
-    //     default:
-    //       return;
-    //   }
-    // })
-    setValueSelect(value)
-    dispatch(getDashboardSummary(access_token, {param1: value}));
+    let splitarr = value.split(' - ')
+    setValueSelect(splitarr[0])
+    setValueSelectEnterprise(splitarr[1])
+    setFilteringData(splitarr[2])
+    dispatch(getDashboardSummary(access_token, {param1: splitarr[0]}));
+    dispatch(resetTopTrafficStatistics());
+    widgetList.map((item, index) => {
+      if (item.widgetCode == 'SIM-Statistics'){
+          return dispatch(requestWidgetData(
+            userData.access_token,
+            item,
+            {param1: splitarr[0]},
+            (type = 'sim'),
+          ))
+      }else if(item.widgetCode == 'Top-Traffic'){
+          return dispatch(requestWidgetData(
+            userData.access_token,
+            item,
+            {param1: splitarr[0], param3: 30, param4: 10},
+            (type = 'top'),
+          ))
+      }else if(item.widgetCode == 'Financial-Report'){
+        return dispatch(requestWidgetDataFinance(userData.access_token, item, {param1: splitarr[1]}, 'finance', userData.principal.username))
+      }else if(item.widgetCode == 'custom-statistics'){
+        return dispatch(requestWidgetData(
+            userData.access_token,
+            item,
+            {param1: splitarr[0]},
+            (type = 'custom'),
+          ))
+      }else if(item.widgetCode == 'Aggregated-Traffic'){
+        //    return <Aggregate item={item} filterParams={{}} />; 
+      }else if(item.widgetCode == 'Device-Network-Statistics'){
+          return dispatch(requestWidgetData(
+            userData.access_token,
+            item,
+            {param1: splitarr[0]},
+            (type = 'devicepopulation'),
+          ))
+      }else if(item.widgetCode == 'Top-Device'){
+          return dispatch(requestWidgetData(
+            userData.access_token,
+            item,
+            {param1: splitarr[0]},
+            (type = 'topdevice'),
+          ),)
+      }
+    })
     setModalVisible(!modalVisible)
+  }
+
+  const resetParams = () =>{
+    setValueSelect(null)
+    setValue(null)
+    setValueSelectEnterprise(null)
+    setFilteringData(null)
+    dispatch(getDashboardSummary(access_token, {}));
+    dispatch(resetTopTrafficStatistics());
+    widgetList.map((item, index) => {
+      if (item.widgetCode == 'SIM-Statistics'){
+          return dispatch(requestWidgetData(
+            userData.access_token,
+            item,
+            {},
+            (type = 'sim'),
+          ))
+      }else if(item.widgetCode == 'Top-Traffic'){
+          return dispatch(requestWidgetData(
+            userData.access_token,
+            item,
+            {param3: 30, param4: 10},
+            (type = 'top'),
+          ))
+      }else if(item.widgetCode == 'Financial-Report'){
+        return dispatch(requestWidgetDataFinance(userData.access_token, item, {}, 'finance', userData.principal.username))
+      }else if(item.widgetCode == 'custom-statistics'){
+        return dispatch(requestWidgetData(
+            userData.access_token,
+            item,
+            {},
+            (type = 'custom'),
+          ))
+      }else if(item.widgetCode == 'Aggregated-Traffic'){
+        //    return <Aggregate item={item} filterParams={{}} />; 
+      }else if(item.widgetCode == 'Device-Network-Statistics'){
+          return dispatch(requestWidgetData(
+            userData.access_token,
+            item,
+            {},
+            (type = 'devicepopulation'),
+          ))
+      }else if(item.widgetCode == 'Top-Device'){
+          return dispatch(requestWidgetData(
+            userData.access_token,
+            item,
+            {},
+            (type = 'topdevice'),
+          ),)
+      }
+    })
   }
 
   return (
@@ -158,16 +210,18 @@ const DashboardPage = ({navigation}) => {
               paddingHorizontal: 15
             }}>
             {filteringData ?
-              <View
+              <TouchableOpacity
+                onPress={() => resetParams()}
                 style={{
                   backgroundColor: '#B3D335',
                   borderRadius: 10,
-                  padding: 3,
+                  paddingHorizontal: 6,
+                  paddingVertical: 3,
                 }}>
                 <Text style={{ color: '#fff' }}>
-                  {filteringData ? filteringData : ''}
+                  {filteringData ? filteringData : ''} | X
                 </Text>
-              </View>
+              </TouchableOpacity>
               :
               <View></View>
             }

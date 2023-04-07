@@ -22,19 +22,19 @@ const WidgetStore = ({widgetList, param1}) => {
   const widgetType = (item) => {
     switch (item.widgetCode) {
       case 'SIM-Statistics':
-        return <PieChart item={item} datareduce="sim" param1={param1}/>;
+        return <PieChart item={item} datareduce="sim"/>;
       case 'Top-Traffic':
-        return <BarChart viewType="dashboard" item={item} filterParams={{}} param1={param1}/>;
+        return <BarChart viewType="dashboard" item={item} filterParams={{}}/>;
       case 'Financial-Report':
-        return <ColumnChart item={item}  param1={param1}/>;
+        return <ColumnChart item={item} />;
       case 'custom-statistics':
-        return <PieChart item={item} datareduce="custom" param1={param1}/>; 
+        return <PieChart item={item} datareduce="custom"/>; 
       case 'Aggregated-Traffic':
-        return <Aggregate item={item} filterParams={{}}  param1={param1}/>; 
+        return <Aggregate item={item} filterParams={{}} />; 
       case 'Device-Network-Statistics':
-        return <RadarChart item={item} param1={param1}/>; 
+        return <RadarChart item={item}/>; 
       case 'Top-Device':
-        return <BarChartWithoutFilter item={item} param1={param1}/>;
+        return <BarChartWithoutFilter item={item}/>;
       default:
         return;
     }

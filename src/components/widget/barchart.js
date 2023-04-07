@@ -32,7 +32,6 @@ const BarChartComponent = ({
   item,
   viewType = 'dashboard',
   filterParams = {},
-  param1,
   barTotal = null,
 }) => {
   const dispatch = useDispatch();

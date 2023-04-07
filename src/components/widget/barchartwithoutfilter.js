@@ -24,7 +24,7 @@ import style from '../../style/home.style';
 import {oDataText, Text, NoDataText} from '..';
 import {colors} from '../../constant/color';
 
-const BarChartWithoutFilterComponent = ({item, param1, barTotal = null}) => {
+const BarChartWithoutFilterComponent = ({item, barTotal = null}) => {
   const dispatch = useDispatch();
   const navigation = useNavigation();
   var dataSet = useSelector((state) => state.dashboard_reducer.topDeviceBrand);
@@ -58,10 +58,9 @@ const BarChartWithoutFilterComponent = ({item, param1, barTotal = null}) => {
 
     return loaddata;
   };
-  
   const generateChart = () => (
     <View style={{position: 'relative', top: -20, left: 0}}>
-      {dataSet.length > 0 ? (
+      {dataSet ? (
         <VictoryContainer>
           <VictoryChart
             width={
@@ -156,6 +155,7 @@ const BarChartWithoutFilterComponent = ({item, param1, barTotal = null}) => {
             <ActivityIndicator color={colors.main_color} size="large" />
         ) : (
             <>{dataSet && generateChart()}</>
+            // <></>
         )}
         </Card.Content>
     </Card>
