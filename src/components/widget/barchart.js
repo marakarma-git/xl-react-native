@@ -46,7 +46,7 @@ const BarChartComponent = ({
   const [orientation, setOrientation] = useState('potrait');
   const [firstRender, setFirstRender] = useState(true);
   const [isFirstHit, setIsFirstHit] = useState(true);
-  const [param3, setParam3] = useState(30);
+  const [param3, setParam3] = useState(2);
   const [param3List, setParam3List] = useState([
     {label: '2 Days ago', value: 2, isDisabled: false, isVisible: true},
     {
@@ -67,7 +67,7 @@ const BarChartComponent = ({
     {label: 'Top 10', value: 10, isDisabled: false, isVisible: true},
     {label: 'Top 20', value: 20, isDisabled: false, isVisible: true},
   ]);
-  const [periodLabel, setPeriodLabel] = useState('30 Days ago');
+  const [periodLabel, setPeriodLabel] = useState('2 Days ago');
   const [countLabel, setCountLabel] = useState('Top 10');
   const [showPeriodFilter, setShowPeriodFilter] = useState(false);
   const [showCountFilter, setShowCountFilter] = useState(false);

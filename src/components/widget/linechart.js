@@ -5,7 +5,7 @@ import {
 } from '../../redux/action/dashboard_action';
 import {useSelector, useDispatch} from 'react-redux';
 import {
-  VictoryBar,
+  VictoryLine,
   VictoryAxis,
   VictoryChart,
   VictoryLabel,
@@ -25,19 +25,20 @@ import style from '../../style/home.style';
 import {FilterDropdown, NoDataText, Text} from '..';
 import {colors} from '../../constant/color';
 
-const ColumnChartComponent = ({
+const LineChartComponent = ({
   item,
   barTotal = null,
 }) => {
   const dispatch = useDispatch();
   const navigation = useNavigation();
-  const dataSet = useSelector(
-    (state) => state.dashboard_reducer.financialReportStatistics
-  );
+//   const dataSet = useSelector(
+//     (state) => state.dashboard_reducer.financialReportStatistics
+//   );
+const [dataSet, setDataSet] = useState([{"label": ["Period: ", "Apr-2022", "Subs: ", "15"], "x": "Apr-2022", "y": 15}, {"label": ["Period: ", "May-2022", "Subs: ", "20"], "x": "May-2022", "y": 20}, {"label": ["Period: ", "Jun-2022", "Subs: ", "10"], "x": "Jun-2022", "y": 10}, {"label": ["Period: ", "Jul-2022", "Subs: ", "4"], "x": "Jul-2022", "y": 4}, {"label": ["Period: ", "Aug-2022", "Subs: ", "12"], "x": "Aug-2022", "y": 12}, {"label": ["Period: ", "Sep-2022", "Subs: ", "0"], "x": "Sep-2022", "y": 0}, {"label": ["Period: ", "Oct-2022", "Subs: ", "5"], "x": "Oct-2022", "y": 5}, {"label": ["Period: ", "Nov-2022", "Subs: ", "4"], "x": "Nov-2022", "y": 4}, {"label": ["Period: ", "Dec-2022", "Subs: ", "12"], "x": "Dec-2022", "y": 12}, {"label": ["Period: ", "Jan-2023", "Subs: ", "12"], "x": "Jan-2023", "y": 12}, {"label": ["Period: ", "Feb-2023", "Subs: ", "22"], "x": "Feb-2023", "y": 22}, {"label": ["Period: ", "Mar-2023", "Subs: ", "23"], "x": "Mar-2023", "y": 23}, {"label": ["Period: ", "Apr-2023", "Subs: ", "11"], "x": "Apr-2023", "y": 11}])
   const userData = useSelector((state) => state.auth_reducer.data);
-  const {loadingFinancialReport, error} = useSelector(
-    (state) => state.dashboard_reducer,
-  );
+//   const {loadingFinancialReport, error} = useSelector(
+//     (state) => state.dashboard_reducer,
+//   );
   const [orientation, setOrientation] = useState('potrait');
   const getTickValues = (data) => {
     const dataUsage = [...data].map((datas) => datas.y);
@@ -56,15 +57,8 @@ const ColumnChartComponent = ({
   };
   const filterParams = {}
 
-  const formatCash = n => {
-    if (n < 1e3) return n;
-    if (n >= 1e3 && n < 1e6) return +(n / 1e3).toFixed(0) + "K";
-    if (n >= 1e6 && n < 1e9) return +(n / 1e6).toFixed(0) + "M";
-    if (n >= 1e9 && n < 1e12) return +(n / 1e9).toFixed(0) + "B";
-    if (n >= 1e12) return +(n / 1e12).toFixed(0) + "T";
-  };
   const generateChart = () => (
-    <View style={{position: 'relative', top: -20, left: -20}}>
+    <View style={{position: 'relative', top: -20, left: -10}}>
       {dataSet.length > 0 ? (
         <VictoryContainer>
           <VictoryChart
@@ -73,7 +67,7 @@ const ColumnChartComponent = ({
             }
             containerComponent={<VictoryContainer responsive={false} />}
             domainPadding={5}
-            height={barTotal ? +barTotal * 30 : + 10 * 30}>
+            height={barTotal ? +barTotal * 30 : + 10 * 40}>
             <VictoryAxis
               crossAxis
               label=""
@@ -83,17 +77,17 @@ const ColumnChartComponent = ({
             />
             <VictoryAxis
               dependentAxis
-              label="Total Invoice (IDR)"
+              label="Subscribers"
               style={{
                 tickLabels: {fontSize: 15, padding: 0}
               }}
               standalone={false}
               tickValues={getTickValues(dataSet)}
-              tickFormat={(t) => formatCash(t)}
+              tickFormat={(t) => t}
               fixLabelOverlap
               tickLabelComponent={<VictoryLabel style={{fontSize: 9}} />}
             />
-            <VictoryBar
+            <VictoryLine
               alignment="start"
               data={dataSet}
               events={[
@@ -122,7 +116,7 @@ const ColumnChartComponent = ({
               ]}
               vertical
               style={{
-                data: {fill: "#165096", width: 10},
+                data: {fill: "#fff", width: 10, stroke: "#165096"},
               }}
               labelComponent={
                 <VictoryTooltip
@@ -150,20 +144,21 @@ const ColumnChartComponent = ({
 
   const generateView = () => {
     return (
-      <Card style={[style.cardSection]}>
         <Card.Content style={[style.cardContentWrapper, {flex: 1}]}>
-          <View style={style.cardTitleContainer}>
-            <Text fontType="bold" style={{fontSize: 14}}>
-              {item.jsonData?.title?.text || ''}
-            </Text>
-          </View>
-          {loadingFinancialReport ? (
+            <View style={{paddingTop:0, marginBottom:20}}>
+                <Text fontType="bold" style={{fontSize: 14}}>
+                Device Analytics
+                </Text>
+                <Text style={{fontSize: 12}}>
+                consectetur adipiscing elit duis tristique sollicitudin nibh sit amet commodo nulla facilisi nullam vehicula ipsum a arcu cursus vitae congue
+                </Text>
+            </View>
+          {/* {loadingFinancialReport ? (
             <ActivityIndicator color={colors.main_color} size="large" />
-          ) : (
+          ) : ( */}
             <>{dataSet && generateChart()}</>
-          )}
+          {/* )} */}
         </Card.Content>
-      </Card>
     );
   };
 
@@ -176,11 +171,11 @@ const ColumnChartComponent = ({
     });
   }, [Dimensions]);
 
-  useEffect(() => {
-    if (dataSet === null) {
-      dispatch(requestWidgetDataFinance(userData.access_token, item, {}, 'finance', userData.principal.username));
-    }
-  }, [dataSet]);
+//   useEffect(() => {
+//     if (dataSet === null) {
+//       dispatch(requestWidgetDataFinance(userData.access_token, item, {}, 'finance', userData.principal.username));
+//     }
+//   }, [dataSet]);
 
   useEffect(() => {
     const pageLoad = navigation.addListener('focus', () => {
@@ -206,11 +201,11 @@ const CustomLabel = (props) => {
         <Text style={{fontWeight: 'bold'}}>{text[1]}</Text>
       </Text>
       <Text style={{fontSize: 10}}>
-        {text[2]}
-        <Text style={{fontWeight: 'bold'}}>IDR {Helper.numberFormat(parseFloat(text[3]), '.')}</Text>
+        {text[2]} 
+        <Text style={{fontWeight: 'bold'}}> {Helper.numberFormat(parseFloat(text[3]), '.')}</Text>
       </Text>
     </View>
   );
 };
 
-export default ColumnChartComponent;
+export default LineChartComponent;

@@ -347,7 +347,7 @@ const setTopDevice = (data, params) => {
 const setDevicePopulation = (data, params) => {
   const newDataSet = [];
 
-  const pieChartColor = ['#F1DD47', '#EB5777', '#165096'];
+  const pieChartColor = ['#2ECFD3', '#124EAB', '#0064FB', '#22385A'];
   var getobj = Object.keys(data[0]);
   var data2g3g = data[0][getobj[0]]
   var data4g = data[0][getobj[1]]

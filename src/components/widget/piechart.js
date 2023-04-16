@@ -18,8 +18,10 @@ const PieChartComponent = ({item, datareduce, filterParams = {}}) => {
   const userData = useSelector((state) => state.auth_reducer.data);
   if (datareduce == 'sim') {
     var dataSet = useSelector((state) => state.dashboard_reducer.simStatistics);
-  } else {
+  } else if (datareduce == 'custom') {
     var dataSet = useSelector((state) => state.dashboard_reducer.customStatistics);
+  }else{
+    var dataSet = useSelector((state) => state.dashboard_reducer.devicePopulation);
   }
   const {loading, error} = useSelector((state) => state.dashboard_reducer);
   const [chartColor, setChartColor] = useState([]);
@@ -74,9 +76,13 @@ const PieChartComponent = ({item, datareduce, filterParams = {}}) => {
         dispatch(
           requestWidgetData(userData.access_token, item, filterParams, 'sim'),
         );
-      }else{
+      }else if(datareduce == 'custom'){
         dispatch(
           requestWidgetData(userData.access_token, item, filterParams, 'custom'),
+        );
+      }else{
+        dispatch(
+          requestWidgetData(userData.access_token, item, filterParams, 'devicepopulation'),
         );
       }
     });
@@ -88,9 +94,13 @@ const PieChartComponent = ({item, datareduce, filterParams = {}}) => {
         dispatch(
           requestWidgetData(userData.access_token, item, filterParams, 'sim'),
         );
-      }else{
+      }else if(datareduce == 'custom'){
         dispatch(
           requestWidgetData(userData.access_token, item, filterParams, 'custom'),
+        );
+      }else{
+        dispatch(
+          requestWidgetData(userData.access_token, item, filterParams, 'devicepopulation'),
         );
       }
     }
@@ -106,7 +116,7 @@ const PieChartComponent = ({item, datareduce, filterParams = {}}) => {
             {item.jsonData?.title?.text || ''}
           </Text>
           <TouchableOpacity
-            onPress={() => datareduce == 'sim' ? navigation.navigate('Sim Productivity') : navigation.navigate('Custom Statistics')}>
+            onPress={() => datareduce == 'sim' ? navigation.navigate('Sim Productivity') : datareduce == 'custom' ? navigation.navigate('Custom Statistics') : navigation.navigate('Device Statistics')}>
             <Text style={style.linkText}>See Details</Text>
           </TouchableOpacity>
         </View>

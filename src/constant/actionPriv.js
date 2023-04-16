@@ -509,6 +509,20 @@ const ANALYTICS_PRIVILEDGE_ID = [
     actionName: 'Filter',
     activityLog: 'Geo Distribution: Filter',
   },
+  {
+    activityId: 'ANP-17',
+    privId: '5733ffea-301f-45ec-9f00-52c8cfcae183',
+    menuName: 'Device Analytics',
+    actionName: 'View',
+    activityLog: 'Device Analytics',
+  },
+  {
+    activityId: 'ANP-18',
+    privId: 'acf5f391-a469-4d6a-a0b1-1de0bb2f4aba',
+    menuName: 'Device Analytics',
+    actionName: 'Filter',
+    activityLog: 'Device Analytics: Filter',
+  },
 ];
 
 const LOGIN_LOGOUT_PRIVILEDGE_ID = [

@@ -32,7 +32,7 @@ const WidgetStore = ({widgetList, param1}) => {
       case 'Aggregated-Traffic':
         return <Aggregate item={item} filterParams={{}} />; 
       case 'Device-Network-Statistics':
-        return <RadarChart item={item}/>; 
+        return <PieChart item={item} datareduce="device"/>; 
       case 'Top-Device':
         return <BarChartWithoutFilter item={item}/>;
       default:

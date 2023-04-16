@@ -105,7 +105,7 @@ const DashboardPage = ({navigation}) => {
           return dispatch(requestWidgetData(
             userData.access_token,
             item,
-            {param1: splitarr[0], param3: 30, param4: 10},
+            {param1: splitarr[0], param3: 2, param4: 10},
             (type = 'top'),
           ))
       }else if(item.widgetCode == 'Financial-Report'){
@@ -157,7 +157,7 @@ const DashboardPage = ({navigation}) => {
           return dispatch(requestWidgetData(
             userData.access_token,
             item,
-            {param3: 30, param4: 10},
+            {param3: 2, param4: 10},
             (type = 'top'),
           ))
       }else if(item.widgetCode == 'Financial-Report'){
