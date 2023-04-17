@@ -6,7 +6,7 @@ import {
   FlatList,
   ScrollView,
   View,
-	Modal,
+  Modal,
   TouchableOpacity,
 } from 'react-native';
 import Text from '../../components/global/text';

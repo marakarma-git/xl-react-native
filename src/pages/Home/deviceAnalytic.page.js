@@ -1,24 +1,22 @@
 import React, {useEffect, useState} from 'react';
-import Helper from '../../helpers/helper';
 import {useDispatch, useSelector} from 'react-redux';
 import {
   ActivityIndicator,
-  FlatList,
   ScrollView,
   View,
   Modal,
   TouchableOpacity,
 } from 'react-native';
 import Text from '../../components/global/text';
-import {Card, Headline} from 'react-native-paper';
+import {Card} from 'react-native-paper';
+import {HeaderContainer, OverlayBackground} from '../../components/index';
 import {
-  HeaderContainer,
-  OverlayBackground,
-  WidgetStore,
-} from '../../components/index';
+  getDeviceAnalytic,
+  getEnterpriseList,
+  getPackageNameList
+} from '../../redux/action/device_analytic_action';
 import DropDownPicker from 'react-native-dropdown-picker';
 import LineChart from './../../components/widget/linechart';
-import Orientation from '../../helpers/orientation';
 
 import style from '../../style/home.style';
 import {colors} from '../../constant/color';
@@ -28,30 +26,35 @@ const DeviceAnalyticPage = ({navigation}) => {
   const userData = useSelector((state) => state.auth_reducer.data);
   const {imageBase64} = useSelector((state) => state.enterprise_reducer);
  
-  const loading = useSelector((state) => state.dashboard_reducer.loading);
+  const loading = useSelector((state) => state.device_analytic_reducer.loading);
   const {access_token} = useSelector((state) => state.auth_reducer?.data) || {};
-  const [filteringData, setFilteringData] = useState(null) 
   const [modalVisible, setModalVisible] = useState(false) 
   const [open, setOpen] = useState(false);
   const [value, setValue] = useState(null);
-  const [valueSelect, setValueSelect] = useState(null);
-  const [valueSelectEnterprise, setValueSelectEnterprise] = useState(null);
   const [items, setItems] = useState([]);
-  const listItems = useState({item: '1', value:'1'});
+  const listItems = useSelector((state) => state.device_analytic_reducer.enterpriseList);
 
   const [open2, setOpen2] = useState(false);
   const [value2, setValue2] = useState(null);
-  const [valueSelect2, setValueSelect2] = useState(null);
-  const [valueSelectEnterprise2, setValueSelectEnterprise2] = useState(null);
   const [items2, setItems2] = useState([]);
-  const listItems2 = useState({item: '1', value:'1'});
+  const listItems2 = useSelector((state) => state.device_analytic_reducer.packageNameList);
 
   useEffect(() => {
     return navigation.addListener('focus', () => {
-      
+      dispatch(getEnterpriseList(access_token));
     });
   }, [dispatch, navigation]);
 
+  const changeEnterprise = (value) =>{
+    var splitvalue = value.split(' - ');
+    dispatch(getPackageNameList(access_token, splitvalue[0]))
+  }
+
+  const changeParams = () =>{
+    var splitvalue = value.split(' - ');
+    dispatch(getDeviceAnalytic(userData.access_token, {param1: splitvalue[1], param2: value2}));
+    setModalVisible(!modalVisible)
+  }
 
   return (
     <><View>
@@ -90,11 +93,11 @@ const DeviceAnalyticPage = ({navigation}) => {
           <View style={{width:"100%", borderRadius:0,marginTop:18}}>
             <Card style={{borderRadius:0}}>
               <Card.Content style={style.cardContentWrapper}>
-                {/* {loading ? (
+                {loading ? (
                   <ActivityIndicator color={colors.main_color} size="large" />
-                ) : ( */}
+                ) : (
                   <LineChart/>
-                {/* )} */}
+                )}
               </Card.Content>
             </Card>
           </View>
@@ -163,6 +166,7 @@ const DeviceAnalyticPage = ({navigation}) => {
                         setOpen={setOpen}
                         setValue={setValue}
                         setItems={setItems}
+                        onChangeValue={(value) => {changeEnterprise(value)}}
                         searchable={true}
                         containerStyle={{width: '100%'}}
                         itemStyle={{justifyContent: 'flex-start'}}

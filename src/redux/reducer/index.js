@@ -3,6 +3,7 @@ import dummy_reducer from './dummy_reducer';
 import auth_reducer from './auth_reducer';
 import enterprise_reducer from './enterprise_reducer';
 import dashboard_reducer from './dashboard_reducer';
+import device_analytic_reducer from './device_analytic_reducer';
 import sim_reducer from './sim_reducer';
 import dynamic_array_filter_reducer from './dynamic_array_filter_reducer';
 import query_params_filter_reducer from './query_params_filter_reducer';
@@ -45,6 +46,7 @@ const RootReducers = combineReducers({
   auth_reducer,
   enterprise_reducer,
   dashboard_reducer,
+  device_analytic_reducer,
   sim_reducer,
   dynamic_array_filter_reducer,
   query_params_filter_reducer,
