@@ -27,6 +27,8 @@ export {default as SmsA2pFilterPage} from './smsA2pFilter.page';
 export {default as AutomationCreDitPage} from './automationCreDit.page';
 export {default as GeoDistributionPage} from './geoDistribution.page';
 export {default as DeviceAnalyticPage} from './deviceAnalytic.page';
+export {default as SubscriberGrowthPage} from './subscriberGrowth.page';
+export {default as SubscriberLifeCyclePage} from './subscriberLifeCycle.page';
 export {default as SimProductivityPage} from './simProductivity.page';
 export {default as UsageAnalyticsPage} from './usageAnalytics.page';
 export {default as UsageSubscribersAnalyticsPage} from './usageSubscribersAnalytics.page';
